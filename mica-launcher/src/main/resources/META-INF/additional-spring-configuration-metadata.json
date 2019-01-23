@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "mica.env",
+      "type": "java.lang.Boolean",
+      "description": "mica 环境变量，方便在代码中获取，设置无效."
+    }
+  ]
+}

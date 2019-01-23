@@ -1,0 +1,119 @@
+/*
+ * Copyright (c) 2019-2029, Dreamlu 卢春梦 (596392912@qq.com & www.dreamlu.net).
+ * <p>
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE 3.0;
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.gnu.org/licenses/lgpl.html
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package net.dreamlu.mica.launcher;
+
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.*;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
+import java.util.*;
+import java.util.function.Function;
+
+/**
+ * 项目启动器，搞定环境变量问题
+ *
+ * @author L.cm
+ */
+public class MicaApplication {
+	/**
+	 * 代码部署于 linux 上，工作默认为 mac 和 Windows
+	 */
+	private static final String OS_NAME_LINUX = "LINUX";
+
+	/**
+	 * Create an application context
+	 *
+	 * @param appName application name
+	 * @param source  The sources
+	 * @param args    args the command line arguments
+	 * @return an application context created from the current state
+	 */
+	public static ConfigurableApplicationContext run(String appName, Class source, String... args) {
+		SpringApplicationBuilder builder = createSpringApplicationBuilder(appName, source, args);
+		return builder.run(args);
+	}
+
+	/**
+	 * Create an application context
+	 *
+	 * @param appName application name
+	 * @param source  The sources
+	 * @param args    args the command line arguments
+	 * @return an application context created from the current state
+	 */
+	public static SpringApplicationBuilder createSpringApplicationBuilder(String appName, Class source, String... args) {
+		Assert.hasText(appName, "args appName is black");
+		// 读取环境变量，使用spring boot的规则
+		ConfigurableEnvironment environment = new StandardEnvironment();
+		MutablePropertySources propertySources = environment.getPropertySources();
+		propertySources.addFirst(new SimpleCommandLinePropertySource(args));
+		propertySources.addLast(new MapPropertySource(StandardEnvironment.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME, environment.getSystemProperties()));
+		propertySources.addLast(new SystemEnvironmentPropertySource(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, environment.getSystemEnvironment()));
+		// 获取配置的环境变量
+		String[] activeProfiles = environment.getActiveProfiles();
+		// 判断环境:dev、test、ontest、prod
+		List<String> profiles = Arrays.asList(activeProfiles);
+		// 预设的环境
+		List<String> presetProfiles = new ArrayList<>(Arrays.asList("dev", "test", "ontest", "prod"));
+		// 交集
+		presetProfiles.retainAll(profiles);
+		// 当前使用
+		List<String> activeProfileList = new ArrayList<>(profiles);
+		Function<Object[], String> joinFun = StringUtils::arrayToCommaDelimitedString;
+		SpringApplicationBuilder builder = new SpringApplicationBuilder(source);
+		String profile;
+		if (presetProfiles.isEmpty()) {
+			// 默认dev开发
+			profile = "dev";
+			activeProfileList.add(profile);
+			builder.profiles(profile);
+		} else if (presetProfiles.size() == 1) {
+			profile = presetProfiles.get(0);
+		} else {
+			// 同时存在dev、test、ontest、prod环境时
+			throw new RuntimeException("同时存在环境变量:[" + joinFun.apply(activeProfiles) + "]");
+		}
+		// 添加启动目录打印
+		String startJarPath = MicaApplication.class.getResource("/").getPath().split("!")[0];
+		String activePros = joinFun.apply(activeProfileList.toArray());
+		System.err.println(String.format("---[%s]---启动中，读取到的环境变量:[%s]，jar地址:[%s]---", appName, activePros, startJarPath));
+		boolean isLocalDev = MicaApplication.isLocalDev();
+		// 默认的属性配置
+		Properties props = System.getProperties();
+		props.setProperty("mica.env", profile);
+		props.setProperty("mica.is-local", String.valueOf(isLocalDev));
+		props.setProperty("spring.application.name", appName);
+		props.setProperty("spring.banner.location", "classpath:mica_banner.txt");
+		// 加载自定义组件
+		ServiceLoader<LauncherService> loader = ServiceLoader.load(LauncherService.class);
+		// 启动组件
+		loader.forEach(launcherService -> launcherService.launcher(builder, appName, profile, isLocalDev));
+		return builder;
+	}
+
+	/**
+	 * 判断是否为本地开发环境
+	 *
+	 * @return boolean
+	 */
+	public static boolean isLocalDev() {
+		String osName = System.getProperty("os.name");
+		return StringUtils.hasText(osName) && !(OS_NAME_LINUX.equals(osName.toUpperCase()));
+	}
+}

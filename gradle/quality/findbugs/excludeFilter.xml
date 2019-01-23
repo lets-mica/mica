@@ -1,0 +1,30 @@
+<FindBugsFilter>
+    <!--
+      Allow a class to hold or return mutable objects. While this has obvious risks, it is much too
+      common a pattern to treat as a bug.
+    -->
+    <Match>
+        <Bug code="EI, EI2"/>
+    </Match>
+    <!-- Ignore "UrF: Unread public/protected field (URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD)" since it is mostly false positives  -->
+    <Match>
+        <Bug code="UrF" />
+    </Match>
+    <!-- Ignore "NM_SAME_SIMPLE_NAME_AS_SUPERCLASS: shadows the simple name of the superclass" -->
+    <!--<Match>-->
+        <!--<Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS" />-->
+    <!--</Match>-->
+    <!--&lt;!&ndash; Ignore "NM_SAME_SIMPLE_NAME_AS_INTERFACE: shadows the simple name of implemented interface" &ndash;&gt;-->
+    <!--<Match>-->
+        <!--<Bug pattern="NM_SAME_SIMPLE_NAME_AS_INTERFACE" />-->
+    <!--</Match>-->
+    <Match>
+        <Class name="~net\.dreamlu\.mica\.config\.SpringUtils.*" />
+        <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD" />
+    </Match>
+    <Match>
+        <Class name="~net\.dreamlu\.mica\.log\.LogPrintStream.*" />
+        <Bug pattern="DM_DEFAULT_ENCODING" />
+    </Match>
+
+</FindBugsFilter>

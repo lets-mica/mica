@@ -1,0 +1,107 @@
+apply plugin: 'signing'
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+jar {
+    into("META-INF/maven/$project.group/$project.name") {
+        from { generatePomFileForMavenJavaPublication }
+        rename ".*", "pom.xml"
+    }
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from sourceSets.main.allSource
+}
+
+javadoc {
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+        failOnError false
+        links "http://docs.oracle.com/javase/8/docs/api"
+    }
+}
+
+task javadocJar(type: Jar) {
+    archiveClassifier.set('javadoc')
+    from 'build/docs/javadoc'
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        pom.version = "${VERSION}"
+        pom.artifactId = "$project.name"
+        pom.groupId = "$project.group"
+
+        signing {
+            sign configurations.archives
+        }
+        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+        repository(url: pom.version.endsWith('SNAPSHOT')
+            ? REPOSITORY_URL_SNAPSHOT : REPOSITORY_URL_RELEASE) {
+            authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+        }
+
+        pom.project {
+            name = 'mica'
+            packaging = 'jar'
+            description = 'An enhanced toolkit of Spring cloud to simplify development.'
+            url = 'https://github.com/lets-mica/mica'
+
+            scm {
+                connection = 'scm:github.com/lets-mica/mica'
+                developerConnection = 'scm:git@github.com/lets-mica/mica'
+                url = 'https://github.com/lets-mica/mica'
+            }
+            licenses {
+                license {
+                    name = 'GNU LESSER GENERAL PUBLIC LICENSE'
+                    url = 'https://www.gnu.org/licenses/lgpl-3.0.en.html'
+                }
+            }
+            developers {
+                developer {
+                    name = 'Dreamlu'
+                    email = 'qq596392912@gmail.com'
+                }
+            }
+        }
+
+        pom.withXml {
+            def root = asNode()
+            root.dependencies.'*'.findAll {
+                def d = it
+                d.scope.text() == 'runtime' && project.configurations
+                    .findByName("implementation").allDependencies.find { dep ->
+                    dep.name == it.artifactId.text()
+                }.each() {
+                    d.scope*.value = 'compile'
+                    d.appendNode('optional', true)
+                }
+            }
+        }
+    }
+}
+
+def getRepositoryUsername() {
+    return hasProperty('NEXUS_OSS_USER_NAME') ? NEXUS_OSS_USER_NAME : ""
+}
+
+def getRepositoryPassword() {
+    return hasProperty('NEXUS_OSS_PASS_WORD') ? NEXUS_OSS_PASS_WORD : ""
+}

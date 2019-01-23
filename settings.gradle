@@ -1,0 +1,8 @@
+rootProject.name = "mica"
+include "mica-bom"
+include "mica-core"
+include "mica-launcher"
+include "mica-log4j2"
+include "mica-boot"
+include "mica-boot-test"
+include "mica-captcha"

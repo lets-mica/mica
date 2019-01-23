@@ -1,0 +1,4 @@
+dependencies {
+    implementation "org.springframework.boot:spring-boot"
+    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+}

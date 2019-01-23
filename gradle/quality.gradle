@@ -1,0 +1,21 @@
+// TODO L.cm spotbugs 目前不能输出 html，跟 lombok 插件有冲突
+apply plugin: "findbugs"
+
+findbugs {
+    toolVersion = '3.0.1'
+    findbugsTest.enabled = false
+    sourceSets = [sourceSets.main]
+    ignoreFailures = true
+    reportsDir = file("$project.buildDir/findbugsReports")
+    effort = "max"
+    showProgress = true
+    reportLevel = "high"
+    excludeFilter = file("$rootProject.projectDir/gradle/quality/findbugs/excludeFilter.xml")
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}

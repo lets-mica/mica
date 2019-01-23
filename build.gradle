@@ -1,0 +1,75 @@
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "http://repo.spring.io/plugins-release" }
+    }
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE"
+    }
+}
+
+ext {
+    javaVersion = JavaVersion.VERSION_1_8
+    springBootVersion = "2.1.2.RELEASE"
+    springCloudVersion = "Greenwich.RELEASE"
+    micaAutoVersion = "1.0.0"
+    protostuffVersion = "1.6.0"
+    disruptorVersion = "3.4.2"
+    swaggerVersion = "2.9.2"
+    lombokVersion = "1.18.4"
+    findbugsVersion = "3.0.2"
+    googleAutoServiceVersion = "1.0-rc4"
+}
+
+configure(subprojects) {
+    group = GROUPID
+    version = VERSION
+    apply plugin: "java-library"
+    apply plugin: "maven"
+    apply plugin: "io.spring.dependency-management"
+    apply from: "${rootProject.projectDir}/gradle/publish-maven.gradle"
+    apply from: "${rootProject.projectDir}/gradle/quality.gradle"
+}
+
+configure(subprojects - project(":mica-bom")) {
+    sourceCompatibility = "$javaVersion"
+    targetCompatibility = "$javaVersion"
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    }
+
+    repositories {
+        mavenLocal()
+        maven { url "https://repo.spring.io/libs-release" }
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
+        mavenCentral()
+    }
+
+    dependencies {
+        compileOnly "org.slf4j:slf4j-api"
+        compileOnly "javax.servlet:javax.servlet-api"
+        compileOnly "org.springframework:spring-web"
+        compileOnly "org.projectlombok:lombok:$lombokVersion"
+        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+        testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+        // swagger 暂时有问题 https://github.com/springfox/springfox/issues/2763
+//        annotationProcessor "org.springframework:spring-context-indexer"
+        // JSR-305 only used for non-required meta-annotations
+        compileOnly "com.google.code.findbugs:jsr305:$findbugsVersion"
+        testCompileOnly "com.google.code.findbugs:jsr305:$findbugsVersion"
+        testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+        testCompileOnly "org.springframework:spring-test"
+        testImplementation "junit:junit"
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+        }
+    }
+
+    compileJava.dependsOn(processResources)
+}

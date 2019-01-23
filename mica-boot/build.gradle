@@ -1,0 +1,12 @@
+dependencies {
+    api project(":mica-core")
+    api project(":mica-launcher")
+    api "org.springframework.boot:spring-boot-starter-aop"
+    compileOnly "org.springframework.cloud:spring-cloud-context"
+    implementation "io.springfox:springfox-swagger2:${swaggerVersion}"
+    implementation("org.springframework.boot:spring-boot-starter-web") {
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+    }
+    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+    testImplementation project(":mica-boot-test")
+}

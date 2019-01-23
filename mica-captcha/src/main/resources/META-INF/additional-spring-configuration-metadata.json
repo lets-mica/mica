@@ -1,0 +1,11 @@
+{
+  "properties": [
+    {
+      "name": "mica.captcha.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否开启验证码，默认：true.",
+      "defaultValue": "true"
+    }
+  ]
+}
+

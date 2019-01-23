@@ -1,0 +1,33 @@
+<Appenders>
+    <Console name="Console" target="SYSTEM_OUT" follow="true">
+        <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}"/>
+    </Console>
+    <RollingFile name="RollingFile"
+                 fileName="${logdir}/info.log"
+                 filePattern="${logdir}/info.%d{yyyy-MM-dd}.%i.log.gz">
+        <PatternLayout pattern="[%d] [%thread] ${LOG_LEVEL_PATTERN} ${appName} ${sys:PID} %c %m%n"/>
+        <Filters>
+            <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL" />
+            <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY" />
+        </Filters>
+        <Policies>
+            <SizeBasedTriggeringPolicy size="200MB" />
+            <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+        </Policies>
+        <DefaultRolloverStrategy max="30"/>
+    </RollingFile>
+    <!-- 只显示error级别的信息 -->
+    <RollingFile name="RollingFileError"
+                 fileName="${logdir}/error.log"
+                 filePattern="${logdir}/error.%d{yyyy-MM-dd}.%i.log.gz">
+        <PatternLayout pattern="[%d] [%thread] ${LOG_LEVEL_PATTERN} ${appName} ${sys:PID} %c %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}"/>
+        <Filters>
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Filters>
+        <Policies>
+            <SizeBasedTriggeringPolicy size="200MB"/>
+            <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+        </Policies>
+        <DefaultRolloverStrategy max="30"/>
+    </RollingFile>
+</Appenders>
