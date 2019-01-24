@@ -1,8 +1,4 @@
-configurations.archives.artifacts.clear()
-
-artifacts {
-    archives(file("mica-bom.txt"))
-}
+apply from: "${rootProject.projectDir}/gradle/publish-bom.gradle"
 
 dependencyManagement {
     dependencies {
@@ -12,26 +8,7 @@ dependencyManagement {
         dependency "net.dreamlu:mica-log4j2:${VERSION}"
         dependency "net.dreamlu:mica-boot:${VERSION}"
         dependency "net.dreamlu:mica-boot-test:${VERSION}"
-        dependency "net.dreamlu:mica-cloud:${VERSION}"
-        dependency "net.dreamlu:mica-error-catch-client:${VERSION}"
-        dependency "net.dreamlu:mica-cache-redis:${VERSION}"
-        dependency "net.dreamlu:mica-data-mongo:${VERSION}"
         dependency "net.dreamlu:mica-captcha:${VERSION}"
     }
 }
 
-install {
-    repositories.mavenInstaller {
-        pom.whenConfigured {
-            packaging = "pom"
-        }
-    }
-}
-
-uploadArchives {
-    repositories.mavenDeployer {
-        pom.whenConfigured {
-            packaging = "pom"
-        }
-    }
-}

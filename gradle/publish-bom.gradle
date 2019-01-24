@@ -1,0 +1,48 @@
+tasks.whenTaskAdded { task ->
+    if (task.name.contains('signMavenJavaPublication')) {
+        task.enabled = new File(project.property('signing.secretKeyRingFile') as String).isFile()
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            url = version.endsWith('SNAPSHOT') ? REPOSITORY_URL_SNAPSHOT : REPOSITORY_URL_RELEASE
+            credentials {
+                username getRepositoryUsername()
+                password getRepositoryPassword()
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            pom {
+                name = POM_NAME
+                description = POM_DESCRIPTION
+                url = GIT_URL
+
+                scm {
+                    connection = GIT_SCM_CONNECTION
+                    developerConnection = GIT_SCM_CONNECTION
+                    url = GIT_URL
+                }
+                licenses {
+                    license {
+                        name = LICENSE_NAME
+                        url = LICENSE_URL
+                    }
+                }
+                developers {
+                    developer {
+                        name = DEVELOPER_NAME
+                        email = DEVELOPER_EMAIL
+                    }
+                }
+            }
+        }
+    }
+
+    signing {
+        sign publishing.publications.mavenJava
+    }
+}

@@ -25,13 +25,14 @@ configure(subprojects) {
     group = GROUPID
     version = VERSION
     apply plugin: "java-library"
-    apply plugin: "maven"
+    apply plugin: 'signing'
+    apply plugin: 'maven-publish'
     apply plugin: "io.spring.dependency-management"
-    apply from: "${rootProject.projectDir}/gradle/publish-maven.gradle"
-    apply from: "${rootProject.projectDir}/gradle/quality.gradle"
 }
 
 configure(subprojects - project(":mica-bom")) {
+    apply from: "${rootProject.projectDir}/gradle/publish-jar.gradle"
+    apply from: "${rootProject.projectDir}/gradle/quality.gradle"
     sourceCompatibility = "$javaVersion"
     targetCompatibility = "$javaVersion"
     tasks.withType(JavaCompile) {
@@ -72,4 +73,12 @@ configure(subprojects - project(":mica-bom")) {
     }
 
     compileJava.dependsOn(processResources)
+}
+
+def getRepositoryUsername() {
+    return hasProperty('NEXUS_OSS_USER_NAME') ? NEXUS_OSS_USER_NAME : ""
+}
+
+def getRepositoryPassword() {
+    return hasProperty('NEXUS_OSS_PASS_WORD') ? NEXUS_OSS_PASS_WORD : ""
 }
