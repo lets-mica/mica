@@ -1,4 +1,6 @@
 ## mica（云母）
+[![Mica Maven](https://img.shields.io/maven-central/v/net.dreamlu/mica-bom/2.svg?style=flat-square)](https://mvnrepository.com/artifact/net.dreamlu/mica-bom)
+
 `Mica`，Spring Cloud 微服务开发核心包，基于 `Spring boot 2.x`，暂不支持 `webflux`。
 
 想要了解更多可加入【如梦技术】QQ群：`479710041`
