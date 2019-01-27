@@ -1,5 +1,6 @@
 package net.dreamlu.mica.core.utils;
 
+import lombok.experimental.UtilityClass;
 import org.springframework.util.Assert;
 
 import javax.crypto.Cipher;
@@ -16,9 +17,8 @@ import java.util.Arrays;
  *
  * @author L.cm
  */
+@UtilityClass
 public class AesUtils {
-
-	private AesUtils() {}
 
 	public static String genAesKey() {
 		return StringUtil.random(32);

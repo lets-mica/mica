@@ -17,6 +17,8 @@
 package net.dreamlu.mica.core.utils;
 
 
+import lombok.experimental.UtilityClass;
+
 import java.lang.management.ManagementFactory;
 import java.time.Duration;
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.List;
  *
  * @author L.cm
  */
+@UtilityClass
 public class RuntimeUtil {
 
 	/**
