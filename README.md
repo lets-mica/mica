@@ -9,7 +9,11 @@
 
 ## 模块划分
 ### mica-core
-- 常用工具包，基于 `Spring-core` 扩展增强
+- 常用工具包，基于 `Spring-core` 扩展增强，无其他依赖。
+- `$` 工具类快捷方法，不用再记忆到底有哪些工具类。
+- 统一消息返回体，封装得更加好用。
+- Jaskson Read Write HttpMessageConverter，分读写的消息转换器。
+- Spring 枚举转换器，规则同 Jackson。
 
 ### mica-launcher
 - 项目启动器
@@ -30,13 +34,18 @@
 - 方便 mica-boot 测试。
 
 ### mica-log4j2
-- mica log4j配置，异步日志。
+- mica log4j配置。
+- 异步日志。
+- 非开发环境将 System.out 和 err 写入 log。
 
 ### mica-captcha
 - 验证码，支持 `webflux` 和 `serlvet`。
 
 ## 文档
 文档编写中，敬请期待...
+
+## 待办
+- 对 Bean copy：Map -> Bean 逻辑优化。（预计RC2完成）
 
 ## 协议
 ![LGPL v3](docs/img/lgplv3-147x51.png) 
