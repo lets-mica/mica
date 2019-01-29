@@ -164,7 +164,7 @@ public abstract class BaseController {
 	 */
 	protected ResponseEntity<ResourceRegion> download(Resource resource, String fileName) throws IOException {
 		HttpServletRequest request = WebUtil.getRequest();
-		String header = request.getHeader("User-Agent");
+		String header = request.getHeader(HttpHeaders.USER_AGENT);
 		// 避免空指针
 		header = header == null ? StringPool.EMPTY : header.toUpperCase();
 		HttpStatus status;
@@ -176,7 +176,7 @@ public abstract class BaseController {
 		// 断点续传
 		long position = 0;
 		long count = resource.contentLength();
-		String range = request.getHeader("Range");
+		String range = request.getHeader(HttpHeaders.RANGE);
 		if (null != range) {
 			status = HttpStatus.PARTIAL_CONTENT;
 			String[] rangeRange = range.replace("bytes=", StringPool.EMPTY).split(StringPool.DASH);
@@ -194,7 +194,7 @@ public abstract class BaseController {
 		String disposition = "attachment;" +
 			"filename=\"" + encodeFileName + "\";" +
 			"filename*=utf-8''" + encodeFileName;
-		headers.set("Content-Disposition", disposition);
+		headers.set(HttpHeaders.CONTENT_DISPOSITION, disposition);
 		return new ResponseEntity<>(new ResourceRegion(resource, position, count), headers, status);
 	}
 }
