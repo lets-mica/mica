@@ -47,11 +47,13 @@ import java.util.concurrent.ConcurrentMap;
  */
 public abstract class MicaBeanCopier {
 	private static final Type CONVERTER = TypeUtils.parseType("org.springframework.cglib.core.Converter");
+	private static final Type CLASS_UTIL = TypeUtils.parseType("net.dreamlu.mica.core.utils.ClassUtil");
 	private static final Type BEAN_COPIER = TypeUtils.parseType(MicaBeanCopier.class.getName());
+	private static final Type BEAN_MAP = TypeUtils.parseType(Map.class.getName());
 	private static final Signature COPY = new Signature("copy", Type.VOID_TYPE, new Type[]{Constants.TYPE_OBJECT, Constants.TYPE_OBJECT, CONVERTER});
 	private static final Signature CONVERT = TypeUtils.parseSignature("Object convert(Object, Class, Object)");
-	private static final Type BEAN_MAP = TypeUtils.parseType(Map.class.getName());
 	private static final Signature BEAN_MAP_GET = TypeUtils.parseSignature("Object get(Object)");
+	private static final Signature IS_ASSIGNABLE_VALUE = TypeUtils.parseSignature("boolean isAssignableValue(Class, Object)");
 	/**
 	 * The map to store {@link MicaBeanCopier} of source type and class type for copy.
 	 */
@@ -331,30 +333,43 @@ public abstract class MicaBeanCopier {
 				e.store_local(var);
 				e.load_local(var);
 
+				// 先判断 不为null，然后做类型判断
 				Label l0 = e.make_label();
+				e.ifnull(l0);
+				EmitUtils.load_class(e, setterType);
+				e.load_local(var);
+				// ClassUtil.isAssignableValue(Integer.class, id)
+				e.invoke_static(CLASS_UTIL, IS_ASSIGNABLE_VALUE);
+				Label l1 = new Label();
+				// 返回值，判断 链式 bean
+				Class<?> returnType = writeMethod.getReturnType();
 				if (useConverter) {
-					e.ifnull(l0);
+					e.if_jump(Opcodes.IFEQ, l1);
+					e.load_local(targetLocal);
+					e.load_local(var);
+					e.unbox_or_zero(setterType);
+					e.invoke(write);
+					if (!returnType.equals(Void.TYPE)) {
+						e.pop();
+					}
+					e.goTo(l0);
+					e.visitLabel(l1);
 					e.load_local(targetLocal);
 					e.load_arg(2);
 					e.load_local(var);
-
 					EmitUtils.load_class(e, setterType);
-					// 更改成了属性名，之前是 set 方法名
 					e.push(propName);
 					e.invoke_interface(CONVERTER, CONVERT);
+					e.unbox_or_zero(setterType);
+					e.invoke(write);
 				} else {
-					// 注意：L.cm 2019.01.13，copy map时，是以 bean 的属性为主。
-					// map 读取到对应的属性为null没有意义（有可能 map 中没有该属性），允许空则会 埋坑，故删除。
-					// 只做 instanceof 判断，它会直接忽略掉 null 值。
-					e.visitTypeInsn(Opcodes.INSTANCEOF, setterType.toString());
-					e.visitJumpInsn(Opcodes.IFEQ, l0);
+					e.if_jump(Opcodes.IFEQ, l0);
 					e.load_local(targetLocal);
 					e.load_local(var);
+					e.unbox_or_zero(setterType);
+					e.invoke(write);
 				}
-				e.unbox_or_zero(setterType);
-				e.invoke(write);
 				// 返回值，判断 链式 bean
-				Class<?> returnType = writeMethod.getReturnType();
 				if (!returnType.equals(Void.TYPE)) {
 					e.pop();
 				}
