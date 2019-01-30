@@ -27,9 +27,17 @@ public class MapToBeanTest {
 		map.put("six", "女");
 		map.put("gender", "男");
 		map.put("xx", "xx");
+		map.put("xInt", 100);
+		map.put("xxInt", 101);
+		map.put("xLong", 10000L);
 
 		User1 user1 = BeanUtil.copy(map, User1.class);
 		System.out.println(user1);
+		System.out.println(BeanUtil.toMap(user1));
+
+		User1 userx = new User1();
+		BeanUtil.copy(user1, userx);
+		System.out.println(userx);
 
 		User1 user2 = BeanUtil.copyWithConvert(map, User1.class);
 		System.out.println(user2);
@@ -39,5 +47,8 @@ public class MapToBeanTest {
 
 		User user4 = BeanUtil.copyWithConvert(map, User.class);
 		System.out.println(user4);
+
+		User user5 = BeanUtil.copy(user2, User.class);
+		System.out.println(user5);
 	}
 }

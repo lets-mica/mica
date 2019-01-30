@@ -46,6 +46,13 @@
 ## 文档
 文档编写中，敬请期待...
 
+## 已知问题
+lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861
+
+对于 xX 类属性名，第一个小写，第二个大写的 bean 属性名，Map -> Bean 或 Bean -> Map 存在问题。
+
+不打算做兼容，待 lombok 新版修复。
+
 ## 协议
 ![LGPL v3](docs/img/lgplv3-147x51.png) 
 

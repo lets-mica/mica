@@ -18,4 +18,7 @@ public class User1 {
 	@CopyProperty(ignore = true)
 	private Integer xx;
 	private List<String> data;
+	private int xInt;
+	private Integer xxInt;
+	private long xLong;
 }
