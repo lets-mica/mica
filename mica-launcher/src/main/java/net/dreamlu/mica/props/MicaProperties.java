@@ -19,6 +19,7 @@ package net.dreamlu.mica.props;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.EnvironmentCapable;
@@ -35,6 +36,7 @@ import java.util.Objects;
  *
  * @author L.cm
  */
+@RefreshScope
 @ConfigurationProperties("mica")
 public class MicaProperties implements EnvironmentAware, EnvironmentCapable {
 	@Nullable
@@ -47,7 +49,7 @@ public class MicaProperties implements EnvironmentAware, EnvironmentCapable {
 	@Setter
 	private Boolean isLocal = Boolean.FALSE;
 	/**
-	 * 装载自定义配置pigx.prop.xxx
+	 * 装载自定义配置mica.prop.xxx
 	 */
 	@Getter
 	private final Map<String, String> prop = new HashMap<>();
