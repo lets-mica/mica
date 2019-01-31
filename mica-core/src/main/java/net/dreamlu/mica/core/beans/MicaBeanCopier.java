@@ -196,7 +196,6 @@ public abstract class MicaBeanCopier {
 				Class<?> getterPropertyType = getter.getPropertyType();
 				Class<?> setterPropertyType = setter.getPropertyType();
 
-
 				// L.cm 2019.01.12 优化逻辑，先判断类型，类型一致直接 set，不同再判断 是否 类型转换
 				// nonNull Label
 				Label l0 = e.make_label();
@@ -210,6 +209,7 @@ public abstract class MicaBeanCopier {
 					boolean setterIsPrimitive = setterPropertyType.isPrimitive();
 
 					if (nonNull) {
+						// 需要落栈，强制装箱
 						e.box(returnType);
 						Local var = e.make_local();
 						e.store_local(var);
@@ -218,12 +218,15 @@ public abstract class MicaBeanCopier {
 						e.ifnull(l0);
 						e.load_local(targetLocal);
 						e.load_local(var);
+						// 需要落栈，强制拆箱
 						e.unbox_or_zero(setterType);
 					} else {
-						if ((getterIsPrimitive && !setterIsPrimitive)) {
+						// 如果 get 为原始类型，需要装箱
+						if (getterIsPrimitive && !setterIsPrimitive) {
 							e.box(returnType);
 						}
-						if ((!getterIsPrimitive && setterIsPrimitive)) {
+						// 如果 set 为原始类型，需要拆箱
+						if (!getterIsPrimitive && setterIsPrimitive) {
 							e.unbox_or_zero(setterType);
 						}
 					}
