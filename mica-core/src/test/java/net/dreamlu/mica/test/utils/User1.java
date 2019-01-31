@@ -10,6 +10,10 @@ import java.util.List;
 @Accessors(chain = true)
 public class User1 {
 	private String id;
+	private Integer id1;
+	private Integer[] ids;
+	private int[] idss;
+	private long[] idx;
 	private Integer idInt;
 	private String name;
 	private String photo;

@@ -193,17 +193,24 @@ public abstract class MicaBeanCopier {
 				MethodInfo write = ReflectUtils.getMethodInfo(writeMethod);
 				Type returnType = read.getSignature().getReturnType();
 				Type setterType = write.getSignature().getArgumentTypes()[0];
+				Class<?> getterPropertyType = getter.getPropertyType();
+				Class<?> setterPropertyType = setter.getPropertyType();
+
 
 				// L.cm 2019.01.12 优化逻辑，先判断类型，类型一致直接 set，不同再判断 是否 类型转换
 				// nonNull Label
 				Label l0 = e.make_label();
-				if (compatible(getter, setter)) {
+				// 判断类型是否一致，包括 包装类型
+				if (ClassUtil.isAssignable(getterPropertyType, setterPropertyType)) {
 					// 2018.12.27 by L.cm 支持链式 bean
 					e.load_local(targetLocal);
 					e.load_local(sourceLocal);
 					e.invoke(read);
-					e.box(returnType);
+					boolean getterIsPrimitive = getterPropertyType.isPrimitive();
+					boolean setterIsPrimitive = setterPropertyType.isPrimitive();
+
 					if (nonNull) {
+						e.box(returnType);
 						Local var = e.make_local();
 						e.store_local(var);
 						e.load_local(var);
@@ -211,8 +218,16 @@ public abstract class MicaBeanCopier {
 						e.ifnull(l0);
 						e.load_local(targetLocal);
 						e.load_local(var);
+						e.unbox_or_zero(setterType);
+					} else {
+						if ((getterIsPrimitive && !setterIsPrimitive)) {
+							e.box(returnType);
+						}
+						if ((!getterIsPrimitive && setterIsPrimitive)) {
+							e.unbox_or_zero(setterType);
+						}
 					}
-					e.unbox_or_zero(setterType);
+
 					// 构造 set 方法
 					invokeWrite(e, write, writeMethod, nonNull, l0);
 				} else if (useConverter) {
@@ -245,13 +260,6 @@ public abstract class MicaBeanCopier {
 			e.return_value();
 			e.end_method();
 			ce.end_class();
-		}
-
-		private static boolean compatible(PropertyDescriptor getter, PropertyDescriptor setter) {
-			Class<?> setterPropertyType = setter.getPropertyType();
-			Class<?> getterPropertyType = getter.getPropertyType();
-			// 使用 spring 的工具类 优化
-			return ClassUtil.isAssignable(setterPropertyType, getterPropertyType);
 		}
 
 		private static void invokeWrite(CodeEmitter e, MethodInfo write, Method writeMethod, boolean nonNull, Label l0) {

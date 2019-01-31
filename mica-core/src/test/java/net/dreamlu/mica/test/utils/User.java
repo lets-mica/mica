@@ -7,6 +7,10 @@ import net.dreamlu.mica.core.beans.CopyProperty;
 @Data
 public class User {
 	private Integer id;
+	private int id1;
+	private int[] ids;
+	private int[] idss;
+	private int[] idx;
 	private String name;
 	private String photo;
 	private String xx;
