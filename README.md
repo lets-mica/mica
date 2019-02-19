@@ -44,7 +44,7 @@
 - 验证码，支持 `webflux` 和 `serlvet`。
 
 ## 文档
-文档编写中，敬请期待...
+文档地址：[https://www.dreamlu.net/#/doc/docs](https://www.dreamlu.net/#/doc/docs)
 
 ## 已知问题
 lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861
