@@ -5,6 +5,8 @@
 
 想要了解更多可加入【如梦技术】QQ群：`479710041`
 
+`示例项目：`https://github.com/lets-mica/mica-example
+
 ![犬夜叉-云母](docs/img/mica-001.jpeg)
 
 ## 模块划分
