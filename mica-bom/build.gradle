@@ -9,6 +9,10 @@ dependencyManagement {
         dependency "net.dreamlu:mica-boot:${VERSION}"
         dependency "net.dreamlu:mica-boot-test:${VERSION}"
         dependency "net.dreamlu:mica-captcha:${VERSION}"
+        dependency "io.springfox:springfox-swagger2:${swaggerVersion}"
+        dependency "io.springfox:springfox-swagger-ui:${swaggerVersion}"
+        dependency "io.springfox:springfox-bean-validators:${swaggerVersion}"
+        dependency "org.projectlombok:lombok:${lombokVersion}"
     }
 }
 
