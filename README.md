@@ -68,9 +68,9 @@ lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1
 `注意`：若禁止条款被发现有权追讨19999的授权费。
 
 ## 授权用户
-- `pigx` 宇宙最强微服务（架构师必备）：https://pig4cloud.com/#/
+- `pigx` 宇宙最强微服务（架构师必备）：https://pig4cloud.com
 
-- `SpringBlade` 完整的线上解决方案（系统生产必备）：https://gitee.com/smallc/SpringBlade
+- `bladex` 完整的线上解决方案（系统生产必备）：https://bladex.vip
 
 ## mica-pro
 对微服务的扩展和增强，欢迎加入`如梦技术 VIP`一起探讨：https://git.dreamlu.net
