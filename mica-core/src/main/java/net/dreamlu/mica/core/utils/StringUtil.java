@@ -24,7 +24,6 @@ import org.springframework.web.util.HtmlUtils;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
@@ -309,13 +308,31 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
-	 * 生成uuid
+	 * 生成uuid，采用 jdk 9 的形式，优化性能
 	 *
 	 * @return UUID
 	 */
 	public static String randomUUID() {
 		ThreadLocalRandom random = ThreadLocalRandom.current();
-		return new UUID(random.nextLong(), random.nextLong()).toString().replace(StringPool.DASH, StringPool.EMPTY);
+		long lsb = random.nextLong();
+		long msb = random.nextLong();
+		byte[] buf = new byte[32];
+		formatUnsignedLong0(lsb, buf, 20, 12);
+		formatUnsignedLong0(lsb >>> 48, buf, 16, 4);
+		formatUnsignedLong0(msb, buf, 12, 4);
+		formatUnsignedLong0(msb >>> 16, buf, 8,  4);
+		formatUnsignedLong0(msb >>> 32, buf, 0,  8);
+		return new String(buf);
+	}
+
+	private static void formatUnsignedLong0(long val, byte[] buf, int offset, int len) {
+		int charPos = offset + len;
+		int radix = 1 << 4;
+		int mask = radix - 1;
+		do {
+			buf[--charPos] = NumberUtil.DIGITS[((int) val) & mask];
+			val >>>= 4;
+		} while (charPos > offset);
 	}
 
 	/**

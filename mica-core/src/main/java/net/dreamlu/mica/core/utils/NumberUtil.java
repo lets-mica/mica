@@ -124,7 +124,7 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 	/**
 	 * All possible chars for representing a number as a String
 	 */
-	private final static char[] DIGITS = {
+	final static byte[] DIGITS = {
 		'0' , '1' , '2' , '3' , '4' , '5' ,
 		'6' , '7' , '8' , '9' , 'a' , 'b' ,
 		'c' , 'd' , 'e' , 'f' , 'g' , 'h' ,
@@ -145,7 +145,7 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 	 */
 	public static String to62String(long i) {
 		int radix = DIGITS.length;
-		char[] buf = new char[65];
+		byte[] buf = new byte[65];
 		int charPos = 64;
 		i = -i;
 		while (i <= -radix) {
@@ -153,7 +153,6 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 			i = i / radix;
 		}
 		buf[charPos] = DIGITS[(int)(-i)];
-
 		return new String(buf, charPos, (65 - charPos));
 	}
 
