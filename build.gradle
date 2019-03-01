@@ -13,6 +13,7 @@ ext {
     springBootVersion = "2.1.3.RELEASE"
     springCloudVersion = "Greenwich.RELEASE"
     micaAutoVersion = "1.0.2"
+    micaProVersion = "0.0.1-RC1"
     protostuffVersion = "1.6.0"
     disruptorVersion = "3.4.2"
     swaggerVersion = "2.9.2"

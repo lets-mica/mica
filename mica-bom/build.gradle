@@ -2,6 +2,7 @@ apply from: "${rootProject.projectDir}/gradle/publish-bom.gradle"
 
 dependencyManagement {
     dependencies {
+        // mica
         dependency "net.dreamlu:mica-auto:${micaAutoVersion}"
         dependency "net.dreamlu:mica-core:${VERSION}"
         dependency "net.dreamlu:mica-launcher:${VERSION}"
@@ -9,10 +10,15 @@ dependencyManagement {
         dependency "net.dreamlu:mica-boot:${VERSION}"
         dependency "net.dreamlu:mica-boot-test:${VERSION}"
         dependency "net.dreamlu:mica-captcha:${VERSION}"
+        // mica-pro
+        dependency "net.dreamlu:mica-cloud:${micaProVersion}"
+        dependency "net.dreamlu:mica-error-catch-client:${micaProVersion}"
+        dependency "net.dreamlu:mica-cache-redis:${micaProVersion}"
+        dependency "net.dreamlu:mica-data-mongo:${micaProVersion}"
+        // commons
         dependency "io.springfox:springfox-swagger2:${swaggerVersion}"
         dependency "io.springfox:springfox-swagger-ui:${swaggerVersion}"
         dependency "io.springfox:springfox-bean-validators:${swaggerVersion}"
         dependency "org.projectlombok:lombok:${lombokVersion}"
     }
 }
-
