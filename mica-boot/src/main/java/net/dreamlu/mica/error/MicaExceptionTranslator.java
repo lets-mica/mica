@@ -21,6 +21,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.Servlet;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 
 /**
  * mica 未知异常转译和发送，方便监听，对未知异常统一处理。Order 排序优先级低
@@ -66,6 +67,7 @@ public class MicaExceptionTranslator {
 		event.setStackTrace(Exceptions.getStackTraceAsString(error));
 		event.setExceptionName(error.getClass().getName());
 		event.setMessage(error.getMessage());
+		event.setCreatedAt(LocalDateTime.now());
 		StackTraceElement[] elements = error.getStackTrace();
 		if (ObjectUtil.isNotEmpty(elements)) {
 			StackTraceElement element = elements[0];

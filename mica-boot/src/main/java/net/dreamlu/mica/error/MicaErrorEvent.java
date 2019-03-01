@@ -20,6 +20,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
 
+import java.time.LocalDateTime;
+
 /**
  * mica 服务 异常 事件
  *
@@ -83,4 +85,9 @@ public class MicaErrorEvent {
 	 */
 	@Nullable
 	private Integer lineNumber;
+	/**
+	 * 异常时间
+	 */
+	@Nullable
+	private LocalDateTime createdAt;
 }
