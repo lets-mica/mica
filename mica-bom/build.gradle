@@ -11,10 +11,10 @@ dependencyManagement {
         dependency "net.dreamlu:mica-boot-test:${VERSION}"
         dependency "net.dreamlu:mica-captcha:${VERSION}"
         // mica-pro
-        dependency "net.dreamlu:mica-cloud:${micaProVersion}"
-        dependency "net.dreamlu:mica-error-catch-client:${micaProVersion}"
-        dependency "net.dreamlu:mica-cache-redis:${micaProVersion}"
-        dependency "net.dreamlu:mica-data-mongo:${micaProVersion}"
+        dependency "net.dreamlu:mica-cloud:${VERSION}"
+        dependency "net.dreamlu:mica-error-catch-client:${VERSION}"
+        dependency "net.dreamlu:mica-cache-redis:${VERSION}"
+        dependency "net.dreamlu:mica-data-mongo:${VERSION}"
         // commons
         dependency "io.springfox:springfox-swagger2:${swaggerVersion}"
         dependency "io.springfox:springfox-swagger-ui:${swaggerVersion}"
