@@ -18,7 +18,7 @@ import java.util.Arrays;
  * @author L.cm
  */
 @UtilityClass
-public class AesUtils {
+public class AesUtil {
 
 	public static String genAesKey() {
 		return StringUtil.random(32);

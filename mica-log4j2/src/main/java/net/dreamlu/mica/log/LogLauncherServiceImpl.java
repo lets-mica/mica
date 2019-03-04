@@ -19,6 +19,7 @@ package net.dreamlu.mica.log;
 import com.google.auto.service.AutoService;
 import net.dreamlu.mica.launcher.LauncherService;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.core.env.Environment;
 
 /**
  * 日志启动器
@@ -29,7 +30,12 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 public class LogLauncherServiceImpl implements LauncherService {
 
 	@Override
-	public void launcher(SpringApplicationBuilder builder, String appName, String profile, boolean isLocalDev) {
+	public void launcher(SpringApplicationBuilder builder, Environment env, String appName, String profile, boolean isLocalDev) {
+		// 读取系统配置的日志目录，默认为项目下 logs
+		String logBase = env.getProperty("LOGGING_PATH", "logs");
+		// 用于 spring boot admin 中展示日志
+		System.setProperty("logging.file", String.format("%s/%s/info.log", logBase, appName));
+		// 配置区分环境的日志
 		System.setProperty("logging.config", String.format("classpath:log/log4j2_%s.xml", profile));
 		// RocketMQ-Client 4.2.0 Log4j2 配置文件冲突问题解决：https://www.jianshu.com/p/b30ae6dd3811
 		System.setProperty("rocketmq.client.log.loadconfig", "false");

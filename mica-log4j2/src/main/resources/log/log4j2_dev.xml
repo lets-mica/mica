@@ -18,7 +18,7 @@
 <configuration status="off" xmlns:xi="http://www.w3.org/2001/XInclude">
     <Properties>
         <Property name="appName">${sys:spring.application.name}</Property>
-        <Property name="logdir">${env:LOG_BASE:-logs}/${appName}</Property>
+        <Property name="logdir">${env:LOGGING_PATH:-logs}/${appName}</Property>
         <Property name="PID">????</Property>
         <Property name="LOG_LEVEL_PATTERN">%5p</Property>
         <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>

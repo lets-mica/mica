@@ -60,13 +60,13 @@ public class MicaApplication {
 	public static SpringApplicationBuilder createSpringApplicationBuilder(String appName, Class source, String... args) {
 		Assert.hasText(appName, "args appName is blank");
 		// 读取环境变量，使用spring boot的规则
-		ConfigurableEnvironment environment = new StandardEnvironment();
-		MutablePropertySources propertySources = environment.getPropertySources();
+		ConfigurableEnvironment env = new StandardEnvironment();
+		MutablePropertySources propertySources = env.getPropertySources();
 		propertySources.addFirst(new SimpleCommandLinePropertySource(args));
-		propertySources.addLast(new MapPropertySource(StandardEnvironment.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME, environment.getSystemProperties()));
-		propertySources.addLast(new SystemEnvironmentPropertySource(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, environment.getSystemEnvironment()));
+		propertySources.addLast(new MapPropertySource(StandardEnvironment.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME, env.getSystemProperties()));
+		propertySources.addLast(new SystemEnvironmentPropertySource(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, env.getSystemEnvironment()));
 		// 获取配置的环境变量
-		String[] activeProfiles = environment.getActiveProfiles();
+		String[] activeProfiles = env.getActiveProfiles();
 		// 判断环境:dev、test、ontest、prod
 		List<String> profiles = Arrays.asList(activeProfiles);
 		// 预设的环境
@@ -103,7 +103,7 @@ public class MicaApplication {
 		// 加载自定义组件
 		ServiceLoader<LauncherService> loader = ServiceLoader.load(LauncherService.class);
 		// 启动组件
-		loader.forEach(launcherService -> launcherService.launcher(builder, appName, profile, isLocalDev));
+		loader.forEach(launcherService -> launcherService.launcher(builder, env, appName, profile, isLocalDev));
 		return builder;
 	}
 

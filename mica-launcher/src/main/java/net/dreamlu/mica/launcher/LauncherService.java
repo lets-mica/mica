@@ -17,6 +17,7 @@
 package net.dreamlu.mica.launcher;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.core.env.Environment;
 
 /**
  * launcher 扩展 用于一些组件发现
@@ -28,9 +29,10 @@ public interface LauncherService {
 	/**
 	 * 启动时 处理 SpringApplicationBuilder
 	 * @param builder SpringApplicationBuilder
+	 * @param env 系统变量 Environment
 	 * @param appName 服务名
 	 * @param profile 环境变量
 	 * @param isLocalDev 是否本地开发
 	 */
-	void launcher(SpringApplicationBuilder builder, String appName, String profile, boolean isLocalDev);
+	void launcher(SpringApplicationBuilder builder, Environment env, String appName, String profile, boolean isLocalDev);
 }

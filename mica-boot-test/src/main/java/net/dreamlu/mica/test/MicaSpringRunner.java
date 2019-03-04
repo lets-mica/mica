@@ -21,6 +21,8 @@ import net.dreamlu.mica.launcher.MicaApplication;
 import org.junit.runners.model.InitializationError;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.ObjectUtils;
 
@@ -63,8 +65,9 @@ public class MicaSpringRunner extends SpringJUnit4ClassRunner {
 		}
 		ServiceLoader<LauncherService> loader = ServiceLoader.load(LauncherService.class);
 		SpringApplicationBuilder builder = new SpringApplicationBuilder(clazz);
+		Environment env = new StandardEnvironment();
 		// 启动组件
-		loader.forEach(launcherService -> launcherService.launcher(builder, appName, profile, isLocalDev));
+		loader.forEach(launcherService -> launcherService.launcher(builder, env, appName, profile, isLocalDev));
 		// 反射出 builder 中的 props，兼容用户扩展
 		Field field = SpringApplicationBuilder.class.getDeclaredField("defaultProperties");
 		field.setAccessible(true);
