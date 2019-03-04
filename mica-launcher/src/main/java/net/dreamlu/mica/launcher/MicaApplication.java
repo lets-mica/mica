@@ -58,7 +58,7 @@ public class MicaApplication {
 	 * @return an application context created from the current state
 	 */
 	public static SpringApplicationBuilder createSpringApplicationBuilder(String appName, Class source, String... args) {
-		Assert.hasText(appName, "args appName is black");
+		Assert.hasText(appName, "args appName is blank");
 		// 读取环境变量，使用spring boot的规则
 		ConfigurableEnvironment environment = new StandardEnvironment();
 		MutablePropertySources propertySources = environment.getPropertySources();
