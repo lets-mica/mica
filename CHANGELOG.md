@@ -2,6 +2,7 @@
 
 ## 发行版本
 ## [0.0.1-RC3] - 2019-03-05
+- :zap: 优化 base64 验证码。可完美结合 mica-pro redis cache name # 号分割超时。
 - :loud_sound: 优化`请求日志`，避免并发下顺序错乱。
 - :pushpin: 升级 `mica-auto`。
 - :zap: 优化UUID，采用 java9的方式，提高性能。
