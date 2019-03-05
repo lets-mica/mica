@@ -110,7 +110,7 @@ public class BeanUtilTest {
 		user1.setIdx(new long[]{1,2,3,4,5,6});
 		user1.setName("张三");
 
-//		BeanUtil.toMap(user1);
+		BeanUtil.toMap(user1);
 
 		User user = new User();
 		user.setXx("123123");
@@ -128,46 +128,46 @@ public class BeanUtilTest {
 		BeanUtil.copyNonNull(user1, userxx);
 		System.out.println(userxx);
 
-//		User userx = BeanUtil.copyWithConvert(user1, User.class);
-//		System.out.println(userx);
-//
-//		UserChain userChain = BeanUtil.copy(user, UserChain.class);
-//		System.out.println(userChain);
-//
-//		Map<String, Object> data = new HashMap<>();
-//		data.put("id", 1);
-//		UserChain userChainx = BeanUtil.copy(data, UserChain.class);
-//		System.out.println(userChainx);
-//
-//		Map<String, Object> data1 = new HashMap<>();
-//		data1.put("id", 1);
-//		data1.put("name", 1);
-//		data1.put("photo", 1);
-//		data1.put("xx", 1);
-//		UserChain userChainx1 = BeanUtil.copyWithConvert(data1, UserChain.class);
-//		System.out.println(userChainx1);
-//
-//		Map<String, Object> data2 = new HashMap<>();
-//		data2.put("id", 1);
-//		data2.put("name", "1");
-//		data2.put("photo", "1");
-//		data2.put("xx", "1");
-//		data2.put("a", new int[]{1,2,3});
-//		data2.put("allowNull", null);
-//
-//		UserChain userChainxxxx = BeanUtil.toBean(data2, UserChain.class);
-//		System.out.println(userChainxxxx);
-//		Map<String, Object> dataxxxx = BeanUtil.toMap(userChainxxxx);
-//		System.out.println(dataxxxx);
-//
-//		UserChain userChainNull = new UserChain();
-//		userChainNull.setAllowNull(10000);
-//		BeanUtil.copyNonNull(data2, userChainNull);
-//		System.out.println(userChainNull);
-//
-//		UserChain userChainNonNull = new UserChain();
-//		userChainNonNull.setAllowNull(10000);
-//		BeanUtil.copy(data2, userChainNonNull);
-//		System.out.println(userChainNonNull);
+		User userxxx = BeanUtil.copyWithConvert(user1, User.class);
+		System.out.println(userxxx);
+
+		UserChain userChain = BeanUtil.copy(user, UserChain.class);
+		System.out.println(userChain);
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("id", 1);
+		UserChain userChainx = BeanUtil.copy(data, UserChain.class);
+		System.out.println(userChainx);
+
+		Map<String, Object> data1 = new HashMap<>();
+		data1.put("id", 1);
+		data1.put("name", 1);
+		data1.put("photo", 1);
+		data1.put("xx", 1);
+		UserChain userChainx1 = BeanUtil.copyWithConvert(data1, UserChain.class);
+		System.out.println(userChainx1);
+
+		Map<String, Object> data2 = new HashMap<>();
+		data2.put("id", 1);
+		data2.put("name", "1");
+		data2.put("photo", "1");
+		data2.put("xx", "1");
+		data2.put("a", new int[]{1,2,3});
+		data2.put("allowNull", null);
+
+		UserChain userChainxxxx = BeanUtil.toBean(data2, UserChain.class);
+		System.out.println(userChainxxxx);
+		Map<String, Object> dataxxxx = BeanUtil.toMap(userChainxxxx);
+		System.out.println(dataxxxx);
+
+		UserChain userChainNull = new UserChain();
+		userChainNull.setAllowNull(10000);
+		BeanUtil.copyNonNull(data2, userChainNull);
+		System.out.println(userChainNull);
+
+		UserChain userChainNonNull = new UserChain();
+		userChainNonNull.setAllowNull(10000);
+		BeanUtil.copy(data2, userChainNonNull);
+		System.out.println(userChainNonNull);
 	}
 }

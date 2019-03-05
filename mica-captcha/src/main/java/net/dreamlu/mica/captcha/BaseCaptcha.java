@@ -16,15 +16,22 @@
 
 package net.dreamlu.mica.captcha;
 
+import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.core.utils.Base64Util;
+import net.dreamlu.mica.core.utils.StringUtil;
 import org.springframework.cache.Cache;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * BaseCaptcha
  *
  * @author L.cm
  */
+@Slf4j
 public abstract class BaseCaptcha {
 	protected static final String DEFAULT_COOKIE_NAME = "mica-captcha";
 	protected static final String DEFAULT_CHACHE_NAME = "micaCaptchaCache";
@@ -59,6 +66,10 @@ public abstract class BaseCaptcha {
 		this.cookieName = cookieName;
 	}
 
+	/**
+	 * 图片输出的头，避免验证码被缓存
+	 * @return HttpHeaders
+	 */
 	protected HttpHeaders getResponseHeaders() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setPragma("no-cache");
@@ -68,4 +79,46 @@ public abstract class BaseCaptcha {
 		return headers;
 	}
 
+	/**
+	 * 生成验证码-Base64
+	 *
+	 * @return {String}
+	 */
+	public ResponseEntity<Captcha> generateBase64() {
+		ThreadLocalRandom random = ThreadLocalRandom.current();
+		// 转成大写重要
+		String captchaCode = CaptchaUtils.generateCode(random).toUpperCase();
+		// 生成验证码
+		byte[] imgBytes = CaptchaUtils.generate(random, captchaCode);
+		String base64 = Base64Util.encodeToString(imgBytes);
+		String uuid = StringUtil.randomUUID();
+		// 保存验证码缓存
+		captchaCache.put(uuid, captchaCode);
+		Captcha captcha = new Captcha(uuid, base64);
+		return ResponseEntity.ok(captcha);
+	}
+
+	/**
+	 * 校验 Base64 验证码
+	 * @param uuid uuid
+	 * @param userInputCaptcha 用户输入的验证码
+	 * @return 是否成功
+	 */
+	public boolean validateBase64(String uuid, String userInputCaptcha) {
+		if (log.isInfoEnabled()) {
+			log.info("validate captcha userInputCaptcha is {}", userInputCaptcha);
+		}
+		String captchaCode = captchaCache.get(uuid, String.class);
+		if (StringUtil.isBlank(captchaCode)) {
+			return false;
+		}
+		// 转成大写重要
+		userInputCaptcha = userInputCaptcha.toUpperCase();
+		boolean result = userInputCaptcha.equals(captchaCode);
+		if (result) {
+			// 校验成功删除缓存
+			captchaCache.evict(uuid);
+		}
+		return result;
+	}
 }

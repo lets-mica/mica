@@ -19,7 +19,6 @@ package net.dreamlu.mica.captcha.servlet;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.captcha.BaseCaptcha;
 import net.dreamlu.mica.captcha.CaptchaUtils;
-import net.dreamlu.mica.core.utils.Base64Util;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.core.utils.WebUtil;
 import org.springframework.cache.Cache;
@@ -53,16 +52,6 @@ public class MicaCaptchaServlet extends BaseCaptcha {
 		byte[] bytes = generateByteArray(response);
 		Resource resource = new ByteArrayResource(bytes);
 		return new ResponseEntity<>(resource, this.getResponseHeaders(), HttpStatus.OK );
-	}
-
-	/**
-	 * 生成验证码
-	 * @param response HttpServletResponse
-	 * @return {String}
-	 */
-	public String generateBase64(HttpServletResponse response) {
-		// 生成验证码
-		return Base64Util.encodeToString(generateByteArray(response));
 	}
 
 	/**
@@ -115,6 +104,7 @@ public class MicaCaptchaServlet extends BaseCaptcha {
 		userInputCaptcha = userInputCaptcha.toUpperCase();
 		boolean result = userInputCaptcha.equals(captchaCode);
 		if (result) {
+			// 校验成功删除缓存和cookie
 			captchaCache.evict(cookieValue);
 			WebUtil.removeCookie(response, cookieName);
 		}

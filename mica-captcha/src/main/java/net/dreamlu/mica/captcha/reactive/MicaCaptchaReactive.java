@@ -19,7 +19,6 @@ package net.dreamlu.mica.captcha.reactive;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.captcha.BaseCaptcha;
 import net.dreamlu.mica.captcha.CaptchaUtils;
-import net.dreamlu.mica.core.utils.Base64Util;
 import net.dreamlu.mica.core.utils.StringPool;
 import net.dreamlu.mica.core.utils.StringUtil;
 import org.springframework.cache.Cache;
@@ -59,17 +58,6 @@ public class MicaCaptchaReactive extends BaseCaptcha {
 		byte[] bytes = generateByteArray(exchange);
 		Resource resource = new ByteArrayResource(bytes);
 		return new ResponseEntity<>(resource, this.getResponseHeaders(), HttpStatus.OK);
-	}
-
-	/**
-	 * 生成验证码
-	 *
-	 * @param exchange ServerWebExchange
-	 * @return {String}
-	 */
-	public String generateBase64(ServerWebExchange exchange) {
-		// 生成验证码
-		return Base64Util.encodeToString(generateByteArray(exchange));
 	}
 
 	/**
@@ -121,7 +109,7 @@ public class MicaCaptchaReactive extends BaseCaptcha {
 		String cookieValue = Optional.of(request.getCookies())
 			.map(x -> x.getFirst(cookieName))
 			.map(HttpCookie::getValue)
-			.orElseGet(null);
+			.orElse(null);
 		if (StringUtil.isBlank(cookieValue)) {
 			return false;
 		}
@@ -133,6 +121,7 @@ public class MicaCaptchaReactive extends BaseCaptcha {
 		userInputCaptcha = userInputCaptcha.toUpperCase();
 		boolean result = userInputCaptcha.equals(captchaCode);
 		if (result) {
+			// 校验成功删除缓存和cookie
 			captchaCache.evict(cookieValue);
 			ResponseCookie cookie = ResponseCookie.from(cookieName, StringPool.EMPTY)
 				.maxAge(0)
