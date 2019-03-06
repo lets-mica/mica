@@ -12,7 +12,7 @@
 ## 模块划分
 ### mica-core
 - 常用工具包，基于 `Spring-core` 扩展增强，无其他依赖。
-- 增强 cglib，更加完美的 Bean copy。
+- 增强 cglib Bean copy，高性能（接近直接get set），支持链式 bean，支持类型转换 。
 - `$` 工具类快捷方法，不用再记忆到底有哪些工具类。
 - 统一消息返回体，封装得更加好用。
 - Jaskson Read Write HttpMessageConverter，分读写的消息转换器。
@@ -25,21 +25,21 @@
 - spi 扩展
 
 ### mica-boot
-- 异步配置
-- 异常处理
-- swagger配置
-- jackson配置
-- 文件上传配置
-- 文件下载，断点续传
-- 请求日志
-- `url` 版本号处理
+- 异步配置。
+- 异常处理，未知异常发送 Event 事件，方便监听收集。
+- swagger自动化配置，加入jar包即可。
+- jackson配置。
+- 文件上传配置。
+- 文件下载，支持断点续传，浏览器兼容好。
+- 请求日志打印，方便开发。
+- url 版本号和 header 版本处理。
 
 ### mica-boot-test
-- 方便 mica-boot 测试。
+- 方便 mica-boot 测试，注入 mica-launcher 中注入的参数。
 
 ### mica-log4j2
 - mica log4j配置。
-- 异步日志。
+- 基于 disruptor 异步日志，高性能。
 - 非开发环境将 System.out 和 err 写入 log。
 
 ### mica-captcha
