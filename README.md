@@ -83,3 +83,9 @@ lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1
 - 文档地址（官网）：[https://www.dreamlu.net/#/doc/docs](https://www.dreamlu.net/#/doc/docs)
 
 - 文档地址（语雀-可关注订阅）：[https://www.yuque.com/dreamlu/mica](https://www.yuque.com/dreamlu/mica)
+
+## 微信公众号
+
+![如梦技术](docs/img/dreamlu-weixin.jpg)
+
+精彩内容每日推荐！
