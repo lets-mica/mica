@@ -99,7 +99,7 @@ public class MicaApplication {
 		props.setProperty("mica.env", profile);
 		props.setProperty("mica.is-local", String.valueOf(isLocalDev));
 		props.setProperty("spring.application.name", appName);
-		props.setProperty("spring.banner.location", "classpath:mica_banner.txt");
+		props.setProperty("spring.banner.location", "classpath:banner.txt");
 		// 加载自定义组件
 		ServiceLoader<LauncherService> loader = ServiceLoader.load(LauncherService.class);
 		// 启动组件

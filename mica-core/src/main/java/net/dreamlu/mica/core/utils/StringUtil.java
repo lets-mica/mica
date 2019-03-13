@@ -322,7 +322,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		formatUnsignedLong0(msb, buf, 12, 4);
 		formatUnsignedLong0(msb >>> 16, buf, 8,  4);
 		formatUnsignedLong0(msb >>> 32, buf, 0,  8);
-		return new String(buf);
+		return new String(buf, Charsets.UTF_8);
 	}
 
 	private static void formatUnsignedLong0(long val, byte[] buf, int offset, int len) {

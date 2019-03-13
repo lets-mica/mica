@@ -32,9 +32,9 @@ public class ServiceException extends RuntimeException {
 
 	@Getter
 	@Nullable
-	private final R result;
+	private final R<Object> result;
 
-	public ServiceException(R result) {
+	public ServiceException(R<Object> result) {
 		super(result.getMsg());
 		this.result = result;
 	}

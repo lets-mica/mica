@@ -1,7 +1,7 @@
 ## mica（云母）
 [![Mica Maven](https://img.shields.io/maven-central/v/net.dreamlu/mica-bom.svg?style=flat-square)](https://mvnrepository.com/artifact/net.dreamlu/mica-bom)
 
-`Mica`，Spring Cloud 微服务开发核心包，基于 `Spring boot 2.x`，暂不支持 `webflux`。
+`Mica`，Spring Cloud 微服务开发核心包，基于 `Spring boot 2.x`，支持 `web` 和 `webflux`。
 
 想要了解更多可加入【如梦技术】QQ群：`479710041`
 
@@ -25,6 +25,7 @@
 - spi 扩展
 
 ### mica-boot
+- 支持 `Spring boot web` 和 `Spring boot webflux`。
 - 异步配置。
 - 异常处理，未知异常发送 Event 事件，方便监听收集。
 - swagger自动化配置，加入jar包即可。

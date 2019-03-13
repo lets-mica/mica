@@ -153,7 +153,7 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 			i = i / radix;
 		}
 		buf[charPos] = DIGITS[(int)(-i)];
-		return new String(buf, charPos, (65 - charPos));
+		return new String(buf, charPos, (65 - charPos), Charsets.UTF_8);
 	}
 
 }
