@@ -91,7 +91,7 @@ public abstract class BaseCaptcha {
 		// 生成验证码
 		byte[] imgBytes = CaptchaUtils.generate(random, captchaCode);
 		String base64 = Base64Util.encodeToString(imgBytes);
-		String uuid = StringUtil.randomUUID();
+		String uuid = StringUtil.getUUID();
 		// 保存验证码缓存
 		captchaCache.put(uuid, captchaCode);
 		Captcha captcha = new Captcha(uuid, base64);

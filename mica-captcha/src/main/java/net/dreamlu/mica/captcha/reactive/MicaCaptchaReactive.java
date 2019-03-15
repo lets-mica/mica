@@ -75,7 +75,7 @@ public class MicaCaptchaReactive extends BaseCaptcha {
 			.map(x -> x.getFirst(cookieName))
 			.map(HttpCookie::getValue)
 			.orElseGet(() -> {
-				String cookieValueUUID = StringUtil.randomUUID();
+				String cookieValueUUID = StringUtil.getUUID();
 				ResponseCookie cookie = ResponseCookie.from(cookieName, cookieValueUUID)
 					.maxAge(DEFAULT_MAX_AGE)
 					.path(StringPool.SLASH)

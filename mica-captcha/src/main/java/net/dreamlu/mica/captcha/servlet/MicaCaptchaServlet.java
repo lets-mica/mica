@@ -66,7 +66,7 @@ public class MicaCaptchaServlet extends BaseCaptcha {
 		boolean hasCookie = true;
 		if (StringUtil.isBlank(cookieValue)) {
 			hasCookie = false;
-			cookieValue = StringUtil.randomUUID();
+			cookieValue = StringUtil.getUUID();
 		}
 		ThreadLocalRandom random = ThreadLocalRandom.current();
 		// 转成大写重要
