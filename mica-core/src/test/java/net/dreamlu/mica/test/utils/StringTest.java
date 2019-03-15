@@ -10,7 +10,7 @@ public class StringTest {
 	public static void main(String[] args) {
 		long startNs1 = System.nanoTime();
 		for (int i = 0; i < 10000; i++) {
-			System.out.println(StringUtil.randomUUID());
+			System.out.println(StringUtil.getUUID());
 		}
 		long tookMs1 = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs1);
 		long startNs2 = System.nanoTime();
