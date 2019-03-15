@@ -555,8 +555,8 @@ public class $ {
 	 *
 	 * @return UUID
 	 */
-	public static String randomUUID() {
-		return StringUtil.randomUUID();
+	public static String getUUID() {
+		return StringUtil.getUUID();
 	}
 
 	/**

@@ -21,6 +21,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.lang.Nullable;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -31,7 +32,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class MicaErrorEvent {
+public class MicaErrorEvent implements Serializable {
 	/**
 	 * 应用名
 	 */

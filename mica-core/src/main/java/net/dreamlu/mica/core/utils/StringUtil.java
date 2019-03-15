@@ -312,7 +312,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 *
 	 * @return UUID
 	 */
-	public static String randomUUID() {
+	public static String getUUID() {
 		ThreadLocalRandom random = ThreadLocalRandom.current();
 		long lsb = random.nextLong();
 		long msb = random.nextLong();
