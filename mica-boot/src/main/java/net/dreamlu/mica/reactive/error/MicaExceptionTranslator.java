@@ -2,22 +2,24 @@ package net.dreamlu.mica.reactive.error;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.common.error.MicaErrorEvent;
 import net.dreamlu.mica.core.exception.ServiceException;
 import net.dreamlu.mica.core.result.R;
 import net.dreamlu.mica.core.result.SystemCode;
 import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.core.utils.ObjectUtil;
 import net.dreamlu.mica.reactive.filter.ReactiveRequestContextHolder;
-import net.dreamlu.mica.common.error.MicaErrorEvent;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
@@ -61,15 +63,20 @@ public class MicaExceptionTranslator {
 	}
 
 	private void publishEvent(ServerHttpRequest request, Throwable error) {
-		String requestUrl = request.getPath().pathWithinApplication().value();
 		MicaErrorEvent event = new MicaErrorEvent();
+		// 拼接地址
+		String path = request.getPath().pathWithinApplication().value();
+		MultiValueMap<String, String> queryParams = request.getQueryParams();
+		String requestUrl = UriComponentsBuilder.fromPath(path).queryParams(queryParams).build().toUriString();
 		event.setRequestUrl(requestUrl);
+		// 打印堆栈信息
 		event.setStackTrace(Exceptions.getStackTraceAsString(error));
 		event.setExceptionName(error.getClass().getName());
 		event.setMessage(error.getMessage());
 		event.setCreatedAt(LocalDateTime.now());
 		StackTraceElement[] elements = error.getStackTrace();
 		if (ObjectUtil.isNotEmpty(elements)) {
+			// 打印控制器类信息
 			StackTraceElement element = elements[0];
 			event.setClassName(element.getClassName());
 			event.setFileName(element.getFileName());
@@ -79,5 +86,4 @@ public class MicaExceptionTranslator {
 		// 发布事件
 		publisher.publishEvent(event);
 	}
-
 }

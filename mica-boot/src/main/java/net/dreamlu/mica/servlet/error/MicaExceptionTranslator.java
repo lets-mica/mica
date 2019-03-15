@@ -8,6 +8,7 @@ import net.dreamlu.mica.core.result.R;
 import net.dreamlu.mica.core.result.SystemCode;
 import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.core.utils.ObjectUtil;
+import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.core.utils.WebUtil;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -64,14 +65,21 @@ public class MicaExceptionTranslator {
 	private void publishEvent(Throwable error) {
 		MicaErrorEvent event = new MicaErrorEvent();
 		HttpServletRequest request = WebUtil.getRequest();
-		String requestUrl = request.getRequestURI() + "?" + request.getQueryString();
+		// 拼接地址
+		String requestUrl = request.getRequestURI();
+		String queryString = request.getQueryString();
+		if (StringUtil.isNotBlank(queryString)) {
+			requestUrl = requestUrl + '?' + queryString;
+		}
 		event.setRequestUrl(requestUrl);
+		// 堆栈信息
 		event.setStackTrace(Exceptions.getStackTraceAsString(error));
 		event.setExceptionName(error.getClass().getName());
 		event.setMessage(error.getMessage());
 		event.setCreatedAt(LocalDateTime.now());
 		StackTraceElement[] elements = error.getStackTrace();
 		if (ObjectUtil.isNotEmpty(elements)) {
+			// 报错的类信息
 			StackTraceElement element = elements[0];
 			event.setClassName(element.getClassName());
 			event.setFileName(element.getFileName());
