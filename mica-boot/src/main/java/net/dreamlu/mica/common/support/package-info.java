@@ -16,7 +16,7 @@
 
 @NonNullApi
 @NonNullFields
-package net.dreamlu.mica.reactive.support;
+package net.dreamlu.mica.common.support;
 
 import org.springframework.lang.NonNullApi;
 import org.springframework.lang.NonNullFields;

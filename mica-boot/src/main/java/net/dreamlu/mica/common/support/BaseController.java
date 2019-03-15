@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.servlet.support;
+package net.dreamlu.mica.common.support;
 
 import net.dreamlu.mica.core.result.IResultCode;
 import net.dreamlu.mica.core.result.R;
@@ -36,7 +36,7 @@ import java.io.File;
  *
  * @author L.cm
  */
-public abstract class BaseControllerServlet {
+public abstract class BaseController {
 
 	/**
 	 * redirect跳转
