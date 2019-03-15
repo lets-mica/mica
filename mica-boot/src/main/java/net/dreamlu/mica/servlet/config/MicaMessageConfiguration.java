@@ -51,9 +51,6 @@ public class MicaMessageConfiguration implements WebMvcConfigurer {
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 		converters.removeIf(x -> x instanceof StringHttpMessageConverter || x instanceof AbstractJackson2HttpMessageConverter);
 		converters.add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
-		converters.add(new ByteArrayHttpMessageConverter());
-		converters.add(new ResourceHttpMessageConverter());
-		converters.add(new ResourceRegionHttpMessageConverter());
 		// 如果需要将 null 转为 空
 		if (properties.getNullToEmpty()) {
 			converters.add(new MappingApiJackson2HttpMessageConverter(objectMapper));

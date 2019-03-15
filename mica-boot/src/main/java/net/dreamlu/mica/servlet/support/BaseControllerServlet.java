@@ -20,11 +20,8 @@ import net.dreamlu.mica.core.result.IResultCode;
 import net.dreamlu.mica.core.result.R;
 import net.dreamlu.mica.core.result.SystemCode;
 import net.dreamlu.mica.core.utils.Charsets;
-import net.dreamlu.mica.core.utils.StringPool;
-import net.dreamlu.mica.core.utils.WebUtil;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,16 +29,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.util.UriUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.IOException;
 
 /**
  * 基础 controller
  *
  * @author L.cm
  */
-public abstract class BaseController {
+public abstract class BaseControllerServlet {
 
 	/**
 	 * redirect跳转
@@ -55,6 +50,7 @@ public abstract class BaseController {
 
 	/**
 	 * 返回成功
+	 *
 	 * @param <T> 泛型标记
 	 * @return Result
 	 */
@@ -66,7 +62,7 @@ public abstract class BaseController {
 	 * 成功-携带数据
 	 *
 	 * @param data 数据
-	 * @param <T> 泛型标记
+	 * @param <T>  泛型标记
 	 * @return Result
 	 */
 	protected <T> R<T> success(@Nullable T data) {
@@ -75,9 +71,10 @@ public abstract class BaseController {
 
 	/**
 	 * 根据状态返回成功或者失败
+	 *
 	 * @param status 状态
-	 * @param msg 异常msg
-	 * @param <T> 泛型标记
+	 * @param msg    异常msg
+	 * @param <T>    泛型标记
 	 * @return Result
 	 */
 	protected <T> R<T> status(boolean status, String msg) {
@@ -86,9 +83,10 @@ public abstract class BaseController {
 
 	/**
 	 * 根据状态返回成功或者失败
+	 *
 	 * @param status 状态
-	 * @param sCode 异常code码
-	 * @param <T> 泛型标记
+	 * @param sCode  异常code码
+	 * @param <T>    泛型标记
 	 * @return Result
 	 */
 	protected <T> R<T> status(boolean status, IResultCode sCode) {
@@ -110,7 +108,7 @@ public abstract class BaseController {
 	 * 返回失败信息
 	 *
 	 * @param rCode 异常枚举
-	 * @param <T> 泛型标记
+	 * @param <T>   泛型标记
 	 * @return {Result}
 	 */
 	protected <T> R<T> fail(IResultCode rCode) {
@@ -121,8 +119,8 @@ public abstract class BaseController {
 	 * 返回失败信息
 	 *
 	 * @param rCode 异常枚举
-	 * @param msg 失败信息
-	 * @param <T> 泛型标记
+	 * @param msg   失败信息
+	 * @param <T>   泛型标记
 	 * @return {Result}
 	 */
 	protected <T> R<T> fail(IResultCode rCode, String msg) {
@@ -134,9 +132,8 @@ public abstract class BaseController {
 	 *
 	 * @param file 文件
 	 * @return {ResponseEntity}
-	 * @throws IOException io异常
 	 */
-	protected ResponseEntity<ResourceRegion> download(File file) throws IOException {
+	protected ResponseEntity<Resource> download(File file) {
 		String fileName = file.getName();
 		return download(file, fileName);
 	}
@@ -147,9 +144,8 @@ public abstract class BaseController {
 	 * @param file     文件
 	 * @param fileName 生成的文件名
 	 * @return {ResponseEntity}
-	 * @throws IOException io异常
 	 */
-	protected ResponseEntity<ResourceRegion> download(File file, String fileName) throws IOException {
+	protected ResponseEntity<Resource> download(File file, String fileName) {
 		Resource resource = new FileSystemResource(file);
 		return download(resource, fileName);
 	}
@@ -160,32 +156,9 @@ public abstract class BaseController {
 	 * @param resource 资源
 	 * @param fileName 生成的文件名
 	 * @return {ResponseEntity}
-	 * @throws IOException io异常
 	 */
-	protected ResponseEntity<ResourceRegion> download(Resource resource, String fileName) throws IOException {
-		HttpServletRequest request = WebUtil.getRequest();
-		String header = request.getHeader(HttpHeaders.USER_AGENT);
+	protected ResponseEntity<Resource> download(Resource resource, String fileName) {
 		// 避免空指针
-		header = header == null ? StringPool.EMPTY : header.toUpperCase();
-		HttpStatus status;
-		if (header.contains("MSIE") || header.contains("TRIDENT") || header.contains("EDGE")) {
-			status = HttpStatus.OK;
-		} else {
-			status = HttpStatus.CREATED;
-		}
-		// 断点续传
-		long position = 0;
-		long count = resource.contentLength();
-		String range = request.getHeader(HttpHeaders.RANGE);
-		if (null != range) {
-			status = HttpStatus.PARTIAL_CONTENT;
-			String[] rangeRange = range.replace("bytes=", StringPool.EMPTY).split(StringPool.DASH);
-			position = Long.parseLong(rangeRange[0]);
-			if (rangeRange.length > 1) {
-				long end = Long.parseLong(rangeRange[1]);
-				count = end - position + 1;
-			}
-		}
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 		String encodeFileName = UriUtils.encode(fileName, Charsets.UTF_8);
@@ -195,6 +168,6 @@ public abstract class BaseController {
 			"filename=\"" + encodeFileName + "\";" +
 			"filename*=utf-8''" + encodeFileName;
 		headers.set(HttpHeaders.CONTENT_DISPOSITION, disposition);
-		return new ResponseEntity<>(new ResourceRegion(resource, position, count), headers, status);
+		return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 	}
 }
