@@ -116,7 +116,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
 	}
 
 	private ApiInfo apiInfo(String appName) {
-		String defaultName = appName.toUpperCase() + "服务";
+		String defaultName = appName + "服务";
 		String title = Optional.ofNullable(swaggerProperties.getTitle())
 			.orElse(defaultName);
 		String description = Optional.ofNullable(swaggerProperties.getDescription())
