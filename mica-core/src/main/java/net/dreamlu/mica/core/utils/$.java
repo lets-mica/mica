@@ -24,6 +24,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.convert.TypeDescriptor;
+import org.springframework.core.io.Resource;
 import org.springframework.lang.Nullable;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.util.StringUtils;
@@ -32,6 +33,7 @@ import org.springframework.web.method.HandlerMethod;
 import javax.xml.bind.DatatypeConverter;
 import java.io.Closeable;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -502,7 +504,8 @@ public class $ {
 
 	/**
 	 * 分割 字符串
-	 * @param str 字符串
+	 *
+	 * @param str       字符串
 	 * @param delimiter 分割符
 	 * @return 字符串数组
 	 */
@@ -512,7 +515,8 @@ public class $ {
 
 	/**
 	 * 分割 字符串 删除常见 空白符
-	 * @param str 字符串
+	 *
+	 * @param str       字符串
 	 * @param delimiter 分割符
 	 * @return 字符串数组
 	 */
@@ -611,7 +615,7 @@ public class $ {
 	}
 
 	/**
-	 *  sha1Hex
+	 * sha1Hex
 	 *
 	 * @param data Data to digest
 	 * @return digest as a hex string
@@ -621,7 +625,7 @@ public class $ {
 	}
 
 	/**
-	 *  sha1Hex
+	 * sha1Hex
 	 *
 	 * @param bytes Data to digest
 	 * @return digest as a hex string
@@ -631,7 +635,7 @@ public class $ {
 	}
 
 	/**
-	 *  SHA224Hex
+	 * SHA224Hex
 	 *
 	 * @param data Data to digest
 	 * @return digest as a hex string
@@ -641,7 +645,7 @@ public class $ {
 	}
 
 	/**
-	 *  SHA224Hex
+	 * SHA224Hex
 	 *
 	 * @param bytes Data to digest
 	 * @return digest as a hex string
@@ -651,7 +655,7 @@ public class $ {
 	}
 
 	/**
-	 *  sha256Hex
+	 * sha256Hex
 	 *
 	 * @param data Data to digest
 	 * @return digest as a hex string
@@ -661,7 +665,7 @@ public class $ {
 	}
 
 	/**
-	 *  sha256Hex
+	 * sha256Hex
 	 *
 	 * @param bytes Data to digest
 	 * @return digest as a hex string
@@ -671,7 +675,7 @@ public class $ {
 	}
 
 	/**
-	 *  sha384Hex
+	 * sha384Hex
 	 *
 	 * @param data Data to digest
 	 * @return digest as a hex string
@@ -681,7 +685,7 @@ public class $ {
 	}
 
 	/**
-	 *  sha384Hex
+	 * sha384Hex
 	 *
 	 * @param bytes Data to digest
 	 * @return digest as a hex string
@@ -691,7 +695,7 @@ public class $ {
 	}
 
 	/**
-	 *  sha512Hex
+	 * sha512Hex
 	 *
 	 * @param data Data to digest
 	 * @return digest as a hex string
@@ -701,7 +705,7 @@ public class $ {
 	}
 
 	/**
-	 *  sha512Hex
+	 * sha512Hex
 	 *
 	 * @param bytes Data to digest
 	 * @return digest as a hex string
@@ -711,10 +715,10 @@ public class $ {
 	}
 
 	/**
-	 *  hmacMd5 Hex
+	 * hmacMd5 Hex
 	 *
 	 * @param data Data to digest
-	 * @param key key
+	 * @param key  key
 	 * @return digest as a hex string
 	 */
 	public static String hmacMd5Hex(String data, String key) {
@@ -722,10 +726,10 @@ public class $ {
 	}
 
 	/**
-	 *  hmacMd5 Hex
+	 * hmacMd5 Hex
 	 *
 	 * @param bytes Data to digest
-	 * @param key key
+	 * @param key   key
 	 * @return digest as a hex string
 	 */
 	public static String hmacMd5Hex(final byte[] bytes, String key) {
@@ -733,10 +737,10 @@ public class $ {
 	}
 
 	/**
-	 *  hmacSha1 Hex
+	 * hmacSha1 Hex
 	 *
 	 * @param data Data to digest
-	 * @param key key
+	 * @param key  key
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha1Hex(String data, String key) {
@@ -744,10 +748,10 @@ public class $ {
 	}
 
 	/**
-	 *  hmacSha1 Hex
+	 * hmacSha1 Hex
 	 *
 	 * @param bytes Data to digest
-	 * @param key key
+	 * @param key   key
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha1Hex(final byte[] bytes, String key) {
@@ -755,10 +759,10 @@ public class $ {
 	}
 
 	/**
-	 *  hmacSha224 Hex
+	 * hmacSha224 Hex
 	 *
 	 * @param data Data to digest
-	 * @param key key
+	 * @param key  key
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha224Hex(String data, String key) {
@@ -766,10 +770,10 @@ public class $ {
 	}
 
 	/**
-	 *  hmacSha224 Hex
+	 * hmacSha224 Hex
 	 *
 	 * @param bytes Data to digest
-	 * @param key key
+	 * @param key   key
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha224Hex(final byte[] bytes, String key) {
@@ -777,10 +781,10 @@ public class $ {
 	}
 
 	/**
-	 *  hmacSha256 Hex
+	 * hmacSha256 Hex
 	 *
 	 * @param data Data to digest
-	 * @param key key
+	 * @param key  key
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha256Hex(String data, String key) {
@@ -788,10 +792,10 @@ public class $ {
 	}
 
 	/**
-	 *  hmacSha256 Hex
+	 * hmacSha256 Hex
 	 *
 	 * @param bytes Data to digest
-	 * @param key key
+	 * @param key   key
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha256Hex(final byte[] bytes, String key) {
@@ -799,10 +803,10 @@ public class $ {
 	}
 
 	/**
-	 *  hmacSha384 Hex
+	 * hmacSha384 Hex
 	 *
 	 * @param data Data to digest
-	 * @param key key
+	 * @param key  key
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha384Hex(String data, String key) {
@@ -810,10 +814,10 @@ public class $ {
 	}
 
 	/**
-	 *  hmacSha384 Hex
+	 * hmacSha384 Hex
 	 *
 	 * @param bytes Data to digest
-	 * @param key key
+	 * @param key   key
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha384Hex(final byte[] bytes, String key) {
@@ -821,10 +825,10 @@ public class $ {
 	}
 
 	/**
-	 *  hmacSha512 Hex
+	 * hmacSha512 Hex
 	 *
 	 * @param data Data to digest
-	 * @param key key
+	 * @param key  key
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha512Hex(String data, String key) {
@@ -832,10 +836,10 @@ public class $ {
 	}
 
 	/**
-	 *  hmacSha512 Hex
+	 * hmacSha512 Hex
 	 *
 	 * @param bytes Data to digest
-	 * @param key key
+	 * @param key   key
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha512Hex(final byte[] bytes, String key) {
@@ -1017,6 +1021,25 @@ public class $ {
 	 */
 	public static byte[] readToByteArray(File file) {
 		return FileUtil.readToByteArray(file);
+	}
+
+	/**
+	 * 获取资源，注意：boot 中请不要使用 Resource getFile，应该使用 getInputStream，支持一下协议：
+	 *
+	 * <p>
+	 * 1. classpath:
+	 * 2. file:
+	 * 3. ftp:
+	 * 4. http: and https:
+	 * 6. C:/dir1/ and /Users/lcm
+	 * </p>
+	 *
+	 * @param resourceLocation 资源路径
+	 * @return Resource
+	 * @throws IOException io异常
+	 */
+	public static Resource getResource(String resourceLocation) throws IOException {
+		return ResourceUtil.getResource(resourceLocation);
 	}
 
 	/**
