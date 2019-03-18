@@ -24,8 +24,6 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -54,7 +52,7 @@ import java.util.Optional;
 @ConditionalOnClass(Swagger2DocumentationConfiguration.class)
 @AutoConfigureAfter(MicaSwaggerProperties.class)
 @AllArgsConstructor
-public class SwaggerConfiguration implements WebMvcConfigurer {
+public class SwaggerConfiguration {
 	private final MicaProperties micaProperties;
 	private final MicaSwaggerProperties swaggerProperties;
 
@@ -141,14 +139,6 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
 			pars.add(token);
 		});
 		return pars;
-	}
-
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/swagger-ui.html")
-			.addResourceLocations("classpath:/META-INF/resources/");
-		registry.addResourceHandler("/webjars*")
-			.addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 
 }
