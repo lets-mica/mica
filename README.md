@@ -68,7 +68,7 @@ lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1
 ## 授权用户
 - `pigx` 宇宙最强微服务（架构师必备）：https://pig4cloud.com
 
-- `bladex` 完整的线上解决方案（系统生产必备）：https://bladex.vip
+- `bladex` 完整的线上解决方案（企业生产必备）：https://bladex.vip
 
 ## mica-pro
 对微服务的扩展和增强，欢迎加入`如梦技术 VIP`一起探讨：https://git.dreamlu.net
