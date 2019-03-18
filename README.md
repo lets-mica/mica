@@ -89,4 +89,4 @@ lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1
 
 ![如梦技术](docs/img/dreamlu-weixin.jpg)
 
-精彩内容每日推荐！
+精彩内容每日推荐！!
