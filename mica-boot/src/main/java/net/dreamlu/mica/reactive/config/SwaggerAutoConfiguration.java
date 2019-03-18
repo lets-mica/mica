@@ -16,10 +16,12 @@
 
 package net.dreamlu.mica.reactive.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
+import springfox.documentation.spring.web.plugins.Docket;
 
 /**
  * Swagger 页面静态文件配置
@@ -27,8 +29,9 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
  * @author L.cm
  */
 @Configuration
+@ConditionalOnClass(Docket.class)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-public class SwaggerResourceConfiguration implements WebFluxConfigurer {
+public class SwaggerAutoConfiguration implements WebFluxConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {

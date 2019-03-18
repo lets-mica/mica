@@ -34,8 +34,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.ApiKeyVehicle;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,8 +46,7 @@ import java.util.Optional;
  * @author L.cm
  */
 @Configuration
-@EnableSwagger2
-@ConditionalOnClass(Swagger2DocumentationConfiguration.class)
+@ConditionalOnClass(Docket.class)
 @AutoConfigureAfter(MicaSwaggerProperties.class)
 @AllArgsConstructor
 public class SwaggerConfiguration {
@@ -114,7 +111,7 @@ public class SwaggerConfiguration {
 	}
 
 	private ApiInfo apiInfo(String appName) {
-		String defaultName = appName + "服务";
+		String defaultName = appName + " 服务";
 		String title = Optional.ofNullable(swaggerProperties.getTitle())
 			.orElse(defaultName);
 		String description = Optional.ofNullable(swaggerProperties.getDescription())
