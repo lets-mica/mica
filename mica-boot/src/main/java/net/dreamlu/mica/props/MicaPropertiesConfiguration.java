@@ -30,6 +30,7 @@ import org.springframework.context.annotation.Configuration;
 	MicaUploadProperties.class,
 	MicaJacksonProperties.class,
 	MicaSwaggerProperties.class,
+	MicaRequestLogProperties.class
 })
 public class MicaPropertiesConfiguration {
 }

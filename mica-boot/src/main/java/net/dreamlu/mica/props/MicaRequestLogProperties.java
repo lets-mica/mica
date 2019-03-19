@@ -14,28 +14,27 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.reactive.filter;
+package net.dreamlu.mica.props;
 
-import org.springframework.http.server.reactive.ServerHttpRequest;
-import reactor.core.publisher.Mono;
-import reactor.util.context.Context;
+import lombok.Getter;
+import lombok.Setter;
+import net.dreamlu.mica.launcher.MicaLogLevel;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
- * ReactiveRequestContextHolder
+ * 日志配置
  *
  * @author L.cm
  */
-public class ReactiveRequestContextHolder {
-	static final Class<?> CONTEXT_KEY = ServerHttpRequest.class;
+@Getter
+@Setter
+@RefreshScope
+@ConfigurationProperties("mica.request.log")
+public class MicaRequestLogProperties {
 
 	/**
-	 * Gets the {@code Mono<ServerHttpRequest>} from Reactor {@link Context}
-	 * @return the {@code Mono<ServerHttpRequest>}
+	 * 日志级别配置，默认：BASIC
 	 */
-	public static Mono<ServerHttpRequest> getRequest() {
-		return Mono.subscriberContext()
-			.map(ctx -> ctx.get(CONTEXT_KEY))
-			.cast(ServerHttpRequest.class);
-	}
-
+	private MicaLogLevel level = MicaLogLevel.BASIC;
 }

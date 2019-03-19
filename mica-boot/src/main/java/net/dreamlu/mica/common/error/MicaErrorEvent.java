@@ -49,6 +49,11 @@ public class MicaErrorEvent implements Serializable {
 	@Nullable
 	private String remoteHost;
 	/**
+	 * 请求方法名
+	 */
+	@Nullable
+	private String requestMethod;
+	/**
 	 * 请求url
 	 */
 	@Nullable

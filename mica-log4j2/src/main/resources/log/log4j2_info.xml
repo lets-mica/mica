@@ -36,8 +36,7 @@
         <!-- 基础组件 -->
         <AsyncLogger name="RocketmqClient" level="WARN"/>
         <!-- mica日志 -->
-        <AsyncLogger name="net.dreamlu.mica" level="WARN" />
-        <AsyncLogger name="net.dreamlu.mica.http" level="INFO"/>
+        <AsyncLogger name="net.dreamlu.mica" level="INFO"/>
         <Root level="INFO" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="RollingFile"/>

@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.logger;
+package net.dreamlu.mica.servlet.logger;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.utils.*;
+import net.dreamlu.mica.launcher.MicaLogLevel;
+import net.dreamlu.mica.props.MicaRequestLogProperties;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,21 +50,29 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Aspect
 @Configuration
-@Profile({"dev", "test"})
+@RequiredArgsConstructor
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class RequestLogAspect {
+	private final MicaRequestLogProperties properties;
 
 	/**
 	 * AOP 环切 控制器 R 返回值
+	 *
 	 * @param point JoinPoint
-	 * @throws Throwable 异常
 	 * @return Object
+	 * @throws Throwable 异常
 	 */
 	@Around(
 		"execution(!static net.dreamlu.mica.core.result.R *(..)) && " +
-		"(@within(org.springframework.stereotype.Controller) || " +
-		"@within(org.springframework.web.bind.annotation.RestController))"
+			"(@within(org.springframework.stereotype.Controller) || " +
+			"@within(org.springframework.web.bind.annotation.RestController))"
 	)
 	public Object aroundApi(ProceedingJoinPoint point) throws Throwable {
+		MicaLogLevel level = properties.getLevel();
+		// 不打印日志，直接返回
+		if (MicaLogLevel.NONE == level) {
+			return point.proceed();
+		}
 		MethodSignature ms = (MethodSignature) point.getSignature();
 		Method method = ms.getMethod();
 		Object[] args = point.getArgs();
@@ -76,10 +87,25 @@ public class RequestLogAspect {
 				continue;
 			}
 			RequestBody requestBody = methodParam.getParameterAnnotation(RequestBody.class);
-			Object object = args[i];
+			Object value = args[i];
 			// 如果是body的json则是对象
-			if (requestBody != null && object != null) {
-				paraMap.putAll(BeanUtil.toMap(object));
+			if (requestBody != null && value != null) {
+				paraMap.putAll(BeanUtil.toMap(value));
+				continue;
+			}
+			// 处理 参数
+			if (value instanceof HttpServletRequest) {
+				paraMap.putAll(((HttpServletRequest) value).getParameterMap());
+			} else if (value instanceof WebRequest) {
+				paraMap.putAll(((WebRequest) value).getParameterMap());
+			} else if (value instanceof MultipartFile) {
+				MultipartFile multipartFile = (MultipartFile) value;
+				String name = multipartFile.getName();
+				String fileName = multipartFile.getOriginalFilename();
+				paraMap.put(name, fileName);
+			} else if (value instanceof HttpServletResponse) {
+			} else if (value instanceof InputStream) {
+			} else if (value instanceof InputStreamSource) {
 			} else {
 				// 参数名
 				RequestParam requestParam = methodParam.getParameterAnnotation(RequestParam.class);
@@ -89,63 +115,48 @@ public class RequestLogAspect {
 				} else {
 					paraName = methodParam.getParameterName();
 				}
-				paraMap.put(paraName, object);
+				paraMap.put(paraName, value);
 			}
 		}
 		HttpServletRequest request = WebUtil.getRequest();
 		String requestURI = request.getRequestURI();
 		String requestMethod = request.getMethod();
-		// 处理 参数
-		List<String> needRemoveKeys = new ArrayList<>(paraMap.size());
-		paraMap.forEach((key, value) -> {
-			if (value instanceof HttpServletRequest) {
-				needRemoveKeys.add(key);
-				paraMap.putAll(((HttpServletRequest) value).getParameterMap());
-			} else if (value instanceof HttpServletResponse) {
-				needRemoveKeys.add(key);
-			} else if (value instanceof InputStream) {
-				needRemoveKeys.add(key);
-			} else if (value instanceof MultipartFile) {
-				String fileName = ((MultipartFile) value).getOriginalFilename();
-				paraMap.put(key, fileName);
-			} else if (value instanceof InputStreamSource) {
-				needRemoveKeys.add(key);
-			} else if (value instanceof WebRequest) {
-				needRemoveKeys.add(key);
-				paraMap.putAll(((WebRequest) value).getParameterMap());
-			}
-		});
-		needRemoveKeys.forEach(paraMap::remove);
+
 		// 构建成一条长 日志，避免并发下日志错乱
 		StringBuilder logBuilder = new StringBuilder(500);
 		// 日志参数
 		List<Object> logArgs = new ArrayList<>();
-		// 打印请求
+		// 打印路由
+		logBuilder.append("\n===> {}: {}");
+		logArgs.add(requestMethod);
+		logArgs.add(requestURI);
+		// 请求参数
 		if (paraMap.isEmpty()) {
-			logBuilder.append("\n===> {}: {}\n");
-			logArgs.add(requestMethod);
-			logArgs.add(requestURI);
+			logBuilder.append("\n");
 		} else {
-			logBuilder.append("\n===> {}: {} Parameters: {}\n");
-			logArgs.add(requestMethod);
-			logArgs.add(requestURI);
+			logBuilder.append(" Parameters: {}\n");
 			logArgs.add(JsonUtil.toJson(paraMap));
 		}
 		// 打印请求头
-		Enumeration<String> headers = request.getHeaderNames();
-		while (headers.hasMoreElements()) {
-			String headerName = headers.nextElement();
-			String headerValue = request.getHeader(headerName);
-			logBuilder.append("===headers===  {} : {}\n");
-			logArgs.add(headerName);
-			logArgs.add(headerValue);
+		if (MicaLogLevel.HEADERS.lte(level)) {
+			Enumeration<String> headers = request.getHeaderNames();
+			while (headers.hasMoreElements()) {
+				String headerName = headers.nextElement();
+				String headerValue = request.getHeader(headerName);
+				logBuilder.append("===Headers===  {} : {}\n");
+				logArgs.add(headerName);
+				logArgs.add(headerValue);
+			}
 		}
 		// 打印执行时间
 		long startNs = System.nanoTime();
 		try {
 			Object result = point.proceed();
-			logBuilder.append("===Result===  {}\n");
-			logArgs.add(JsonUtil.toJson(result));
+			// 打印返回结构体
+			if (MicaLogLevel.BODY.lte(level)) {
+				logBuilder.append("===Result===  {}\n");
+				logArgs.add(JsonUtil.toJson(result));
+			}
 			return result;
 		} finally {
 			long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);

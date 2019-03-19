@@ -70,7 +70,7 @@ public class MicaApplication {
 		// 判断环境:dev、test、ontest、prod
 		List<String> profiles = Arrays.asList(activeProfiles);
 		// 预设的环境
-		List<String> presetProfiles = new ArrayList<>(Arrays.asList("dev", "test", "ontest", "prod"));
+		List<String> presetProfiles = MicaEnv.getEnvList();
 		// 交集
 		presetProfiles.retainAll(profiles);
 		// 当前使用
@@ -80,7 +80,7 @@ public class MicaApplication {
 		String profile;
 		if (presetProfiles.isEmpty()) {
 			// 默认dev开发
-			profile = "dev";
+			profile = MicaEnv.DEV.getName();
 			activeProfileList.add(profile);
 			builder.profiles(profile);
 		} else if (presetProfiles.size() == 1) {
@@ -100,10 +100,14 @@ public class MicaApplication {
 		props.setProperty("mica.is-local", String.valueOf(isLocalDev));
 		props.setProperty("spring.application.name", appName);
 		props.setProperty("spring.banner.location", "classpath:banner.txt");
+		// 预设请求日志级别
+		MicaEnv micaEnv = MicaEnv.of(profile);
+		// 使用 builder 的 props，优先级低
+		builder.properties(String.format("mica.request.log.level=%s", micaEnv.getRequestLogLevel().name()));
 		// 加载自定义组件
 		ServiceLoader<LauncherService> loader = ServiceLoader.load(LauncherService.class);
 		// 启动组件
-		loader.forEach(launcherService -> launcherService.launcher(builder, env, appName, profile, isLocalDev));
+		loader.forEach(launcherService -> launcherService.launcher(builder, env, appName, micaEnv, isLocalDev));
 		return builder;
 	}
 

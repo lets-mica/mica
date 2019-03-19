@@ -119,7 +119,7 @@ public class $ {
 	 * 判断对象是否为null
 	 * <p>
 	 * This method exists to be used as a
-	 * {@link java.util.function.Predicate}, {@code filter($::isNull)}
+	 * {@link java.util.function.Predicate}, {@code context($::isNull)}
 	 * </p>
 	 *
 	 * @param obj a reference to be checked against {@code null}
@@ -135,7 +135,7 @@ public class $ {
 	 * 判断对象是否 not null
 	 * <p>
 	 * This method exists to be used as a
-	 * {@link java.util.function.Predicate}, {@code filter($::notNull)}
+	 * {@link java.util.function.Predicate}, {@code context($::notNull)}
 	 * </p>
 	 *
 	 * @param obj a reference to be checked against {@code null}

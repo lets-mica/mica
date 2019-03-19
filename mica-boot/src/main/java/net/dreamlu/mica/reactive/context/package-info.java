@@ -14,34 +14,9 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.core.utils;
+@NonNullApi
+@NonNullFields
+package net.dreamlu.mica.reactive.context;
 
-import lombok.experimental.UtilityClass;
-import org.springframework.lang.Nullable;
-
-/**
- * 对象工具类
- *
- * @author L.cm
- */
-@UtilityClass
-public class ObjectUtil extends org.springframework.util.ObjectUtils {
-
-	/**
-	 * 判断数组不为空
-	 * @param array 数组
-	 * @return 数组是否为空
-	 */
-	public static boolean isNotEmpty(@Nullable Object[] array) {
-		return !ObjectUtil.isEmpty(array);
-	}
-
-	/**
-	 * 判断对象不为空
-	 * @param obj 数组
-	 * @return 数组是否为空
-	 */
-	public static boolean isNotEmpty(@Nullable Object obj) {
-		return !ObjectUtil.isEmpty(obj);
-	}
-}
+import org.springframework.lang.NonNullApi;
+import org.springframework.lang.NonNullFields;

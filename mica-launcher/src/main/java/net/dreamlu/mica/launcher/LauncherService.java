@@ -31,8 +31,8 @@ public interface LauncherService {
 	 * @param builder SpringApplicationBuilder
 	 * @param env 系统变量 Environment
 	 * @param appName 服务名
-	 * @param profile 环境变量
+	 * @param micaEnv 环境变量
 	 * @param isLocalDev 是否本地开发
 	 */
-	void launcher(SpringApplicationBuilder builder, Environment env, String appName, String profile, boolean isLocalDev);
+	void launcher(SpringApplicationBuilder builder, Environment env, String appName, MicaEnv micaEnv, boolean isLocalDev);
 }

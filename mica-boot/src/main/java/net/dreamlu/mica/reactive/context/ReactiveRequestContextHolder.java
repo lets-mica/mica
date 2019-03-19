@@ -14,34 +14,28 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.core.utils;
+package net.dreamlu.mica.reactive.context;
 
-import lombok.experimental.UtilityClass;
-import org.springframework.lang.Nullable;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import reactor.core.publisher.Mono;
+import reactor.util.context.Context;
 
 /**
- * 对象工具类
+ * ReactiveRequestContextHolder
  *
  * @author L.cm
  */
-@UtilityClass
-public class ObjectUtil extends org.springframework.util.ObjectUtils {
+public class ReactiveRequestContextHolder {
+	static final Class<?> CONTEXT_KEY = ServerHttpRequest.class;
 
 	/**
-	 * 判断数组不为空
-	 * @param array 数组
-	 * @return 数组是否为空
+	 * Gets the {@code Mono<ServerHttpRequest>} from Reactor {@link Context}
+	 * @return the {@code Mono<ServerHttpRequest>}
 	 */
-	public static boolean isNotEmpty(@Nullable Object[] array) {
-		return !ObjectUtil.isEmpty(array);
+	public static Mono<ServerHttpRequest> getRequest() {
+		return Mono.subscriberContext()
+			.map(ctx -> ctx.get(CONTEXT_KEY))
+			.cast(ServerHttpRequest.class);
 	}
 
-	/**
-	 * 判断对象不为空
-	 * @param obj 数组
-	 * @return 数组是否为空
-	 */
-	public static boolean isNotEmpty(@Nullable Object obj) {
-		return !ObjectUtil.isEmpty(obj);
-	}
 }

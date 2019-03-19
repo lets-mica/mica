@@ -8,7 +8,7 @@ import net.dreamlu.mica.core.result.R;
 import net.dreamlu.mica.core.result.SystemCode;
 import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.core.utils.ObjectUtil;
-import net.dreamlu.mica.reactive.filter.ReactiveRequestContextHolder;
+import net.dreamlu.mica.reactive.context.ReactiveRequestContextHolder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Configuration;
@@ -64,6 +64,8 @@ public class MicaExceptionTranslator {
 
 	private void publishEvent(ServerHttpRequest request, Throwable error) {
 		MicaErrorEvent event = new MicaErrorEvent();
+		// 请求方法名
+		event.setRequestMethod(request.getMethodValue());
 		// 拼接地址
 		String path = request.getPath().pathWithinApplication().value();
 		MultiValueMap<String, String> queryParams = request.getQueryParams();

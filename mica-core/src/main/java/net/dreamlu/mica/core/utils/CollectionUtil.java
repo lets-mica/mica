@@ -20,10 +20,7 @@ package net.dreamlu.mica.core.utils;
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -33,6 +30,26 @@ import java.util.stream.Collectors;
  */
 @UtilityClass
 public class CollectionUtil extends org.springframework.util.CollectionUtils {
+
+	/**
+	 * Return {@code true} if the supplied Collection is not {@code null} or empty.
+	 * Otherwise, return {@code false}.
+	 * @param collection the Collection to check
+	 * @return whether the given Collection is not empty
+	 */
+	public static boolean isNotEmpty(@Nullable Collection<?> collection) {
+		return !CollectionUtil.isEmpty(collection);
+	}
+
+	/**
+	 * Return {@code true} if the supplied Map is not {@code null} or empty.
+	 * Otherwise, return {@code false}.
+	 * @param map the Map to check
+	 * @return whether the given Map is not empty
+	 */
+	public static boolean isNotEmpty(@Nullable Map<?, ?> map) {
+		return !CollectionUtil.isEmpty(map);
+	}
 
 	/**
 	 * Check whether the given Array contains the given element.

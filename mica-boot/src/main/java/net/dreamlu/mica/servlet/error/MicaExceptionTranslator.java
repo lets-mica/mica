@@ -65,6 +65,8 @@ public class MicaExceptionTranslator {
 	private void publishEvent(Throwable error) {
 		MicaErrorEvent event = new MicaErrorEvent();
 		HttpServletRequest request = WebUtil.getRequest();
+		// 请求方法名
+		event.setRequestMethod(request.getMethod());
 		// 拼接地址
 		String requestUrl = request.getRequestURI();
 		String queryString = request.getQueryString();

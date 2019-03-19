@@ -22,7 +22,6 @@ import net.dreamlu.mica.core.utils.StringUtil;
 import org.springframework.cache.Cache;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -84,7 +83,7 @@ public abstract class BaseCaptcha {
 	 *
 	 * @return {String}
 	 */
-	public ResponseEntity<Captcha> generateBase64() {
+	public Captcha generateBase64() {
 		ThreadLocalRandom random = ThreadLocalRandom.current();
 		// 转成大写重要
 		String captchaCode = CaptchaUtils.generateCode(random).toUpperCase();
@@ -94,8 +93,7 @@ public abstract class BaseCaptcha {
 		String uuid = StringUtil.getUUID();
 		// 保存验证码缓存
 		captchaCache.put(uuid, captchaCode);
-		Captcha captcha = new Captcha(uuid, base64);
-		return ResponseEntity.ok(captcha);
+		return new Captcha(uuid, base64);
 	}
 
 	/**

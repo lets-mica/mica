@@ -16,7 +16,7 @@
 
 @NonNullApi
 @NonNullFields
-package net.dreamlu.mica.logger;
+package net.dreamlu.mica.servlet.logger;
 
 import org.springframework.lang.NonNullApi;
 import org.springframework.lang.NonNullFields;
