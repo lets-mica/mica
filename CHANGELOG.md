@@ -1,6 +1,15 @@
 # 变更记录
 
 ## 发行版本
+### [1.0.0] - 2019-03-20
+- :bug: 修复 `webflux` 下不支持的配置。
+- :zap: 异常 event `requestUrl` 拼接 `queryString`，添加 `requestMethod` 参数。
+- :zap: 调整环境处理和请求日志，方便动态调整。
+- :zap: 调整 `base64` 验证码为直接返回 `Captcha` 对象，方便二次处理。
+- :wrench: `swagger` 服务名不使用大写，`webflux swagger` 仅仅自动配置 `Docket`。
+- :heavy_plus_sign: 添加 `lutool` 中的资源读取工具。
+- :zap: 优化文件下载。
+
 ### [0.0.1-RC4] - 2019-03-13
 - :heavy_plus_sign: webflux url 版本号和 header版本处理。
 - :heavy_plus_sign: webflux 异常统一处理，未知异常发送 Event 事件，方便监听收集。
