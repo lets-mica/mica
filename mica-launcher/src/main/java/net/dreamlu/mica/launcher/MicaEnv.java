@@ -51,8 +51,14 @@ public enum MicaEnv {
 	 * 等级
 	 */
 	private String name;
+	/**
+	 * log文件的级别
+	 */
 	private String logFileLevel;
-	private MicaLogLevel requestLogLevel;
+	/**
+	 * 请求日志级别
+	 */
+	private MicaLogLevel reqLogLevel;
 
 	/**
 	 * 获取环境列表

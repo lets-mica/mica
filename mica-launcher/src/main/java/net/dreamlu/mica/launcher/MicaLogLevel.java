@@ -97,4 +97,9 @@ public enum MicaLogLevel {
 	public boolean lte(MicaLogLevel level) {
 		return this.level <= level.level;
 	}
+
+	/**
+	 * 请求日志配置前缀
+	 */
+	public static final String REQ_LOG_PROPS_PREFIX = "mica.log.request";
 }

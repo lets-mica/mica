@@ -102,8 +102,8 @@ public class MicaApplication {
 		props.setProperty("spring.banner.location", "classpath:banner.txt");
 		// 预设请求日志级别
 		MicaEnv micaEnv = MicaEnv.of(profile);
-		// 使用 builder 的 props，优先级低
-		builder.properties(String.format("mica.request.log.level=%s", micaEnv.getRequestLogLevel().name()));
+		// 使用 builder 的 props，优先级低，mica.log.request.level=xxx
+		builder.properties(String.format("%s.level=%s", MicaLogLevel.REQ_LOG_PROPS_PREFIX, micaEnv.getReqLogLevel().name()));
 		// 加载自定义组件
 		ServiceLoader<LauncherService> loader = ServiceLoader.load(LauncherService.class);
 		// 启动组件

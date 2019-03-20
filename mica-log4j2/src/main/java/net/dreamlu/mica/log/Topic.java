@@ -14,27 +14,16 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.props;
-
-import lombok.Getter;
-import lombok.Setter;
-import net.dreamlu.mica.launcher.MicaLogLevel;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
+package net.dreamlu.mica.log;
 
 /**
- * 日志配置
+ * 日志主题
  *
  * @author L.cm
  */
-@Getter
-@Setter
-@RefreshScope
-@ConfigurationProperties(MicaLogLevel.REQ_LOG_PROPS_PREFIX)
-public class MicaRequestLogProperties {
-
+public interface Topic {
 	/**
-	 * 日志级别配置，默认：BASIC
+	 * 业务日志
 	 */
-	private MicaLogLevel level = MicaLogLevel.BASIC;
+	String BUSINESS = "BUSINESS";
 }
