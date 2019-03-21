@@ -69,13 +69,15 @@ public class MicaConverter implements Converter {
 
 	private static TypeDescriptor getTypeDescriptor(final Class<?> clazz, final String fieldName) {
 		String srcCacheKey = clazz.getName() + fieldName;
-		return TYPE_CACHE.computeIfAbsent(srcCacheKey, Try.of(k -> {
+		// 忽略抛出异常的函数，定义完整泛型，避免编译问题
+		Try.UncheckedFunction<String, TypeDescriptor> uncheckedFunction = (key) -> {
 			// 这里 property 理论上不会为 null
 			Field field = ReflectUtil.getField(clazz, fieldName);
 			if (field == null) {
 				throw new NoSuchFieldException(fieldName);
 			}
 			return new TypeDescriptor(field);
-		}));
+		};
+		return TYPE_CACHE.computeIfAbsent(srcCacheKey, Try.of(uncheckedFunction));
 	}
 }

@@ -80,9 +80,13 @@ public enum SystemCode implements IResultCode {
 
 	//-------------------------------------------------------------//
 	/**
-	 * 数据添加失败
+	 * 数据不存在
 	 */
-	DATA_NOT_FOUND(SystemCode.DATA_NOT_FOUND_CODE, "数据不存在"),
+	DATA_NOT_EXIST(SystemCode.DATA_NOT_EXIST_CODE, "数据不存在"),
+	/**
+	 * 数据已存在
+	 */
+	DATA_EXISTED(SystemCode.DATA_EXISTED_CODE, "数据已存在"),
 	/**
 	 * 数据添加失败
 	 */
@@ -115,10 +119,11 @@ public enum SystemCode implements IResultCode {
 	/**
 	 * 通用数据层 code
  	 */
-	public static final int DATA_NOT_FOUND_CODE = 100100;
-	public static final int DATA_ADD_FAILED_CODE = 100101;
-	public static final int DATA_UPDATE_FAILED_CODE = 100102;
-	public static final int DATA_DELETE_FAILED_CODE = 100103;
+	public static final int DATA_NOT_EXIST_CODE = 100100;
+	public static final int DATA_EXISTED_CODE = 100101;
+	public static final int DATA_ADD_FAILED_CODE = 100102;
+	public static final int DATA_UPDATE_FAILED_CODE = 100103;
+	public static final int DATA_DELETE_FAILED_CODE = 100104;
 
 	/**
 	 * code编码
