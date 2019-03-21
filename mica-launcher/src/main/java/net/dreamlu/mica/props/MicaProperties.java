@@ -158,9 +158,9 @@ public class MicaProperties implements EnvironmentAware, EnvironmentCapable {
 		String value = prop.get(key);
 		if (value != null) {
 			value = value.toLowerCase().trim();
-			if ("true".equals(value)) {
+			if (Boolean.TRUE.toString().equals(value)) {
 				return Boolean.TRUE;
-			} else if ("false".equals(value)) {
+			} else if (Boolean.FALSE.toString().equals(value)) {
 				return Boolean.FALSE;
 			}
 			throw new RuntimeException("The value can not parse to Boolean : " + value);
