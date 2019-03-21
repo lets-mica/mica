@@ -18,6 +18,7 @@ package net.dreamlu.mica.props;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.dreamlu.mica.core.utils.StringPool;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.EnvironmentAware;
@@ -158,9 +159,9 @@ public class MicaProperties implements EnvironmentAware, EnvironmentCapable {
 		String value = prop.get(key);
 		if (value != null) {
 			value = value.toLowerCase().trim();
-			if ("true".equals(value)) {
+			if (StringPool.TRUE.equals(value)) {
 				return Boolean.TRUE;
-			} else if ("false".equals(value)) {
+			} else if (StringPool.FALSE.equals(value)) {
 				return Boolean.FALSE;
 			}
 			throw new RuntimeException("The value can not parse to Boolean : " + value);
