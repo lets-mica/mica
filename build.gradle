@@ -1,13 +1,3 @@
-buildscript {
-    repositories {
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url "http://repo.spring.io/plugins-release" }
-    }
-    dependencies {
-        classpath "io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE"
-    }
-}
-
 ext {
     javaVersion = JavaVersion.VERSION_1_8
     springBootVersion = "2.1.3.RELEASE"
@@ -24,13 +14,12 @@ ext {
 configure(subprojects) {
     group = GROUPID
     version = VERSION
-    apply plugin: "java-library"
     apply plugin: 'signing'
     apply plugin: 'maven-publish'
-    apply plugin: "io.spring.dependency-management"
 }
 
 configure(subprojects - project(":mica-bom")) {
+    apply plugin: "java-library"
     apply from: "${rootProject.projectDir}/gradle/publish-jar.gradle"
     apply from: "${rootProject.projectDir}/gradle/quality.gradle"
     sourceCompatibility = "$javaVersion"
@@ -49,6 +38,9 @@ configure(subprojects - project(":mica-bom")) {
     }
 
     dependencies {
+        // import BOM.
+        implementation enforcedPlatform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+        implementation enforcedPlatform("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
         compileOnly "org.slf4j:slf4j-api"
         compileOnly "javax.servlet:javax.servlet-api"
         compileOnly "org.springframework:spring-web"
@@ -63,13 +55,6 @@ configure(subprojects - project(":mica-bom")) {
         testCompileOnly "org.projectlombok:lombok:$lombokVersion"
         testCompileOnly "org.springframework:spring-test"
         testImplementation "junit:junit"
-    }
-
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
-        }
     }
 
     compileJava.dependsOn(processResources)

@@ -1,5 +1,4 @@
 dependencies {
-    api project(":mica-core")
     api project(":mica-launcher")
     api "org.springframework.boot:spring-boot-starter-aop"
     compileOnly "org.springframework.cloud:spring-cloud-context"

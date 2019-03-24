@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "http://repo.spring.io/plugins-release" }
+    }
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE"
+    }
+}
+
+apply plugin: "io.spring.dependency-management"
 apply from: "${rootProject.projectDir}/gradle/publish-bom.gradle"
 
 dependencyManagement {
@@ -16,9 +27,12 @@ dependencyManagement {
         dependency "net.dreamlu:mica-cache-redis:${VERSION}"
         dependency "net.dreamlu:mica-data-mongo:${VERSION}"
         // commons
+        dependency "com.google.code.findbugs:jsr305:$findbugsVersion"
         dependency "io.springfox:springfox-swagger2:${swaggerVersion}"
         dependency "io.springfox:springfox-swagger-ui:${swaggerVersion}"
         dependency "io.springfox:springfox-bean-validators:${swaggerVersion}"
+        dependency "io.protostuff:protostuff-runtime:${protostuffVersion}"
+        dependency "io.protostuff:protostuff-core:${protostuffVersion}"
         dependency "org.projectlombok:lombok:${lombokVersion}"
     }
 }
