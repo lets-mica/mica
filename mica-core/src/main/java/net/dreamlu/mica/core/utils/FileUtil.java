@@ -162,8 +162,8 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	public static String getFileExtension(String fullName) {
 		Assert.notNull(fullName, "file fullName is null.");
 		String fileName = new File(fullName).getName();
-		int dotIndex = fileName.lastIndexOf('.');
-		return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
+		int dotIndex = fileName.lastIndexOf(CharPool.DOT);
+		return (dotIndex == -1) ? StringPool.EMPTY : fileName.substring(dotIndex + 1);
 	}
 
 	/**

@@ -186,8 +186,8 @@ public class Version {
 			: Math.min(v1sLen, v2sLen);
 
 		for (int i = 0; i < len; i++) {
-			String c1 = len > v1sLen || null == v1s[i] ? "" : v1s[i];
-			String c2 = len > v2sLen || null == v2s[i] ? "" : v2s[i];
+			String c1 = len > v1sLen || null == v1s[i] ? StringPool.EMPTY : v1s[i];
+			String c2 = len > v2sLen || null == v2s[i] ? StringPool.EMPTY : v2s[i];
 
 			int result = c1.compareTo(c2);
 			if (result != 0) {

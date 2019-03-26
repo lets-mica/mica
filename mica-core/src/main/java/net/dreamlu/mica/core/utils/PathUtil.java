@@ -18,6 +18,7 @@ package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
+import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.net.URL;
@@ -29,11 +30,6 @@ import java.net.URL;
  */
 @UtilityClass
 public class PathUtil {
-	public static final String FILE_PROTOCOL = "file";
-	public static final String JAR_PROTOCOL = "jar";
-	public static final String ZIP_PROTOCOL = "zip";
-	public static final String FILE_PROTOCOL_PREFIX = "file:";
-	public static final String JAR_FILE_SEPARATOR = "!/";
 
 	/**
 	 * 获取jar包运行时的当前目录
@@ -55,15 +51,16 @@ public class PathUtil {
 		if (url == null) { return null; }
 		String protocol = url.getProtocol();
 		String file = URLUtil.decode(url.getPath(), Charsets.UTF_8);
-		if (FILE_PROTOCOL.equals(protocol)) {
+		if (ResourceUtils.URL_PROTOCOL_FILE.equals(protocol)) {
 			return new File(file).getParentFile().getParentFile().getAbsolutePath();
-		} else if (JAR_PROTOCOL.equals(protocol) || ZIP_PROTOCOL.equals(protocol)) {
-			int ipos = file.indexOf(JAR_FILE_SEPARATOR);
+		} else if (ResourceUtils.URL_PROTOCOL_JAR.equals(protocol)
+			|| ResourceUtils.URL_PROTOCOL_ZIP.equals(protocol)) {
+			int ipos = file.indexOf(ResourceUtils.JAR_URL_SEPARATOR);
 			if (ipos > 0) {
 				file = file.substring(0, ipos);
 			}
-			if (file.startsWith(FILE_PROTOCOL_PREFIX)) {
-				file = file.substring(FILE_PROTOCOL_PREFIX.length());
+			if (file.startsWith(ResourceUtils.FILE_URL_PREFIX)) {
+				file = file.substring(ResourceUtils.FILE_URL_PREFIX.length());
 			}
 			return new File(file).getParentFile().getAbsolutePath();
 		}
