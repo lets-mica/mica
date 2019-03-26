@@ -17,6 +17,8 @@
 package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -26,6 +28,8 @@ import org.springframework.web.method.HandlerMethod;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -34,6 +38,7 @@ import java.util.function.Predicate;
  *
  * @author L.cm
  */
+@Slf4j
 @UtilityClass
 public class WebUtil extends org.springframework.web.util.WebUtils {
 
@@ -174,5 +179,34 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 		}
 		return StringUtil.isBlank(ip) ? null : StringUtil.splitTrim(ip, StringPool.COMMA)[0];
 	}
+
+
+	/**
+	 * 返回json
+	 *
+	 * @param response HttpServletResponse
+	 * @param result   结果对象
+	 */
+	public static void renderJson(HttpServletResponse response, Object result) {
+		renderJson(response, result, MediaType.APPLICATION_JSON_UTF8_VALUE);
+	}
+
+	/**
+	 * 返回json
+	 *
+	 * @param response HttpServletResponse
+	 * @param result   结果对象
+	 * @param contentType   contentType
+	 */
+	public static void renderJson(HttpServletResponse response, Object result, String contentType) {
+		response.setCharacterEncoding(Charsets.UTF_8_NAME);
+		response.setContentType(contentType);
+		try (PrintWriter out = response.getWriter()) {
+			out.append(JsonUtil.toJson(result));
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+		}
+	}
+
 }
 

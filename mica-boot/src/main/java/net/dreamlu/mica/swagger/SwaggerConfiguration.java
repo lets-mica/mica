@@ -127,13 +127,13 @@ public class SwaggerConfiguration {
 	private List<Parameter> globalHeaders() {
 		List<Parameter> pars = new ArrayList<>();
 		swaggerProperties.getHeaders().forEach(header -> {
-			Parameter token = new ParameterBuilder()
+			Parameter parameter = new ParameterBuilder()
 				.name(header.getName())
 				.description(header.getDescription())
 				.modelRef(new ModelRef("string")).parameterType("header")
 				.required(header.isRequired())
 				.build();
-			pars.add(token);
+			pars.add(parameter);
 		});
 		return pars;
 	}

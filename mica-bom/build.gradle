@@ -27,7 +27,7 @@ dependencyManagement {
         dependency "net.dreamlu:mica-cache-redis:${VERSION}"
         dependency "net.dreamlu:mica-data-mongo:${VERSION}"
         // commons
-        dependency "com.google.code.findbugs:jsr305:$findbugsVersion"
+        dependency "com.google.code.findbugs:jsr305:${findbugsVersion}"
         dependency "io.springfox:springfox-swagger2:${swaggerVersion}"
         dependency "io.springfox:springfox-swagger-ui:${swaggerVersion}"
         dependency "io.springfox:springfox-bean-validators:${swaggerVersion}"
