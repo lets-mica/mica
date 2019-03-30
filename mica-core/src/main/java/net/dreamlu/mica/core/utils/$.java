@@ -1266,7 +1266,7 @@ public class $ {
 		} else if (object instanceof Date) {
 			return DateUtil.format((Date) object, pattern);
 		} else if (object instanceof TemporalAccessor) {
-			return DateTimeUtil.format((TemporalAccessor) object, pattern);
+			return DateUtil.format((TemporalAccessor) object, pattern);
 		}
 		throw new IllegalArgumentException("未支持的对象:" + object + ",格式:" + object);
 	}
@@ -1300,7 +1300,7 @@ public class $ {
 	 * @return 格式化后的时间
 	 */
 	public static String formatDateTime(TemporalAccessor temporal) {
-		return DateTimeUtil.formatDateTime(temporal);
+		return DateUtil.formatDateTime(temporal);
 	}
 
 	/**
@@ -1310,7 +1310,7 @@ public class $ {
 	 * @return 格式化后的时间
 	 */
 	public static String formatDate(TemporalAccessor temporal) {
-		return DateTimeUtil.formatDate(temporal);
+		return DateUtil.formatDate(temporal);
 	}
 
 	/**
@@ -1320,7 +1320,7 @@ public class $ {
 	 * @return 格式化后的时间
 	 */
 	public static String formatTime(TemporalAccessor temporal) {
-		return DateTimeUtil.formatTime(temporal);
+		return DateUtil.formatTime(temporal);
 	}
 
 	/**
@@ -1362,7 +1362,7 @@ public class $ {
 	 * @return 时间
 	 */
 	public static LocalDate parseDate(String dateStr) {
-		return DateTimeUtil.parseDate(dateStr, DateTimeUtil.DATE_FORMAT);
+		return DateTimeUtil.parseDate(dateStr, DateUtil.DATE_FORMATTER);
 	}
 
 	/**

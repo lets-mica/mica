@@ -1,6 +1,7 @@
 package net.dreamlu.mica.test.utils;
 
 import net.dreamlu.mica.core.utils.DateTimeUtil;
+import net.dreamlu.mica.core.utils.DateUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ public class DateTimeUtilTest {
 
 	@Test
 	public void test() {
-		TemporalAccessor temporalAccessor = DateTimeUtil.parseDateTime("2018-11-11 11:11:11", DateTimeUtil.DATETIME_FORMAT);
+		TemporalAccessor temporalAccessor = DateTimeUtil.parseDateTime("2018-11-11 11:11:11", DateUtil.DATETIME_FORMATTER);
 		Assert.assertTrue(temporalAccessor instanceof LocalDateTime);
 	}
 }

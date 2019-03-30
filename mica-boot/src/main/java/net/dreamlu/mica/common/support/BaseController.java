@@ -158,7 +158,6 @@ public abstract class BaseController {
 	 * @return {ResponseEntity}
 	 */
 	protected ResponseEntity<Resource> download(Resource resource, String fileName) {
-		// 避免空指针
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 		String encodeFileName = UriUtils.encode(fileName, Charsets.UTF_8);

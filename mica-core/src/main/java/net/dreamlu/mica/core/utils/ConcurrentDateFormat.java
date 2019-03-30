@@ -18,11 +18,10 @@ package net.dreamlu.mica.core.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Queue;
-import java.util.TimeZone;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * 参考tomcat8中的并发DateFormat
@@ -34,29 +33,31 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author L.cm
  */
 public class ConcurrentDateFormat {
-	private final String format;
+	private final String pattern;
 	private final Locale locale;
 	private final TimeZone timezone;
 	private final Queue<SimpleDateFormat> queue = new ConcurrentLinkedQueue<>();
+	private final static ConcurrentMap<String, ConcurrentDateFormat> CACHE = new ConcurrentHashMap<>(3);
 
-	private ConcurrentDateFormat(String format, Locale locale, TimeZone timezone) {
-		this.format = format;
+	private ConcurrentDateFormat(String pattern, Locale locale, TimeZone timezone) {
+		this.pattern = pattern;
 		this.locale = locale;
 		this.timezone = timezone;
 		SimpleDateFormat initial = createInstance();
 		queue.add(initial);
 	}
 
-	public static ConcurrentDateFormat of(String format) {
-		return new ConcurrentDateFormat(format, Locale.getDefault(), TimeZone.getDefault());
+	public static ConcurrentDateFormat of(String pattern) {
+		// 直接使用 pattern 格式化的场景比较多，每次 new 性能太差
+		return CACHE.computeIfAbsent(pattern, (key) -> new ConcurrentDateFormat(key, Locale.getDefault(), TimeZone.getDefault()));
 	}
 
-	public static ConcurrentDateFormat of(String format, TimeZone timezone) {
-		return new ConcurrentDateFormat(format, Locale.getDefault(), timezone);
+	public static ConcurrentDateFormat of(String pattern, TimeZone timezone) {
+		return new ConcurrentDateFormat(pattern, Locale.getDefault(), timezone);
 	}
 
-	public static ConcurrentDateFormat of(String format, Locale locale, TimeZone timezone) {
-		return new ConcurrentDateFormat(format, locale, timezone);
+	public static ConcurrentDateFormat of(String pattern, Locale locale, TimeZone timezone) {
+		return new ConcurrentDateFormat(pattern, locale, timezone);
 	}
 
 	public String format(Date date) {
@@ -80,7 +81,7 @@ public class ConcurrentDateFormat {
 	}
 
 	private SimpleDateFormat createInstance() {
-		SimpleDateFormat sdf = new SimpleDateFormat(format, locale);
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern, locale);
 		sdf.setTimeZone(timezone);
 		return sdf;
 	}
