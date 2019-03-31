@@ -30,20 +30,26 @@ import java.util.List;
  */
 @UtilityClass
 public class RuntimeUtil {
+	private static volatile int pId = -1;
+	private static final int CPU_NUM = Runtime.getRuntime().availableProcessors();
 
 	/**
 	 * 获得当前进程的PID
-	 * 
+	 *
 	 * 当失败时返回-1
 	 *
 	 * @return pid
 	 */
 	public static int getPId() {
+		if (pId > 0) {
+			return pId;
+		}
 		// something like '<pid>@<hostname>', at least in SUN / Oracle JVMs
 		final String jvmName = ManagementFactory.getRuntimeMXBean().getName();
 		final int index = jvmName.indexOf(CharPool.AT);
 		if (index > 0) {
-			return NumberUtil.toInt(jvmName.substring(0, index), -1);
+			pId = NumberUtil.toInt(jvmName.substring(0, index), -1);
+			return pId;
 		}
 		return -1;
 	}
@@ -74,7 +80,7 @@ public class RuntimeUtil {
 	 * @return cpu count
 	 */
 	public static int getCpuNum() {
-		return Runtime.getRuntime().availableProcessors();
+		return CPU_NUM;
 	}
 
 }
