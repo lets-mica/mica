@@ -1,6 +1,13 @@
 # 变更记录
 
 ## 发行版本
+### [1.0.1] - 2019-04-03
+- :ok_hand: 处理几处 P3C 代码检查问题。@冷冷
+- :zap: 优化泛型，避免部分环境下的编译问题。
+- :sparkles: 添加 lutool 中的 renderJson。
+- :zap: 优化 dateUtils 性能。
+- :zap: 优化 RuntimeUtil，提高性能。
+
 ### [1.0.0] - 2019-03-20
 - :bug: 修复 `webflux` 下不支持的配置。
 - :zap: 异常 event `requestUrl` 拼接 `queryString`，添加 `requestMethod` 参数。
