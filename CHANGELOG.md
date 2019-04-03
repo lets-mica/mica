@@ -7,6 +7,7 @@
 - :sparkles: 添加 lutool 中的 renderJson。
 - :zap: 优化 dateUtils 性能。
 - :zap: 优化 RuntimeUtil，提高性能。
+- :zap: 升级 gradle 到 `5.3.1`。
 
 ### [1.0.0] - 2019-03-20
 - :bug: 修复 `webflux` 下不支持的配置。
