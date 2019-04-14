@@ -3,13 +3,18 @@
 
 `Mica`，Spring Cloud 微服务开发核心包，基于 `Spring boot 2.x`，支持 `web` 和 `webflux`。
 
-想要了解更多可加入【如梦技术】QQ群：`479710041`
-
-`示例项目：`https://github.com/lets-mica/mica-example
-
 ![犬夜叉-云母](docs/img/mica-001.jpeg)
 
+想要了解更多可加入【如梦技术】QQ群：`479710041`。
+
 ## 模块划分
+### mica-auto
+1. 生成 `spring.factories`
+2. 生成 `spring-devtools.properties`
+3. 生成 `FeignClient` 到 `spring.factories` 中，供 `mica-pro` 中完成 `Feign` 自动化配置。
+
+`源码地址`：[https://gitee.com/596392912/mica-auto](https://gitee.com/596392912/mica-auto)
+
 ### mica-core
 - 常用工具包，基于 `Spring-core` 扩展增强，无其他依赖。
 - 增强 cglib Bean copy，高性能（接近直接get set），支持链式 bean，支持类型转换 。
@@ -46,6 +51,9 @@
 ### mica-captcha
 - 验证码，支持 `webflux` 和 `serlvet`。
 
+### mica-pro
+- 对微服务的扩展和增强，欢迎加入`如梦技术 VIP`一起探讨：https://git.dreamlu.net
+
 ## 已知问题
 lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861
 
@@ -66,30 +74,24 @@ lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1
 `注意`：若禁止条款被发现有权追讨19999的授权费。
 
 ## 授权用户
-- `pigx` 宇宙最强微服务（架构师必备）：https://pig4cloud.com
-
-- `bladex` 完整的线上解决方案（企业生产必备）：https://bladex.vip
-
-## mica-pro
-对微服务的扩展和增强，欢迎加入`如梦技术 VIP`一起探讨：https://git.dreamlu.net
-
-## 鸣谢
-感谢 `如梦技术VIP群` 小伙伴们的支持。
+* `pigx` 宇宙最强微服务（架构师必备）：https://pig4cloud.com
+* `bladex` 完整的线上解决方案（企业生产必备）：https://bladex.vip
 
 ## 相关链接
-- mica 源码 Github：[https://github.com/lets-mica](https://github.com/lets-mica)
-
-- mica 源码 Gitee（码云）：[https://gitee.com/596392912/mica](https://gitee.com/596392912/mica)
-
-- 文档地址（官网）：[https://www.dreamlu.net/docs/](https://www.dreamlu.net/docs/)
-
-- 文档地址（语雀-可关注订阅）：[https://www.yuque.com/dreamlu/mica](https://www.yuque.com/dreamlu/mica)
+* `示例项目`：[https://github.com/lets-mica/mica-example](https://github.com/lets-mica/mica-example)
+* mica 源码 Github：[https://github.com/lets-mica](https://github.com/lets-mica)
+* mica 源码 Gitee（码云）：[https://gitee.com/596392912/mica](https://gitee.com/596392912/mica)
+* 文档地址（官网）：[https://www.dreamlu.net/docs/](https://www.dreamlu.net/docs/)
+* 文档地址（语雀-可关注订阅）：[https://www.yuque.com/dreamlu/mica](https://www.yuque.com/dreamlu/mica)
 
 ## 开源推荐
 - `Avue` 一款基于vue可配置化的神奇框架：[https://gitee.com/smallweigit/avue](https://gitee.com/smallweigit/avue)
 - `pig` 宇宙最强微服务（架构师必备）：[https://gitee.com/log4j/pig](https://gitee.com/log4j/pig)
 - `SpringBlade` 完整的线上解决方案（企业开发必备）：[https://gitee.com/smallc/SpringBlade](https://gitee.com/smallc/SpringBlade)
 - `IJPay` 支付SDK让支付触手可及：[https://gitee.com/javen205/IJPay](https://gitee.com/javen205/IJPay)
+
+## 鸣谢
+感谢 `如梦技术VIP群` 小伙伴们的支持。
 
 ## 微信公众号
 

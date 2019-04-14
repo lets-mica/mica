@@ -34,8 +34,7 @@ public class ReactiveRequestContextHolder {
 	 */
 	public static Mono<ServerHttpRequest> getRequest() {
 		return Mono.subscriberContext()
-			.map(ctx -> ctx.get(CONTEXT_KEY))
-			.cast(ServerHttpRequest.class);
+			.map(ctx -> ctx.get(CONTEXT_KEY));
 	}
 
 }
