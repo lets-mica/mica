@@ -52,7 +52,7 @@
 - 验证码，支持 `webflux` 和 `serlvet`。
 
 ### mica-pro
-- 对微服务的扩展和增强，欢迎加入`如梦技术 VIP`一起探讨：https://git.dreamlu.net
+- 对微服务的扩展和增强，欢迎加入`如梦技术 VIP`一起探讨：[https://www.dreamlu.net/vip/](https://www.dreamlu.net/vip/)
 
 ## 已知问题
 lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861
