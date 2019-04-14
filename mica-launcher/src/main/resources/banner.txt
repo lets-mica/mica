@@ -1,11 +1,11 @@
 
-${AnsiColor.BRIGHT_BLUE}'##::::'##:${AnsiColor.RED}'####::'######:::::'###::::
-${AnsiColor.BRIGHT_BLUE} ###::'###:${AnsiColor.RED}. ##::'##... ##:::'## ##:::
-${AnsiColor.BRIGHT_BLUE} ####'####:${AnsiColor.RED}: ##:: ##:::..:::'##:. ##::
-${AnsiColor.BRIGHT_BLUE} ## ### ##:${AnsiColor.RED}: ##:: ##:::::::'##:::. ##:
-${AnsiColor.BRIGHT_BLUE} ##. #: ##:${AnsiColor.RED}: ##:: ##::::::: #########:
-${AnsiColor.BRIGHT_BLUE} ##:.:: ##:${AnsiColor.RED}: ##:: ##::: ##: ##.... ##:
-${AnsiColor.BRIGHT_BLUE} ##:::: ##:${AnsiColor.RED}'####:. ######:: ##:::: ##:
-${AnsiColor.BRIGHT_BLUE}..:::::..::${AnsiColor.RED}....:::......:::..:::::..::
+\${AnsiColor.BRIGHT_BLUE}'##::::'##:\${AnsiColor.RED}'####::'######:::::'###::::
+\${AnsiColor.BRIGHT_BLUE} ###::'###:\${AnsiColor.RED}. ##::'##... ##:::'## ##:::
+\${AnsiColor.BRIGHT_BLUE} ####'####:\${AnsiColor.RED}: ##:: ##:::..:::'##:. ##::
+\${AnsiColor.BRIGHT_BLUE} ## ### ##:\${AnsiColor.RED}: ##:: ##:::::::'##:::. ##:
+\${AnsiColor.BRIGHT_BLUE} ##. #: ##:\${AnsiColor.RED}: ##:: ##::::::: #########:
+\${AnsiColor.BRIGHT_BLUE} ##:.:: ##:\${AnsiColor.RED}: ##:: ##::: ##: ##.... ##:
+\${AnsiColor.BRIGHT_BLUE} ##:::: ##:\${AnsiColor.RED}'####:. ######:: ##:::: ##:
+\${AnsiColor.BRIGHT_BLUE}..:::::..::\${AnsiColor.RED}....:::......:::..:::::..::
 
-${AnsiColor.BRIGHT_BLUE}:: Mica 🤓🤓🤓 :: ${spring.application.name}::${AnsiColor.RED}${mica.env}${AnsiColor.BRIGHT_BLUE} 🎉 🎉 🎉 :: Running Spring Boot ${spring-boot.version} :: ${AnsiColor.DEFAULT}
+\${AnsiColor.BRIGHT_BLUE}:: \${spring.application.name}::\${AnsiColor.RED}\${mica.env}\${AnsiColor.BRIGHT_BLUE} 🎉 🎉 🎉 :: Running Spring Boot \${spring-boot.version} :: Mica ${micaVersion} 🏃🏃🏃 \${AnsiColor.DEFAULT}

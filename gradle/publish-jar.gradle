@@ -1,7 +1,10 @@
 jar {
     afterEvaluate {
         manifest {
-            attributes 'Implementation-Version': version
+            attributes["Implementation-Title"] = project.name
+            attributes["Implementation-Version"] = project.version
+            attributes["Automatic-Module-Name"] = project.name.replace('-', '.')  // for Jigsaw
+            attributes["Created-By"] = "${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
         }
     }
 }

@@ -19,8 +19,9 @@ package net.dreamlu.mica.launcher;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 项目启动器，预制的环境变量
@@ -66,12 +67,9 @@ public enum MicaEnv {
 	 * @return 环境列表
 	 */
 	public static List<String> getEnvList() {
-		List<String> envList = new ArrayList<>();
-		MicaEnv[] values = MicaEnv.values();
-		for (MicaEnv micaEnv : values) {
-			envList.add(micaEnv.name);
-		}
-		return envList;
+		return Arrays.stream(MicaEnv.values())
+			.map(MicaEnv::getName)
+			.collect(Collectors.toList());
 	}
 
 	/**

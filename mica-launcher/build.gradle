@@ -4,3 +4,8 @@ dependencies {
     compileOnly "org.springframework.cloud:spring-cloud-context"
     annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
 }
+
+processResources {
+    // 将 mica 版本写入 banner.txt
+    expand([micaVersion: project.version])
+}
