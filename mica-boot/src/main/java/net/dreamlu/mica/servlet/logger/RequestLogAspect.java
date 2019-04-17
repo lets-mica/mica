@@ -25,6 +25,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
@@ -52,6 +53,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @RequiredArgsConstructor
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+@ConditionalOnProperty(value = MicaLogLevel.REQ_LOG_PROPS_PREFIX + ".enabled", havingValue = "true", matchIfMissing = true)
 public class RequestLogAspect {
 	private final MicaRequestLogProperties properties;
 
@@ -123,19 +125,19 @@ public class RequestLogAspect {
 		String requestMethod = request.getMethod();
 
 		// 构建成一条长 日志，避免并发下日志错乱
-		StringBuilder logBuilder = new StringBuilder(500);
+		StringBuilder beforeReqLog = new StringBuilder(300);
 		// 日志参数
-		List<Object> logArgs = new ArrayList<>();
+		List<Object> beforeReqArgs = new ArrayList<>();
 		// 打印路由
-		logBuilder.append("\n===> {}: {}");
-		logArgs.add(requestMethod);
-		logArgs.add(requestURI);
+		beforeReqLog.append("\n===> {}: {}");
+		beforeReqArgs.add(requestMethod);
+		beforeReqArgs.add(requestURI);
 		// 请求参数
 		if (paraMap.isEmpty()) {
-			logBuilder.append("\n");
+			beforeReqLog.append("\n");
 		} else {
-			logBuilder.append(" Parameters: {}\n");
-			logArgs.add(JsonUtil.toJson(paraMap));
+			beforeReqLog.append(" Parameters: {}\n");
+			beforeReqArgs.add(JsonUtil.toJson(paraMap));
 		}
 		// 打印请求头
 		if (MicaLogLevel.HEADERS.lte(level)) {
@@ -143,28 +145,33 @@ public class RequestLogAspect {
 			while (headers.hasMoreElements()) {
 				String headerName = headers.nextElement();
 				String headerValue = request.getHeader(headerName);
-				logBuilder.append("===Headers===  {} : {}\n");
-				logArgs.add(headerName);
-				logArgs.add(headerValue);
+				beforeReqLog.append("===Headers===  {} : {}\n");
+				beforeReqArgs.add(headerName);
+				beforeReqArgs.add(headerValue);
 			}
 		}
 		// 打印执行时间
 		long startNs = System.nanoTime();
+		log.info(beforeReqLog.toString(), beforeReqArgs.toArray());
+		// aop 执行后的日志
+		StringBuilder afterReqLog = new StringBuilder(200);
+		// 日志参数
+		List<Object> afterReqArgs = new ArrayList<>();
 		try {
 			Object result = point.proceed();
 			// 打印返回结构体
 			if (MicaLogLevel.BODY.lte(level)) {
-				logBuilder.append("===Result===  {}\n");
-				logArgs.add(JsonUtil.toJson(result));
+				afterReqLog.append("\n===Result===  {}");
+				afterReqArgs.add(JsonUtil.toJson(result));
 			}
 			return result;
 		} finally {
 			long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
-			logBuilder.append("<=== {}: {} ({} ms)");
-			logArgs.add(requestMethod);
-			logArgs.add(requestURI);
-			logArgs.add(tookMs);
-			log.info(logBuilder.toString(), logArgs.toArray());
+			afterReqLog.append("\n<=== {}: {} ({} ms)");
+			afterReqArgs.add(requestMethod);
+			afterReqArgs.add(requestURI);
+			afterReqArgs.add(tookMs);
+			log.info(afterReqLog.toString(), afterReqArgs.toArray());
 		}
 	}
 

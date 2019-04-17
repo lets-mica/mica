@@ -1,0 +1,11 @@
+{
+  "properties": [
+    {
+      "name": "mica.log.request.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否开启 Spring boot 控制器请求日志(方便代码调试).",
+      "defaultValue": "true"
+    }
+  ]
+}
+

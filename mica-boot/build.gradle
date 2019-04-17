@@ -3,8 +3,9 @@ dependencies {
     api "org.springframework.boot:spring-boot-starter-aop"
     compileOnly "org.springframework.cloud:spring-cloud-context"
     implementation "io.springfox:springfox-swagger2:${swaggerVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-webflux"
     implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-webflux"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
     annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
     testImplementation project(":mica-boot-test")
 }
