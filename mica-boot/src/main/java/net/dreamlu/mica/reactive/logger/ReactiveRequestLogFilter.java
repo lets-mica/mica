@@ -18,12 +18,9 @@ package net.dreamlu.mica.reactive.logger;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.dreamlu.mica.core.utils.StringPool;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.launcher.MicaLogLevel;
 import net.dreamlu.mica.props.MicaRequestLogProperties;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.MultiValueMap;
@@ -49,11 +46,10 @@ import java.util.concurrent.TimeUnit;
  * @author L.cm
  */
 @Slf4j
-@Configuration
 @RequiredArgsConstructor
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 public class ReactiveRequestLogFilter implements WebFilter {
 	private final MicaRequestLogProperties properties;
+	private final RequestLogExclusiveRule exclusiveRule;
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
@@ -67,7 +63,7 @@ public class ReactiveRequestLogFilter implements WebFilter {
 		// 打印请求路径
 		String path = request.getPath().pathWithinApplication().value();
 		// 排除请求
-		if (excludedRequestPath(path)) {
+		if (exclusiveRule.excluded(path)) {
 			return chain.filter(exchange);
 		}
 
@@ -75,50 +71,36 @@ public class ReactiveRequestLogFilter implements WebFilter {
 		String requestURI = UriComponentsBuilder.fromPath(path).queryParams(queryParams).build().toUriString();
 
 		// 构建成一条长 日志，避免并发下日志错乱
-		StringBuilder logBuilder = new StringBuilder(500);
+		StringBuilder beforeReqLog = new StringBuilder(300);
 		// 日志参数
-		List<Object> logArgs = new ArrayList<>();
+		List<Object> beforeReqArgs = new ArrayList<>();
 		// 打印路由
-		logBuilder.append("\n===> {}: {}\n");
+		beforeReqLog.append("\n===> {}: {}\n");
 		// 参数
 		String requestMethod = request.getMethodValue();
-		logArgs.add(requestMethod);
-		logArgs.add(requestURI);
+		beforeReqArgs.add(requestMethod);
+		beforeReqArgs.add(requestURI);
 
 		// 打印请求头
 		if (MicaLogLevel.HEADERS.lte(level)) {
 			HttpHeaders headers = request.getHeaders();
 			headers.forEach((headerName, headerValue) -> {
-				logBuilder.append("===Headers===  {} : {}\n");
-				logArgs.add(headerName);
-				logArgs.add(StringUtil.join(headerValue));
+				beforeReqLog.append("===Headers===  {} : {}\n");
+				beforeReqArgs.add(headerName);
+				beforeReqArgs.add(StringUtil.join(headerValue));
 			});
 		}
 		// 打印执行时间
 		long startNs = System.nanoTime();
+		log.info(beforeReqLog.toString(), beforeReqArgs.toArray());
 		try {
 			return chain.filter(exchange);
 		} finally {
 			long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
 			// webflux，这里打印的时间没太大意义
-			logBuilder.append("<=== {}: {} ({} ms)");
-			logArgs.add(requestMethod);
-			logArgs.add(requestURI);
-			logArgs.add(tookMs);
-			log.info(logBuilder.toString(), logArgs.toArray());
+			log.info("\n<=== {}: {} ({} ms)", requestMethod, requestURI, tookMs);
 		}
 
 	}
 
-	/**
-	 * 需要排除的部分请求
-	 *
-	 * <p>
-	 * 规范：
-	 * 1. 含有 . 而非 .json，排除掉。
-	 * </p>
-	 */
-	private boolean excludedRequestPath(String path) {
-		return path.contains(StringPool.DOT) && !path.toLowerCase().endsWith(".json");
-	}
 }
