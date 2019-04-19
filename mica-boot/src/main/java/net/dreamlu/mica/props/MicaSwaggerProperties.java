@@ -36,6 +36,10 @@ import java.util.List;
 public class MicaSwaggerProperties {
 
 	/**
+	 * 是否开启 swagger，默认：true
+	 */
+	private boolean enabled = true;
+	/**
 	 * 标题，默认：XXX服务
 	 */
 	private String title;

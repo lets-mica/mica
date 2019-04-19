@@ -22,6 +22,7 @@ import net.dreamlu.mica.props.MicaProperties;
 import net.dreamlu.mica.props.MicaSwaggerProperties;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -47,6 +48,7 @@ import java.util.Optional;
  */
 @Configuration
 @ConditionalOnClass(Docket.class)
+@ConditionalOnProperty(value = "mica.swagger.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter(MicaSwaggerProperties.class)
 @AllArgsConstructor
 public class SwaggerConfiguration {

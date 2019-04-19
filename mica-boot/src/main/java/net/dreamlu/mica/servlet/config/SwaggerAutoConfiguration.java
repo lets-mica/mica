@@ -17,6 +17,7 @@
 package net.dreamlu.mica.servlet.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -33,6 +34,7 @@ import springfox.documentation.swagger2.configuration.Swagger2DocumentationConfi
 @EnableSwagger2
 @ConditionalOnClass(Swagger2DocumentationConfiguration.class)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+@ConditionalOnProperty(value = "mica.swagger.enabled", havingValue = "true", matchIfMissing = true)
 public class SwaggerAutoConfiguration implements WebMvcConfigurer {
 
 	@Override
