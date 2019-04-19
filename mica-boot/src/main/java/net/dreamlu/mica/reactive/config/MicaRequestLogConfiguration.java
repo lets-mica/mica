@@ -28,9 +28,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.AntPathMatcher;
 
 /**
  * mica webflux 日志拦截器
@@ -74,12 +75,22 @@ public class MicaRequestLogConfiguration {
 	@ConditionalOnClass(WebEndpointProperties.class)
 	@RequiredArgsConstructor
 	public static class WebEndpointRequestLogExclusiveRule extends DefaultRequestLogExclusiveRule {
+		private static final String STATIC_PATH_PATTERN = "/**";
+		private static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
 		private final WebEndpointProperties properties;
+		private final WebFluxProperties webFluxProperties;
 
 		@Override
 		public boolean excluded(String path) {
+			// 对 /actuator 排除
 			String actuatorBasePath = properties.getBasePath();
 			if (StringUtil.isNotBlank(actuatorBasePath) && path.startsWith(actuatorBasePath)) {
+				return true;
+			}
+			// 如果设置了静态目录 例如：/static, 对静态文件排除
+			String staticPathPattern = webFluxProperties.getStaticPathPattern();
+			if (!STATIC_PATH_PATTERN.equals(staticPathPattern) &&
+				PATH_MATCHER.match(staticPathPattern, path)) {
 				return true;
 			}
 			return super.excluded(path);
