@@ -479,6 +479,16 @@ public class DateUtil {
 	/**
 	 * 转换成java8 时间
 	 *
+	 * @param instant Instant
+	 * @return LocalDateTime
+	 */
+	public static LocalDateTime fromInstant(final Instant instant) {
+		return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+	}
+
+	/**
+	 * 转换成java8 时间
+	 *
 	 * @param date Date
 	 * @return LocalDateTime
 	 */
