@@ -58,6 +58,7 @@ public class MicaRequestLogConfiguration {
 	 */
 	@Configuration
 	@ConditionalOnMissingBean(RequestLogExclusiveRule.class)
+	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 	public static class DefaultRequestLogExclusiveRule implements RequestLogExclusiveRule {
 
 		@Override
@@ -73,6 +74,7 @@ public class MicaRequestLogConfiguration {
 	 */
 	@Configuration
 	@ConditionalOnClass(WebEndpointProperties.class)
+	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 	@RequiredArgsConstructor
 	public static class WebEndpointRequestLogExclusiveRule extends DefaultRequestLogExclusiveRule {
 		private static final String STATIC_PATH_PATTERN = "/**";
