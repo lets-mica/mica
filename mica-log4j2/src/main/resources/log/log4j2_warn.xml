@@ -33,6 +33,7 @@
         <AsyncLogger name="springfox.bean.validators" level="ERROR"/>
         <!-- 基础组件 -->
         <AsyncLogger name="RocketmqClient" level="ERROR"/>
+        <AsyncLogger name="com.alibaba.nacos" level="ERROR"/>
         <!-- mica日志 -->
         <AsyncLogger name="net.dreamlu.mica" level="ERROR"/>
         <!-- 请求日志打印，全部使用info，方便动态调整 -->
