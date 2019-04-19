@@ -35,6 +35,7 @@
         <AsyncLogger name="springfox.bean.validators" level="ERROR"/>
         <!-- 基础组件 -->
         <AsyncLogger name="RocketmqClient" level="WARN"/>
+        <AsyncLogger name="com.alibaba.nacos" level="ERROR"/>
         <!-- mongo no sql -->
         <AsyncLogger name="org.springframework.data.mongodb.core" level="DEBUG"/>
         <!-- mica日志 -->
