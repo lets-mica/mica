@@ -74,8 +74,9 @@ public class ReactiveRequestLogFilter implements WebFilter {
 		StringBuilder beforeReqLog = new StringBuilder(300);
 		// 日志参数
 		List<Object> beforeReqArgs = new ArrayList<>();
+		beforeReqLog.append("\n\n================  Request Start  ================\n");
 		// 打印路由
-		beforeReqLog.append("\n===> {}: {}\n");
+		beforeReqLog.append("===> {}: {}\n");
 		// 参数
 		String requestMethod = request.getMethodValue();
 		beforeReqArgs.add(requestMethod);
@@ -90,15 +91,21 @@ public class ReactiveRequestLogFilter implements WebFilter {
 				beforeReqArgs.add(StringUtil.join(headerValue));
 			});
 		}
+		beforeReqLog.append("================   Request End   ================\n");
 		// 打印执行时间
 		long startNs = System.nanoTime();
 		log.info(beforeReqLog.toString(), beforeReqArgs.toArray());
+		// filter 执行后的日志
+		StringBuilder afterReqLog = new StringBuilder(200);
+		afterReqLog.append("\n\n================  Response Start  ================\n");
 		try {
 			return chain.filter(exchange);
 		} finally {
 			long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
 			// webflux，这里打印的时间没太大意义
-			log.info("\n<=== {}: {} ({} ms)", requestMethod, requestURI, tookMs);
+			afterReqLog.append("<=== {}: {} ({} ms)\n");
+			afterReqLog.append("================   Response End   ================\n");
+			log.info(afterReqLog.toString(), requestMethod, requestURI, tookMs);
 		}
 
 	}

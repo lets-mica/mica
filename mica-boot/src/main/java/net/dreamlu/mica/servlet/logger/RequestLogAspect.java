@@ -128,8 +128,9 @@ public class RequestLogAspect {
 		StringBuilder beforeReqLog = new StringBuilder(300);
 		// 日志参数
 		List<Object> beforeReqArgs = new ArrayList<>();
+		beforeReqLog.append("\n\n================  Request Start  ================\n");
 		// 打印路由
-		beforeReqLog.append("\n===> {}: {}");
+		beforeReqLog.append("===> {}: {}");
 		beforeReqArgs.add(requestMethod);
 		beforeReqArgs.add(requestURI);
 		// 请求参数
@@ -150,6 +151,7 @@ public class RequestLogAspect {
 				beforeReqArgs.add(headerValue);
 			}
 		}
+		beforeReqLog.append("================   Request End   ================\n");
 		// 打印执行时间
 		long startNs = System.nanoTime();
 		log.info(beforeReqLog.toString(), beforeReqArgs.toArray());
@@ -157,20 +159,22 @@ public class RequestLogAspect {
 		StringBuilder afterReqLog = new StringBuilder(200);
 		// 日志参数
 		List<Object> afterReqArgs = new ArrayList<>();
+		afterReqLog.append("\n\n================  Response Start  ================\n");
 		try {
 			Object result = point.proceed();
 			// 打印返回结构体
 			if (MicaLogLevel.BODY.lte(level)) {
-				afterReqLog.append("\n===Result===  {}");
+				afterReqLog.append("===Result===  {}\n");
 				afterReqArgs.add(JsonUtil.toJson(result));
 			}
 			return result;
 		} finally {
 			long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
-			afterReqLog.append("\n<=== {}: {} ({} ms)");
+			afterReqLog.append("<=== {}: {} ({} ms)\n");
 			afterReqArgs.add(requestMethod);
 			afterReqArgs.add(requestURI);
 			afterReqArgs.add(tookMs);
+			afterReqLog.append("================   Response End   ================\n");
 			log.info(afterReqLog.toString(), afterReqArgs.toArray());
 		}
 	}
