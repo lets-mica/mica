@@ -17,11 +17,12 @@
 package net.dreamlu.mica.swagger;
 
 import io.swagger.annotations.Api;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.props.MicaProperties;
 import net.dreamlu.mica.props.MicaSwaggerProperties;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,10 +48,11 @@ import java.util.Optional;
  * @author L.cm
  */
 @Configuration
+@RequiredArgsConstructor
+@AutoConfigureAfter(MicaSwaggerProperties.class)
 @ConditionalOnClass(Docket.class)
 @ConditionalOnProperty(value = "mica.swagger.enabled", havingValue = "true", matchIfMissing = true)
-@AutoConfigureAfter(MicaSwaggerProperties.class)
-@AllArgsConstructor
+@ConditionalOnMissingClass("org.springframework.cloud.gateway.config.GatewayAutoConfiguration")
 public class SwaggerConfiguration {
 	private final MicaProperties micaProperties;
 	private final MicaSwaggerProperties swaggerProperties;
