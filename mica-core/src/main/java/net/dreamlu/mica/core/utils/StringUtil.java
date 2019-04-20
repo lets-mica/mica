@@ -317,15 +317,15 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		long lsb = random.nextLong();
 		long msb = random.nextLong();
 		byte[] buf = new byte[32];
-		formatUnsignedLong0(lsb, buf, 20, 12);
-		formatUnsignedLong0(lsb >>> 48, buf, 16, 4);
-		formatUnsignedLong0(msb, buf, 12, 4);
-		formatUnsignedLong0(msb >>> 16, buf, 8,  4);
-		formatUnsignedLong0(msb >>> 32, buf, 0,  8);
+		formatUnsignedLong(lsb, buf, 20, 12);
+		formatUnsignedLong(lsb >>> 48, buf, 16, 4);
+		formatUnsignedLong(msb, buf, 12, 4);
+		formatUnsignedLong(msb >>> 16, buf, 8,  4);
+		formatUnsignedLong(msb >>> 32, buf, 0,  8);
 		return new String(buf, Charsets.UTF_8);
 	}
 
-	private static void formatUnsignedLong0(long val, byte[] buf, int offset, int len) {
+	private static void formatUnsignedLong(long val, byte[] buf, int offset, int len) {
 		int charPos = offset + len;
 		int radix = 1 << 4;
 		int mask = radix - 1;
