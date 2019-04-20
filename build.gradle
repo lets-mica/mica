@@ -1,9 +1,9 @@
 ext {
     javaVersion = JavaVersion.VERSION_1_8
-    springVersion = "5.1.5.RELEASE"
-    springBootVersion = "2.1.3.RELEASE"
+    springBootVersion = "2.1.4.RELEASE"
     springCloudVersion = "Greenwich.RELEASE"
     micaAutoVersion = "1.0.2"
+    apolloVersion = "1.3.0"
     protostuffVersion = "1.6.0"
     disruptorVersion = "3.4.2"
     swaggerVersion = "2.9.2"

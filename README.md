@@ -9,9 +9,9 @@
 
 ## 模块划分
 ### mica-auto
-1. 生成 `spring.factories`
-2. 生成 `spring-devtools.properties`
-3. 生成 `FeignClient` 到 `spring.factories` 中，供 `mica-pro` 中完成 `Feign` 自动化配置。
+1. 编译期生成 `spring.factories`。
+2. 编译期生成 `spring-devtools.properties`。
+3. 编译期生成 `FeignClient` 信息到 `spring.factories` 中，供 `mica-pro` 中完成 `Feign` 自动化配置。
 
 `源码地址`：[https://gitee.com/596392912/mica-auto](https://gitee.com/596392912/mica-auto)
 
@@ -51,8 +51,21 @@
 ### mica-captcha
 - 验证码，支持 `webflux` 和 `serlvet`。
 
-### mica-pro
-- 对微服务的扩展和增强，欢迎加入`如梦技术 VIP`一起探讨：[https://www.dreamlu.net/vip/](https://www.dreamlu.net/vip/)
+### mica-cloud
+- Feign 自动降级、header 透传、版本处理，结合 `mica-auto` 自动化配置。
+- RestTemplate自动配置，基于okhttp增强，添加请求日志和Header传递。
+- hystrix 熔断器增强，支持 header 透传、当前用户获取和透传。
+- 本地开发不注册到 Eureka 服务中，避免影响联调环境。
+- Apollo Properties 配置刷新。
+
+### mica-error-catch-client
+- 未知异常收集到 spring-cloud-stream 中，方便统一监听处理。
+
+### mica-cache-redis
+- redis cache name # 自动配置超时时间。
+
+### mica-data-mongo
+- mongo 复杂 tree 和 jsonNode 转换处理。
 
 ## 已知问题
 lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861
@@ -73,7 +86,7 @@ lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1
 
 `注意`：若禁止条款被发现有权追讨19999的授权费。
 
-## 授权用户
+## 授权用户（最佳实践）
 * `pigx` 宇宙最强微服务（架构师必备）：https://pig4cloud.com
 * `bladex` 完整的线上解决方案（企业生产必备）：https://bladex.vip
 

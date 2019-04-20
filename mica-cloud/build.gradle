@@ -1,0 +1,20 @@
+dependencies {
+    api project(":mica-boot")
+    compileOnly("com.netflix.eureka:eureka-client") { transitive = false }
+    implementation("org.springframework.boot:spring-boot-starter-web") {
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+    }
+    implementation "org.springframework.retry:spring-retry"
+    implementation "org.springframework.cloud:spring-cloud-netflix-eureka-client"
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign"){
+        exclude group: "commons-logging", module: "commons-logging"
+    }
+    implementation "io.github.openfeign:feign-okhttp"
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-hystrix"){
+        exclude group: "commons-logging", module: "commons-logging"
+    }
+    implementation "org.springframework.cloud:spring-cloud-stream"
+    implementation "com.ctrip.framework.apollo:apollo-client:${apolloVersion}"
+    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+    testImplementation project(":mica-boot-test")
+}
