@@ -58,13 +58,13 @@
 - 本地开发不注册到 Eureka 服务中，避免影响联调环境。
 - Apollo Properties 配置刷新。
 
-### mica-error-catch-client
-- 未知异常收集到 spring-cloud-stream 中，方便统一监听处理。
+### mica-plus-error-catch
+- 未知异常收集到 spring-cloud-stream 中，方便统一处理。
 
-### mica-cache-redis
+### mica-plus-redis
 - redis cache name # 自动配置超时时间。
 
-### mica-data-mongo
+### mica-plus-mongo
 - mongo 复杂 tree 和 jsonNode 转换处理。
 
 ## 已知问题
