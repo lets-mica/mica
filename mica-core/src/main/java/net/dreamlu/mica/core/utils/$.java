@@ -349,6 +349,29 @@ public class $ {
 	}
 
 	/**
+	 * Concatenates 2 arrays
+	 *
+	 * @param one 数组1
+	 * @param other 数组2
+	 * @return 新数组
+	 */
+	public static String[] concat(String[] one, String[] other) {
+		return CollectionUtil.concat(one, other, String.class);
+	}
+
+	/**
+	 * Concatenates 2 arrays
+	 *
+	 * @param one 数组1
+	 * @param other 数组2
+	 * @param clazz 数组类
+	 * @return 新数组
+	 */
+	public static <T> T[] concat(T[] one, T[] other, Class<T> clazz) {
+		return CollectionUtil.concat(one, other, clazz);
+	}
+
+	/**
 	 * 不可变 Set
 	 *
 	 * @param es  对象

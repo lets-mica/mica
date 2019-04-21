@@ -1,6 +1,17 @@
 # 变更记录
 
 ## 发行版本
+### [1.1.0] - 2019-04-21
+- :zap: 将 mica 版本写入 banner.txt。
+- :mute: nacos 日志影响了gateway 和 webflux 的日志，调高级别。
+- :zap: 优化 Servlet 和 Webflux 请求日志打印效果。
+- :sparkles: 添加部分工具类。
+- :sparkles: 开源所有 `mica-pro` 功能。
+- :sparkles: 开源 `mica-cloud` 模块。
+- :sparkles: 开源 `mica-plus-error-catch` 模块。
+- :sparkles: 开源 `mica-plus-redis` 模块。
+- :sparkles: 开源 `mica-plus-mongo` 模块。
+
 ### [1.0.1] - 2019-04-03
 - :ok_hand: 处理几处 P3C 代码检查问题。@冷冷
 - :zap: 优化泛型，避免部分环境下的编译问题。
