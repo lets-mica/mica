@@ -16,7 +16,7 @@
 
 @NonNullApi
 @NonNullFields
-package net.dreamlu.mica.cache.http;
+package net.dreamlu.mica.servlet.cache;
 
 import org.springframework.lang.NonNullApi;
 import org.springframework.lang.NonNullFields;

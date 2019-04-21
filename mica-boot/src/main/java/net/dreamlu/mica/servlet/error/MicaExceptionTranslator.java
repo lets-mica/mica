@@ -6,10 +6,7 @@ import net.dreamlu.mica.common.error.MicaErrorEvent;
 import net.dreamlu.mica.core.exception.ServiceException;
 import net.dreamlu.mica.core.result.R;
 import net.dreamlu.mica.core.result.SystemCode;
-import net.dreamlu.mica.core.utils.Exceptions;
-import net.dreamlu.mica.core.utils.ObjectUtil;
-import net.dreamlu.mica.core.utils.StringUtil;
-import net.dreamlu.mica.core.utils.WebUtil;
+import net.dreamlu.mica.core.utils.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.ApplicationEventPublisher;
@@ -71,7 +68,7 @@ public class MicaExceptionTranslator {
 		String requestUrl = request.getRequestURI();
 		String queryString = request.getQueryString();
 		if (StringUtil.isNotBlank(queryString)) {
-			requestUrl = requestUrl + '?' + queryString;
+			requestUrl = requestUrl + StringPool.QUESTION_MARK + queryString;
 		}
 		event.setRequestUrl(requestUrl);
 		// 堆栈信息

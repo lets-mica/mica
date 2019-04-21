@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.cache.http;
+package net.dreamlu.mica.servlet.cache;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.core.utils.StringPool;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.method.HandlerMethod;
@@ -70,7 +71,7 @@ public class HttpCacheInterceptor extends HandlerInterceptorAdapter {
 		long maxAge = cacheAble.maxAge();
 		// 缓存时间,毫秒
 		long maxAgeMicros = TimeUnit.SECONDS.toMillis(maxAge);
-		String cacheKey = request.getRequestURI() + "?" + request.getQueryString();
+		String cacheKey = request.getRequestURI() + StringPool.QUESTION_MARK + request.getQueryString();
 		// 后端可控制http-cache超时
 		boolean hasCache = httpCacheService.get(cacheKey);
 		// 如果header头没有过期
