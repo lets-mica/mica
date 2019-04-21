@@ -7,6 +7,7 @@
 - :zap: 优化 Servlet 和 Webflux 请求日志打印效果。
 - :sparkles: 添加部分工具类。
 - :sparkles: 开源所有 `mica-pro` 功能。
+- :sparkles: `mica-pro` 中的 `http-cache` 注解部分移入 `mica-boot`（暂时只支持 Servlet）。
 - :sparkles: 开源 `mica-cloud` 模块。
 - :sparkles: 开源 `mica-plus-error-catch` 模块。
 - :sparkles: 开源 `mica-plus-redis` 模块。
