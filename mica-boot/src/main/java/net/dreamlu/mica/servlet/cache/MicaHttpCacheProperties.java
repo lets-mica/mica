@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.cache.http;
+package net.dreamlu.mica.servlet.cache;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.cache.http;
+package net.dreamlu.mica.servlet.cache;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.cache.Cache;
@@ -38,7 +38,7 @@ public class HttpCacheService implements InitializingBean {
 
 	public boolean get(String key) {
 		Boolean result = cache.get(key, Boolean.class);
-		return result != null && Boolean.TRUE.equals(result);
+		return Boolean.TRUE.equals(result);
 	}
 
 	public void set(String key) {

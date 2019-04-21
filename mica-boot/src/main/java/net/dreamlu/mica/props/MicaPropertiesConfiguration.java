@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.props;
 
+import net.dreamlu.mica.servlet.cache.MicaHttpCacheProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,7 +31,8 @@ import org.springframework.context.annotation.Configuration;
 	MicaUploadProperties.class,
 	MicaJacksonProperties.class,
 	MicaSwaggerProperties.class,
-	MicaRequestLogProperties.class
+	MicaRequestLogProperties.class,
+	MicaHttpCacheProperties.class
 })
 public class MicaPropertiesConfiguration {
 }

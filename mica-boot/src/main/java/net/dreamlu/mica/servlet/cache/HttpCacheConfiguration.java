@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.cache.http;
+package net.dreamlu.mica.servlet.cache;
 
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
@@ -38,6 +39,7 @@ import java.util.Set;
 @AllArgsConstructor
 @EnableConfigurationProperties(MicaHttpCacheProperties.class)
 @ConditionalOnProperty(value = "mica.http.cache.enabled")
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class HttpCacheConfiguration implements WebMvcConfigurer {
 	private static final String DEFAULT_STATIC_PATH_PATTERN = "/**";
 	private final WebMvcProperties webMvcProperties;
