@@ -84,25 +84,42 @@ public abstract class BaseCaptcha {
 	 * @return {String}
 	 */
 	public Captcha generateBase64() {
+		return generate(true);
+	}
+
+	/**
+	 * 生成验证码
+	 *
+	 * @return {String}
+	 */
+	public Captcha generate() {
+		return generate(false);
+	}
+
+	private Captcha generate(boolean isBase64) {
 		ThreadLocalRandom random = ThreadLocalRandom.current();
 		// 转成大写重要
 		String captchaCode = CaptchaUtils.generateCode(random).toUpperCase();
 		// 生成验证码
 		byte[] imgBytes = CaptchaUtils.generate(random, captchaCode);
-		String base64 = Base64Util.encodeToString(imgBytes);
 		String uuid = StringUtil.getUUID();
 		// 保存验证码缓存
 		captchaCache.put(uuid, captchaCode);
-		return new Captcha(uuid, base64);
+		if (isBase64) {
+			return new Captcha(uuid, Base64Util.encodeToString(imgBytes));
+		} else {
+			return new Captcha(uuid, imgBytes);
+		}
 	}
 
 	/**
-	 * 校验 Base64 验证码
+	 * 校验验证码
+	 *
 	 * @param uuid uuid
 	 * @param userInputCaptcha 用户输入的验证码
 	 * @return 是否成功
 	 */
-	public boolean validateBase64(String uuid, String userInputCaptcha) {
+	public boolean validate(String uuid, String userInputCaptcha) {
 		if (log.isInfoEnabled()) {
 			log.info("validate captcha userInputCaptcha is {}", userInputCaptcha);
 		}
