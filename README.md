@@ -1,7 +1,12 @@
 ## mica（云母）
 [![Mica Maven](https://img.shields.io/maven-central/v/net.dreamlu/mica-bom.svg?style=flat-square)](https://mvnrepository.com/artifact/net.dreamlu/mica-bom)
 
-`Mica`，Spring Cloud 微服务开发核心包，基于 `Spring boot 2.x`，支持 `web` 和 `webflux`。
+`Mica`，Spring Cloud 微服务开发核心包，支持 `web` 和 `webflux`。
+
+| 依赖         | 版本              |
+| ------------ | ----------------- |
+| Spring Boot  | 2.1.x             |
+| Spring Cloud | Greenwich.RELEASE |
 
 ![犬夜叉-云母](docs/img/mica-001.jpeg)
 
