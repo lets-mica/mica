@@ -17,6 +17,7 @@
 package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.util.Assert;
 
 import java.text.ParseException;
 import java.time.*;
@@ -61,7 +62,7 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date plusYears(Date date, int yearsToAdd) {
-		return DateUtil.plus(date, Period.ofYears(yearsToAdd));
+		return DateUtil.set(date, Calendar.YEAR, yearsToAdd);
 	}
 
 	/**
@@ -72,7 +73,7 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date plusMonths(Date date, int monthsToAdd) {
-		return DateUtil.plus(date, Period.ofMonths(monthsToAdd));
+		return DateUtil.set(date, Calendar.MONTH, monthsToAdd);
 	}
 
 	/**
@@ -161,8 +162,7 @@ public class DateUtil {
 	 */
 	public static Date plus(Date date, TemporalAmount amount) {
 		Instant instant = date.toInstant();
-		instant.plus(amount);
-		return Date.from(instant);
+		return Date.from(instant.plus(amount));
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date minusYears(Date date, int years) {
-		return DateUtil.minus(date, Period.ofYears(years));
+		return DateUtil.set(date, Calendar.YEAR, -years);
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date minusMonths(Date date, int months) {
-		return DateUtil.minus(date, Period.ofMonths(months));
+		return DateUtil.set(date, Calendar.MONTH, -months);
 	}
 
 	/**
@@ -273,8 +273,24 @@ public class DateUtil {
 	 */
 	public static Date minus(Date date, TemporalAmount amount) {
 		Instant instant = date.toInstant();
-		instant.minus(amount);
-		return Date.from(instant);
+		return Date.from(instant.minus(amount));
+	}
+
+	/**
+	 * 设置日期属性
+	 *
+	 * @param date          时间
+	 * @param calendarField 更改的属性
+	 * @param amount        更改数，-1表示减少
+	 * @return 设置后的时间
+	 */
+	private static Date set(Date date, int calendarField, int amount) {
+		Assert.notNull(date, "The date must not be null");
+		Calendar c = Calendar.getInstance();
+		c.setLenient(false);
+		c.setTime(date);
+		c.add(calendarField, amount);
+		return c.getTime();
 	}
 
 	/**
