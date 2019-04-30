@@ -1,6 +1,7 @@
 package net.dreamlu.mica.test.utils;
 
 import net.dreamlu.mica.core.utils.DateUtil;
+import net.dreamlu.mica.core.utils.Try;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -25,10 +26,10 @@ public class DateFormatTest {
 	public void test1() throws InterruptedException {
 		Set<String> dateSet = new TreeSet<>();
 		ExecutorService executorService = Executors.newFixedThreadPool(10);
-		Runnable task = () -> {
+		Runnable task = Try.of(() -> {
 			String date = parseDate1(dateStr);
 			dateSet.add(date);
-		};
+		});
 
 		for (int i = 0; i < 100; i++) {
 			executorService.submit(task);
@@ -42,14 +43,10 @@ public class DateFormatTest {
 	public void test2() throws InterruptedException {
 		Set<String> dateSet = new TreeSet<>();
 		ExecutorService executorService = Executors.newFixedThreadPool(10);
-		Runnable task = () -> {
-			try {
-				String date = parseDate2(dateStr);
-				dateSet.add(date);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		};
+		Runnable task = Try.of(() -> {
+			String date = parseDate2(dateStr);
+			dateSet.add(date);
+		});
 
 		for (int i = 0; i < 100; i++) {
 			executorService.submit(task);
