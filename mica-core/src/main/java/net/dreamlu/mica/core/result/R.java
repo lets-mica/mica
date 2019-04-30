@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import net.dreamlu.mica.core.exception.ServiceException;
 import net.dreamlu.mica.core.utils.ObjectUtil;
 import org.springframework.lang.Nullable;
 
@@ -94,8 +95,9 @@ public class R<T> implements Serializable {
 
 	/**
 	 * 获取data
+	 *
 	 * @param result Result
-	 * @param <T> 泛型标记
+	 * @param <T>    泛型标记
 	 * @return 泛型对象
 	 */
 	@Nullable
@@ -108,6 +110,7 @@ public class R<T> implements Serializable {
 
 	/**
 	 * 返回成功
+	 *
 	 * @param <T> 泛型标记
 	 * @return Result
 	 */
@@ -119,7 +122,7 @@ public class R<T> implements Serializable {
 	 * 成功-携带数据
 	 *
 	 * @param data 数据
-	 * @param <T> 泛型标记
+	 * @param <T>  泛型标记
 	 * @return Result
 	 */
 	public static <T> R<T> success(@Nullable T data) {
@@ -128,9 +131,10 @@ public class R<T> implements Serializable {
 
 	/**
 	 * 根据状态返回成功或者失败
+	 *
 	 * @param status 状态
-	 * @param msg 异常msg
-	 * @param <T> 泛型标记
+	 * @param msg    异常msg
+	 * @param <T>    泛型标记
 	 * @return Result
 	 */
 	public static <T> R<T> status(boolean status, String msg) {
@@ -139,9 +143,10 @@ public class R<T> implements Serializable {
 
 	/**
 	 * 根据状态返回成功或者失败
+	 *
 	 * @param status 状态
-	 * @param sCode 异常code码
-	 * @param <T> 泛型标记
+	 * @param sCode  异常code码
+	 * @param <T>    泛型标记
 	 * @return Result
 	 */
 	public static <T> R<T> status(boolean status, IResultCode sCode) {
@@ -163,7 +168,7 @@ public class R<T> implements Serializable {
 	 * 返回失败信息
 	 *
 	 * @param rCode 异常枚举
-	 * @param <T> 泛型标记
+	 * @param <T>   泛型标记
 	 * @return {Result}
 	 */
 	public static <T> R<T> fail(IResultCode rCode) {
@@ -174,12 +179,39 @@ public class R<T> implements Serializable {
 	 * 返回失败信息
 	 *
 	 * @param rCode 异常枚举
-	 * @param msg 失败信息
-	 * @param <T> 泛型标记
+	 * @param msg   失败信息
+	 * @param <T>   泛型标记
 	 * @return {Result}
 	 */
 	public static <T> R<T> fail(IResultCode rCode, String msg) {
 		return new R<>(rCode, msg);
 	}
 
+	/**
+	 * 直接抛出失败异常，返回传入的 result code、message
+	 *
+	 * @param result R
+	 */
+	public static void throwFail(R<?> result) {
+		throw new ServiceException(result);
+	}
+
+	/**
+	 * 直接抛出失败异常，抛出 code 码
+	 *
+	 * @param rCode IResultCode
+	 */
+	public static void throwFail(IResultCode rCode) {
+		throw new ServiceException(rCode);
+	}
+
+	/**
+	 * 直接抛出失败异常，抛出 code 码
+	 *
+	 * @param rCode   IResultCode
+	 * @param message 自定义消息
+	 */
+	public static void throwFail(IResultCode rCode, String message) {
+		throw new ServiceException(rCode, message);
+	}
 }

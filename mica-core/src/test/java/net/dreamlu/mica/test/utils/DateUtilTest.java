@@ -4,6 +4,7 @@ import net.dreamlu.mica.core.utils.DateUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -22,7 +23,13 @@ public class DateUtilTest {
 	public void testPlusYears() throws Exception {
 		Date date = new Date();
 		Date date1 = DateUtil.plusYears(date, 1);
-		Assert.assertEquals(date.getYear()+1, date1.getYear());
+
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		Calendar c1 = Calendar.getInstance();
+		c1.setTime(date1);
+
+		Assert.assertEquals(c.get(Calendar.YEAR) + 1, c1.get(Calendar.YEAR));
 	}
 
 	/**
@@ -32,7 +39,13 @@ public class DateUtilTest {
 	public void testPlusMonths() throws Exception {
 		Date date = new Date();
 		Date date1 = DateUtil.plusMonths(date, 1);
-		Assert.assertEquals(date.getMonth()+1, date1.getMonth());
+
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		Calendar c1 = Calendar.getInstance();
+		c1.setTime(date1);
+
+		Assert.assertEquals(c.get(Calendar.MONTH) + 1, c1.get(Calendar.MONTH));
 	}
 
 	/**
@@ -42,7 +55,13 @@ public class DateUtilTest {
 	public void testPlusDays() throws Exception {
 		Date date = new Date();
 		Date date1 = DateUtil.plusDays(date, 1);
-		Assert.assertEquals(date.getDay()+1, date1.getDay());
+
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		Calendar c1 = Calendar.getInstance();
+		c1.setTime(date1);
+
+		Assert.assertEquals(c.get(Calendar.DAY_OF_YEAR) + 1, c1.get(Calendar.DAY_OF_YEAR));
 	}
 
 	/**
@@ -52,7 +71,13 @@ public class DateUtilTest {
 	public void testMinusYears() throws Exception {
 		Date date = new Date();
 		Date date1 = DateUtil.minusYears(date, 1);
-		Assert.assertEquals(date.getYear()-1, date1.getYear());
+
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		Calendar c1 = Calendar.getInstance();
+		c1.setTime(date1);
+
+		Assert.assertEquals(c.get(Calendar.YEAR) - 1, c1.get(Calendar.YEAR));
 	}
 
 	/**
@@ -62,7 +87,13 @@ public class DateUtilTest {
 	public void testMinusMonths() throws Exception {
 		Date date = new Date();
 		Date date1 = DateUtil.minusMonths(date, 1);
-		Assert.assertEquals(date.getMonth()-1, date1.getMonth());
+
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		Calendar c1 = Calendar.getInstance();
+		c1.setTime(date1);
+
+		Assert.assertEquals(c.get(Calendar.MONTH) - 1, c1.get(Calendar.MONTH));
 	}
 
 	/**
@@ -72,7 +103,13 @@ public class DateUtilTest {
 	public void testMinusDays() throws Exception {
 		Date date = new Date();
 		Date date1 = DateUtil.minusDays(date, 1);
-		Assert.assertEquals(date.getDay()-1, date1.getDay());
+
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		Calendar c1 = Calendar.getInstance();
+		c1.setTime(date1);
+
+		Assert.assertEquals(c.get(Calendar.DAY_OF_YEAR) - 1, c1.get(Calendar.DAY_OF_YEAR));
 	}
 
 }

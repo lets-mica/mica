@@ -19,7 +19,6 @@ package net.dreamlu.mica.core.exception;
 import lombok.Getter;
 import net.dreamlu.mica.core.result.IResultCode;
 import net.dreamlu.mica.core.result.R;
-import net.dreamlu.mica.core.result.SystemCode;
 import org.springframework.lang.Nullable;
 
 /**
@@ -32,9 +31,9 @@ public class ServiceException extends RuntimeException {
 
 	@Getter
 	@Nullable
-	private final R<Object> result;
+	private final R<?> result;
 
-	public ServiceException(R<Object> result) {
+	public ServiceException(R<?> result) {
 		super(result.getMsg());
 		this.result = result;
 	}
