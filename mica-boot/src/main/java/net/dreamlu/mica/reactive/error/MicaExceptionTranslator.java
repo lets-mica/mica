@@ -40,9 +40,9 @@ public class MicaExceptionTranslator {
 
 	@ExceptionHandler(ServiceException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public Mono<R<?>> handleError(ServiceException e) {
+	public Mono<R<Object>> handleError(ServiceException e) {
 		log.error("业务异常", e);
-		R<?> result = e.getResult();
+		R<Object> result = e.getResult();
 		if (result != null) {
 			return Mono.just(result);
 		}
@@ -54,7 +54,7 @@ public class MicaExceptionTranslator {
 
 	@ExceptionHandler(Throwable.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public Mono<?> handleError(Throwable e) {
+	public Mono<R<Object>> handleError(Throwable e) {
 		log.error("未知异常", e);
 		// 发送：未知异常异常事件
 		return ReactiveRequestContextHolder.getRequest()

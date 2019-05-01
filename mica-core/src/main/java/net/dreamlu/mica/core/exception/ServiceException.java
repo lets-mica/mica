@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.exception;
 
-import lombok.Getter;
 import net.dreamlu.mica.core.result.IResultCode;
 import net.dreamlu.mica.core.result.R;
 import org.springframework.lang.Nullable;
@@ -29,7 +28,6 @@ import org.springframework.lang.Nullable;
 public class ServiceException extends RuntimeException {
 	private static final long serialVersionUID = 2359767895161832954L;
 
-	@Getter
 	@Nullable
 	private final R<?> result;
 
@@ -55,6 +53,12 @@ public class ServiceException extends RuntimeException {
 		super(message, cause);
 		doFillInStackTrace();
 		this.result = null;
+	}
+
+	@Nullable
+	@SuppressWarnings("unchecked")
+	public <T> R<T> getResult() {
+		return (R<T>) result;
 	}
 
 	/**
