@@ -39,9 +39,9 @@ public class MicaExceptionTranslator {
 
 	@ExceptionHandler(ServiceException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public R<?> handleError(ServiceException e) {
+	public R<Object> handleError(ServiceException e) {
 		log.error("业务异常", e);
-		R<?> result = e.getResult();
+		R<Object> result = e.getResult();
 		if (result == null) {
 			// 发送：未知业务异常事件
 			result = R.fail(SystemCode.FAILURE, e.getMessage());
