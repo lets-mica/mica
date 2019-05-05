@@ -23,10 +23,7 @@
         <Property name="LOG_LEVEL_PATTERN">%5p</Property>
         <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
         <Property name="LOG_DATEFORMAT_PATTERN">yyyy-MM-dd HH:mm:ss.SSS</Property>
-        <Property name="CONSOLE_LOG_PATTERN">%clr{%d{${LOG_DATEFORMAT_PATTERN}}}{faint} %clr{${LOG_LEVEL_PATTERN}}
-            %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%C{36}.%M:%L}{cyan} %clr{:}{faint}
-            %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}
-        </Property>
+        <Property name="CONSOLE_LOG_PATTERN">%clr{%d{${LOG_DATEFORMAT_PATTERN}}}{faint} %clr{${LOG_LEVEL_PATTERN}} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%C{36}.%M:%L}{cyan} %clr{:}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT" follow="true">
@@ -37,8 +34,8 @@
                      filePattern="${logdir}/info.%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="[%d] [%thread] ${LOG_LEVEL_PATTERN} ${sys:PID} %c %m%n"/>
             <Filters>
-                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
-                <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY" />
             </Filters>
             <Policies>
                 <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
@@ -49,8 +46,7 @@
         <RollingFile name="RollingFileError"
                      fileName="${logdir}/error.log"
                      filePattern="${logdir}/error.%d{yyyy-MM-dd}.log">
-            <PatternLayout
-                pattern="[%d] [%thread] ${LOG_LEVEL_PATTERN} ${sys:PID} %c %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}"/>
+            <PatternLayout pattern="[%d] [%thread] ${LOG_LEVEL_PATTERN} ${sys:PID} %c %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}"/>
             <Filters>
                 <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
@@ -63,11 +59,10 @@
         <RollingFile name="BusinessRollingFile"
                      fileName="${logdir}/business.log"
                      filePattern="${logdir}/business_%d{yyyy-MM-dd}.log">
-            <PatternLayout
-                pattern="[%d] [%thread] ${LOG_LEVEL_PATTERN} ${sys:PID} %c %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}"/>
+            <PatternLayout pattern="[%d] [%thread] ${LOG_LEVEL_PATTERN} ${sys:PID} %c %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}" />
             <Filters>
-                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
-                <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY" />
             </Filters>
             <Policies>
                 <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
