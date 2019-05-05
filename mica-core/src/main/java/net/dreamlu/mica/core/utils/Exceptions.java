@@ -80,7 +80,7 @@ public class Exceptions {
 	 * @return {String}
 	 */
 	public static String getStackTraceAsString(Throwable ex) {
-		FastStringWriter stringWriter = new FastStringWriter();
+		FastStringWriter stringWriter = new FastStringWriter(200);
 		ex.printStackTrace(new PrintWriter(stringWriter));
 		return stringWriter.toString();
 	}

@@ -50,7 +50,7 @@
     <!-- 只显示 business 业务的信息 -->
     <RollingFile name="BusinessRollingFile"
                  fileName="${logdir}/business.log"
-                 filePattern="${logdir}/business_%d{yyyy-MM-dd}.%i.log.zip">
+                 filePattern="${logdir}/business_%d{yyyy-MM-dd}.%i.log.gz">
         <PatternLayout pattern="[%d] [%thread] ${LOG_LEVEL_PATTERN} ${sys:PID} %c %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}" />
         <Filters>
             <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL" />
