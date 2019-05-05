@@ -15,7 +15,7 @@
   ~ limitations under the License.
   -->
 
-<configuration status="off" xmlns:xi="http://www.w3.org/2001/XInclude">
+<configuration status="off">
     <Properties>
         <Property name="appName">${sys:spring.application.name}</Property>
         <Property name="logdir">${env:LOGGING_PATH:-logs}/${appName}</Property>
@@ -25,9 +25,49 @@
         <Property name="LOG_DATEFORMAT_PATTERN">yyyy-MM-dd HH:mm:ss.SSS</Property>
         <Property name="CONSOLE_LOG_PATTERN">%clr{%d{${LOG_DATEFORMAT_PATTERN}}}{faint} %clr{${LOG_LEVEL_PATTERN}} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%C{36}.%M:%L}{cyan} %clr{:}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
     </Properties>
-    <xi:include href="log4j2_appenders.xml">
-        <xi:fallback/>
-    </xi:include>
+    <Console name="Console" target="SYSTEM_OUT" follow="true">
+        <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}"/>
+    </Console>
+    <RollingFile name="RollingFile"
+                 fileName="${logdir}/info.log"
+                 filePattern="${logdir}/info.%d{yyyy-MM-dd}.log">
+        <PatternLayout pattern="[%d] [%thread] ${LOG_LEVEL_PATTERN} ${sys:PID} %c %m%n"/>
+        <Filters>
+            <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL" />
+            <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY" />
+        </Filters>
+        <Policies>
+            <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+        </Policies>
+        <DefaultRolloverStrategy max="30"/>
+    </RollingFile>
+    <!-- 只显示error级别的信息 -->
+    <RollingFile name="RollingFileError"
+                 fileName="${logdir}/error.log"
+                 filePattern="${logdir}/error.%d{yyyy-MM-dd}.log">
+        <PatternLayout pattern="[%d] [%thread] ${LOG_LEVEL_PATTERN} ${sys:PID} %c %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}"/>
+        <Filters>
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Filters>
+        <Policies>
+            <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+        </Policies>
+        <DefaultRolloverStrategy max="30"/>
+    </RollingFile>
+    <!-- 只显示 business 业务的信息 -->
+    <RollingFile name="BusinessRollingFile"
+                 fileName="${logdir}/business.log"
+                 filePattern="${logdir}/business_%d{yyyy-MM-dd}.log">
+        <PatternLayout pattern="[%d] [%thread] ${LOG_LEVEL_PATTERN} ${sys:PID} %c %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}" />
+        <Filters>
+            <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL" />
+            <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY" />
+        </Filters>
+        <Policies>
+            <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+        </Policies>
+        <DefaultRolloverStrategy max="30"/>
+    </RollingFile>
     <Loggers>
         <!-- 减少部分debug日志 -->
         <AsyncLogger name="org.springframework.context" level="WARN"/>
