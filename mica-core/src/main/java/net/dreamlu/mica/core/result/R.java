@@ -213,13 +213,39 @@ public class R<T> implements Serializable {
 	 * 当 result 不成功时：直接抛出失败异常，返回传入的 rCode、message
 	 *
 	 * @param result R
+	 * @param rCode 异常枚举
+	 * @param msg 失败信息
 	 */
-	public static void throwOnFail(R<?> result, IResultCode rCode, String message) {
+	public static void throwOnFail(R<?> result, IResultCode rCode, String msg) {
 		if (R.isNotSuccess(result)) {
-			throw new ServiceException(rCode, message);
+			throw new ServiceException(rCode, msg);
 		}
 	}
 
+	/**
+	 * 当 result 不成功时：直接抛出失败异常，返回传入的 rCode
+	 *
+	 * @param status status
+	 * @param rCode 异常枚举
+	 */
+	public static void throwOnFail(boolean status, IResultCode rCode) {
+		if (status) {
+			throw new ServiceException(rCode);
+		}
+	}
+
+	/**
+	 * 当 result 不成功时：直接抛出失败异常，返回传入的 rCode、message
+	 *
+	 * @param status status
+	 * @param rCode 异常枚举
+	 * @param msg 失败信息
+	 */
+	public static void throwOnFail(boolean status, IResultCode rCode, String msg) {
+		if (status) {
+			throw new ServiceException(rCode, msg);
+		}
+	}
 
 	/**
 	 * 直接抛出失败异常，抛出 code 码

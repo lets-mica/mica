@@ -30,8 +30,8 @@ import java.util.function.Supplier;
  * Lambda 受检异常处理
  *
  * <p>
- *     https://segmentfault.com/a/1190000007832130
- *     https://github.com/jOOQ/jOOL
+ * https://segmentfault.com/a/1190000007832130
+ * https://github.com/jOOQ/jOOL
  * </p>
  *
  * @author L.cm
@@ -107,18 +107,37 @@ public class Try {
 
 	@FunctionalInterface
 	public interface UncheckedFunction<T, R> {
+		/**
+		 * Run the Consumer
+		 *
+		 * @param t T
+		 * @return R R
+		 * @throws Throwable UncheckedException
+		 */
 		@Nullable
 		R apply(@Nullable T t) throws Throwable;
 	}
 
 	@FunctionalInterface
 	public interface UncheckedConsumer<T> {
+		/**
+		 * Run the Consumer
+		 *
+		 * @param t T
+		 * @throws Throwable UncheckedException
+		 */
 		@Nullable
 		void accept(@Nullable T t) throws Throwable;
 	}
 
 	@FunctionalInterface
 	public interface UncheckedSupplier<T> {
+		/**
+		 * Run the Supplier
+		 *
+		 * @return T
+		 * @throws Throwable UncheckedException
+		 */
 		@Nullable
 		T get() throws Throwable;
 	}

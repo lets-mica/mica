@@ -24,6 +24,6 @@ import lombok.experimental.UtilityClass;
  * @author L.cm
  */
 @UtilityClass
-public class URLUtil extends org.springframework.web.util.UriUtils {
+public class UrlUtil extends org.springframework.web.util.UriUtils {
 
 }

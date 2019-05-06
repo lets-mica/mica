@@ -50,7 +50,7 @@ public class PathUtil {
 	public static String toFilePath(@Nullable URL url) {
 		if (url == null) { return null; }
 		String protocol = url.getProtocol();
-		String file = URLUtil.decode(url.getPath(), Charsets.UTF_8);
+		String file = UrlUtil.decode(url.getPath(), Charsets.UTF_8);
 		if (ResourceUtils.URL_PROTOCOL_FILE.equals(protocol)) {
 			return new File(file).getParentFile().getParentFile().getAbsolutePath();
 		} else if (ResourceUtils.URL_PROTOCOL_JAR.equals(protocol)
