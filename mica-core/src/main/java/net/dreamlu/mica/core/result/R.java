@@ -104,7 +104,7 @@ public class R<T> implements Serializable {
 	public static <T> T getData(@Nullable R<T> result) {
 		return Optional.ofNullable(result)
 			.filter(r -> r.success)
-			.map(x -> x.getData())
+			.map(x -> x.data)
 			.orElse(null);
 	}
 
@@ -202,6 +202,7 @@ public class R<T> implements Serializable {
 	 * 当 result 不成功时：直接抛出失败异常，返回传入的 rCode
 	 *
 	 * @param result R
+	 * @param rCode 异常枚举
 	 */
 	public static void throwOnFail(R<?> result, IResultCode rCode) {
 		if (R.isNotSuccess(result)) {
@@ -223,7 +224,7 @@ public class R<T> implements Serializable {
 	}
 
 	/**
-	 * 当 result 不成功时：直接抛出失败异常，返回传入的 rCode
+	 * 当 status 不为 true 时：直接抛出失败异常 rCode
 	 *
 	 * @param status status
 	 * @param rCode 异常枚举
@@ -235,7 +236,7 @@ public class R<T> implements Serializable {
 	}
 
 	/**
-	 * 当 result 不成功时：直接抛出失败异常，返回传入的 rCode、message
+	 * 当 status 不为 true 时：直接抛出失败异常 rCode、message
 	 *
 	 * @param status status
 	 * @param rCode 异常枚举

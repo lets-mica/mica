@@ -29,7 +29,7 @@
         <Console name="Console" target="SYSTEM_OUT" follow="true">
             <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}"/>
         </Console>
-        <RollingFile name="RollingFile"
+        <RollingRandomAccessFile name="RollingFile"
                      fileName="${logdir}/info.log"
                      filePattern="${logdir}/info.%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="[%d] [%thread] ${LOG_LEVEL_PATTERN} ${sys:PID} %c %m%n"/>
@@ -41,9 +41,9 @@
                 <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
             </Policies>
             <DefaultRolloverStrategy max="30"/>
-        </RollingFile>
+        </RollingRandomAccessFile>
         <!-- 只显示error级别的信息 -->
-        <RollingFile name="RollingFileError"
+        <RollingRandomAccessFile name="RollingFileError"
                      fileName="${logdir}/error.log"
                      filePattern="${logdir}/error.%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="[%d] [%thread] ${LOG_LEVEL_PATTERN} ${sys:PID} %c %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}"/>
@@ -54,9 +54,9 @@
                 <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
             </Policies>
             <DefaultRolloverStrategy max="30"/>
-        </RollingFile>
+        </RollingRandomAccessFile>
         <!-- 只显示 business 业务的信息 -->
-        <RollingFile name="BusinessRollingFile"
+        <RollingRandomAccessFile name="BusinessRollingFile"
                      fileName="${logdir}/business.log"
                      filePattern="${logdir}/business_%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="[%d] [%thread] ${LOG_LEVEL_PATTERN} ${sys:PID} %c %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}" />
@@ -68,7 +68,7 @@
                 <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
             </Policies>
             <DefaultRolloverStrategy max="30"/>
-        </RollingFile>
+        </RollingRandomAccessFile>
     </Appenders>
     <Loggers>
         <!-- 减少部分debug日志 -->
