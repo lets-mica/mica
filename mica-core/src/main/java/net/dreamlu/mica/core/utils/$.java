@@ -1204,7 +1204,7 @@ public class $ {
 	 * @return the encoded String
 	 */
 	public static String urlEncode(String source) {
-		return URLUtil.encode(source, Charsets.UTF_8);
+		return UrlUtil.encode(source, Charsets.UTF_8);
 	}
 
 	/**
@@ -1215,7 +1215,7 @@ public class $ {
 	 * @return the encoded String
 	 */
 	public static String urlEncode(String source, Charset charset) {
-		return URLUtil.encode(source, charset);
+		return UrlUtil.encode(source, charset);
 	}
 
 	/**
