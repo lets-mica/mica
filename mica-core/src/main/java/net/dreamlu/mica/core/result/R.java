@@ -229,7 +229,7 @@ public class R<T> implements Serializable {
 	 * @param rCode 异常枚举
 	 */
 	public static void throwOnFail(boolean status, IResultCode rCode) {
-		if (status) {
+		if (!status) {
 			throw new ServiceException(rCode);
 		}
 	}
@@ -242,7 +242,7 @@ public class R<T> implements Serializable {
 	 * @param msg 失败信息
 	 */
 	public static void throwOnFail(boolean status, IResultCode rCode, String msg) {
-		if (status) {
+		if (!status) {
 			throw new ServiceException(rCode, msg);
 		}
 	}
