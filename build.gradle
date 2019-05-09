@@ -7,9 +7,9 @@ ext {
     protostuffVersion = "1.6.0"
     disruptorVersion = "3.4.2"
     swaggerVersion = "2.9.2"
-    lombokVersion = "1.18.6"
+    lombokVersion = "1.18.8"
     findbugsVersion = "3.0.2"
-    googleAutoServiceVersion = "1.0-rc4"
+    googleAutoServiceVersion = "1.0-rc5"
 }
 
 configure(subprojects) {

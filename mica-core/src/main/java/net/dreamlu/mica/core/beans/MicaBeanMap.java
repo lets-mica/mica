@@ -41,6 +41,12 @@ public abstract class MicaBeanMap extends BeanMap {
 		return gen.create();
 	}
 
+	/**
+	 * newInstance
+	 *
+	 * @param o Object
+	 * @return MicaBeanMap
+	 */
 	@Override
 	public abstract MicaBeanMap newInstance(Object o);
 

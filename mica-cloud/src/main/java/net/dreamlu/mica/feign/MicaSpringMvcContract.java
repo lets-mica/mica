@@ -26,6 +26,7 @@ import org.springframework.cloud.openfeign.support.SpringMvcContract;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -87,7 +88,7 @@ public class MicaSpringMvcContract extends SpringMvcContract {
 	protected boolean processAnnotationsOnParameter(MethodMetadata data, Annotation[] annotations, int paramIndex) {
 		boolean httpAnnotation = super.processAnnotationsOnParameter(data, annotations, paramIndex);
 		// 在 springMvc 中如果是 Get 请求且参数中是对象 没有声明为@RequestBody 则默认为 Param
-		if (!httpAnnotation && "GET".equals(data.template().method().toUpperCase())) {
+		if (!httpAnnotation && HttpMethod.GET == HttpMethod.resolve(data.template().method().toUpperCase())) {
 			for (Annotation parameterAnnotation : annotations) {
 				if (!(parameterAnnotation instanceof RequestBody)) {
 					return false;
