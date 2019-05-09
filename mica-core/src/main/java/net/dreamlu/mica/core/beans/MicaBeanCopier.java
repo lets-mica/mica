@@ -25,6 +25,7 @@ import org.springframework.asm.Label;
 import org.springframework.asm.Opcodes;
 import org.springframework.asm.Type;
 import org.springframework.cglib.core.*;
+import org.springframework.lang.Nullable;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -76,7 +77,14 @@ public abstract class MicaBeanCopier {
 		});
 	}
 
-	abstract public void copy(Object from, Object to, Converter converter);
+	/**
+	 * Bean copy
+	 *
+	 * @param from from Bean
+	 * @param to to Bean
+	 * @param converter Converter
+	 */
+	abstract public void copy(Object from, Object to, @Nullable Converter converter);
 
 	public static class Generator extends AbstractClassGenerator {
 		private static final Source SOURCE = new Source(MicaBeanCopier.class.getName());
