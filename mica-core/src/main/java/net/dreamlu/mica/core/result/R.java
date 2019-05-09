@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import net.dreamlu.mica.core.exception.ServiceException;
-import net.dreamlu.mica.core.utils.ObjectUtil;
 import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
@@ -79,7 +78,8 @@ public class R<T> implements Serializable {
 	 */
 	public static boolean isSuccess(@Nullable R<?> result) {
 		return Optional.ofNullable(result)
-			.map(x -> ObjectUtil.nullSafeEquals(SystemCode.SUCCESS.code, x.code))
+			.map(r -> r.code)
+			.map(code -> SystemCode.SUCCESS.code == code)
 			.orElse(Boolean.FALSE);
 	}
 
@@ -229,7 +229,7 @@ public class R<T> implements Serializable {
 	 * @param status status
 	 * @param rCode 异常枚举
 	 */
-	public static void throwOnFail(boolean status, IResultCode rCode) {
+	public static void throwOnFalse(boolean status, IResultCode rCode) {
 		if (!status) {
 			throw new ServiceException(rCode);
 		}
@@ -242,7 +242,7 @@ public class R<T> implements Serializable {
 	 * @param rCode 异常枚举
 	 * @param msg 失败信息
 	 */
-	public static void throwOnFail(boolean status, IResultCode rCode, String msg) {
+	public static void throwOnFalse(boolean status, IResultCode rCode, String msg) {
 		if (!status) {
 			throw new ServiceException(rCode, msg);
 		}

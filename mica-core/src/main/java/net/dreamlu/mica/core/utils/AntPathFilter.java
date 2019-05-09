@@ -16,7 +16,7 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
@@ -29,16 +29,16 @@ import java.io.Serializable;
  *
  * @author L.cm
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AntPathFilter implements FileFilter, Serializable {
 	private static final long serialVersionUID = 812598009067554612L;
-	private static PathMatcher pathMatcher = new AntPathMatcher();
+	private static final PathMatcher PATH_MATCHER = new AntPathMatcher();
 
 	private final String pattern;
 
 	@Override
 	public boolean accept(File pathname) {
 		String filePath = pathname.getAbsolutePath();
-		return pathMatcher.match(pattern, filePath);
+		return PATH_MATCHER.match(pattern, filePath);
 	}
 }
