@@ -6,8 +6,9 @@
 - :zap: 优化日志，dev 环境日志，不按内存切分，不使用gz压缩，避免每次本地重启生成日志文件。
 - :zap: 优化 StackTraceAsString 中 FastStringWriter 初始容量为200。
 - :zap: 优化 ServiceException R 泛型。
-- :sparkles: 添加 R.throw 系列方法，用于处理异常直接返回的情况
-- :bug: 修复日期添加和减少的bug IW2IM.
+- :sparkles: 添加 R.throw 系列方法，用于处理异常直接返回的情况。
+- :zap: Try 添加 Runnable、Callable、Comparator 的 Lambda 受检异常处理。
+- :bug: 修复日期添加和减少的bug IW2IM。
 
 ### [1.1.0] - 2019-04-26
 - :zap: 将 mica 版本写入 banner.txt。
