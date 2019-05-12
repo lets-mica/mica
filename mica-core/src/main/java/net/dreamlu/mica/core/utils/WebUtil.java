@@ -147,7 +147,7 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 	}
 
 	private static final String[] IP_HEADER_NAMES = new String[]{
-		"X-Requested-For",
+		"x-forwarded-for",
 		"Proxy-Client-IP",
 		"WL-Proxy-Client-IP",
 		"HTTP_CLIENT_IP",
@@ -170,7 +170,7 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 		String ip = null;
 		for (String ipHeader : IP_HEADER_NAMES) {
 			ip = request.getHeader(ipHeader);
-			if (IP_PREDICATE.test(ip)) {
+			if (!IP_PREDICATE.test(ip)) {
 				break;
 			}
 		}
