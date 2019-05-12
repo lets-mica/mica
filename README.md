@@ -1,7 +1,10 @@
 ## mica（云母）
-[![Mica Maven](https://img.shields.io/maven-central/v/net.dreamlu/mica-bom.svg?style=flat-square)](https://mvnrepository.com/artifact/net.dreamlu/mica-bom)
+[![Mica Maven release](https://img.shields.io/nexus/r/https/oss.sonatype.org/net.dreamlu/mica-bom.svg?style=flat-square)](https://mvnrepository.com/artifact/net.dreamlu/mica-bom)
+[![Mica maven snapshots](https://img.shields.io/nexus/s/https/oss.sonatype.org/net.dreamlu/mica-bom.svg?style=flat-square)](https://oss.sonatype.org/content/repositories/snapshots/net/dreamlu/mica-bom)
 
 `Mica`，Spring Cloud 微服务开发核心包，支持 `web` 和 `webflux`。
+
+`注意`：`snapshots` 版本会及时响应，修复最新的 `bug` 或者必要的需求。
 
 | 依赖         | 版本              |
 | ------------ | ----------------- |
