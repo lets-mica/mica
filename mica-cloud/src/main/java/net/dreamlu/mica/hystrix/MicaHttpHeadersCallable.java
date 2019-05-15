@@ -16,7 +16,7 @@
 
 package net.dreamlu.mica.hystrix;
 
-import net.dreamlu.mica.props.MicaHystrixHeadersProperties;
+import net.dreamlu.mica.context.MicaHttpHeadersGetter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.Nullable;
 
@@ -34,10 +34,9 @@ public class MicaHttpHeadersCallable<V> implements Callable<V> {
 	private HttpHeaders httpHeaders;
 
 	public MicaHttpHeadersCallable(Callable<V> delegate,
-								   @Nullable MicaHystrixAccountGetter accountGetter,
-								   MicaHystrixHeadersProperties properties) {
+								   @Nullable MicaHttpHeadersGetter headersGetter) {
 		this.delegate = delegate;
-		this.httpHeaders = MicaHttpHeadersContextHolder.toHeaders(accountGetter, properties);
+		this.httpHeaders = headersGetter == null ? null : headersGetter.get();
 	}
 
 	@Override

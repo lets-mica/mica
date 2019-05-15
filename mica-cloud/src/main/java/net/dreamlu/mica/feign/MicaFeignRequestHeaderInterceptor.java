@@ -36,6 +36,7 @@ public class MicaFeignRequestHeaderInterceptor implements RequestInterceptor {
 
 	@Override
 	public void apply(RequestTemplate requestTemplate) {
+		// 默认都使用 hystrix
 		HttpHeaders headers = MicaHttpHeadersContextHolder.get();
 		if (headers != null && !headers.isEmpty()) {
 			headers.forEach((key, values) -> {

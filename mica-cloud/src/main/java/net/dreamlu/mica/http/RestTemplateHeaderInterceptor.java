@@ -17,9 +17,8 @@
 package net.dreamlu.mica.http;
 
 import lombok.AllArgsConstructor;
+import net.dreamlu.mica.context.MicaHttpHeadersGetter;
 import net.dreamlu.mica.hystrix.MicaHttpHeadersContextHolder;
-import net.dreamlu.mica.hystrix.MicaHystrixAccountGetter;
-import net.dreamlu.mica.props.MicaHystrixHeadersProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -37,17 +36,17 @@ import java.io.IOException;
 @AllArgsConstructor
 public class RestTemplateHeaderInterceptor implements ClientHttpRequestInterceptor {
 	@Nullable
-	private final MicaHystrixAccountGetter accountGetter;
-	private final MicaHystrixHeadersProperties properties;
+	private final MicaHttpHeadersGetter headersGetter;
 
 	@Override
 	public ClientHttpResponse intercept(
 		HttpRequest request, byte[] bytes,
 		ClientHttpRequestExecution execution) throws IOException {
+		// 1. 使用 hystrix
 		HttpHeaders headers = MicaHttpHeadersContextHolder.get();
-		// 考虑2中情况 1. RestTemplate 不是用 hystrix 2. 使用 hystrix
+		// 2. RestTemplate 不使用 hystrix
 		if (headers == null) {
-			headers = MicaHttpHeadersContextHolder.toHeaders(accountGetter, properties);
+			headers = headersGetter == null ? null : headersGetter.get();
 		}
 		if (headers != null && !headers.isEmpty()) {
 			HttpHeaders httpHeaders = request.getHeaders();
