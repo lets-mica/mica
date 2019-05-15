@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.props;
+package net.dreamlu.mica.context;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,19 +32,13 @@ import java.util.List;
 @Getter
 @Setter
 @RefreshScope
-@ConfigurationProperties("mica.hystrix.headers")
-public class MicaHystrixHeadersProperties {
+@ConfigurationProperties("mica.context.headers")
+public class MicaHeadersProperties {
 
 	/**
-	 * 用于 聚合层 向调用层传递用户信息 的请求头，默认：X-MICA-ACCOUNT
+	 * 用于 聚合层 向调用层传递用户信息 的请求头，默认：X-Mica-Account
 	 */
-	private String account = "X-MICA-ACCOUNT";
-
-	/**
-	 * RestTemplate 和 Fegin 透传到下层的 Headers 名称表达式
-	 */
-	@Nullable
-	private String pattern;
+	private String accountHeaderName = "x-mica-account";
 
 	/**
 	 * RestTemplate 和 Fegin 透传到下层的 Headers 名称列表

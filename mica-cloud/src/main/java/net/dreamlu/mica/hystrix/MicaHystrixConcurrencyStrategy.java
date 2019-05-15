@@ -23,7 +23,7 @@ import com.netflix.hystrix.strategy.concurrency.HystrixRequestVariable;
 import com.netflix.hystrix.strategy.concurrency.HystrixRequestVariableLifecycle;
 import com.netflix.hystrix.strategy.properties.HystrixProperty;
 import lombok.AllArgsConstructor;
-import net.dreamlu.mica.props.MicaHystrixHeadersProperties;
+import net.dreamlu.mica.context.MicaHttpHeadersGetter;
 import org.springframework.lang.Nullable;
 
 import java.util.concurrent.BlockingQueue;
@@ -48,8 +48,7 @@ public class MicaHystrixConcurrencyStrategy extends HystrixConcurrencyStrategy {
 	@Nullable
 	private final HystrixConcurrencyStrategy existingConcurrencyStrategy;
 	@Nullable
-	private final MicaHystrixAccountGetter accountGetter;
-	private final MicaHystrixHeadersProperties properties;
+	private final MicaHttpHeadersGetter headersGetter;
 
 	@Override
 	public BlockingQueue<Runnable> getBlockingQueue(int maxQueueSize) {
@@ -86,7 +85,7 @@ public class MicaHystrixConcurrencyStrategy extends HystrixConcurrencyStrategy {
 
 	@Override
 	public <T> Callable<T> wrapCallable(Callable<T> callable) {
-		Callable<T> wrapCallable = new MicaHttpHeadersCallable<>(callable, accountGetter, properties);
+		Callable<T> wrapCallable = new MicaHttpHeadersCallable<>(callable, headersGetter);
 		return existingConcurrencyStrategy != null
 			? existingConcurrencyStrategy.wrapCallable(wrapCallable)
 			: super.wrapCallable(wrapCallable);

@@ -14,26 +14,24 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.hystrix;
+package net.dreamlu.mica.context;
 
-
+import org.springframework.http.HttpHeaders;
 import org.springframework.lang.Nullable;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
- * Mica 用户信息获取器，用于请求头传递
+ * HttpHeaders 获取器，用于跨服务和线程的传递
  *
  * @author L.cm
  */
-public interface MicaHystrixAccountGetter {
+public interface MicaHttpHeadersGetter {
 
 	/**
-	 * 账号信息获取器
+	 * 获取 HttpHeaders
 	 *
-	 * @param request HttpServletRequest
-	 * @return account 信息
+	 * @return HttpHeaders
 	 */
 	@Nullable
-	String get(HttpServletRequest request);
+	HttpHeaders get();
+
 }

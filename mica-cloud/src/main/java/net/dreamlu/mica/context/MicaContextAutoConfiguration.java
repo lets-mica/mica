@@ -14,31 +14,18 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.hystrix;
+package net.dreamlu.mica.context;
 
-import org.springframework.core.NamedThreadLocal;
-import org.springframework.http.HttpHeaders;
-import org.springframework.lang.Nullable;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * HttpHeadersContext
+ * mica 服务上下文配置
  *
  * @author L.cm
  */
-public class MicaHttpHeadersContextHolder {
-	private static final ThreadLocal<HttpHeaders> HTTP_HEADERS_HOLDER = new NamedThreadLocal<>("Mica hystrix HttpHeaders");
-
-	static void set(HttpHeaders httpHeaders) {
-		HTTP_HEADERS_HOLDER.set(httpHeaders);
-	}
-
-	@Nullable
-	public static HttpHeaders get() {
-		return HTTP_HEADERS_HOLDER.get();
-	}
-
-	static void remove() {
-		HTTP_HEADERS_HOLDER.remove();
-	}
+@Configuration
+@EnableConfigurationProperties(MicaHeadersProperties.class)
+public class MicaContextAutoConfiguration {
 
 }
