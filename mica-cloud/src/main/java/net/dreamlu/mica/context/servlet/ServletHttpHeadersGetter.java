@@ -39,7 +39,7 @@ import java.util.List;
  * @author L.cm
  */
 @Configuration
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class ServletHttpHeadersGetter implements MicaHttpHeadersGetter {
 	@Autowired
 	private MicaHeadersProperties properties;
