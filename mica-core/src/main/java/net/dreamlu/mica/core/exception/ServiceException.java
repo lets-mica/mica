@@ -45,6 +45,11 @@ public class ServiceException extends RuntimeException {
 		this.result = R.fail(rCode, message);
 	}
 
+	public ServiceException(String message) {
+		super(message);
+		this.result = null;
+	}
+
 	public ServiceException(Throwable cause) {
 		this(cause.getMessage(), cause);
 	}
