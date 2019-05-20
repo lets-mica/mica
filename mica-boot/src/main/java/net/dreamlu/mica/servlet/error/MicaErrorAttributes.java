@@ -17,6 +17,7 @@
 package net.dreamlu.mica.servlet.error;
 
 import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.core.exception.ServiceException;
 import net.dreamlu.mica.core.result.R;
 import net.dreamlu.mica.core.result.SystemCode;
 import net.dreamlu.mica.core.utils.BeanUtil;
@@ -26,6 +27,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * 全局异常处理
@@ -45,6 +47,10 @@ public class MicaErrorAttributes extends DefaultErrorAttributes {
 		if (error == null) {
 			log.error("URL:{} error status:{}", requestUrl, status);
 			result = R.fail(SystemCode.FAILURE, "系统未知异常[HttpStatus]:" + status);
+		} else if (error instanceof ServiceException) {
+			log.error(String.format("URL:%s error status:%d", requestUrl, status), error);
+			result = ((ServiceException) error).getResult();
+			result = Optional.ofNullable(result).orElse(R.fail(SystemCode.FAILURE));
 		} else {
 			log.error(String.format("URL:%s error status:%d", requestUrl, status), error);
 			result = R.fail(SystemCode.FAILURE);

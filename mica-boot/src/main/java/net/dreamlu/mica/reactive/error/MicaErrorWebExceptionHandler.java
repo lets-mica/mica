@@ -17,9 +17,9 @@
 package net.dreamlu.mica.reactive.error;
 
 import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.core.exception.ServiceException;
 import net.dreamlu.mica.core.result.R;
 import net.dreamlu.mica.core.result.SystemCode;
-import net.dreamlu.mica.core.utils.BeanUtil;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.DefaultErrorWebExceptionHandler;
@@ -28,14 +28,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
-import java.util.Map;
+import java.util.Optional;
 
 /**
  * webflux 异常处理
@@ -64,9 +65,19 @@ public class MicaErrorWebExceptionHandler extends DefaultErrorWebExceptionHandle
 	protected Mono<ServerResponse> renderErrorResponse(ServerRequest request) {
 		Throwable error = this.getError(request);
 		HttpStatus status = determineHttpStatus(error);
+		// 拼接地址
+		MultiValueMap<String, String> queryParams = request.queryParams();
+		String requestUrl = UriComponentsBuilder.fromPath(request.path()).queryParams(queryParams).build().toUriString();
+		log.error(String.format("URL:%s error status:%d", requestUrl, status.value()), error);
 		// 返回消息
 		String message = status.value() + ":" + status.getReasonPhrase();
-		R<Object> result = R.fail(SystemCode.FAILURE, message);
+		R<Object> result;
+		if (error instanceof ServiceException) {
+			result = ((ServiceException) error).getResult();
+			result = Optional.ofNullable(result).orElse(R.fail(SystemCode.FAILURE));
+		} else {
+			result = R.fail(SystemCode.FAILURE, message);
+		}
 		return ServerResponse.status(status)
 			.contentType(MediaType.APPLICATION_JSON_UTF8)
 			.body(BodyInserters.fromObject(result));
