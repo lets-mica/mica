@@ -2,14 +2,14 @@ ext {
     javaVersion = JavaVersion.VERSION_1_8
     springBootVersion = "2.1.5.RELEASE"
     springCloudVersion = "Greenwich.RELEASE"
-    micaAutoVersion = "1.0.2"
+    googleAutoServiceVersion = "1.0-rc5"
+    micaAutoVersion = "1.1.0"
     apolloVersion = "1.3.0"
     protostuffVersion = "1.6.0"
     disruptorVersion = "3.4.2"
     swaggerVersion = "2.9.2"
     lombokVersion = "1.18.8"
     findbugsVersion = "3.0.2"
-    googleAutoServiceVersion = "1.0-rc5"
 }
 
 configure(subprojects) {
