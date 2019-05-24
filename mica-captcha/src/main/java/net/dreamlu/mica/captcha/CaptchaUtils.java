@@ -107,23 +107,24 @@ public class CaptchaUtils {
 		for (int i = 0; i < buffer.length; i++) {
 			char xcode = buffer[i];
 			//旋转度数 最好小于45度
-			int degree = random.nextInt(28);
+			int degree = random.nextInt(25);
 			if (i % 2 == 0) {
 				degree = degree * (-1);
 			}
 			//定义坐标
 			int x = 22 * i, y = 21;
 			//旋转区域
-			g.rotate(Math.toRadians(degree), x, y);
+			double radians = Math.toRadians(degree);
+			g.rotate(radians, x, y);
 			//设定字体颜色
 			color = getRandColor(random, 20, 130);
 			g.setColor(color);
 			//设定字体，每次随机
 			g.setFont(RANDOM_FONT[random.nextInt(RANDOM_FONT.length)]);
 			//将认证码显示到图象中
-			g.drawString("" + xcode, x + 8, y + 10);
+			g.drawString(String.valueOf(xcode), x + 8, y + 10);
 			//旋转之后，必须旋转回来
-			g.rotate(-Math.toRadians(degree), x, y);
+			g.rotate(-radians, x, y);
 		}
 		//图片中间曲线，使用上面缓存的color
 		g.setColor(color);
