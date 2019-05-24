@@ -23,6 +23,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -43,5 +44,11 @@ public class StartEventListener {
 		int localPort = event.getWebServer().getPort();
 		String profile = StringUtils.arrayToCommaDelimitedString(environment.getActiveProfiles());
 		log.info("\n---[{}]---启动完成，当前使用的端口:[{}]，环境变量:[{}]---", appName, localPort, profile);
+		// 如果有 swagger，打印开发阶段的 swagger ui 地址
+		if (ClassUtils.isPresent("springfox.documentation.spring.web.plugins.Docket", null)) {
+			log.info("\nhttp://localhost:{}/swagger-ui.html", localPort);
+		} else {
+			log.info("\nhttp://localhost:{}", localPort);
+		}
 	}
 }
