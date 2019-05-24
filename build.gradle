@@ -1,6 +1,6 @@
 ext {
     javaVersion = JavaVersion.VERSION_1_8
-    springBootVersion = "2.1.4.RELEASE"
+    springBootVersion = "2.1.5.RELEASE"
     springCloudVersion = "Greenwich.RELEASE"
     micaAutoVersion = "1.0.2"
     apolloVersion = "1.3.0"
@@ -32,9 +32,11 @@ configure(subprojects - project(":mica-bom")) {
 
     repositories {
         mavenLocal()
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://maven.aliyun.com/repository/spring" }
+        maven { url "https://maven.aliyun.com/repository/spring-plugin" }
         maven { url "https://repo.spring.io/libs-release" }
         maven { url "https://repo.spring.io/milestone" }
-        maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
         mavenCentral()
     }
 
