@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.redis;
+package net.dreamlu.mica.redis.config;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizer;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.data.redis.cache;
+package net.dreamlu.mica.redis.config;
 
 import net.dreamlu.mica.redis.RedisAutoCacheManager;
 import org.springframework.beans.factory.ObjectProvider;
@@ -27,6 +27,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -39,7 +42,6 @@ import java.util.Map;
 /**
  * 扩展redis-cache支持注解cacheName添加超时时间
  * <p>
- * TODO L.cm 待 细细品读 并优化源码 重设 并自定义 RedisCacheConfiguration
  *
  * @author L.cm
  */
@@ -48,6 +50,7 @@ import java.util.Map;
 @ConditionalOnBean(RedisConnectionFactory.class)
 @EnableConfigurationProperties(CacheProperties.class)
 public class MicaRedisCacheAutoConfiguration {
+
 	/**
 	 * 序列化方式
 	 */
@@ -70,7 +73,7 @@ public class MicaRedisCacheAutoConfiguration {
 	@Primary
 	@Bean("redisCacheManager")
 	public RedisCacheManager redisCacheManager(RedisConnectionFactory connectionFactory) {
-		DefaultRedisCacheWriter redisCacheWriter = new DefaultRedisCacheWriter(connectionFactory);
+		RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory);
 		RedisCacheConfiguration cacheConfiguration = this.determineConfiguration();
 		List<String> cacheNames = this.cacheProperties.getCacheNames();
 		Map<String, RedisCacheConfiguration> initialCaches = new LinkedHashMap<>();

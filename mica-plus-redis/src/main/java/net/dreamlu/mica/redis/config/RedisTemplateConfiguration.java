@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.redis;
+package net.dreamlu.mica.redis.config;
 
 import net.dreamlu.mica.redis.ser.RedisKeySerializer;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
@@ -40,6 +41,7 @@ public class RedisTemplateConfiguration {
 
 	/**
 	 * value 值 序列化
+	 *
 	 * @return RedisSerializer
 	 */
 	@Bean
@@ -64,4 +66,9 @@ public class RedisTemplateConfiguration {
 		return redisTemplate;
 	}
 
+	@Bean
+	@ConditionalOnMissingBean(ValueOperations.class)
+	public ValueOperations valueOperations(RedisTemplate redisTemplate) {
+		return redisTemplate.opsForValue();
+	}
 }

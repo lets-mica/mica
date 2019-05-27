@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.redis;
+package net.dreamlu.mica.redis.config;
 
 import net.dreamlu.mica.redis.ser.ProtoStuffSerializer;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
