@@ -4,6 +4,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web") {
         exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
     }
+    implementation "org.springframework.boot:spring-boot-starter-webflux"
     implementation "org.springframework.retry:spring-retry"
     implementation "org.springframework.cloud:spring-cloud-netflix-eureka-client"
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign"){

@@ -168,7 +168,7 @@ public class RequestLogAspect {
 			while (headers.hasMoreElements()) {
 				String headerName = headers.nextElement();
 				String headerValue = request.getHeader(headerName);
-				beforeReqLog.append("===Headers===  {} : {}\n");
+				beforeReqLog.append("===Headers===  {}: {}\n");
 				beforeReqArgs.add(headerName);
 				beforeReqArgs.add(headerValue);
 			}
