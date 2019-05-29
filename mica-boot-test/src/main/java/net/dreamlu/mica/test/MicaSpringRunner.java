@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.test;
 
+import net.dreamlu.mica.core.utils.CollectionUtil;
 import net.dreamlu.mica.launcher.LauncherService;
 import net.dreamlu.mica.launcher.MicaApplication;
 import net.dreamlu.mica.launcher.MicaEnv;
@@ -45,12 +46,12 @@ public class MicaSpringRunner extends SpringJUnit4ClassRunner {
 	}
 
 	private void setUpTestClass(Class<?> clazz) throws NoSuchFieldException, IllegalAccessException {
-		MicaBootTest aispBootTest = AnnotationUtils.getAnnotation(clazz, MicaBootTest.class);
-		if (aispBootTest == null) {
+		MicaBootTest micaBootTest = AnnotationUtils.getAnnotation(clazz, MicaBootTest.class);
+		if (micaBootTest == null) {
 			throw new MicaBootTestException(String.format("%s must be @MicaBootTest .", clazz));
 		}
-		String appName = aispBootTest.appName();
-		String profile = aispBootTest.profile();
+		String appName = micaBootTest.appName();
+		String profile = micaBootTest.profile();
 		boolean isLocalDev = MicaApplication.isLocalDev();
 		Properties props = System.getProperties();
 		props.setProperty("spring.application.name", appName);
@@ -59,9 +60,8 @@ public class MicaSpringRunner extends SpringJUnit4ClassRunner {
 		props.setProperty("mica.is-local", String.valueOf(isLocalDev));
 		props.setProperty("spring.banner.location", "classpath:mica_banner.txt");
 		System.err.println(String.format("---[junit.test]:[%s]---启动中，读取到的环境变量:[%s]", appName, profile));
-
 		// 是否加载自定义组件
-		if (!aispBootTest.enableLoader()) {
+		if (!micaBootTest.enableLoader()) {
 			return;
 		}
 		ServiceLoader<LauncherService> loader = ServiceLoader.load(LauncherService.class);
@@ -69,7 +69,8 @@ public class MicaSpringRunner extends SpringJUnit4ClassRunner {
 		Environment env = new StandardEnvironment();
 		MicaEnv micaEnv = MicaEnv.of(profile);
 		// 启动组件
-		loader.forEach(launcherService -> launcherService.launcher(builder, env, appName, micaEnv, isLocalDev));
+		CollectionUtil.toList(loader).stream().sorted()
+			.forEach(launcherService -> launcherService.launcher(builder, env, appName, micaEnv, isLocalDev));
 		// 反射出 builder 中的 props，兼容用户扩展
 		Field field = SpringApplicationBuilder.class.getDeclaredField("defaultProperties");
 		field.setAccessible(true);

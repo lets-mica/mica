@@ -17,6 +17,7 @@
 package net.dreamlu.mica.launcher;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 
 /**
@@ -24,7 +25,7 @@ import org.springframework.core.env.Environment;
  *
  * @author L.cm
  */
-public interface LauncherService {
+public interface LauncherService extends Ordered, Comparable<LauncherService> {
 
 	/**
 	 * 启动时 处理 SpringApplicationBuilder
@@ -35,4 +36,15 @@ public interface LauncherService {
 	 * @param isLocalDev 是否本地开发
 	 */
 	void launcher(SpringApplicationBuilder builder, Environment env, String appName, MicaEnv micaEnv, boolean isLocalDev);
+
+	@Override
+	default int getOrder() {
+		return Ordered.LOWEST_PRECEDENCE;
+	}
+
+	@Override
+	default int compareTo(LauncherService o) {
+		return Integer.compare(this.getOrder(), o.getOrder());
+	}
+
 }

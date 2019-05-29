@@ -36,6 +36,7 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 	/**
 	 * Return {@code true} if the supplied Collection is not {@code null} or empty.
 	 * Otherwise, return {@code false}.
+	 *
 	 * @param collection the Collection to check
 	 * @return whether the given Collection is not empty
 	 */
@@ -46,6 +47,7 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 	/**
 	 * Return {@code true} if the supplied Map is not {@code null} or empty.
 	 * Otherwise, return {@code false}.
+	 *
 	 * @param map the Map to check
 	 * @return whether the given Map is not empty
 	 */
@@ -55,9 +57,10 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 
 	/**
 	 * Check whether the given Array contains the given element.
-	 * @param array the Array to check
+	 *
+	 * @param array   the Array to check
 	 * @param element the element to look for
-	 * @param <T> The generic tag
+	 * @param <T>     The generic tag
 	 * @return {@code true} if found, {@code false} else
 	 */
 	public static <T> boolean contains(@Nullable T[] array, final T element) {
@@ -69,7 +72,8 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 
 	/**
 	 * Concatenates 2 arrays
-	 * @param one 数组1
+	 *
+	 * @param one   数组1
 	 * @param other 数组2
 	 * @return 新数组
 	 */
@@ -80,7 +84,7 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 	/**
 	 * Concatenates 2 arrays
 	 *
-	 * @param one 数组1
+	 * @param one   数组1
 	 * @param other 数组2
 	 * @param clazz 数组类
 	 * @return 新数组
@@ -94,7 +98,8 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 
 	/**
 	 * 不可变 Set
-	 * @param es 对象
+	 *
+	 * @param es  对象
 	 * @param <E> 泛型
 	 * @return 集合
 	 */
@@ -106,7 +111,8 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 
 	/**
 	 * 不可变 List
-	 * @param es 对象
+	 *
+	 * @param es  对象
 	 * @param <E> 泛型
 	 * @return 集合
 	 */
@@ -114,6 +120,26 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 	public static <E> List<E> ofImmutableList(E... es) {
 		Objects.requireNonNull(es, "args es is null.");
 		return Arrays.stream(es).collect(Collectors.toList());
+	}
+
+	/**
+	 * Iterable 转换为List集合
+	 *
+	 * @param elements Iterable
+	 * @param <E>      泛型
+	 * @return 集合
+	 */
+	public static <E> List<E> toList(Iterable<E> elements) {
+		Objects.requireNonNull(elements, "elements es is null.");
+		if (elements instanceof Collection) {
+			return new ArrayList((Collection) elements);
+		}
+		Iterator<E> iterator = elements.iterator();
+		List<E> list = new ArrayList<>();
+		while (iterator.hasNext()) {
+			list.add(iterator.next());
+		}
+		return list;
 	}
 
 }
