@@ -32,7 +32,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * webflux 日志请求记录，方便开发调试。
@@ -74,7 +73,7 @@ public class ReactiveRequestLogFilter implements WebFilter {
 		StringBuilder beforeReqLog = new StringBuilder(300);
 		// 日志参数
 		List<Object> beforeReqArgs = new ArrayList<>();
-		beforeReqLog.append("\n\n================  Request Start  ================\n");
+		beforeReqLog.append("\n\n================ WebFlux Request Start  ================\n");
 		// 打印路由
 		beforeReqLog.append("===> {}: {}\n");
 		// 参数
@@ -86,28 +85,15 @@ public class ReactiveRequestLogFilter implements WebFilter {
 		if (MicaLogLevel.HEADERS.lte(level)) {
 			HttpHeaders headers = request.getHeaders();
 			headers.forEach((headerName, headerValue) -> {
-				beforeReqLog.append("===Headers===  {} : {}\n");
+				beforeReqLog.append("===Headers===  {}: {}\n");
 				beforeReqArgs.add(headerName);
 				beforeReqArgs.add(StringUtil.join(headerValue));
 			});
 		}
-		beforeReqLog.append("================   Request End   ================\n");
+		beforeReqLog.append("================  WebFlux Request End  =================\n");
 		// 打印执行时间
-		long startNs = System.nanoTime();
 		log.info(beforeReqLog.toString(), beforeReqArgs.toArray());
-		// filter 执行后的日志
-		StringBuilder afterReqLog = new StringBuilder(200);
-		afterReqLog.append("\n\n================  Response Start  ================\n");
-		try {
-			return chain.filter(exchange);
-		} finally {
-			long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
-			// webflux，这里打印的时间没太大意义
-			afterReqLog.append("<=== {}: {} ({} ms)\n");
-			afterReqLog.append("================   Response End   ================\n");
-			log.info(afterReqLog.toString(), requestMethod, requestURI, tookMs);
-		}
-
+		return chain.filter(exchange);
 	}
 
 }
