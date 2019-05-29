@@ -20,6 +20,7 @@ import com.google.auto.service.AutoService;
 import net.dreamlu.mica.launcher.LauncherService;
 import net.dreamlu.mica.launcher.MicaEnv;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 
 /**
@@ -47,5 +48,10 @@ public class LogLauncherServiceImpl implements LauncherService {
 			System.setOut(LogPrintStream.out());
 			System.setErr(LogPrintStream.err());
 		}
+	}
+
+	@Override
+	public int getOrder() {
+		return Ordered.HIGHEST_PRECEDENCE;
 	}
 }

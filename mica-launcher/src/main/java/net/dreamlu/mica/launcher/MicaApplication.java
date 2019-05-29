@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.launcher;
 
+import net.dreamlu.mica.core.utils.CollectionUtil;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.*;
@@ -106,8 +107,8 @@ public class MicaApplication {
 		builder.properties(String.format("%s.level=%s", MicaLogLevel.REQ_LOG_PROPS_PREFIX, micaEnv.getReqLogLevel().name()));
 		// 加载自定义组件
 		ServiceLoader<LauncherService> loader = ServiceLoader.load(LauncherService.class);
-		// 启动组件
-		loader.forEach(launcherService -> launcherService.launcher(builder, env, appName, micaEnv, isLocalDev));
+		CollectionUtil.toList(loader).stream().sorted()
+			.forEach(launcherService -> launcherService.launcher(builder, env, appName, micaEnv, isLocalDev));
 		return builder;
 	}
 
