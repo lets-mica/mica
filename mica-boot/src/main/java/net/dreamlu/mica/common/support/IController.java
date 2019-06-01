@@ -36,7 +36,7 @@ import java.io.File;
  *
  * @author L.cm
  */
-public abstract class BaseController {
+public interface IController {
 
 	/**
 	 * redirect跳转
@@ -44,7 +44,7 @@ public abstract class BaseController {
 	 * @param url 目标url
 	 * @return 跳转地址
 	 */
-	protected String redirect(String url) {
+	default String redirect(String url) {
 		return "redirect:".concat(url);
 	}
 
@@ -54,7 +54,7 @@ public abstract class BaseController {
 	 * @param <T> 泛型标记
 	 * @return Result
 	 */
-	protected <T> R<T> success() {
+	default <T> R<T> success() {
 		return R.success();
 	}
 
@@ -65,7 +65,7 @@ public abstract class BaseController {
 	 * @param <T>  泛型标记
 	 * @return Result
 	 */
-	protected <T> R<T> success(@Nullable T data) {
+	default <T> R<T> success(@Nullable T data) {
 		return R.success(data);
 	}
 
@@ -77,7 +77,7 @@ public abstract class BaseController {
 	 * @param <T>    泛型标记
 	 * @return Result
 	 */
-	protected <T> R<T> status(boolean status, String msg) {
+	default <T> R<T> status(boolean status, String msg) {
 		return R.status(status, msg);
 	}
 
@@ -89,7 +89,7 @@ public abstract class BaseController {
 	 * @param <T>    泛型标记
 	 * @return Result
 	 */
-	protected <T> R<T> status(boolean status, IResultCode sCode) {
+	default <T> R<T> status(boolean status, IResultCode sCode) {
 		return R.status(status, sCode);
 	}
 
@@ -100,7 +100,7 @@ public abstract class BaseController {
 	 * @param <T> 泛型标记
 	 * @return {Result}
 	 */
-	protected <T> R<T> fail(String msg) {
+	default <T> R<T> fail(String msg) {
 		return R.fail(SystemCode.FAILURE, msg);
 	}
 
@@ -111,7 +111,7 @@ public abstract class BaseController {
 	 * @param <T>   泛型标记
 	 * @return {Result}
 	 */
-	protected <T> R<T> fail(IResultCode rCode) {
+	default <T> R<T> fail(IResultCode rCode) {
 		return R.fail(rCode);
 	}
 
@@ -123,7 +123,7 @@ public abstract class BaseController {
 	 * @param <T>   泛型标记
 	 * @return {Result}
 	 */
-	protected <T> R<T> fail(IResultCode rCode, String msg) {
+	default <T> R<T> fail(IResultCode rCode, String msg) {
 		return R.fail(rCode, msg);
 	}
 
@@ -133,7 +133,7 @@ public abstract class BaseController {
 	 * @param file 文件
 	 * @return {ResponseEntity}
 	 */
-	protected ResponseEntity<Resource> download(File file) {
+	default ResponseEntity<Resource> download(File file) {
 		String fileName = file.getName();
 		return download(file, fileName);
 	}
@@ -145,7 +145,7 @@ public abstract class BaseController {
 	 * @param fileName 生成的文件名
 	 * @return {ResponseEntity}
 	 */
-	protected ResponseEntity<Resource> download(File file, String fileName) {
+	default ResponseEntity<Resource> download(File file, String fileName) {
 		Resource resource = new FileSystemResource(file);
 		return download(resource, fileName);
 	}
@@ -157,7 +157,7 @@ public abstract class BaseController {
 	 * @param fileName 生成的文件名
 	 * @return {ResponseEntity}
 	 */
-	protected ResponseEntity<Resource> download(Resource resource, String fileName) {
+	default ResponseEntity<Resource> download(Resource resource, String fileName) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 		String encodeFileName = UriUtils.encode(fileName, Charsets.UTF_8);
