@@ -19,6 +19,8 @@ package net.dreamlu.mica.core.utils;
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 
+import java.util.Objects;
+
 /**
  * 对象工具类
  *
@@ -28,7 +30,28 @@ import org.springframework.lang.Nullable;
 public class ObjectUtil extends org.springframework.util.ObjectUtils {
 
 	/**
+	 * 判断对象为null
+	 *
+	 * @param object 对象
+	 * @return 对象是否为空
+	 */
+	public static boolean isNull(@Nullable Object object) {
+		return Objects.isNull(object);
+	}
+
+	/**
+	 * 判断对象不为null
+	 *
+	 * @param object 对象
+	 * @return 对象是否不为空
+	 */
+	public static boolean isNotNull(@Nullable Object object) {
+		return Objects.nonNull(object);
+	}
+
+	/**
 	 * 判断数组不为空
+	 *
 	 * @param array 数组
 	 * @return 数组是否为空
 	 */
@@ -38,6 +61,7 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 
 	/**
 	 * 判断对象不为空
+	 *
 	 * @param obj 数组
 	 * @return 数组是否为空
 	 */
