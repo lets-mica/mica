@@ -116,6 +116,26 @@ public class $ {
 	}
 
 	/**
+	 * 判断对象为true
+	 *
+	 * @param object 对象
+	 * @return 对象是否为true
+	 */
+	public static boolean isTrue(@Nullable Boolean object) {
+		return ObjectUtil.isTrue(object);
+	}
+
+	/**
+	 * 判断对象为false
+	 *
+	 * @param object 对象
+	 * @return 对象是否为false
+	 */
+	public static boolean isFalse(@Nullable Boolean object) {
+		return ObjectUtil.isFalse(object);
+	}
+
+	/**
 	 * 判断对象是否为null
 	 * <p>
 	 * This method exists to be used as a
@@ -351,7 +371,7 @@ public class $ {
 	/**
 	 * Concatenates 2 arrays
 	 *
-	 * @param one 数组1
+	 * @param one   数组1
 	 * @param other 数组2
 	 * @return 新数组
 	 */
@@ -362,7 +382,7 @@ public class $ {
 	/**
 	 * Concatenates 2 arrays
 	 *
-	 * @param one 数组1
+	 * @param one   数组1
 	 * @param other 数组2
 	 * @param clazz 数组类
 	 * @return 新数组

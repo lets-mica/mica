@@ -50,6 +50,26 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	}
 
 	/**
+	 * 判断对象为true
+	 *
+	 * @param object 对象
+	 * @return 对象是否为true
+	 */
+	public static boolean isTrue(@Nullable Boolean object) {
+		return Boolean.TRUE.equals(object);
+	}
+
+	/**
+	 * 判断对象为false
+	 *
+	 * @param object 对象
+	 * @return 对象是否为false
+	 */
+	public static boolean isFalse(@Nullable Boolean object) {
+		return object == null || Boolean.FALSE.equals(object);
+	}
+
+	/**
 	 * 判断数组不为空
 	 *
 	 * @param array 数组
