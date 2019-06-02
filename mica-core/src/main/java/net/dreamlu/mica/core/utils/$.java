@@ -143,7 +143,7 @@ public class $ {
 	 * otherwise {@code false}
 	 * @see java.util.function.Predicate
 	 */
-	public static boolean notNull(@Nullable Object obj) {
+	public static boolean isNotNull(@Nullable Object obj) {
 		return Objects.nonNull(obj);
 	}
 
