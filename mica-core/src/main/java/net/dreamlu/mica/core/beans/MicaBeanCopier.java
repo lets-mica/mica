@@ -26,6 +26,7 @@ import org.springframework.asm.Opcodes;
 import org.springframework.asm.Type;
 import org.springframework.cglib.core.*;
 import org.springframework.lang.Nullable;
+import org.springframework.util.ClassUtils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -48,12 +49,12 @@ import java.util.concurrent.ConcurrentMap;
  */
 public abstract class MicaBeanCopier {
 	private static final Type CONVERTER = TypeUtils.parseType("org.springframework.cglib.core.Converter");
-	private static final Type CLASS_UTIL = TypeUtils.parseType("net.dreamlu.mica.core.utils.ClassUtil");
 	private static final Type BEAN_COPIER = TypeUtils.parseType(MicaBeanCopier.class.getName());
 	private static final Type BEAN_MAP = TypeUtils.parseType(Map.class.getName());
 	private static final Signature COPY = new Signature("copy", Type.VOID_TYPE, new Type[]{Constants.TYPE_OBJECT, Constants.TYPE_OBJECT, CONVERTER});
 	private static final Signature CONVERT = TypeUtils.parseSignature("Object convert(Object, Class, Object)");
 	private static final Signature BEAN_MAP_GET = TypeUtils.parseSignature("Object get(Object)");
+	private static final Type CLASS_UTILS = TypeUtils.parseType(ClassUtils.class.getName());
 	private static final Signature IS_ASSIGNABLE_VALUE = TypeUtils.parseSignature("boolean isAssignableValue(Class, Object)");
 	/**
 	 * The map to store {@link MicaBeanCopier} of source type and class type for copy.
@@ -357,8 +358,8 @@ public abstract class MicaBeanCopier {
 				e.ifnull(l0);
 				EmitUtils.load_class(e, setterType);
 				e.load_local(var);
-				// ClassUtil.isAssignableValue(Integer.class, id)
-				e.invoke_static(CLASS_UTIL, IS_ASSIGNABLE_VALUE);
+				// ClassUtils.isAssignableValue(Integer.class, id)
+				e.invoke_static(CLASS_UTILS, IS_ASSIGNABLE_VALUE);
 				Label l1 = new Label();
 				// 返回值，判断 链式 bean
 				Class<?> returnType = writeMethod.getReturnType();
