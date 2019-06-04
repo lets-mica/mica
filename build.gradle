@@ -7,6 +7,7 @@ ext {
     protostuffVersion = "1.6.0"
     disruptorVersion = "3.4.2"
     swaggerVersion = "2.9.2"
+    swaggerBootstrapUiVersion = "1.9.3"
     lombokVersion = "1.18.8"
     findbugsVersion = "3.0.2"
 }

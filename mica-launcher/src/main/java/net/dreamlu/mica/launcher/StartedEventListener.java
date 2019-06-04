@@ -45,7 +45,7 @@ public class StartedEventListener {
 		System.err.println(String.format("---[%s]---启动完成，当前使用的端口:[%d]，环境变量:[%s]---", appName, localPort, profile));
 		// 如果有 swagger，打印开发阶段的 swagger ui 地址
 		if (ClassUtils.isPresent("springfox.documentation.spring.web.plugins.Docket", null)) {
-			System.out.println(String.format("http://localhost:%s/swagger-ui.html", localPort));
+			System.out.println(String.format("http://localhost:%s/doc.html", localPort));
 		} else {
 			System.out.println(String.format("http://localhost:%s", localPort));
 		}
