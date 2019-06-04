@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.log;
 
-import com.google.auto.service.AutoService;
 import net.dreamlu.mica.launcher.LauncherService;
 import net.dreamlu.mica.launcher.MicaEnv;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -28,7 +27,6 @@ import org.springframework.core.env.Environment;
  *
  * @author L.cm
  */
-@AutoService(LauncherService.class)
 public class LogLauncherServiceImpl implements LauncherService {
 
 	@Override
@@ -43,11 +41,6 @@ public class LogLauncherServiceImpl implements LauncherService {
 		System.setProperty("rocketmq.client.log.loadconfig", "false");
 		//  RocketMQ-Client 4.3 设置默认为 slf4j
 		System.setProperty("rocketmq.client.logUseSlf4j", "true");
-		// 非本地 将 全部的 System.err 和 System.out 替换为log
-		if (!isLocalDev) {
-			System.setOut(LogPrintStream.out());
-			System.setErr(LogPrintStream.err());
-		}
 	}
 
 	@Override

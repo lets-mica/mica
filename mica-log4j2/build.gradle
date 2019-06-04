@@ -3,6 +3,5 @@ dependencies {
     api "com.lmax:disruptor:${disruptorVersion}"
     api "org.springframework.boot:spring-boot-starter-log4j2"
     implementation "org.springframework.boot:spring-boot"
-    compileOnly "com.google.auto.service:auto-service:$googleAutoServiceVersion"
-    annotationProcessor "com.google.auto.service:auto-service:$googleAutoServiceVersion"
+    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
 }
