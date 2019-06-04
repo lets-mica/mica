@@ -26,7 +26,7 @@
         <Property name="CONSOLE_LOG_PATTERN">%clr{%d{${LOG_DATEFORMAT_PATTERN}}}{faint} %clr{${LOG_LEVEL_PATTERN}} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%C{36}.%M:%L}{cyan} %clr{:}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
     </Properties>
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT" follow="true" immediateFlush="true">
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
             <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}"/>
             <Filters>
                 <EnvironmentFilter/>

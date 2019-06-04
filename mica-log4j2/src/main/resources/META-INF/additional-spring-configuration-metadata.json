@@ -1,0 +1,10 @@
+{
+  "properties": [
+    {
+      "name": "mica.log.console.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "是否开启控制台日志，默认：true."
+    }
+  ]
+}

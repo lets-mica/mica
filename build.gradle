@@ -2,7 +2,6 @@ ext {
     javaVersion = JavaVersion.VERSION_1_8
     springBootVersion = "2.1.5.RELEASE"
     springCloudVersion = "Greenwich.RELEASE"
-    googleAutoServiceVersion = "1.0-rc5"
     micaAutoVersion = "1.1.0"
     apolloVersion = "1.3.0"
     protostuffVersion = "1.6.0"

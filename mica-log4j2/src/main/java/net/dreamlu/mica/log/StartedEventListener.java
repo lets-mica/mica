@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.launcher;
+package net.dreamlu.mica.log;
 
-import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.props.MicaProperties;
+import org.springframework.boot.web.context.WebServerApplicationContext;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
@@ -34,27 +32,25 @@ import java.util.Map;
  *
  * @author L.cm
  */
-@Slf4j
 @Configuration
-public class StartEventListener {
+public class StartedEventListener {
 
 	@Async
 	@Order
 	@EventListener(WebServerInitializedEvent.class)
 	public void afterStart(WebServerInitializedEvent event) {
-		Environment environment = event.getApplicationContext().getEnvironment();
-		String appName = environment.getProperty("spring.application.name");
-		int localPort = event.getWebServer().getPort();
-		String profile = StringUtils.arrayToCommaDelimitedString(environment.getActiveProfiles());
-		System.err.println(String.format("---[%s]---启动完成，当前使用的端口:[%d]，环境变量:[%s]---", appName, localPort, profile));
-		// 如果有 swagger，打印开发阶段的 swagger ui 地址
-		if (ClassUtils.isPresent("springfox.documentation.spring.web.plugins.Docket", null)) {
-			System.out.println(String.format("http://localhost:%s/swagger-ui.html", localPort));
-		} else {
-			System.out.println(String.format("http://localhost:%s", localPort));
+		WebServerApplicationContext applicationContext = event.getApplicationContext();
+
+		// 非本地 将 全部的 System.err 和 System.out 替换为log
+		MicaProperties micaProperties = applicationContext.getBean(MicaProperties.class);
+		if (!micaProperties.getIsLocal()) {
+			System.setOut(LogPrintStream.out());
+			System.setErr(LogPrintStream.err());
 		}
+
 		// 关闭控制台的日志打印
-		Map<String, Object> systemProperties = ((ConfigurableEnvironment) environment).getSystemProperties();
+		ConfigurableEnvironment environment = (ConfigurableEnvironment) applicationContext.getEnvironment();
+		Map<String, Object> systemProperties = environment.getSystemProperties();
 		systemProperties.put("mica.log.console.enabled", false);
 	}
 }
