@@ -75,6 +75,9 @@
 ### mica-plus-mongo
 - mongo 复杂 tree 和 jsonNode 转换处理。
 
+### mica-plus-swagger
+- swagger 和 swagger-bootstrap-ui 依赖。
+
 ## 已知问题
 lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861
 

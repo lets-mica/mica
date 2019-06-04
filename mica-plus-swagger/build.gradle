@@ -1,0 +1,6 @@
+dependencies {
+    api "io.springfox:springfox-swagger2:${swaggerVersion}"
+    api "io.springfox:springfox-swagger-ui:${swaggerVersion}"
+    api "io.springfox:springfox-bean-validators:${swaggerVersion}"
+    api "com.github.xiaoymin:swagger-bootstrap-ui:${swaggerBootstrapUiVersion}"
+}
