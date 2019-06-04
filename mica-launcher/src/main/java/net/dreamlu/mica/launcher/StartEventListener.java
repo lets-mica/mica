@@ -21,10 +21,13 @@ import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.Map;
 
 /**
  * 项目启动事件通知
@@ -43,12 +46,15 @@ public class StartEventListener {
 		String appName = environment.getProperty("spring.application.name");
 		int localPort = event.getWebServer().getPort();
 		String profile = StringUtils.arrayToCommaDelimitedString(environment.getActiveProfiles());
-		log.info("\n---[{}]---启动完成，当前使用的端口:[{}]，环境变量:[{}]---", appName, localPort, profile);
+		System.err.println(String.format("---[%s]---启动完成，当前使用的端口:[%d]，环境变量:[%s]---", appName, localPort, profile));
 		// 如果有 swagger，打印开发阶段的 swagger ui 地址
 		if (ClassUtils.isPresent("springfox.documentation.spring.web.plugins.Docket", null)) {
-			log.info("\nhttp://localhost:{}/swagger-ui.html", localPort);
+			System.out.println(String.format("http://localhost:%s/swagger-ui.html", localPort));
 		} else {
-			log.info("\nhttp://localhost:{}", localPort);
+			System.out.println(String.format("http://localhost:%s", localPort));
 		}
+		// 关闭控制台的日志打印
+		Map<String, Object> systemProperties = ((ConfigurableEnvironment) environment).getSystemProperties();
+		systemProperties.put("mica.log.console.enabled", false);
 	}
 }
