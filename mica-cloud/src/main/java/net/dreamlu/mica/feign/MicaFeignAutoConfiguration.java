@@ -58,7 +58,7 @@ public class MicaFeignAutoConfiguration {
 		@Bean
 		@Primary
 		@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-		@ConditionalOnProperty("feign.hystrix.enabled")
+		@ConditionalOnProperty(value = "feign.hystrix.enabled", matchIfMissing = true)
 		public Feign.Builder feignHystrixBuilder(
 			RequestInterceptor requestInterceptor, Contract feignContract) {
 			return HystrixFeign.builder()

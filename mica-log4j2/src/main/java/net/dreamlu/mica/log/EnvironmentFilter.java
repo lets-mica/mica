@@ -18,6 +18,7 @@ package net.dreamlu.mica.log;
 
 import net.dreamlu.mica.config.SpringUtils;
 import net.dreamlu.mica.core.utils.ObjectUtil;
+import net.dreamlu.mica.launcher.MicaLogLevel;
 import net.dreamlu.mica.props.MicaProperties;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
@@ -33,9 +34,9 @@ import org.apache.logging.log4j.util.PerformanceSensitive;
 import org.springframework.core.env.Environment;
 
 /**
- * A Filter that operates on a Map.
+ * 基于 Environment 的 log4j 日志过滤器.
  *
- * @author dream.lu
+ * @author L.cm
  */
 @Plugin(name = "EnvironmentFilter", category = Node.CATEGORY, elementType = Filter.ELEMENT_TYPE, printObject = true)
 @PerformanceSensitive("allocation")
@@ -55,7 +56,7 @@ public class EnvironmentFilter extends AbstractFilter {
 			return Result.ACCEPT;
 		}
 		Environment environment = micaProperties.getEnvironment();
-		Boolean isConsoleEnabled = environment.getProperty("mica.log.console.enabled", Boolean.class);
+		Boolean isConsoleEnabled = environment.getProperty(MicaLogLevel.CONSOLE_LOG_ENABLED_PROP, Boolean.class);
 		if (ObjectUtil.isTrue(isConsoleEnabled)) {
 			return Result.ACCEPT;
 		}

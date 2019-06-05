@@ -95,18 +95,18 @@ public class MicaApplication {
 		String activePros = joinFun.apply(activeProfileList.toArray());
 		System.err.println(String.format("---[%s]---启动中，读取到的环境变量:[%s]，jar地址:[%s]---", appName, activePros, startJarPath));
 		boolean isLocalDev = MicaApplication.isLocalDev();
-		// 设定到 sys 中供 log4j2 中使用
+		// 设定到 sys 中供 log4j2 中使用 yml 配置无效
 		System.setProperty("spring.application.name", appName);
-		// 默认的属性配置
+		System.setProperty("mica.env", profile);
+		// 默认的属性配置，级别低于 yml
 		Properties defaultProperties = new Properties();
-		defaultProperties.setProperty("mica.env", profile);
 		defaultProperties.setProperty("mica.is-local", String.valueOf(isLocalDev));
 		defaultProperties.setProperty("spring.banner.location", "classpath:banner.txt");
 		// 预设请求日志级别
 		MicaEnv micaEnv = MicaEnv.of(profile);
 		// 使用 builder 的 props，优先级低，mica.log.request.level=xxx
-		builder.properties(String.format("%s.level=%s", MicaLogLevel.REQ_LOG_PROPS_PREFIX, micaEnv.getReqLogLevel().name()));
-		// 加载自定义组件
+		defaultProperties.setProperty(MicaLogLevel.REQ_LOG_PROPS_PREFIX + ".level", micaEnv.getReqLogLevel().name());
+		// 加载自定义 SPI 组件
 		ServiceLoader<LauncherService> loader = ServiceLoader.load(LauncherService.class);
 		CollectionUtil.toList(loader).stream().sorted()
 			.forEach(launcherService -> launcherService.launcher(builder, env, appName, micaEnv, isLocalDev));

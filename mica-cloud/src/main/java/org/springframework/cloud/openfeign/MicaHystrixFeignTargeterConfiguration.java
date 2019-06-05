@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Primary;
  */
 @Configuration
 @ConditionalOnClass(HystrixFeign.class)
-@ConditionalOnProperty("feign.hystrix.enabled")
+@ConditionalOnProperty(value = "feign.hystrix.enabled", matchIfMissing = true)
 public class MicaHystrixFeignTargeterConfiguration {
 
 	@Bean

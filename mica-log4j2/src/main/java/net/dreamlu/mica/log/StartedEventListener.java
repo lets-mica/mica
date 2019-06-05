@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.log;
 
+import net.dreamlu.mica.launcher.MicaLogLevel;
 import net.dreamlu.mica.props.MicaProperties;
 import org.springframework.boot.web.context.WebServerApplicationContext;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
@@ -48,9 +49,12 @@ public class StartedEventListener {
 			System.setErr(LogPrintStream.err());
 		}
 
-		// 关闭控制台的日志打印
 		ConfigurableEnvironment environment = (ConfigurableEnvironment) applicationContext.getEnvironment();
-		Map<String, Object> systemProperties = environment.getSystemProperties();
-		systemProperties.put("mica.log.console.enabled", false);
+		// 如果用户设置过则遵从用户的配置规则
+		if (!environment.containsProperty(MicaLogLevel.CONSOLE_LOG_ENABLED_PROP)) {
+			// 关闭控制台的日志打印
+			Map<String, Object> systemProperties = environment.getSystemProperties();
+			systemProperties.put(MicaLogLevel.CONSOLE_LOG_ENABLED_PROP, false);
+		}
 	}
 }
