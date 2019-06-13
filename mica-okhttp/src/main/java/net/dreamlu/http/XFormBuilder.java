@@ -49,8 +49,6 @@ public class XFormBuilder {
 	}
 
 	public XResponse execute() {
-		FormBody formBody = formBuilder.build();
-		this.request.form(formBody);
-		return this.request.execute();
+		return this.build().execute();
 	}
 }

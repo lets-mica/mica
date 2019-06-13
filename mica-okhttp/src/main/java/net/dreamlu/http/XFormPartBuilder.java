@@ -78,8 +78,6 @@ public class XFormPartBuilder {
 	}
 
 	public XResponse execute() {
-		MultipartBody formBody = formBuilder.build();
-		this.request.formPart(formBody);
-		return this.request.execute();
+		return this.build().execute();
 	}
 }
