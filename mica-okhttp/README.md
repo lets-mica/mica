@@ -29,4 +29,13 @@ private String getUserEmail(String accessToken) {
             .at("/elements/0/handle~/emailAddress")
             .asText();
 }
+
+public static void test() {
+	XRequest.post("https://www.baidu.com/do-stuff")
+		.log(HttpLoggingInterceptor.Level.BASIC)
+		.formBuilder()
+		.add("a", "b")
+		.execute()
+		.asBytes();
+}
 ```
