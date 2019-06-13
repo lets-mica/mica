@@ -12,3 +12,5 @@ include "mica-plus-error-catch"
 include "mica-plus-redis"
 include "mica-plus-mongo"
 include "mica-plus-swagger"
+include 'mica-plus-ribbon'
+
