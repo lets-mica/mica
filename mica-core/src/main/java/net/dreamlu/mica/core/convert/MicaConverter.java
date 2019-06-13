@@ -27,6 +27,7 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.lang.Nullable;
 
 import java.lang.reflect.Field;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -60,9 +61,14 @@ public class MicaConverter implements Converter {
 			return value;
 		}
 		try {
-			TypeDescriptor sourceDescriptor = MicaConverter.getTypeDescriptor(sourceClazz, (String) fieldName);
 			TypeDescriptor targetDescriptor = MicaConverter.getTypeDescriptor(targetClazz, (String) fieldName);
-			return ConvertUtil.convert(value, sourceDescriptor, targetDescriptor);
+			// 1. 判断 sourceClazz 为 Map
+			if (Map.class.isAssignableFrom(sourceClazz)) {
+				return ConvertUtil.convert(value, targetDescriptor);
+			} else {
+				TypeDescriptor sourceDescriptor = MicaConverter.getTypeDescriptor(sourceClazz, (String) fieldName);
+				return ConvertUtil.convert(value, sourceDescriptor, targetDescriptor);
+			}
 		} catch (Throwable e) {
 			log.warn("MicaConverter error", e);
 			return null;
