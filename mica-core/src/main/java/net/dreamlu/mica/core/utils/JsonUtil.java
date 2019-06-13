@@ -23,18 +23,21 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.type.CollectionLikeType;
+import com.fasterxml.jackson.databind.type.MapType;
 import lombok.experimental.UtilityClass;
 import net.dreamlu.mica.core.jackson.MicaJavaTimeModule;
+import org.springframework.lang.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * json 工具类
+ *
  * @author L.cm
  */
 @UtilityClass
@@ -46,7 +49,11 @@ public class JsonUtil {
 	 * @param object javaBean
 	 * @return jsonString json字符串
 	 */
-	public static String toJson(Object object) {
+	@Nullable
+	public static String toJson(@Nullable Object object) {
+		if (object == null) {
+			return null;
+		}
 		try {
 			return getInstance().writeValueAsString(object);
 		} catch (JsonProcessingException e) {
@@ -60,7 +67,11 @@ public class JsonUtil {
 	 * @param object javaBean
 	 * @return jsonString json字符串
 	 */
-	public static byte[] toJsonAsBytes(Object object) {
+	@Nullable
+	public static byte[] toJsonAsBytes(@Nullable Object object) {
+		if (object == null) {
+			return null;
+		}
 		try {
 			return getInstance().writeValueAsBytes(object);
 		} catch (JsonProcessingException e) {
@@ -75,6 +86,7 @@ public class JsonUtil {
 	 * @return jsonString json字符串
 	 */
 	public static JsonNode readTree(String jsonString) {
+		Objects.requireNonNull(jsonString, "jsonString is null");
 		try {
 			return getInstance().readTree(jsonString);
 		} catch (IOException e) {
@@ -89,6 +101,7 @@ public class JsonUtil {
 	 * @return jsonString json字符串
 	 */
 	public static JsonNode readTree(InputStream in) {
+		Objects.requireNonNull(in, "InputStream in is null");
 		try {
 			return getInstance().readTree(in);
 		} catch (IOException e) {
@@ -103,6 +116,7 @@ public class JsonUtil {
 	 * @return jsonString json字符串
 	 */
 	public static JsonNode readTree(byte[] content) {
+		Objects.requireNonNull(content, "byte[] content is null");
 		try {
 			return getInstance().readTree(content);
 		} catch (IOException e) {
@@ -117,6 +131,7 @@ public class JsonUtil {
 	 * @return jsonString json字符串
 	 */
 	public static JsonNode readTree(JsonParser jsonParser) {
+		Objects.requireNonNull(jsonParser, "jsonParser is null");
 		try {
 			return getInstance().readTree(jsonParser);
 		} catch (IOException e) {
@@ -127,14 +142,18 @@ public class JsonUtil {
 	/**
 	 * 将json byte 数组反序列化成对象
 	 *
-	 * @param bytes json bytes
-	 * @param valueType  class
-	 * @param <T>        T 泛型标记
+	 * @param content   json bytes
+	 * @param valueType class
+	 * @param <T>       T 泛型标记
 	 * @return Bean
 	 */
-	public static <T> T parse(byte[] bytes, Class<T> valueType) {
+	@Nullable
+	public static <T> T readValue(@Nullable byte[] content, Class<T> valueType) {
+		if (ObjectUtil.isEmpty(content)) {
+			return null;
+		}
 		try {
-			return getInstance().readValue(bytes, valueType);
+			return getInstance().readValue(content, valueType);
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -148,7 +167,11 @@ public class JsonUtil {
 	 * @param <T>        T 泛型标记
 	 * @return Bean
 	 */
-	public static <T> T parse(String jsonString, Class<T> valueType) {
+	@Nullable
+	public static <T> T readValue(@Nullable String jsonString, Class<T> valueType) {
+		if (StringUtil.isBlank(jsonString)) {
+			return null;
+		}
 		try {
 			return getInstance().readValue(jsonString, valueType);
 		} catch (IOException e) {
@@ -159,12 +182,16 @@ public class JsonUtil {
 	/**
 	 * 将json反序列化成对象
 	 *
-	 * @param in InputStream
-	 * @param valueType  class
-	 * @param <T>        T 泛型标记
+	 * @param in        InputStream
+	 * @param valueType class
+	 * @param <T>       T 泛型标记
 	 * @return Bean
 	 */
-	public static <T> T parse(InputStream in, Class<T> valueType) {
+	@Nullable
+	public static <T> T readValue(@Nullable InputStream in, Class<T> valueType) {
+		if (in == null) {
+			return null;
+		}
 		try {
 			return getInstance().readValue(in, valueType);
 		} catch (IOException e) {
@@ -175,14 +202,18 @@ public class JsonUtil {
 	/**
 	 * 将json反序列化成对象
 	 *
-	 * @param bytes bytes
+	 * @param content       bytes
 	 * @param typeReference 泛型类型
-	 * @param <T>        T 泛型标记
+	 * @param <T>           T 泛型标记
 	 * @return Bean
 	 */
-	public static <T> T parse(byte[] bytes, TypeReference<?> typeReference) {
+	@Nullable
+	public static <T> T readValue(@Nullable byte[] content, TypeReference<?> typeReference) {
+		if (ObjectUtil.isEmpty(content)) {
+			return null;
+		}
 		try {
-			return getInstance().readValue(bytes, typeReference);
+			return getInstance().readValue(content, typeReference);
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -191,12 +222,16 @@ public class JsonUtil {
 	/**
 	 * 将json反序列化成对象
 	 *
-	 * @param jsonString jsonString
+	 * @param jsonString    jsonString
 	 * @param typeReference 泛型类型
-	 * @param <T>        T 泛型标记
+	 * @param <T>           T 泛型标记
 	 * @return Bean
 	 */
-	public static <T> T parse(String jsonString, TypeReference<?> typeReference) {
+	@Nullable
+	public static <T> T readValue(@Nullable String jsonString, TypeReference<?> typeReference) {
+		if (StringUtil.isBlank(jsonString)) {
+			return null;
+		}
 		try {
 			return getInstance().readValue(jsonString, typeReference);
 		} catch (IOException e) {
@@ -207,14 +242,121 @@ public class JsonUtil {
 	/**
 	 * 将json反序列化成对象
 	 *
-	 * @param in InputStream
+	 * @param in            InputStream
 	 * @param typeReference 泛型类型
-	 * @param <T>        T 泛型标记
+	 * @param <T>           T 泛型标记
 	 * @return Bean
 	 */
-	public static <T> T parse(InputStream in, TypeReference<?> typeReference) {
+	@Nullable
+	public static <T> T readValue(@Nullable InputStream in, TypeReference<?> typeReference) {
+		if (in == null) {
+			return null;
+		}
 		try {
 			return getInstance().readValue(in, typeReference);
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 封装 map type
+	 *
+	 * @param keyClass   key 类型
+	 * @param valueClass value 类型
+	 * @return MapType
+	 */
+	public static MapType getMapType(Class<?> keyClass, Class<?> valueClass) {
+		return getInstance().getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
+	}
+
+	/**
+	 * 封装 map type
+	 *
+	 * @param elementClass 集合值类型
+	 * @return CollectionLikeType
+	 */
+	public static CollectionLikeType getListType(Class<?> elementClass) {
+		return getInstance().getTypeFactory().constructCollectionLikeType(List.class, elementClass);
+	}
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content      bytes
+	 * @param elementClass elementClass
+	 * @param <T>          泛型
+	 * @return 集合
+	 */
+	@Nullable
+	public static <T> List<T> readList(@Nullable byte[] content, Class<T> elementClass) {
+		if (ObjectUtil.isEmpty(content)) {
+			return Collections.emptyList();
+		}
+		try {
+			return getInstance().readValue(content, getListType(elementClass));
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content      bytes
+	 * @param elementClass elementClass
+	 * @param <T>          泛型
+	 * @return 集合
+	 */
+	@Nullable
+	private static <T> List<T> readList(@Nullable String content, Class<T> elementClass) {
+		if (ObjectUtil.isEmpty(content)) {
+			return Collections.emptyList();
+		}
+		try {
+			return getInstance().readValue(content, getListType(elementClass));
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content    bytes
+	 * @param keyClass   key类型
+	 * @param valueClass 值类型
+	 * @param <T>        泛型
+	 * @return 集合
+	 */
+	@Nullable
+	public static <T> List<T> readMap(@Nullable byte[] content, Class<?> keyClass, Class<?> valueClass) {
+		if (ObjectUtil.isEmpty(content)) {
+			return Collections.emptyList();
+		}
+		try {
+			return getInstance().readValue(content, getMapType(keyClass, valueClass));
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content    bytes
+	 * @param keyClass   key类型
+	 * @param valueClass 值类型
+	 * @param <T>        泛型
+	 * @return 集合
+	 */
+	@Nullable
+	private static <T> List<T> readMap(@Nullable String content, Class<?> keyClass, Class<?> valueClass) {
+		if (ObjectUtil.isEmpty(content)) {
+			return Collections.emptyList();
+		}
+		try {
+			return getInstance().readValue(content, getMapType(keyClass, valueClass));
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}

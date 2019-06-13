@@ -1,0 +1,5 @@
+dependencies {
+    api project(":mica-core")
+    api "com.squareup.okhttp3:okhttp"
+    api "com.squareup.okhttp3:logging-interceptor"
+}

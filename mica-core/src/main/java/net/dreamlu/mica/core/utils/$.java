@@ -1154,7 +1154,7 @@ public class $ {
 	 * @return Bean
 	 */
 	public static <T> T readJson(byte[] bytes, Class<T> valueType) {
-		return JsonUtil.parse(bytes, valueType);
+		return JsonUtil.readValue(bytes, valueType);
 	}
 
 	/**
@@ -1166,7 +1166,7 @@ public class $ {
 	 * @return Bean
 	 */
 	public static <T> T readJson(String jsonString, Class<T> valueType) {
-		return JsonUtil.parse(jsonString, valueType);
+		return JsonUtil.readValue(jsonString, valueType);
 	}
 
 	/**
@@ -1178,7 +1178,7 @@ public class $ {
 	 * @return Bean
 	 */
 	public static <T> T readJson(InputStream in, Class<T> valueType) {
-		return JsonUtil.parse(in, valueType);
+		return JsonUtil.readValue(in, valueType);
 	}
 
 	/**
@@ -1190,7 +1190,7 @@ public class $ {
 	 * @return Bean
 	 */
 	public static <T> T readJson(byte[] bytes, TypeReference<?> typeReference) {
-		return JsonUtil.parse(bytes, typeReference);
+		return JsonUtil.readValue(bytes, typeReference);
 	}
 
 	/**
@@ -1202,7 +1202,7 @@ public class $ {
 	 * @return Bean
 	 */
 	public static <T> T readJson(String jsonString, TypeReference<?> typeReference) {
-		return JsonUtil.parse(jsonString, typeReference);
+		return JsonUtil.readValue(jsonString, typeReference);
 	}
 
 	/**
@@ -1214,7 +1214,7 @@ public class $ {
 	 * @return Bean
 	 */
 	public static <T> T readJson(InputStream in, TypeReference<?> typeReference) {
-		return JsonUtil.parse(in, typeReference);
+		return JsonUtil.readValue(in, typeReference);
 	}
 
 	/**
