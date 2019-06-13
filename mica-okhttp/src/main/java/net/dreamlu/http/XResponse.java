@@ -24,8 +24,11 @@ import okhttp3.MediaType;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -93,6 +96,18 @@ public class XResponse {
 
 	public XmlHelper asXmlHelper() {
 		return XmlHelper.of(this.asStream());
+	}
+
+	public void toFile(File file) {
+		toFile(file.toPath());
+	}
+
+	public void toFile(Path path) {
+		try {
+			Files.copy(this.asStream(), path);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public MediaType contentType() {
