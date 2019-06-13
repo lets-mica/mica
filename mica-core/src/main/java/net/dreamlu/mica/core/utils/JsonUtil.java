@@ -303,6 +303,26 @@ public class JsonUtil {
 	/**
 	 * 读取集合
 	 *
+	 * @param content      InputStream
+	 * @param elementClass elementClass
+	 * @param <T>          泛型
+	 * @return 集合
+	 */
+	@Nullable
+	public static <T> List<T> readList(@Nullable InputStream content, Class<T> elementClass) {
+		if (content == null) {
+			return Collections.emptyList();
+		}
+		try {
+			return getInstance().readValue(content, getListType(elementClass));
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 读取集合
+	 *
 	 * @param content      bytes
 	 * @param elementClass elementClass
 	 * @param <T>          泛型
@@ -326,13 +346,36 @@ public class JsonUtil {
 	 * @param content    bytes
 	 * @param keyClass   key类型
 	 * @param valueClass 值类型
-	 * @param <T>        泛型
+	 * @param <K>        泛型
+	 * @param <V>        泛型
 	 * @return 集合
 	 */
 	@Nullable
-	public static <T> List<T> readMap(@Nullable byte[] content, Class<?> keyClass, Class<?> valueClass) {
+	public static <K, V> Map<K, V> readMap(@Nullable byte[] content, Class<?> keyClass, Class<?> valueClass) {
 		if (ObjectUtil.isEmpty(content)) {
-			return Collections.emptyList();
+			return Collections.emptyMap();
+		}
+		try {
+			return getInstance().readValue(content, getMapType(keyClass, valueClass));
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content    InputStream
+	 * @param keyClass   key类型
+	 * @param valueClass 值类型
+	 * @param <K>        泛型
+	 * @param <V>        泛型
+	 * @return 集合
+	 */
+	@Nullable
+	public static <K, V> Map<K, V> readMap(@Nullable InputStream content, Class<?> keyClass, Class<?> valueClass) {
+		if (ObjectUtil.isEmpty(content)) {
+			return Collections.emptyMap();
 		}
 		try {
 			return getInstance().readValue(content, getMapType(keyClass, valueClass));
@@ -347,13 +390,14 @@ public class JsonUtil {
 	 * @param content    bytes
 	 * @param keyClass   key类型
 	 * @param valueClass 值类型
-	 * @param <T>        泛型
+	 * @param <K>        泛型
+	 * @param <V>        泛型
 	 * @return 集合
 	 */
 	@Nullable
-	private static <T> List<T> readMap(@Nullable String content, Class<?> keyClass, Class<?> valueClass) {
+	private static <K, V> Map<K, V> readMap(@Nullable String content, Class<?> keyClass, Class<?> valueClass) {
 		if (ObjectUtil.isEmpty(content)) {
-			return Collections.emptyList();
+			return Collections.emptyMap();
 		}
 		try {
 			return getInstance().readValue(content, getMapType(keyClass, valueClass));

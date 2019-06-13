@@ -19,12 +19,15 @@ package net.dreamlu.http;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import net.dreamlu.mica.core.utils.JsonUtil;
+import net.dreamlu.mica.core.utils.XmlHelper;
 import okhttp3.MediaType;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ok http 封装，相应结构体
@@ -60,20 +63,36 @@ public class XResponse {
 		}
 	}
 
+	public InputStream asStream() {
+		return body.byteStream();
+	}
+
 	public JsonNode asJsonNode() {
 		return JsonUtil.readTree(this.asBytes());
 	}
 
 	public <T> T asObject(Class<T> valueType) {
-		return JsonUtil.readValue(this.asBytes(), valueType);
+		return JsonUtil.readValue(this.asStream(), valueType);
 	}
 
 	public <T> T asObject(TypeReference<?> typeReference) {
-		return JsonUtil.readValue(this.asBytes(), typeReference);
+		return JsonUtil.readValue(this.asStream(), typeReference);
 	}
 
 	public <T> List<T> asList(Class<T> valueType) {
-		return JsonUtil.readList(this.asBytes(), valueType);
+		return JsonUtil.readList(this.asStream(), valueType);
+	}
+
+	public <K, V> Map<K, V> asMap(Class<?> keyClass, Class<?> valueClass) {
+		return JsonUtil.readMap(this.asStream(), keyClass, valueClass);
+	}
+
+	public <V> Map<String, V> asMap(Class<?> valueClass) {
+		return JsonUtil.readMap(this.asStream(), String.class, valueClass);
+	}
+
+	public XmlHelper asXmlHelper() {
+		return XmlHelper.of(this.asStream());
 	}
 
 	public MediaType contentType() {
