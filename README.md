@@ -31,6 +31,9 @@
 - Jaskson Read Write HttpMessageConverter，分读写的消息转换器。
 - Spring 枚举转换器，规则同 Jackson。
 
+### mica-okhttp
+- `okhttp` 的简单 http 工具包，语法参考 HttpClient Fluent API
+
 ### mica-launcher
 - 项目启动器
 - 启动信息打印
@@ -63,7 +66,6 @@
 - Feign 自动降级、header 透传、版本处理，结合 `mica-auto` 自动化配置。
 - RestTemplate自动配置，基于okhttp增强，添加请求日志和Header传递。
 - hystrix 熔断器增强，支持 header 透传、当前用户获取和透传。
-- 本地开发不注册到 Eureka 服务中，避免影响联调环境。
 - Apollo Properties 配置刷新。
 
 ### mica-plus-error-catch
@@ -77,6 +79,11 @@
 
 ### mica-plus-swagger
 - swagger 和 swagger-bootstrap-ui 依赖。
+
+### mica-plus-ribbon
+1. 【优先级最高】ip 相同的服务（方便本地多服务联调）。
+2. 可设置选择的 ip 或者 ip 段，例如：`172.21.0.*`、`172.21.0.8*`。
+3. 可设定 tag，为了以后版本发布（灰度）做基础，可能还需要扩展。
 
 ## 已知问题
 lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861
