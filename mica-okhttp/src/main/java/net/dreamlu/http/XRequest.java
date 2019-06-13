@@ -24,7 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.Proxy;
-import java.net.URL;
+import java.net.URI;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
@@ -37,6 +37,7 @@ public class XRequest {
 	private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36";
 	private static OkHttpClient httpClient = new OkHttpClient();
 	private final Request.Builder requestBuilder;
+	private final UriComponentsBuilder uriBuilder;
 	private final String httpMethod;
 	private String userAgent;
 	private RequestBody requestBody;
@@ -46,49 +47,63 @@ public class XRequest {
 	private Duration connectTimeout;
 	private Proxy proxy;
 
-	public static XRequest get(final URL url) {
-		UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString("");
-		return new XRequest(new Request.Builder().url(url), "GET");
-	}
-
 	public static XRequest get(final String url) {
-		return new XRequest(new Request.Builder().url(url), "GET");
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
+		return new XRequest(new Request.Builder(), uriBuilder, XMethod.GET);
 	}
 
-	public static XRequest post(final URL url) {
-		return new XRequest(new Request.Builder().url(url), "POST");
+	public static XRequest get(final URI uri) {
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
+		return new XRequest(new Request.Builder(), uriBuilder, XMethod.GET);
 	}
 
 	public static XRequest post(final String url) {
-		return new XRequest(new Request.Builder().url(url), "POST");
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
+		return new XRequest(new Request.Builder(), uriBuilder, XMethod.POST);
 	}
 
-	public static XRequest patch(final URL url) {
-		return new XRequest(new Request.Builder().url(url), "PATCH");
+	public static XRequest post(final URI uri) {
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
+		return new XRequest(new Request.Builder(), uriBuilder, XMethod.POST);
 	}
 
 	public static XRequest patch(final String url) {
-		return new XRequest(new Request.Builder().url(url), "PATCH");
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
+		return new XRequest(new Request.Builder(), uriBuilder, XMethod.PATCH);
 	}
 
-	public static XRequest put(final URL url) {
-		return new XRequest(new Request.Builder().url(url), "PUT");
+	public static XRequest patch(final URI uri) {
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
+		return new XRequest(new Request.Builder(), uriBuilder, XMethod.PATCH);
 	}
 
 	public static XRequest put(final String url) {
-		return new XRequest(new Request.Builder().url(url), "PUT");
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
+		return new XRequest(new Request.Builder(), uriBuilder, XMethod.PUT);
+	}
+
+	public static XRequest put(final URI uri) {
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
+		return new XRequest(new Request.Builder(), uriBuilder, XMethod.PUT);
 	}
 
 	public static XRequest delete(final String url) {
-		return new XRequest(new Request.Builder().url(url), "DELETE");
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
+		return new XRequest(new Request.Builder(), uriBuilder, XMethod.DELETE);
 	}
 
-	public static XRequest delete(final URL url) {
-		return new XRequest(new Request.Builder().url(url), "DELETE");
+	public static XRequest delete(final URI uri) {
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
+		return new XRequest(new Request.Builder(), uriBuilder, XMethod.DELETE);
 	}
 
 	private static RequestBody emptyBody() {
 		return RequestBody.create(null, new byte[0]);
+	}
+
+	public XRequest query(String name, Object... values) {
+		this.uriBuilder.queryParam(name, values);
+		return this;
 	}
 
 	public XRequest form(FormBody formBody) {
@@ -115,8 +130,9 @@ public class XRequest {
 		return bodyString(JsonUtil.toJson(body));
 	}
 
-	private XRequest(final Request.Builder requestBuilder, String httpMethod) {
+	private XRequest(final Request.Builder requestBuilder, UriComponentsBuilder uriBuilder, String httpMethod) {
 		this.requestBuilder = requestBuilder;
+		this.uriBuilder = uriBuilder;
 		this.httpMethod = httpMethod;
 		this.userAgent = DEFAULT_USER_AGENT;
 	}
@@ -142,6 +158,8 @@ public class XRequest {
 		}
 		// 设置 User-Agent
 		this.requestBuilder.header("User-Agent", userAgent);
+		// url
+		requestBuilder.url(uriBuilder.toUriString());
 		String method = this.httpMethod;
 		Request request;
 		if (HttpMethod.requiresRequestBody(method) && requestBody == null) {

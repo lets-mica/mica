@@ -31,6 +31,9 @@ public class XRequests {
 		// Execute a GET with timeout settings and return response content as String.
 		XRequest.get("https://www.baidu.com/")
 			.connectTimeout(Duration.ofSeconds(1000))
+			.query("test", "a", "b", "c")
+			.query("name", "張三")
+			.query("x", "1", "2")
 			.log()
 			.execute().asString();
 
