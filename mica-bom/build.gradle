@@ -16,6 +16,7 @@ dependencyManagement {
         // mica
         dependency "net.dreamlu:mica-auto:${micaAutoVersion}"
         dependency "net.dreamlu:mica-core:${VERSION}"
+        dependency "net.dreamlu:mica-okhttp:${VERSION}"
         dependency "net.dreamlu:mica-launcher:${VERSION}"
         dependency "net.dreamlu:mica-log4j2:${VERSION}"
         dependency "net.dreamlu:mica-boot:${VERSION}"
