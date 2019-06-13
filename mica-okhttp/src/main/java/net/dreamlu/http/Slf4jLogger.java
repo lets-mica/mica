@@ -16,22 +16,21 @@
 
 package net.dreamlu.http;
 
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.logging.HttpLoggingInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * OkHttp Slf4j logger
  *
  * @author L.cm
  */
+@Slf4j
 public class Slf4jLogger implements HttpLoggingInterceptor.Logger {
-	private final Logger logger = LoggerFactory.getLogger(Slf4jLogger.class);
 
 	public static final HttpLoggingInterceptor.Logger INSTANCE = new Slf4jLogger();
 
 	@Override
 	public void log(String message) {
-		logger.info(message);
+		log.info(message);
 	}
 }

@@ -106,14 +106,22 @@ public class XRequest {
 		return this;
 	}
 
-	public XRequest form(FormBody formBody) {
+	XRequest form(FormBody formBody) {
 		this.requestBody = formBody;
 		return this;
 	}
 
-	public XRequest formPart(MultipartBody multipartBody) {
+	XRequest formPart(MultipartBody multipartBody) {
 		this.requestBody = multipartBody;
 		return this;
+	}
+
+	public XFormBuilder formBuilder() {
+		return new XFormBuilder(this);
+	}
+
+	public XFormPartBuilder formPartBuilder() {
+		return new XFormPartBuilder(this);
 	}
 
 	public XRequest body(RequestBody requestBody) {

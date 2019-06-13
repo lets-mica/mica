@@ -31,17 +31,20 @@ public class XRequests {
 		// Execute a GET with timeout settings and return response content as String.
 		XRequest.get("https://www.baidu.com/")
 			.connectTimeout(Duration.ofSeconds(1000))
+			.log()
 			.query("test", "a", "b", "c")
 			.query("name", "張三")
 			.query("x", "1", "2")
-			.log()
-			.execute().asString();
+			.execute()
+			.asString();
 
 		// Execute a POST with the 'expect-continue' handshake, using HTTP/1.1,
 		// containing a request body as String and return response content as byte array.
 		XRequest.post("https://www.baidu.com/do-stuff")
 			.log(HttpLoggingInterceptor.Level.BASIC)
 			.bodyString("Important stuff")
+			.formBuilder()
+			.add("a", "b")
 			.execute().asBytes();
 
 		// Execute a POST with a custom header through the proxy containing a request body
