@@ -25,4 +25,5 @@ public class User1 {
 	private int xInt;
 	private Integer xxInt;
 	private long xLong;
+	private String birthday;
 }

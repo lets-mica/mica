@@ -269,7 +269,7 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 		}
 		MicaBeanCopier copier = MicaBeanCopier.create(sourceClazz, targetClazz, true);
 		T to = newInstance(targetClazz);
-		copier.copy(source, to, new MicaConverter(targetClazz));
+		copier.copy(source, to, new MicaConverter(sourceClazz, targetClazz));
 		return to;
 	}
 

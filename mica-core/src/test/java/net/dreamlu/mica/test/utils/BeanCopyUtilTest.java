@@ -18,9 +18,10 @@ public class BeanCopyUtilTest {
 	}
 
 	public static <T> T copyWithConvert(Object source, Class<T> targetClazz) {
+		Class<?> sourceClass = source.getClass();
 		MicaBeanCopier copier = MicaBeanCopier.create(source.getClass(), targetClazz, true, false);
 		T to = BeanUtil.newInstance(targetClazz);
-		copier.copy(source, to, new MicaConverter(targetClazz));
+		copier.copy(source, to, new MicaConverter(sourceClass, targetClazz));
 		return to;
 	}
 

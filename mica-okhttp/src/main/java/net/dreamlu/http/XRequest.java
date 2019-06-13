@@ -20,6 +20,7 @@ import net.dreamlu.mica.core.utils.JsonUtil;
 import okhttp3.*;
 import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.Proxy;
@@ -46,6 +47,7 @@ public class XRequest {
 	private Proxy proxy;
 
 	public static XRequest get(final URL url) {
+		UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString("");
 		return new XRequest(new Request.Builder().url(url), "GET");
 	}
 

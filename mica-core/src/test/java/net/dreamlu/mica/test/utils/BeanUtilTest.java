@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.cglib.core.DebuggingClassWriter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -97,6 +98,16 @@ public class BeanUtilTest {
 		copy2.forEach(System.out::println);
 	}
 
+	@Test
+	public void test6() {
+		User user = new User();
+		user.setXx("123123");
+		user.setPhoto("www.dreamlu.net/img/1");
+		user.setBirthday(LocalDateTime.now());
+		User1 user1 = BeanUtil.copyWithConvert(user, User1.class);
+		System.out.println(user1);
+	}
+
 	public static void main(String[] args) {
 		// 设置 cglib 源码生成目录
 		String sourcePath = BeanUtilTest.class.getResource("/").getPath().split("mica-core")[0];
@@ -105,9 +116,9 @@ public class BeanUtilTest {
 		User1 user1 = new User1();
 		user1.setId("1");
 		user1.setId1(11);
-		user1.setIds(new Integer[]{1,2,3});
-		user1.setIdss(new int[]{1,2,3,4,5,6});
-		user1.setIdx(new long[]{1,2,3,4,5,6});
+		user1.setIds(new Integer[]{1, 2, 3});
+		user1.setIdss(new int[]{1, 2, 3, 4, 5, 6});
+		user1.setIdx(new long[]{1, 2, 3, 4, 5, 6});
 		user1.setName("张三");
 
 		BeanUtil.toMap(user1);
@@ -152,7 +163,7 @@ public class BeanUtilTest {
 		data2.put("name", "1");
 		data2.put("photo", "1");
 		data2.put("xx", "1");
-		data2.put("a", new int[]{1,2,3});
+		data2.put("a", new int[]{1, 2, 3});
 		data2.put("allowNull", null);
 
 		UserChain userChainxxxx = BeanUtil.toBean(data2, UserChain.class);
