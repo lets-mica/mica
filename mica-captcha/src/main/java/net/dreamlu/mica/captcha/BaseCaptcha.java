@@ -83,7 +83,7 @@ public abstract class BaseCaptcha {
 	 *
 	 * @return {String}
 	 */
-	public Captcha generate() {
+	public Captcha generateBase64() {
 		ThreadLocalRandom random = ThreadLocalRandom.current();
 		// 转成大写重要
 		String captchaCode = CaptchaUtils.generateCode(random).toUpperCase();
