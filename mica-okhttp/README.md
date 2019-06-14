@@ -6,14 +6,14 @@
 ```xml
 <dependency>
   <groupId>net.dreamlu</groupId>
-  <artifactId>mica-http</artifactId>
+  <artifactId>mica-okhttp</artifactId>
   <version>${version}</version>
 </dependency>
 ```
 
 ### gradle
 ```groovy
-compile("net.dreamlu:mica-http:${version}")
+compile("net.dreamlu:mica-okhttp:${version}")
 ```
 
 ### 示例代码

@@ -19,8 +19,6 @@ package net.dreamlu.mica.captcha;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
-import lombok.Setter;
-import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
 
@@ -40,25 +38,11 @@ public class Captcha implements Serializable {
 	/**
 	 * 图片 base64
 	 */
-	@Setter
-	@Nullable
 	@ApiModelProperty("验证码图片（base64）")
-	private String base64;
-	/**
-	 * 图片 bytes
-	 */
-	@Setter
-	@Nullable
-	@ApiModelProperty("验证码图片（bytes）")
-	private byte[] bytes;
+	private final String base64;
 
 	Captcha(String uuid, String base64) {
 		this.uuid = uuid;
 		this.base64 = base64;
-	}
-
-	Captcha(String uuid, byte[] bytes) {
-		this.uuid = uuid;
-		this.bytes = bytes;
 	}
 }

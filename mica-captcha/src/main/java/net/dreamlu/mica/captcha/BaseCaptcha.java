@@ -79,24 +79,11 @@ public abstract class BaseCaptcha {
 	}
 
 	/**
-	 * 生成验证码-Base64
-	 *
-	 * @return {String}
-	 */
-	public Captcha generateBase64() {
-		return generate(true);
-	}
-
-	/**
 	 * 生成验证码
 	 *
 	 * @return {String}
 	 */
 	public Captcha generate() {
-		return generate(false);
-	}
-
-	private Captcha generate(boolean isBase64) {
 		ThreadLocalRandom random = ThreadLocalRandom.current();
 		// 转成大写重要
 		String captchaCode = CaptchaUtils.generateCode(random).toUpperCase();
@@ -105,11 +92,9 @@ public abstract class BaseCaptcha {
 		String uuid = StringUtil.getUUID();
 		// 保存验证码缓存
 		captchaCache.put(uuid, captchaCode);
-		if (isBase64) {
-			return new Captcha(uuid, Base64Util.encodeToString(imgBytes));
-		} else {
-			return new Captcha(uuid, imgBytes);
-		}
+		String base64 = "data:image/jpeg;base64," +
+			Base64Util.encodeToString(imgBytes);
+		return new Captcha(uuid, base64);
 	}
 
 	/**
