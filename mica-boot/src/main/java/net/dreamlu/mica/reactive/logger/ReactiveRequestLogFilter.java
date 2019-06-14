@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.launcher.MicaLogLevel;
 import net.dreamlu.mica.props.MicaRequestLogProperties;
+import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.MultiValueMap;
@@ -46,7 +47,7 @@ import java.util.List;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class ReactiveRequestLogFilter implements WebFilter {
+public class ReactiveRequestLogFilter implements WebFilter, Ordered {
 	private final MicaRequestLogProperties properties;
 	private final RequestLogExclusiveRule exclusiveRule;
 
@@ -96,4 +97,8 @@ public class ReactiveRequestLogFilter implements WebFilter {
 		return chain.filter(exchange);
 	}
 
+	@Override
+	public int getOrder() {
+		return Ordered.HIGHEST_PRECEDENCE;
+	}
 }
