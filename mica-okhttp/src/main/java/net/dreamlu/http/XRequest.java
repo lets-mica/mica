@@ -23,6 +23,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.time.Duration;
@@ -262,8 +263,8 @@ public class XRequest {
 		return this;
 	}
 
-	public XRequest viaProxy(final Proxy proxy) {
-		this.proxy = proxy;
+	public XRequest viaProxy(final InetSocketAddress address) {
+		this.proxy = new Proxy(Proxy.Type.HTTP, address);
 		return this;
 	}
 
