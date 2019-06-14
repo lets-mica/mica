@@ -45,6 +45,8 @@ public class XRequest {
 	private HttpLoggingInterceptor.Level level;
 	private Interceptor interceptor;
 	private Duration connectTimeout;
+	private Duration readTimeout;
+	private Duration writeTimeout;
 	private Proxy proxy;
 
 	public static XRequest get(final String url) {
@@ -150,6 +152,12 @@ public class XRequest {
 		if (this.connectTimeout != null) {
 			builder.connectTimeout(this.connectTimeout.toMillis(), TimeUnit.MILLISECONDS);
 		}
+		if (this.readTimeout != null) {
+			builder.readTimeout(this.readTimeout.toMillis(), TimeUnit.MILLISECONDS);
+		}
+		if (this.writeTimeout != null) {
+			builder.writeTimeout(this.writeTimeout.toMillis(), TimeUnit.MILLISECONDS);
+		}
 		if (this.proxy != null) {
 			builder.proxy(this.proxy);
 		}
@@ -241,6 +249,16 @@ public class XRequest {
 	//// HTTP connection parameter operations
 	public XRequest connectTimeout(final Duration timeout) {
 		this.connectTimeout = timeout;
+		return this;
+	}
+
+	public XRequest readTimeout(Duration readTimeout) {
+		this.readTimeout = readTimeout;
+		return this;
+	}
+
+	public XRequest writeTimeout(Duration writeTimeout) {
+		this.writeTimeout = writeTimeout;
 		return this;
 	}
 
