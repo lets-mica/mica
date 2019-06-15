@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.redis;
+package net.dreamlu.mica.redis.cache;
 
 import net.dreamlu.mica.core.utils.ObjectUtil;
+import net.dreamlu.mica.core.utils.StringPool;
 import net.dreamlu.mica.core.utils.StringUtil;
 
 import javax.annotation.Nullable;
@@ -31,16 +32,20 @@ public interface ICacheKey {
 
 	/**
 	 * 获取前缀
+	 *
 	 * @return key 前缀
 	 */
 	String getPrefix();
 
 	/**
 	 * 超时时间
+	 *
 	 * @return 超时时间
 	 */
 	@Nullable
-	Duration getExpire();
+	default Duration getExpire() {
+		return null;
+	}
 
 	/**
 	 * 组装 cache key
@@ -52,13 +57,13 @@ public interface ICacheKey {
 		String prefix = this.getPrefix();
 		// 拼接参数
 		String key;
-		if (ObjectUtil.isNotEmpty(suffix)) {
-			key = prefix.concat(StringUtil.join(suffix, "_"));
-		} else {
+		if (ObjectUtil.isEmpty(suffix)) {
 			key = prefix;
+		} else {
+			key = prefix.concat(StringUtil.join(suffix, StringPool.COLON));
 		}
 		Duration expire = this.getExpire();
-		return expire == null ? new CacheKey(key) : new CacheKey(key, expire.getSeconds());
+		return expire == null ? new CacheKey(key) : new CacheKey(key, expire);
 	}
 
 }

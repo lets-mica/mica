@@ -142,4 +142,25 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 		return list;
 	}
 
+	/**
+	 * 将key value 数组转为 map
+	 *
+	 * @param keysValues key value 数组
+	 * @param <K>        key
+	 * @param <V>        value
+	 * @return map 集合
+	 */
+	public static <K, V> Map<K, V> toMap(Object... keysValues) {
+		if (keysValues.length % 2 != 0) {
+			throw new IllegalArgumentException("wrong number of arguments for met, keysValues length can not be odd");
+		}
+		Map<K, V> keyValueMap = new HashMap<>();
+		for (int i = keysValues.length - 2; i >= 0; i -= 2) {
+			Object key = keysValues[i];
+			Object value = keysValues[i + 1];
+			keyValueMap.put((K) key, (V) value);
+		}
+		return keyValueMap;
+	}
+
 }

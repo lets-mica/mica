@@ -14,9 +14,36 @@
  * limitations under the License.
  */
 
-@NonNullApi
-@NonNullFields
-package net.dreamlu.mica.redis;
+package net.dreamlu.mica.redis.cache;
 
-import org.springframework.lang.NonNullApi;
-import org.springframework.lang.NonNullFields;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
+import org.springframework.lang.Nullable;
+
+import java.time.Duration;
+
+/**
+ * cache key 封装
+ *
+ * @author L.cm
+ */
+@Getter
+@ToString
+@AllArgsConstructor
+public class CacheKey {
+	/**
+	 * redis key
+	 */
+	private String key;
+	/**
+	 * 超时时间 秒
+	 */
+	@Nullable
+	private Duration expire;
+
+	public CacheKey(String key) {
+		this.key = key;
+	}
+
+}

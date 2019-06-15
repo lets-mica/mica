@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.redis.config;
 
+import net.dreamlu.mica.redis.cache.MicaRedisCache;
 import net.dreamlu.mica.redis.ser.RedisKeySerializer;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -70,5 +71,10 @@ public class RedisTemplateConfiguration {
 	@ConditionalOnMissingBean(ValueOperations.class)
 	public ValueOperations valueOperations(RedisTemplate redisTemplate) {
 		return redisTemplate.opsForValue();
+	}
+
+	@Bean
+	public MicaRedisCache redisClient(RedisTemplate<String, Object> redisTemplate) {
+		return new MicaRedisCache(redisTemplate);
 	}
 }

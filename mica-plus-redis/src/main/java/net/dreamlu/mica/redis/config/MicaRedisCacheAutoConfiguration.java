@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.redis.config;
 
-import net.dreamlu.mica.redis.RedisAutoCacheManager;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers;
