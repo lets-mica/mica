@@ -20,12 +20,14 @@ import net.dreamlu.mica.redis.ser.ProtoStuffSerializer;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
 /**
  * ProtoStuff 序列化配置
+ *
  * @author L.cm
  */
 @Configuration
@@ -35,6 +37,7 @@ public class ProtoStuffSerializerConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnProperty(value = "mica.redis.serializer-type", havingValue = "protostuff")
 	public RedisSerializer<Object> redisSerializer() {
 		return new ProtoStuffSerializer();
 	}

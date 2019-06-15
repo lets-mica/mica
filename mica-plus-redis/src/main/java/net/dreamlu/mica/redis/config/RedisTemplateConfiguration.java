@@ -21,12 +21,14 @@ import net.dreamlu.mica.redis.ser.RedisKeySerializer;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
@@ -38,6 +40,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 @EnableCaching
 @Configuration
 @AutoConfigureBefore(RedisAutoConfiguration.class)
+@EnableConfigurationProperties(MicaRedisProperties.class)
 public class RedisTemplateConfiguration {
 
 	/**
@@ -47,8 +50,15 @@ public class RedisTemplateConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean(RedisSerializer.class)
-	public RedisSerializer<Object> redisSerializer() {
-		return new JdkSerializationRedisSerializer();
+	public RedisSerializer<Object> redisSerializer(MicaRedisProperties properties) {
+		MicaRedisProperties.SerializerType serializerType = properties.getSerializerType();
+		if (MicaRedisProperties.SerializerType.JDK == serializerType) {
+			return new JdkSerializationRedisSerializer();
+		}
+		if (MicaRedisProperties.SerializerType.JSON == serializerType) {
+			return new GenericJackson2JsonRedisSerializer();
+		}
+		return null;
 	}
 
 	@Bean(name = "redisTemplate")
