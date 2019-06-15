@@ -93,6 +93,26 @@ public class MicaRedisCache implements SmartInitializingSingleton {
 		return (T) valueOps.get(key);
 	}
 
+	/**
+	 * 获取cache 为 null 时使用加载器，然后设置缓存
+	 * @param key cacheKey
+	 * @param loader cache loader
+	 * @param <T> 泛型
+	 * @return 结果
+	 */
+	@Nullable
+	public <T> T get(String key, Supplier<T> loader) {
+		T value = this.get(key);
+		if (value != null) {
+			return value;
+		}
+		value = loader.get();
+		if (value == null) {
+			return null;
+		}
+		this.set(key, value);
+		return value;
+	}
 
 	/**
 	 * 返回 key 所关联的 value 值
