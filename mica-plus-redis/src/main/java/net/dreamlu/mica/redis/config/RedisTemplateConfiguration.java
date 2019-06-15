@@ -55,10 +55,7 @@ public class RedisTemplateConfiguration {
 		if (MicaRedisProperties.SerializerType.JDK == serializerType) {
 			return new JdkSerializationRedisSerializer();
 		}
-		if (MicaRedisProperties.SerializerType.JSON == serializerType) {
-			return new GenericJackson2JsonRedisSerializer();
-		}
-		return null;
+		return new GenericJackson2JsonRedisSerializer();
 	}
 
 	@Bean(name = "redisTemplate")
