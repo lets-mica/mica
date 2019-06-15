@@ -1,7 +1,16 @@
 # 变更记录
 
 ## 发行版本
-### [1.1.2] - 2019-05-11
+### [1.1.3] - 2019-05-16
+:sparkles: 完善 mica redis.
+:sparkles: 提高 webflux 的日志和 `ReactiveRequestContextFilter` 排序，方便在 spring cloud gateway 中使用.
+:sparkles: 调整验证码 base64，加上 base64 图片前缀.
+:bug: bean copy Convert 注解支持问题.
+:sparkles: 升级 swagger-bootstrap-ui 到 1.9.4.
+:sparkles: 添加新组件 mica-plus-ribbon.
+:sparkles: 添加新组件 mica-okhttp.
+
+### [1.1.2] - 2019-06-05
 :sparkles: 添加 `mica-plus-swagger` 组件，改用 `swagger-bootstrap-ui`。
 :sparkles: 项目启动完成之后停止控制台日志打印。
 :zap: 优化 `MicaBeanCopier` 避免 copy 代码未改包造成的出错。
