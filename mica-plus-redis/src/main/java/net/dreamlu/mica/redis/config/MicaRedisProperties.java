@@ -35,20 +35,20 @@ public class MicaRedisProperties {
 	/**
 	 * 序列化方式
 	 */
-	private SerializerType serializerType = SerializerType.JSON;
+	private SerializerType serializerType = SerializerType.ProtoStuff;
 
 	public enum SerializerType {
 		/**
-		 * json 序列化:默认
+		 * 默认:ProtoStuff 序列化
+		 */
+		ProtoStuff,
+		/**
+		 * json 序列化
 		 */
 		JSON,
 		/**
 		 * jdk 序列化
 		 */
-		JDK,
-		/**
-		 * ProtoStuff 序列化，需要添加 ProtoStuff jar
-		 */
-		ProtoStuff
+		JDK
 	}
 }

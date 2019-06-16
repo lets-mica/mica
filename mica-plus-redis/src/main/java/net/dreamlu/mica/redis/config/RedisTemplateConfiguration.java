@@ -28,8 +28,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
 /**
@@ -41,7 +39,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 @Configuration
 @AutoConfigureBefore(RedisAutoConfiguration.class)
 @EnableConfigurationProperties(MicaRedisProperties.class)
-public class RedisTemplateConfiguration {
+public class RedisTemplateConfiguration implements MicaRedisSerializerConfigAble {
 
 	/**
 	 * value 值 序列化
@@ -50,12 +48,9 @@ public class RedisTemplateConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean(RedisSerializer.class)
+	@Override
 	public RedisSerializer<Object> redisSerializer(MicaRedisProperties properties) {
-		MicaRedisProperties.SerializerType serializerType = properties.getSerializerType();
-		if (MicaRedisProperties.SerializerType.JDK == serializerType) {
-			return new JdkSerializationRedisSerializer();
-		}
-		return new GenericJackson2JsonRedisSerializer();
+		return defaultRedisSerializer(properties);
 	}
 
 	@Bean(name = "redisTemplate")
