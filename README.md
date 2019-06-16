@@ -82,9 +82,9 @@
 - swagger 和 swagger-bootstrap-ui 依赖。
 
 ### mica-plus-ribbon
-1. 【优先级最高】ip 相同的服务（方便本地多服务联调）。
-2. 可设置选择的 ip 或者 ip 段，例如：`172.21.0.*`、`172.21.0.8*`。
-3. 可设定 tag，为了以后版本发布（灰度）做基础，可能还需要扩展。
+- 【优先级最高】ip 相同的服务（方便本地多服务联调）。
+- 可设置选择的 ip 或者 ip 段，例如：`172.21.0.*`、`172.21.0.8*`。
+- 可设定 `tag`，用于灰度，匹配：`nacos.discovery.metadata.tag`。
 
 ## 已知问题
 lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861
