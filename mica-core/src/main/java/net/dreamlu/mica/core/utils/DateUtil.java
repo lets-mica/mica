@@ -52,7 +52,7 @@ public class DateUtil {
 	 */
 	public static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern(DateUtil.PATTERN_DATETIME);
 	public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DateUtil.PATTERN_DATE);
-	public static final DateTimeFormatter TIME_FORMATTER =  DateTimeFormatter.ofPattern(DateUtil.PATTERN_TIME);
+	public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(DateUtil.PATTERN_TIME);
 
 	/**
 	 * 添加年
@@ -368,7 +368,7 @@ public class DateUtil {
 	 * java8 日期格式化
 	 *
 	 * @param temporal 时间
-	 * @param pattern 表达式
+	 * @param pattern  表达式
 	 * @return 格式化后的时间
 	 */
 	public static String format(TemporalAccessor temporal, String pattern) {
@@ -419,6 +419,7 @@ public class DateUtil {
 
 	/**
 	 * 时间转 Instant
+	 *
 	 * @param dateTime 时间
 	 * @return Instant
 	 */
@@ -428,6 +429,7 @@ public class DateUtil {
 
 	/**
 	 * Instant 转 时间
+	 *
 	 * @param instant Instant
 	 * @return Instant
 	 */
@@ -436,7 +438,18 @@ public class DateUtil {
 	}
 
 	/**
+	 * Date 转 LocalDateTime
+	 *
+	 * @param date Date
+	 * @return Instant
+	 */
+	public static LocalDateTime toDateTime(Date date) {
+		return DateUtil.toDateTime(date.toInstant());
+	}
+
+	/**
 	 * 转换成 date
+	 *
 	 * @param dateTime LocalDateTime
 	 * @return Date
 	 */
@@ -446,6 +459,7 @@ public class DateUtil {
 
 	/**
 	 * 转换成 date
+	 *
 	 * @param localDate LocalDate
 	 * @return Date
 	 */
@@ -524,8 +538,9 @@ public class DateUtil {
 
 	/**
 	 * 比较2个时间差，跨度比较小
+	 *
 	 * @param startInclusive 开始时间
-	 * @param endExclusive 结束时间
+	 * @param endExclusive   结束时间
 	 * @return 时间间隔
 	 */
 	public static Duration between(Temporal startInclusive, Temporal endExclusive) {
@@ -534,8 +549,9 @@ public class DateUtil {
 
 	/**
 	 * 比较2个时间差，跨度比较大，年月日为单位
+	 *
 	 * @param startDate 开始时间
-	 * @param endDate 结束时间
+	 * @param endDate   结束时间
 	 * @return 时间间隔
 	 */
 	public static Period between(LocalDate startDate, LocalDate endDate) {
