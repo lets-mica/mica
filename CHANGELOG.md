@@ -2,34 +2,34 @@
 
 ## 发行版本
 ### [1.1.3] - 2019-05-16
-:sparkles: 完善 `mica-plus-redis` `MicaRedisCache`.
-:sparkles: 提高 webflux 的日志和 `ReactiveRequestContextFilter` 排序，方便在 spring cloud gateway 中使用.
-:sparkles: 调整验证码 base64，加上 base64 图片前缀.
-:bug: bean copy Convert 注解支持问题.
-:arrow_up: 升级 `swagger-bootstrap-ui` 到 1.9.4.
-:arrow_up: 升级 `Spring cloud` 版本到 `Greenwich.SR1`.
-:heavy_plus_sign: 添加新组件 `mica-plus-ribbon`.
-:heavy_plus_sign: 添加新组件 `mica-okhttp`.
+- :sparkles: 完善 `mica-plus-redis` `MicaRedisCache`.
+- :sparkles: 提高 webflux 的日志和 `ReactiveRequestContextFilter` 排序，方便在 spring cloud gateway 中使用.
+- :sparkles: 调整验证码 base64，加上 base64 图片前缀.
+- :bug: bean copy Convert 注解支持问题.
+- :heavy_plus_sign: 添加新组件 `mica-plus-ribbon`.
+- :heavy_plus_sign: 添加新组件 `mica-okhttp`.
+- :arrow_up: 升级 `swagger-bootstrap-ui` 到 1.9.4.
+- :arrow_up: 升级 `Spring cloud` 版本到 `Greenwich.SR1`.
 
 ### [1.1.2] - 2019-06-05
-:sparkles: 添加 `mica-plus-swagger` 组件，改用 `swagger-bootstrap-ui`。
-:sparkles: 项目启动完成之后停止控制台日志打印。
-:zap: 优化 `MicaBeanCopier` 避免 copy 代码未改包造成的出错。
-:zap: `ObjectUtil` 添加 isNull、isNotNull、isTrue、isFalse 等方法并同步进 `$`。
-:zap: `BaseController` 改为 `IController` 方便业务中进行二次扩展。
-:sparkles: 添加 `lbWebClient` 和 `header` 透传处理功能，`Spring cloud gateway` 中用起来特`爽`。
-:sparkles: `LauncherService` 支持 ordered 排序.
-:zap: 优化redis组件，
-:zap: 启动监听，如果有 swagger，打印 swagger ui 地址。
-:zap:  调整验证码旋转度数，避免文字遮挡。
-:zap:  优化异常处理.
-:zap:  添加只有 message 的 ServiceException 构造器.
-:memo: 添加 snapshots 版本，snapshots 版本会及时响应，修复最新的 bug 或者必要的需求。.
-:bug: gitee #IWLLH (MicaHttpHeadersContextHolder 只支持 Servlet) 优化避免 webflux 报错。
-:bug: 修复 ip 获取的 bug。
-:arrow_up: 升级 gradle 到 5.4.1.
-:arrow_up: 升级 Spring boot 到 2.1.5.RELEASE
-:arrow_up: 升级 mica-auto 到 1.1.0
+- :sparkles: 添加 `mica-plus-swagger` 组件，改用 `swagger-bootstrap-ui`。
+- :sparkles: 项目启动完成之后停止控制台日志打印。
+- :zap: 优化 `MicaBeanCopier` 避免 copy 代码未改包造成的出错。
+- :zap: `ObjectUtil` 添加 isNull、isNotNull、isTrue、isFalse 等方法并同步进 `$`。
+- :zap: `BaseController` 改为 `IController` 方便业务中进行二次扩展。
+- :sparkles: 添加 `lbWebClient` 和 `header` 透传处理功能，`Spring cloud gateway` 中用起来特`爽`。
+- :sparkles: `LauncherService` 支持 ordered 排序.
+- :zap: 优化redis组件，
+- :zap: 启动监听，如果有 swagger，打印 swagger ui 地址。
+- :zap:  调整验证码旋转度数，避免文字遮挡。
+- :zap:  优化异常处理.
+- :zap:  添加只有 message 的 ServiceException 构造器.
+- :memo: 添加 snapshots 版本，snapshots 版本会及时响应，修复最新的 bug 或者必要的需求。.
+- :bug: gitee #IWLLH (MicaHttpHeadersContextHolder 只支持 Servlet) 优化避免 webflux 报错。
+- :bug: 修复 ip 获取的 bug。
+- :arrow_up: 升级 gradle 到 5.4.1.
+- :arrow_up: 升级 Spring boot 到 2.1.5.RELEASE
+- :arrow_up: 升级 mica-auto 到 1.1.0
 
 ### [1.1.1] - 2019-05-11
 - :zap: 减少部分阿里巴巴规范问题。
