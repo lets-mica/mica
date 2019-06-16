@@ -33,6 +33,11 @@ MicaRedisCache 为简化 redis 使用的 bean。
 ```java
 @Autowired
 private RedisCache redisCache;
+
+@Override
+public String findById(Serializable id) {
+    return redisCache.get("user:" + id, () -> userMapper.selectById(id));
+}
 ```
 
 ## 注意
