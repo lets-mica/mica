@@ -8,8 +8,9 @@
 
 | 依赖         | 版本              |
 | ------------ | ----------------- |
+| Spring | 5.x |
 | Spring Boot  | 2.1.x             |
-| Spring Cloud | Greenwich.RELEASE |
+| Spring Cloud | Greenwich 版 |
 
 ![犬夜叉-云母](docs/img/mica-001.jpeg)
 
