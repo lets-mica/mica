@@ -32,7 +32,7 @@ compile("net.dreamlu:redis-plus-redis:${version}")
 MicaRedisCache 为简化 redis 使用的 bean。
 ```java
 @Autowired
-private RedisCache redisCache;
+private MicaRedisCache redisCache;
 
 @Override
 public String findById(Serializable id) {
