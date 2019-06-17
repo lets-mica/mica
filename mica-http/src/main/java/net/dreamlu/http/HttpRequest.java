@@ -257,6 +257,11 @@ public class HttpRequest {
 		return this;
 	}
 
+	public HttpRequest authenticator(Authenticator authenticator) {
+		this.authenticator = authenticator;
+		return this;
+	}
+
 	public HttpRequest interceptor(Interceptor interceptor) {
 		this.interceptor = interceptor;
 		return this;
