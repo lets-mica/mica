@@ -26,58 +26,58 @@ import java.io.File;
  *
  * @author L.cm
  */
-public class XFormPartBuilder {
-	private final XRequest request;
+public class MultipartFormBuilder {
+	private final HttpRequest request;
 	private final MultipartBody.Builder formBuilder;
 
-	XFormPartBuilder(XRequest request) {
+	MultipartFormBuilder(HttpRequest request) {
 		this.request = request;
 		this.formBuilder = new MultipartBody.Builder();
 	}
 
-	public XFormPartBuilder add(String name, String value) {
+	public MultipartFormBuilder add(String name, String value) {
 		this.formBuilder.addFormDataPart(name, value);
 		return this;
 	}
 
-	public XFormPartBuilder add(String name, File file) {
+	public MultipartFormBuilder add(String name, File file) {
 		String fileName = file.getName();
 		return add(name, fileName, file);
 	}
 
-	public XFormPartBuilder add(String name, @Nullable String filename, File file) {
+	public MultipartFormBuilder add(String name, @Nullable String filename, File file) {
 		RequestBody fileBody = RequestBody.create(null, file);
 		return add(name, filename, fileBody);
 	}
 
-	public XFormPartBuilder add(String name, @Nullable String filename, RequestBody fileBody) {
+	public MultipartFormBuilder add(String name, @Nullable String filename, RequestBody fileBody) {
 		this.formBuilder.addFormDataPart(name, filename, fileBody);
 		return this;
 	}
 
-	public XFormPartBuilder add(RequestBody body) {
+	public MultipartFormBuilder add(RequestBody body) {
 		this.formBuilder.addPart(body);
 		return this;
 	}
 
-	public XFormPartBuilder add(@Nullable Headers headers, RequestBody body) {
+	public MultipartFormBuilder add(@Nullable Headers headers, RequestBody body) {
 		this.formBuilder.addPart(headers, body);
 		return this;
 	}
 
-	public XFormPartBuilder add(MultipartBody.Part part) {
+	public MultipartFormBuilder add(MultipartBody.Part part) {
 		this.formBuilder.addPart(part);
 		return this;
 	}
 
-	public XRequest build() {
+	public HttpRequest build() {
 		formBuilder.setType(MultipartBody.FORM);
 		MultipartBody formBody = formBuilder.build();
-		this.request.formPart(formBody);
+		this.request.multipartForm(formBody);
 		return this.request;
 	}
 
-	public XResponse execute() {
+	public HttpResponse execute() {
 		return this.build().execute();
 	}
 }

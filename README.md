@@ -32,8 +32,8 @@
 - Jaskson Read Write HttpMessageConverter，分读写的消息转换器。
 - Spring 枚举转换器，规则同 Jackson。
 
-### mica-okhttp
-- `okhttp` 的简单 http 工具包，语法参考 HttpClient Fluent API
+### mica-http
+- `mica-http` 是 `okhttp` 的封装，Fluent 语法的 http 工具包，语法参考 HttpClient Fluent API。
 
 ### mica-launcher
 - 项目启动器

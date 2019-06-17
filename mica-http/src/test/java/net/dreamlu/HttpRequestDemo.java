@@ -17,19 +17,19 @@
 package net.dreamlu;
 
 import okhttp3.logging.HttpLoggingInterceptor;
-import net.dreamlu.http.XRequest;
-import net.dreamlu.http.XResponse;
+import net.dreamlu.http.HttpRequest;
+import net.dreamlu.http.HttpResponse;
 
 import java.time.Duration;
 
 /**
  * This example of mica http
  */
-public class XRequests {
+public class HttpRequestDemo {
 
 	public static void main(String[] args) {
 		// Execute a GET with timeout settings and return response content as String.
-		XRequest.get("https://www.baidu.com/")
+		HttpRequest.get("https://www.baidu.com/")
 			.connectTimeout(Duration.ofSeconds(1000))
 			.log()
 			.query("test", "a", "b", "c")
@@ -40,7 +40,7 @@ public class XRequests {
 
 		// Execute a POST with the 'expect-continue' handshake, using HTTP/1.1,
 		// containing a request body as String and return response content as byte array.
-		XRequest.post("https://www.baidu.com/do-stuff")
+		HttpRequest.post("https://www.baidu.com/do-stuff")
 			.log(HttpLoggingInterceptor.Level.BASIC)
 			.bodyString("Important stuff")
 			.formBuilder()
@@ -49,11 +49,11 @@ public class XRequests {
 
 		// Execute a POST with a custom header through the proxy containing a request body
 		// as an HTML form and save the result to the file
-		XResponse xResponse = XRequest.post("https://www.baidu.com/some-form")
+		HttpResponse httpResponse = HttpRequest.post("https://www.baidu.com/some-form")
 			.log(HttpLoggingInterceptor.Level.HEADERS)
 			.addHeader("X-Custom-header", "stuff")
 			.execute();
-		System.out.println(xResponse);
+		System.out.println(httpResponse);
 	}
 
 }

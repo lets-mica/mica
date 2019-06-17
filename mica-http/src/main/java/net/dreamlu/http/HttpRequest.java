@@ -27,6 +27,7 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.time.Duration;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -34,7 +35,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author L.cm
  */
-public class XRequest {
+public class HttpRequest {
 	private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36";
 	private static OkHttpClient httpClient = new OkHttpClient();
 	private final Request.Builder requestBuilder;
@@ -45,103 +46,104 @@ public class XRequest {
 	private Boolean followRedirects;
 	private HttpLoggingInterceptor.Level level;
 	private Interceptor interceptor;
+	private Authenticator authenticator;
 	private Duration connectTimeout;
 	private Duration readTimeout;
 	private Duration writeTimeout;
 	private Proxy proxy;
 
-	public static XRequest get(final String url) {
+	public static HttpRequest get(final String url) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
-		return new XRequest(new Request.Builder(), uriBuilder, XMethod.GET);
+		return new HttpRequest(new Request.Builder(), uriBuilder, Method.GET);
 	}
 
-	public static XRequest get(final URI uri) {
+	public static HttpRequest get(final URI uri) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
-		return new XRequest(new Request.Builder(), uriBuilder, XMethod.GET);
+		return new HttpRequest(new Request.Builder(), uriBuilder, Method.GET);
 	}
 
-	public static XRequest post(final String url) {
+	public static HttpRequest post(final String url) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
-		return new XRequest(new Request.Builder(), uriBuilder, XMethod.POST);
+		return new HttpRequest(new Request.Builder(), uriBuilder, Method.POST);
 	}
 
-	public static XRequest post(final URI uri) {
+	public static HttpRequest post(final URI uri) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
-		return new XRequest(new Request.Builder(), uriBuilder, XMethod.POST);
+		return new HttpRequest(new Request.Builder(), uriBuilder, Method.POST);
 	}
 
-	public static XRequest patch(final String url) {
+	public static HttpRequest patch(final String url) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
-		return new XRequest(new Request.Builder(), uriBuilder, XMethod.PATCH);
+		return new HttpRequest(new Request.Builder(), uriBuilder, Method.PATCH);
 	}
 
-	public static XRequest patch(final URI uri) {
+	public static HttpRequest patch(final URI uri) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
-		return new XRequest(new Request.Builder(), uriBuilder, XMethod.PATCH);
+		return new HttpRequest(new Request.Builder(), uriBuilder, Method.PATCH);
 	}
 
-	public static XRequest put(final String url) {
+	public static HttpRequest put(final String url) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
-		return new XRequest(new Request.Builder(), uriBuilder, XMethod.PUT);
+		return new HttpRequest(new Request.Builder(), uriBuilder, Method.PUT);
 	}
 
-	public static XRequest put(final URI uri) {
+	public static HttpRequest put(final URI uri) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
-		return new XRequest(new Request.Builder(), uriBuilder, XMethod.PUT);
+		return new HttpRequest(new Request.Builder(), uriBuilder, Method.PUT);
 	}
 
-	public static XRequest delete(final String url) {
+	public static HttpRequest delete(final String url) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
-		return new XRequest(new Request.Builder(), uriBuilder, XMethod.DELETE);
+		return new HttpRequest(new Request.Builder(), uriBuilder, Method.DELETE);
 	}
 
-	public static XRequest delete(final URI uri) {
+	public static HttpRequest delete(final URI uri) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
-		return new XRequest(new Request.Builder(), uriBuilder, XMethod.DELETE);
+		return new HttpRequest(new Request.Builder(), uriBuilder, Method.DELETE);
 	}
 
 	private static RequestBody emptyBody() {
 		return RequestBody.create(null, new byte[0]);
 	}
 
-	public XRequest query(String name, Object... values) {
+	public HttpRequest query(String name, Object... values) {
 		this.uriBuilder.queryParam(name, values);
 		return this;
 	}
 
-	XRequest form(FormBody formBody) {
+	HttpRequest form(FormBody formBody) {
 		this.requestBody = formBody;
 		return this;
 	}
 
-	XRequest formPart(MultipartBody multipartBody) {
+	HttpRequest multipartForm(MultipartBody multipartBody) {
 		this.requestBody = multipartBody;
 		return this;
 	}
 
-	public XFormBuilder formBuilder() {
-		return new XFormBuilder(this);
+	public FormBuilder formBuilder() {
+		return new FormBuilder(this);
 	}
 
-	public XFormPartBuilder formPartBuilder() {
-		return new XFormPartBuilder(this);
+	public MultipartFormBuilder multipartFormBuilder() {
+		return new MultipartFormBuilder(this);
 	}
 
-	public XRequest body(RequestBody requestBody) {
+	public HttpRequest body(RequestBody requestBody) {
 		this.requestBody = requestBody;
 		return this;
 	}
 
-	public XRequest bodyString(String body) {
+	public HttpRequest bodyString(String body) {
 		this.requestBody = RequestBody.create(null, body);
 		return this;
 	}
 
-	public XRequest bodyJson(Object body) {
+	public HttpRequest bodyJson(Object body) {
 		return bodyString(JsonUtil.toJson(body));
 	}
 
-	private XRequest(final Request.Builder requestBuilder, UriComponentsBuilder uriBuilder, String httpMethod) {
+	private HttpRequest(final Request.Builder requestBuilder, UriComponentsBuilder uriBuilder, String httpMethod) {
 		this.requestBuilder = requestBuilder;
 		this.uriBuilder = uriBuilder;
 		this.httpMethod = httpMethod;
@@ -167,6 +169,9 @@ public class XRequest {
 			loggingInterceptor.setLevel(level);
 			builder.addInterceptor(loggingInterceptor);
 		}
+		if (this.authenticator != null) {
+			builder.authenticator(authenticator);
+		}
 		if (this.interceptor != null) {
 			builder.addInterceptor(this.interceptor);
 		}
@@ -187,83 +192,93 @@ public class XRequest {
 		return builder.build().newCall(request).execute();
 	}
 
-	public XResponse execute() {
+	public HttpResponse execute() {
 		try {
-			return new XResponse(internalExecute(httpClient));
+			return new HttpResponse(internalExecute(httpClient));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
+	public HttpRequest baseAuth(String userName, String password) {
+		this.authenticator = new BaseAuthenticator(userName, password);
+		return this;
+	}
+
 	//// HTTP header operations
-	public XRequest addHeader(final String... namesAndValues) {
+	public HttpRequest addHeader(final Map<String, String> headers) {
+		this.requestBuilder.headers(Headers.of(headers));
+		return this;
+	}
+
+	public HttpRequest addHeader(final String... namesAndValues) {
 		Headers headers = Headers.of(namesAndValues);
 		this.requestBuilder.headers(headers);
 		return this;
 	}
 
-	public XRequest addHeader(final String name, final String value) {
+	public HttpRequest addHeader(final String name, final String value) {
 		this.requestBuilder.addHeader(name, value);
 		return this;
 	}
 
-	public XRequest setHeader(final String name, final String value) {
+	public HttpRequest setHeader(final String name, final String value) {
 		this.requestBuilder.header(name, value);
 		return this;
 	}
 
-	public XRequest removeHeader(final String name) {
+	public HttpRequest removeHeader(final String name) {
 		this.requestBuilder.removeHeader(name);
 		return this;
 	}
 
-	public XRequest cacheControl(final CacheControl cacheControl) {
+	public HttpRequest cacheControl(final CacheControl cacheControl) {
 		this.requestBuilder.cacheControl(cacheControl);
 		return this;
 	}
 
-	public XRequest userAgent(final String userAgent) {
+	public HttpRequest userAgent(final String userAgent) {
 		this.userAgent = userAgent;
 		return this;
 	}
 
-	public XRequest followRedirects(boolean followRedirects) {
+	public HttpRequest followRedirects(boolean followRedirects) {
 		this.followRedirects = followRedirects;
 		return this;
 	}
 
-	public XRequest log() {
+	public HttpRequest log() {
 		this.level = HttpLoggingInterceptor.Level.BODY;
 		return this;
 	}
 
-	public XRequest log(HttpLoggingInterceptor.Level level) {
+	public HttpRequest log(HttpLoggingInterceptor.Level level) {
 		this.level = level;
 		return this;
 	}
 
-	public XRequest interceptor(Interceptor interceptor) {
+	public HttpRequest interceptor(Interceptor interceptor) {
 		this.interceptor = interceptor;
 		return this;
 	}
 
 	//// HTTP connection parameter operations
-	public XRequest connectTimeout(final Duration timeout) {
+	public HttpRequest connectTimeout(final Duration timeout) {
 		this.connectTimeout = timeout;
 		return this;
 	}
 
-	public XRequest readTimeout(Duration readTimeout) {
+	public HttpRequest readTimeout(Duration readTimeout) {
 		this.readTimeout = readTimeout;
 		return this;
 	}
 
-	public XRequest writeTimeout(Duration writeTimeout) {
+	public HttpRequest writeTimeout(Duration writeTimeout) {
 		this.writeTimeout = writeTimeout;
 		return this;
 	}
 
-	public XRequest viaProxy(final InetSocketAddress address) {
+	public HttpRequest viaProxy(final InetSocketAddress address) {
 		this.proxy = new Proxy(Proxy.Type.HTTP, address);
 		return this;
 	}
@@ -274,6 +289,6 @@ public class XRequest {
 	}
 
 	public static void setHttpClient(OkHttpClient httpClient) {
-		XRequest.httpClient = httpClient;
+		HttpRequest.httpClient = httpClient;
 	}
 }

@@ -37,11 +37,11 @@ import java.util.Map;
  *
  * @author L.cm
  */
-public class XResponse {
+public class HttpResponse {
 	private final Response response;
 	private final ResponseBody body;
 
-	XResponse(final Response response) {
+	HttpResponse(final Response response) {
 		this.response = response;
 		this.body = response.body();
 	}

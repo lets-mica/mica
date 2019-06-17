@@ -21,7 +21,7 @@ package net.dreamlu.http;
  *
  * @author dream.lu
  */
-public interface XMethod {
+public interface Method {
 	String GET = "GET";
 	String POST = "POST";
 	String PATCH = "PATCH";

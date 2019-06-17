@@ -36,7 +36,7 @@ net.dreamlu
 `artifactId`：
 ```text
 mica-core
-mica-okhttp
+mica-http
 mica-launcher
 mica-log4j2
 mica-boot

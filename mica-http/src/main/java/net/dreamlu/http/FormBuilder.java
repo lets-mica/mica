@@ -23,32 +23,32 @@ import okhttp3.FormBody;
  *
  * @author L.cm
  */
-public class XFormBuilder {
-	private final XRequest request;
+public class FormBuilder {
+	private final HttpRequest request;
 	private final FormBody.Builder formBuilder;
 
-	XFormBuilder(XRequest request) {
+	FormBuilder(HttpRequest request) {
 		this.request = request;
 		this.formBuilder = new FormBody.Builder();
 	}
 
-	public XFormBuilder add(String name, String value) {
+	public FormBuilder add(String name, String value) {
 		this.formBuilder.add(name, value);
 		return this;
 	}
 
-	public XFormBuilder addEncoded(String name, String value) {
+	public FormBuilder addEncoded(String name, String value) {
 		this.formBuilder.addEncoded(name, value);
 		return this;
 	}
 
-	public XRequest build() {
+	public HttpRequest build() {
 		FormBody formBody = formBuilder.build();
 		this.request.form(formBody);
 		return this.request;
 	}
 
-	public XResponse execute() {
+	public HttpResponse execute() {
 		return this.build().execute();
 	}
 }
