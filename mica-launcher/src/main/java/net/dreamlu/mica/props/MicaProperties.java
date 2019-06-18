@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.props;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import net.dreamlu.mica.core.utils.StringPool;
@@ -41,6 +42,7 @@ import java.util.Objects;
 @ConfigurationProperties("mica")
 public class MicaProperties implements EnvironmentAware, EnvironmentCapable {
 	@Nullable
+	@JsonIgnore
 	private Environment environment;
 
 	/**
@@ -164,7 +166,6 @@ public class MicaProperties implements EnvironmentAware, EnvironmentCapable {
 			} else if (StringPool.FALSE.equals(value)) {
 				return Boolean.FALSE;
 			}
-			throw new RuntimeException("The value can not parse to Boolean : " + value);
 		}
 		return defaultValue;
 	}
@@ -181,6 +182,7 @@ public class MicaProperties implements EnvironmentAware, EnvironmentCapable {
 
 	/**
 	 * 环境，方便在代码中获取
+	 *
 	 * @return 环境 env
 	 */
 	public String getEnv() {
@@ -192,6 +194,7 @@ public class MicaProperties implements EnvironmentAware, EnvironmentCapable {
 
 	/**
 	 * 应用名称${spring.application.name}
+	 *
 	 * @return 应用名
 	 */
 	public String getName() {

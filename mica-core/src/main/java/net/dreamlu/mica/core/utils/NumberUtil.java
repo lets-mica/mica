@@ -44,7 +44,7 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 	 * conversion fails
 	 */
 	public static int toInt(final String str) {
-		return toInt(str, 0);
+		return ObjectUtil.toInt(str, 0);
 	}
 
 	/**
@@ -64,14 +64,7 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 	 * @return the int represented by the string, or the default if conversion fails
 	 */
 	public static int toInt(@Nullable final String str, final int defaultValue) {
-		if (str == null) {
-			return defaultValue;
-		}
-		try {
-			return Integer.parseInt(str);
-		} catch (final NumberFormatException nfe) {
-			return defaultValue;
-		}
+		return ObjectUtil.toInt(str, defaultValue);
 	}
 
 	/**
@@ -91,7 +84,7 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 	 * conversion fails
 	 */
 	public static long toLong(final String str) {
-		return toLong(str, 0L);
+		return ObjectUtil.toLong(str, 0L);
 	}
 
 	/**
@@ -111,14 +104,7 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 	 * @return the long represented by the string, or the default if conversion fails
 	 */
 	public static long toLong(@Nullable final String str, final long defaultValue) {
-		if (str == null) {
-			return defaultValue;
-		}
-		try {
-			return Long.parseLong(str);
-		} catch (final NumberFormatException nfe) {
-			return defaultValue;
-		}
+		return ObjectUtil.toLong(str, defaultValue);
 	}
 
 	/**
@@ -143,7 +129,7 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 	 * @param i 数字
 	 * @return 短字符串
 	 */
-	public static String to62String(long i) {
+	public static String to62Str(long i) {
 		int radix = DIGITS.length;
 		byte[] buf = new byte[65];
 		int charPos = 64;

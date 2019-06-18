@@ -335,6 +335,49 @@ public class $ {
 	}
 
 	/**
+	 * 对象 eq
+	 *
+	 * @param o1 Object
+	 * @param o2 Object
+	 * @return 是否eq
+	 */
+	public static boolean equals(@Nullable Object o1, @Nullable Object o2) {
+		return Objects.equals(o1, o2);
+	}
+
+	/**
+	 * 比较两个对象是否不相等。<br>
+	 *
+	 * @param o1 对象1
+	 * @param o2 对象2
+	 * @return 是否不eq
+	 */
+	public static boolean isNotEqual(Object o1, Object o2) {
+		return !Objects.equals(o1, o2);
+	}
+
+	/**
+	 * 返回对象的 hashCode
+	 *
+	 * @param obj Object
+	 * @return hashCode
+	 */
+	public static int hashCode(@Nullable Object obj) {
+		return Objects.hashCode(obj);
+	}
+
+	/**
+	 * 如果对象为null，返回默认值
+	 *
+	 * @param object       Object
+	 * @param defaultValue 默认值
+	 * @return Object
+	 */
+	public static Object defaultIfNull(@Nullable Object object, Object defaultValue) {
+		return object != null ? object : defaultValue;
+	}
+
+	/**
 	 * 判断数组中是否包含元素
 	 *
 	 * @param array   the Array to check
@@ -426,71 +469,174 @@ public class $ {
 	}
 
 	/**
-	 * 字符串转 int，为空则返回0
+	 * 强转string
 	 *
-	 * <pre>
-	 *   $.toInt(null) = 0
-	 *   $.toInt("")   = 0
-	 *   $.toInt("1")  = 1
-	 * </pre>
-	 *
-	 * @param str the string to convert, may be null
-	 * @return the int represented by the string, or <code>zero</code> if
-	 * conversion fails
+	 * @param object Object
+	 * @return String
 	 */
-	public static int toInt(final String str) {
-		return NumberUtil.toInt(str);
+	@Nullable
+	public static String toStr(@Nullable Object object) {
+		return ObjectUtil.toStr(object, null);
 	}
 
 	/**
-	 * 字符串转 int，为空则返回默认值
+	 * 强转string
 	 *
-	 * <pre>
-	 *   $.toInt(null, 1) = 1
-	 *   $.toInt("", 1)   = 1
-	 *   $.toInt("1", 0)  = 1
-	 * </pre>
-	 *
-	 * @param str          the string to convert, may be null
-	 * @param defaultValue the default value
-	 * @return the int represented by the string, or the default if conversion fails
+	 * @param object       Object
+	 * @param defaultValue 默认值
+	 * @return String
 	 */
-	public static int toInt(@Nullable final String str, final int defaultValue) {
-		return NumberUtil.toInt(str, defaultValue);
+	@Nullable
+	public static String toStr(@Nullable Object object, @Nullable String defaultValue) {
+		return ObjectUtil.toStr(object, defaultValue);
 	}
 
 	/**
-	 * 字符串转 long，为空则返回0
+	 * 对象转为 int （支持 String 和 Number），默认: 0
 	 *
-	 * <pre>
-	 *   $.toLong(null) = 0L
-	 *   $.toLong("")   = 0L
-	 *   $.toLong("1")  = 1L
-	 * </pre>
-	 *
-	 * @param str the string to convert, may be null
-	 * @return the long represented by the string, or <code>0</code> if
-	 * conversion fails
+	 * @param object Object
+	 * @return int
 	 */
-	public static long toLong(final String str) {
-		return NumberUtil.toLong(str);
+	public static int toInt(@Nullable Object object) {
+		return ObjectUtil.toInt(object, 0);
 	}
 
 	/**
-	 * 字符串转 long，为空则返回默认值
+	 * 对象转为 int （支持 String 和 Number）
 	 *
-	 * <pre>
-	 *   $.toLong(null, 1L) = 1L
-	 *   $.toLong("", 1L)   = 1L
-	 *   $.toLong("1", 0L)  = 1L
-	 * </pre>
-	 *
-	 * @param str          the string to convert, may be null
-	 * @param defaultValue the default value
-	 * @return the long represented by the string, or the default if conversion fails
+	 * @param object       Object
+	 * @param defaultValue 默认值
+	 * @return int
 	 */
-	public static long toLong(@Nullable final String str, final long defaultValue) {
-		return NumberUtil.toLong(str, defaultValue);
+	public static int toInt(@Nullable Object object, int defaultValue) {
+		return ObjectUtil.toInt(object, defaultValue);
+	}
+
+	/**
+	 * 对象转为 long （支持 String 和 Number），默认: 0L
+	 *
+	 * @param object Object
+	 * @return long
+	 */
+	public static long toLong(@Nullable Object object) {
+		return ObjectUtil.toLong(object, 0L);
+	}
+
+	/**
+	 * 对象转为 long （支持 String 和 Number），默认: 0L
+	 *
+	 * @param object Object
+	 * @return long
+	 */
+	public static long toLong(@Nullable Object object, long defaultValue) {
+		return ObjectUtil.toLong(object, defaultValue);
+	}
+
+	/**
+	 * 对象转为 Float
+	 *
+	 * @param object Object
+	 * @return 结果
+	 */
+	public static float toFloat(@Nullable Object object) {
+		return ObjectUtil.toFloat(object, 0.0f);
+	}
+
+	/**
+	 * 对象转为 Float
+	 *
+	 * @param object Object
+	 * @param defaultValue float
+	 * @return 结果
+	 */
+	public static float toFloat(@Nullable Object object, float defaultValue) {
+		return ObjectUtil.toFloat(object, defaultValue);
+	}
+
+	/**
+	 * 对象转为 Double
+	 *
+	 * @param object Object
+	 * @return 结果
+	 */
+	public static double toDouble(@Nullable Object object) {
+		return ObjectUtil.toDouble(object, 0.0d);
+	}
+
+	/**
+	 * 对象转为 Double
+	 *
+	 * @param object Object
+	 * @param defaultValue double
+	 * @return 结果
+	 */
+	public static double toDouble(@Nullable Object object, double defaultValue) {
+		return ObjectUtil.toDouble(object, defaultValue);
+	}
+
+	/**
+	 * 对象转为 Byte
+	 *
+	 * @param object Object
+	 * @return 结果
+	 */
+	public static byte toByte(@Nullable Object object) {
+		return ObjectUtil.toByte(object, (byte) 0);
+	}
+
+	/**
+	 * 对象转为 Byte
+	 *
+	 * @param object Object
+	 * @param defaultValue byte
+	 * @return 结果
+	 */
+	public static byte toByte(@Nullable Object object, byte defaultValue) {
+		return ObjectUtil.toByte(object, defaultValue);
+	}
+
+	/**
+	 * 对象转为 Short
+	 *
+	 * @param object Object
+	 * @return 结果
+	 */
+	public static short toShort(@Nullable Object object) {
+		return ObjectUtil.toShort(object, (short) 0);
+	}
+
+	/**
+	 * 对象转为 Short
+	 *
+	 * @param object Object
+	 * @param defaultValue short
+	 * @return 结果
+	 */
+	public static short toShort(@Nullable Object object, short defaultValue) {
+		return ObjectUtil.toShort(object, defaultValue);
+	}
+
+	/**
+	 * 对象转为 Boolean
+	 *
+	 * @param object Object
+	 * @return 结果
+	 */
+	@Nullable
+	public static Boolean toBoolean(@Nullable Object object) {
+		return ObjectUtil.toBoolean(object, null);
+	}
+
+	/**
+	 * 对象转为 Boolean
+	 *
+	 * @param object Object
+	 * @param defaultValue 默认值
+	 * @return 结果
+	 */
+	@Nullable
+	public static Boolean toBoolean(@Nullable Object object, @Nullable Boolean defaultValue) {
+		return ObjectUtil.toBoolean(object, defaultValue);
 	}
 
 	/**
@@ -499,8 +645,8 @@ public class $ {
 	 * @param num 数字
 	 * @return 短字符串
 	 */
-	public static String to62String(long num) {
-		return NumberUtil.to62String(num);
+	public static String to62Str(long num) {
+		return NumberUtil.to62Str(num);
 	}
 
 	/**
@@ -1091,7 +1237,8 @@ public class $ {
 	 * @param object javaBean
 	 * @return jsonString json字符串
 	 */
-	public static String toJson(Object object) {
+	@Nullable
+	public static String toJson(@Nullable Object object) {
 		return JsonUtil.toJson(object);
 	}
 
@@ -1101,7 +1248,8 @@ public class $ {
 	 * @param object javaBean
 	 * @return jsonString json字符串
 	 */
-	public static byte[] toJsonAsBytes(Object object) {
+	@Nullable
+	public static byte[] toJsonAsBytes(@Nullable Object object) {
 		return JsonUtil.toJsonAsBytes(object);
 	}
 
@@ -1153,6 +1301,7 @@ public class $ {
 	 * @param <T>       T 泛型标记
 	 * @return Bean
 	 */
+	@Nullable
 	public static <T> T readJson(byte[] bytes, Class<T> valueType) {
 		return JsonUtil.readValue(bytes, valueType);
 	}
@@ -1165,7 +1314,8 @@ public class $ {
 	 * @param <T>        T 泛型标记
 	 * @return Bean
 	 */
-	public static <T> T readJson(String jsonString, Class<T> valueType) {
+	@Nullable
+	public static <T> T readJson(@Nullable String jsonString, Class<T> valueType) {
 		return JsonUtil.readValue(jsonString, valueType);
 	}
 
@@ -1177,7 +1327,8 @@ public class $ {
 	 * @param <T>       T 泛型标记
 	 * @return Bean
 	 */
-	public static <T> T readJson(InputStream in, Class<T> valueType) {
+	@Nullable
+	public static <T> T readJson(@Nullable InputStream in, Class<T> valueType) {
 		return JsonUtil.readValue(in, valueType);
 	}
 
@@ -1189,6 +1340,7 @@ public class $ {
 	 * @param <T>           T 泛型标记
 	 * @return Bean
 	 */
+	@Nullable
 	public static <T> T readJson(byte[] bytes, TypeReference<?> typeReference) {
 		return JsonUtil.readValue(bytes, typeReference);
 	}
@@ -1201,7 +1353,8 @@ public class $ {
 	 * @param <T>           T 泛型标记
 	 * @return Bean
 	 */
-	public static <T> T readJson(String jsonString, TypeReference<?> typeReference) {
+	@Nullable
+	public static <T> T readJson(@Nullable String jsonString, TypeReference<?> typeReference) {
 		return JsonUtil.readValue(jsonString, typeReference);
 	}
 
@@ -1213,7 +1366,8 @@ public class $ {
 	 * @param <T>           T 泛型标记
 	 * @return Bean
 	 */
-	public static <T> T readJson(InputStream in, TypeReference<?> typeReference) {
+	@Nullable
+	public static <T> T readJson(@Nullable InputStream in, TypeReference<?> typeReference) {
 		return JsonUtil.readValue(in, typeReference);
 	}
 
