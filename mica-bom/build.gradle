@@ -22,6 +22,7 @@ dependencyManagement {
         dependency "net.dreamlu:mica-boot:${VERSION}"
         dependency "net.dreamlu:mica-boot-test:${VERSION}"
         dependency "net.dreamlu:mica-captcha:${VERSION}"
+        dependency "net.dreamlu:mica-social:${VERSION}"
         dependency "net.dreamlu:mica-cloud:${VERSION}"
         dependency "net.dreamlu:mica-plus-error-catch:${VERSION}"
         dependency "net.dreamlu:mica-plus-redis:${VERSION}"
