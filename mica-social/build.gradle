@@ -1,0 +1,4 @@
+dependencies {
+    api project(":mica-http")
+    implementation "com.alipay.sdk:alipay-sdk-java:${alipaySdkVersion}"
+}

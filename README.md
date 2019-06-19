@@ -63,6 +63,9 @@
 ### mica-captcha
 - 验证码，支持 `webflux` 和 `serlvet`。
 
+### mica-social
+- 第三方登录组件
+
 ### mica-cloud
 - Feign 自动降级、header 透传、版本处理，结合 `mica-auto` 自动化配置。
 - RestTemplate自动配置，基于okhttp增强，添加请求日志和Header传递。
