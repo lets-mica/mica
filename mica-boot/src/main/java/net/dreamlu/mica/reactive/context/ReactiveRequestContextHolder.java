@@ -26,7 +26,7 @@ import reactor.util.context.Context;
  * @author L.cm
  */
 public class ReactiveRequestContextHolder {
-	static final Class<ServerHttpRequest> CONTEXT_KEY = ServerHttpRequest.class;
+	private static final Class<ServerHttpRequest> CONTEXT_KEY = ServerHttpRequest.class;
 
 	/**
 	 * Gets the {@code Mono<ServerHttpRequest>} from Reactor {@link Context}
@@ -37,4 +37,12 @@ public class ReactiveRequestContextHolder {
 			.map(ctx -> ctx.get(CONTEXT_KEY));
 	}
 
+	/**
+	 * Put the {@code Mono<ServerHttpRequest>} to Reactor {@link Context}
+	 *
+	 * @return the Reactor {@link Context}
+	 */
+	public static Context put(Context context, ServerHttpRequest request) {
+		return context.put(CONTEXT_KEY, request);
+	}
 }
