@@ -2,6 +2,7 @@ package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import net.dreamlu.http.HttpRequest;
+import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
@@ -22,7 +23,7 @@ public class AuthFacebookRequest extends BaseAuthRequest {
 
 	@Override
 	protected AuthToken getAccessToken(String code) {
-		JsonNode object = doPostAuthorizationCode(code).asJsonNode();
+		JsonNode object = JsonUtil.readTree("{\"access_token\":\"EAAVB2KtBmLUBAJjT9vJtuHyAeLSlohwnk4NTMl0d9GJIfwZBx5xSO6Fh2IIoY86Bql9eWoh0JO358epUZARsj4dNWky7Gzh2ZAMb5uxPFUfWk4soNavR9DDkHBWtoAe92pzXfvC0rqciE95s34ZCzxZCKRzzSZA5o6Qr6Fl4WlYYo58RkPLOC6\",\"token_type\":\"bearer\",\"expires_in\":5182640}");//doPostAuthorizationCode(code).asJsonNode();
 		if (object.has("error")) {
 			throw new AuthException(object.at("/error/message").asText());
 		}
@@ -51,7 +52,7 @@ public class AuthFacebookRequest extends BaseAuthRequest {
 			.avatar(object.at("/picture/data/url").asText())
 			.location(object.at("/locale").asText())
 			.email(object.at("/email").asText())
-			.gender(AuthUserGender.getRealGender(object.get("gender").asText()))
+			.gender(AuthUserGender.getRealGender(object.at("/gender").asText()))
 			.token(authToken)
 			.source(authSource)
 			.build();

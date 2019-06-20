@@ -36,11 +36,13 @@ public class AuthTencentCloudRequest extends BaseAuthRequest {
 	@Override
 	protected AuthToken getAccessToken(String code) {
 		JsonNode object = doGetAuthorizationCode(code).asJsonNode();
-		if (object.get("code").asInt() != 0) {
+		if (!object.hasNonNull("access_token")) {
 			throw new AuthException("Unable to get token from tencent cloud using code [" + code + "]: " + object.get("msg"));
 		}
 		return AuthToken.builder()
 			.accessToken(object.get("access_token").asText())
+			.refreshToken(object.get("refresh_token").asText())
+			.expireIn(object.get("expires_in").asInt())
 			.build();
 	}
 
