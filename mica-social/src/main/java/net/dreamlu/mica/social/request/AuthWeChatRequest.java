@@ -59,6 +59,8 @@ public class AuthWeChatRequest extends BaseAuthRequest {
 			.execute()
 			.asJsonNode();
 		this.checkResponse(object);
+		// unionid
+		authToken.setUnionId(object.at("/unionid").asText());
 		return AuthUser.builder()
 			.username(object.get("nickname").asText())
 			.nickname(object.get("nickname").asText())

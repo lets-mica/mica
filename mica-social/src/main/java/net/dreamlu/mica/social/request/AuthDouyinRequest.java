@@ -101,6 +101,7 @@ public class AuthDouyinRequest extends BaseAuthRequest {
 		return AuthToken.builder()
 			.accessToken(accessTokenObject.get("access_token").asText())
 			.openId(accessTokenObject.get("open_id").asText())
+			.unionId(accessTokenObject.at("/unionid").asText())
 			.expireIn(accessTokenObject.get("expires_in").asInt())
 			.refreshToken(accessTokenObject.get("refresh_token").asText())
 			.scope(accessTokenObject.get("scope").asText())

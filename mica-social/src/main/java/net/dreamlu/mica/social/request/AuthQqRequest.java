@@ -43,7 +43,7 @@ public class AuthQqRequest extends BaseAuthRequest {
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
 		// 获取 openId
-		String openId = this.getOpenId(accessToken);
+		String openId = this.getOpenId(accessToken, authToken);
 		// 用户信息
 		JsonNode object = this.getUserInfo(accessToken, openId);
 		if (object.get("ret").asInt() != 0) {
@@ -68,7 +68,7 @@ public class AuthQqRequest extends BaseAuthRequest {
 			.build();
 	}
 
-	private String getOpenId(String accessToken) {
+	private String getOpenId(String accessToken, AuthToken authToken) {
 		HttpResponse response = HttpRequest.get("https://graph.qq.com/oauth2.0/me")
 			.query("access_token", accessToken)
 			.execute();
@@ -78,7 +78,10 @@ public class AuthQqRequest extends BaseAuthRequest {
 			String removeSuffix = StringUtil.replace(removePrefix, ");", "");
 			String openId = StringUtil.trimWhitespace(removeSuffix);
 			JsonNode object = JsonUtil.readTree(openId);
-			if (object.has("openid")) {
+			if (object.hasNonNull("unionid")) {
+				authToken.setUnionId(object.get("unionid").asText());
+			}
+			if (object.hasNonNull("openid")) {
 				return object.get("openid").asText();
 			}
 			throw new AuthException("Invalid openId");

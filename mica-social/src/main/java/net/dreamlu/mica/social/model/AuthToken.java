@@ -18,15 +18,17 @@ public class AuthToken {
 	private String refreshToken;
 	private String uid;
 	private String openId;
+	/**
+	 * weChat、qq、抖音
+	 */
+	private String unionId;
 	private String accessCode;
-
 	/**
 	 * Google附带属性
 	 */
 	private String scope;
 	private String tokenType;
 	private String idToken;
-
 	/**
 	 * 小米附带属性
 	 */
