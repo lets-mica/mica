@@ -26,4 +26,23 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class UrlUtil extends org.springframework.web.util.UriUtils {
 
+	/**
+	 * encode
+	 *
+	 * @param source source
+	 * @return sourced String
+	 */
+	public static String encode(String source) {
+		return UrlUtil.encode(source, Charsets.UTF_8);
+	}
+
+	/**
+	 * decode
+	 *
+	 * @param source source
+	 * @return decoded String
+	 */
+	public static String decode(String source) {
+		return UrlUtil.decode(source, Charsets.UTF_8);
+	}
 }

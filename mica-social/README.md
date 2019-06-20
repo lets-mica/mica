@@ -2,6 +2,8 @@
 
 `mica-social`，如你所见，它仅仅是一个**第三方授权登录**的**工具类库**，它可以让我们脱离繁琐的第三方登录SDK，让登录变得**So easy!**
 
+`mica-social` 参考了 `JustAuth` 和我之前的 [`JFinal-oauth2.0-login`](https://gitee.com/596392912/JFinal-oauth2.0-login)
+
 ## API列表
 |  :computer: 平台  |
 |:------:|
