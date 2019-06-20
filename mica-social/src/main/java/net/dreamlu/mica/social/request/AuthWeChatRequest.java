@@ -62,10 +62,10 @@ public class AuthWeChatRequest extends BaseAuthRequest {
 		return AuthUser.builder()
 			.username(object.get("nickname").asText())
 			.nickname(object.get("nickname").asText())
-			.avatar(object.get("headimgurl").asText())
-			.location(object.get("country").asText() + "-" + object.get("province").asText() + "-" + object.get("city").asText())
+			.avatar(object.at("/headimgurl").asText())
+			.location(object.at("/country").asText() + "-" + object.at("/province").asText() + "-" + object.at("/city").asText())
 			.uuid(openId)
-			.gender(AuthUserGender.getRealGender(object.get("sex").asText()))
+			.gender(AuthUserGender.getRealGender(object.at("/sex").asText()))
 			.token(authToken)
 			.source(authSource)
 			.build();
@@ -121,7 +121,6 @@ public class AuthWeChatRequest extends BaseAuthRequest {
 	@Override
 	protected HttpResponse doGetAuthorizationCode(String code) {
 		return HttpRequest.get(authSource.accessToken())
-			.log()
 			.query("code", code)
 			.query("appid", config.getClientId())
 			.query("secret", config.getClientSecret())

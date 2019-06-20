@@ -82,7 +82,7 @@ public class AuthMiRequest extends BaseAuthRequest {
 			.uuid(authToken.getOpenId())
 			.username(user.get("miliaoNick").asText())
 			.nickname(user.get("miliaoNick").asText())
-			.avatar(user.get("miliaoIcon").asText())
+			.avatar(user.at("/miliaoIcon").asText())
 			.email(user.at("/mail").asText())
 			.token(authToken)
 			.source(authSource)

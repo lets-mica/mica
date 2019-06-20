@@ -70,11 +70,11 @@ public class AuthToutiaoRequest extends BaseAuthRequest {
 		String anonymousUserName = "匿名用户";
 		return AuthUser.builder()
 			.uuid(user.get("uid").asText())
-			.username(isAnonymousUser ? anonymousUserName : user.get("screen_name").asText())
-			.nickname(isAnonymousUser ? anonymousUserName : user.get("screen_name").asText())
-			.avatar(user.get("avatar_url").asText())
-			.remark(user.get("description").asText())
-			.gender(AuthUserGender.getRealGender(user.get("gender").asText()))
+			.username(isAnonymousUser ? anonymousUserName : user.at("/screen_name").asText())
+			.nickname(isAnonymousUser ? anonymousUserName : user.at("/screen_name").asText())
+			.avatar(user.at("/avatar_url").asText())
+			.remark(user.at("/description").asText())
+			.gender(AuthUserGender.getRealGender(user.at("/gender").asText()))
 			.token(authToken)
 			.source(authSource)
 			.build();

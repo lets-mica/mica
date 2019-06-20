@@ -54,7 +54,7 @@ public class AuthDouyinRequest extends BaseAuthRequest {
 			.uuid(userInfoObject.get("open_id").asText())
 			.username(userInfoObject.get("nickname").asText())
 			.nickname(userInfoObject.get("nickname").asText())
-			.avatar(userInfoObject.get("avatar").asText())
+			.avatar(userInfoObject.at("/avatar").asText())
 			.token(authToken)
 			.source(authSource)
 			.build();

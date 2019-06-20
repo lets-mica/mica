@@ -60,7 +60,7 @@ public class AuthQqRequest extends BaseAuthRequest {
 			.username(object.get("nickname").asText())
 			.nickname(object.get("nickname").asText())
 			.avatar(avatar)
-			.location(object.get("province").asText() + "-" + object.get("city").asText())
+			.location(object.at("/province").asText() + "-" + object.at("/city").asText())
 			.uuid(openId)
 			.gender(AuthUserGender.getRealGender(object.get("gender").asText()))
 			.token(authToken)
@@ -89,7 +89,6 @@ public class AuthQqRequest extends BaseAuthRequest {
 	private JsonNode getUserInfo(String accessToken, String openId) {
 		// {"ret":0,"msg":"","nickname":"YOUR_NICK_NAME",...}
 		return HttpRequest.get(authSource.userInfo())
-			.log()
 			.query("access_token", accessToken)
 			.query("oauth_consumer_key", config.getClientId())
 			.query("openid", openId)

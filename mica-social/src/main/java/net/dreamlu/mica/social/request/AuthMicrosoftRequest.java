@@ -85,10 +85,10 @@ public class AuthMicrosoftRequest extends BaseAuthRequest {
 
 		return AuthUser.builder()
 			.uuid(object.get("id").asText())
-			.username(object.get("userPrincipalName").asText())
-			.nickname(object.get("displayName").asText())
-			.location(object.get("officeLocation").asText())
-			.email(object.get("mail").asText())
+			.username(object.at("/userPrincipalName").asText())
+			.nickname(object.at("/displayName").asText())
+			.location(object.at("/officeLocation").asText())
+			.email(object.at("/mail").asText())
 			.token(authToken)
 			.source(authSource)
 			.build();

@@ -61,10 +61,10 @@ public class AuthGoogleRequest extends BaseAuthRequest {
 		return AuthUser.builder()
 			.uuid(object.get("sub").asText())
 			.username(object.get("name").asText())
-			.avatar(object.get("picture").asText())
+			.avatar(object.at("/picture").asText())
 			.nickname(object.get("name").asText())
-			.location(object.get("locale").asText())
-			.email(object.get("email").asText())
+			.location(object.at("/locale").asText())
+			.email(object.at("/email").asText())
 			.token(authToken)
 			.source(authSource)
 			.build();
