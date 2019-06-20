@@ -48,13 +48,14 @@ public class AuthDingTalkRequest extends BaseAuthRequest {
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String code = authToken.getAccessCode();
 		// 根据timestamp, appSecret计算签名值
-		String stringToSign = System.currentTimeMillis() + "";
-		String urlEncodeSignature = GlobalAuthUtil.generateDingTalkSignature(config.getClientSecret(), stringToSign);
+		String timestamp = String.valueOf(System.currentTimeMillis());
+		String urlEncodeSignature = GlobalAuthUtil.generateDingTalkSignature(config.getClientSecret(), timestamp);
 		Map<String, Object> bodyJson = new HashMap<>(1);
 		bodyJson.put("tmp_auth_code", code);
 		JsonNode object = HttpRequest.post(authSource.userInfo())
+			.log()
 			.query("signature", urlEncodeSignature)
-			.query("timestamp", stringToSign)
+			.query("timestamp", timestamp)
 			.query("accessKey", config.getClientId())
 			.bodyJson(bodyJson)
 			.execute()
