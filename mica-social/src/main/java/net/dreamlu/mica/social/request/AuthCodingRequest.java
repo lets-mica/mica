@@ -67,7 +67,7 @@ public class AuthCodingRequest extends BaseAuthRequest {
 			.email(data.get("email").asText())
 			.remark(data.get("slogan").asText())
 			.token(authToken)
-			.source(AuthSource.CODING)
+			.source(authSource)
 			.build();
 	}
 }

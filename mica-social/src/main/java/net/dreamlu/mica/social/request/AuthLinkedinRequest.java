@@ -82,7 +82,7 @@ public class AuthLinkedinRequest extends BaseAuthRequest {
 			.avatar(avatar)
 			.email(email)
 			.token(authToken)
-			.source(AuthSource.LINKEDIN)
+			.source(authSource)
 			.build();
 	}
 

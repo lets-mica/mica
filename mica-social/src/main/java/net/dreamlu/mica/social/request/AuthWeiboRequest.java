@@ -61,7 +61,7 @@ public class AuthWeiboRequest extends BaseAuthRequest {
 			.remark(jsonNode.get("description").asText())
 			.gender(AuthUserGender.getRealGender(jsonNode.get("gender").asText()))
 			.token(authToken)
-			.source(AuthSource.WEIBO)
+			.source(authSource)
 			.build();
 	}
 }

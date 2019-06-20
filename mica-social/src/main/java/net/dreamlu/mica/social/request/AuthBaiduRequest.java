@@ -49,7 +49,7 @@ public class AuthBaiduRequest extends BaseAuthRequest {
 			.nickname(jsonNode.get("username").asText())
 			.gender(AuthUserGender.getRealGender(jsonNode.get("sex").asText()))
 			.token(authToken)
-			.source(AuthSource.BAIDU)
+			.source(authSource)
 			.build();
 	}
 

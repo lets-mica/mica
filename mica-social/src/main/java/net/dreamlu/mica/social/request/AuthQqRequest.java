@@ -64,7 +64,7 @@ public class AuthQqRequest extends BaseAuthRequest {
 			.uuid(openId)
 			.gender(AuthUserGender.getRealGender(object.get("gender").asText()))
 			.token(authToken)
-			.source(AuthSource.QQ)
+			.source(authSource)
 			.build();
 	}
 

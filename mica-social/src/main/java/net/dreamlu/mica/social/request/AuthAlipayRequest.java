@@ -20,8 +20,6 @@ import org.springframework.web.util.UriComponentsBuilder;
  * 支付宝登录
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
- * @version 1.0
- * @since 1.8
  */
 public class AuthAlipayRequest extends BaseAuthRequest {
 	private static final AuthSource API_URL = AuthSource.ALIPAY;
@@ -88,7 +86,7 @@ public class AuthAlipayRequest extends BaseAuthRequest {
 			.location(String.format("%s %s", StringUtil.isBlank(province) ? "" : province, StringUtil.isBlank(city) ? "" : city))
 			.gender(AuthUserGender.getRealGender(response.getGender()))
 			.token(authToken)
-			.source(API_URL)
+			.source(authSource)
 			.build();
 	}
 

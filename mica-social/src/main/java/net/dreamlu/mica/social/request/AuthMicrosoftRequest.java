@@ -90,7 +90,7 @@ public class AuthMicrosoftRequest extends BaseAuthRequest {
 			.location(object.get("officeLocation").asText())
 			.email(object.get("mail").asText())
 			.token(authToken)
-			.source(AuthSource.MICROSOFT)
+			.source(authSource)
 			.build();
 	}
 

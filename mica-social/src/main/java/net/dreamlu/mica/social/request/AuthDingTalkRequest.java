@@ -69,7 +69,7 @@ public class AuthDingTalkRequest extends BaseAuthRequest {
 			.uuid(userInfo.get("openid").asText())
 			.nickname(userInfo.get("nick").asText())
 			.username(userInfo.get("nick").asText())
-			.source(AuthSource.DINGTALK)
+			.source(authSource)
 			.build();
 	}
 }

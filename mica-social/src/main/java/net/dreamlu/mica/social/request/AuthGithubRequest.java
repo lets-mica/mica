@@ -52,7 +52,7 @@ public class AuthGithubRequest extends BaseAuthRequest {
 			.email(object.get("email").asText())
 			.remark(object.get("bio").asText())
 			.token(authToken)
-			.source(AuthSource.GITHUB)
+			.source(authSource)
 			.build();
 	}
 }

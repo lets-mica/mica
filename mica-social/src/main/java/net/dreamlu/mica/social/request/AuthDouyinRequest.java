@@ -56,7 +56,7 @@ public class AuthDouyinRequest extends BaseAuthRequest {
 			.nickname(userInfoObject.get("nickname").asText())
 			.avatar(userInfoObject.get("avatar").asText())
 			.token(authToken)
-			.source(AuthSource.DOUYIN)
+			.source(authSource)
 			.build();
 	}
 
