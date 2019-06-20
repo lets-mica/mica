@@ -9,7 +9,7 @@ import net.dreamlu.mica.social.model.AuthDingTalkErrorCode;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
 import net.dreamlu.mica.social.utils.GlobalAuthUtil;
-import net.dreamlu.mica.social.utils.UrlBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +18,6 @@ import java.util.Map;
  * 钉钉登录
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
- * @version 1.0
- * @since 1.8
  */
 public class AuthDingTalkRequest extends BaseAuthRequest {
 
@@ -28,8 +26,15 @@ public class AuthDingTalkRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getDingTalkQrConnectUrl(config.getClientId(), config.getRedirectUri());
+	public String authorize(String state) {
+		return UriComponentsBuilder.fromUriString(authSource.authorize())
+			.queryParam("response_type", "code")
+			.queryParam("appid", config.getClientId())
+			.queryParam("redirect_uri", config.getRedirectUri())
+			.queryParam("state", state)
+			.queryParam("scope", "snsapi_login")
+			.build()
+			.toUriString();
 	}
 
 	@Override
@@ -45,16 +50,17 @@ public class AuthDingTalkRequest extends BaseAuthRequest {
 		// 根据timestamp, appSecret计算签名值
 		String stringToSign = System.currentTimeMillis() + "";
 		String urlEncodeSignature = GlobalAuthUtil.generateDingTalkSignature(config.getClientSecret(), stringToSign);
-		String dingTalkUserInfoUrl = UrlBuilder.getDingTalkUserInfoUrl(urlEncodeSignature, stringToSign, config.getClientId());
-
 		Map<String, Object> bodyJson = new HashMap<>(1);
 		bodyJson.put("tmp_auth_code", code);
-		JsonNode object = HttpRequest.post(dingTalkUserInfoUrl)
+		JsonNode object = HttpRequest.post(authSource.userInfo())
+			.query("signature", urlEncodeSignature)
+			.query("timestamp", stringToSign)
+			.query("accessKey", config.getClientId())
 			.bodyJson(bodyJson)
 			.execute()
 			.asJsonNode();
 		AuthDingTalkErrorCode errorCode = AuthDingTalkErrorCode.getErrorCode(object.get("errcode").asInt());
-		if (!AuthDingTalkErrorCode.EC0.equals(errorCode)) {
+		if (AuthDingTalkErrorCode.EC0 != errorCode) {
 			throw new AuthException(errorCode.getDesc());
 		}
 		JsonNode userInfo = object.get("user_info");

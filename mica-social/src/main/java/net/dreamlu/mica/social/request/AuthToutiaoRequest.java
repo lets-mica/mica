@@ -9,14 +9,12 @@ import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthToutiaoErrorCode;
 import net.dreamlu.mica.social.model.AuthUser;
 import net.dreamlu.mica.social.model.AuthUserGender;
-import net.dreamlu.mica.social.utils.UrlBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * 今日头条登录
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
- * @version 1.5
- * @since 1.5
  */
 public class AuthToutiaoRequest extends BaseAuthRequest {
 
@@ -25,21 +23,31 @@ public class AuthToutiaoRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getToutiaoAuthorizeUrl(config.getClientId(), config.getRedirectUri());
+	public String authorize(String state) {
+		return UriComponentsBuilder.fromUriString(authSource.authorize())
+			.queryParam("response_type", "code")
+			.queryParam("client_key", config.getClientId())
+			.queryParam("redirect_uri", config.getRedirectUri())
+			.queryParam("state", state)
+			.queryParam("auth_only", "1")
+			.queryParam("display", "0")
+			.build()
+			.toUriString();
 	}
 
 	@Override
 	protected AuthToken getAccessToken(String code) {
-		String accessTokenUrl = UrlBuilder.getToutiaoAccessTokenUrl(config.getClientId(), config.getClientSecret(), code);
-		JsonNode object = HttpRequest.get(accessTokenUrl)
+		JsonNode object = HttpRequest.get(authSource.accessToken())
+			.query("code", code)
+			.query("client_key", config.getClientId())
+			.query("client_secret", config.getClientSecret())
+			.query("grant_type", "authorization_code")
+			.query("redirect_uri", config.getRedirectUri())
 			.execute()
 			.asJsonNode();
-
 		if (object.has("error_code")) {
 			throw new AuthException(AuthToutiaoErrorCode.getErrorCode(object.get("error_code").asInt()).getDesc());
 		}
-
 		return AuthToken.builder()
 			.accessToken(object.get("access_token").asText())
 			.expireIn(object.get("expires_in").asInt())
@@ -49,17 +57,17 @@ public class AuthToutiaoRequest extends BaseAuthRequest {
 
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
-		JsonNode userProfile = HttpRequest.get(UrlBuilder.getToutiaoUserInfoUrl(config.getClientId(), authToken.getAccessToken()))
+		JsonNode userProfile = HttpRequest.get(authSource.userInfo())
+			.query("client_key", config.getClientId())
+			.query("access_token", authToken.getAccessToken())
 			.execute()
 			.asJsonNode();
 		if (userProfile.has("error_code")) {
 			throw new AuthException(AuthToutiaoErrorCode.getErrorCode(userProfile.get("error_code").asInt()).getDesc());
 		}
 		JsonNode user = userProfile.get("data");
-
 		boolean isAnonymousUser = user.get("uid_type").asInt() == 14;
 		String anonymousUserName = "匿名用户";
-
 		return AuthUser.builder()
 			.uuid(user.get("uid").asText())
 			.username(isAnonymousUser ? anonymousUserName : user.get("screen_name").asText())
@@ -68,7 +76,7 @@ public class AuthToutiaoRequest extends BaseAuthRequest {
 			.remark(user.get("description").asText())
 			.gender(AuthUserGender.getRealGender(user.get("gender").asText()))
 			.token(authToken)
-			.source(AuthSource.TOUTIAO)
+			.source(authSource)
 			.build();
 	}
 }

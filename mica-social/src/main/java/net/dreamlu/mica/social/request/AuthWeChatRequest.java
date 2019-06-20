@@ -2,6 +2,7 @@ package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import net.dreamlu.http.HttpRequest;
+import net.dreamlu.http.HttpResponse;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
@@ -9,7 +10,7 @@ import net.dreamlu.mica.social.model.AuthResponse;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
 import net.dreamlu.mica.social.model.AuthUserGender;
-import net.dreamlu.mica.social.utils.UrlBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * 微信登录
@@ -24,8 +25,15 @@ public class AuthWeChatRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getWeChatAuthorizeUrl(config.getClientId(), config.getRedirectUri());
+	public String authorize(String state) {
+		return UriComponentsBuilder.fromUriString(authSource.authorize())
+			.queryParam("response_type", "code")
+			.queryParam("appid", config.getClientId())
+			.queryParam("redirect_uri", config.getRedirectUri())
+			.queryParam("scope", "snsapi_login")
+			.queryParam("state", state.concat("#wechat_redirect"))
+			.build()
+			.toUriString();
 	}
 
 	/**
@@ -36,20 +44,21 @@ public class AuthWeChatRequest extends BaseAuthRequest {
 	 */
 	@Override
 	protected AuthToken getAccessToken(String code) {
-		String accessTokenUrl = UrlBuilder.getWeChatAccessTokenUrl(config.getClientId(), config.getClientSecret(), code);
-		return this.getToken(accessTokenUrl);
+		JsonNode object = doGetAuthorizationCode(code).asJsonNode();
+		return this.getToken(object);
 	}
 
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
 		String openId = authToken.getOpenId();
-		JsonNode object = HttpRequest.get(UrlBuilder.getWeChatUserInfoUrl(accessToken, openId))
+		JsonNode object = HttpRequest.get(authSource.userInfo())
+			.query("access_token", accessToken)
+			.query("openid", openId)
+			.query("lang", "zh_CN")
 			.execute()
 			.asJsonNode();
-
 		this.checkResponse(object);
-
 		return AuthUser.builder()
 			.username(object.get("nickname").asText())
 			.nickname(object.get("nickname").asText())
@@ -64,10 +73,15 @@ public class AuthWeChatRequest extends BaseAuthRequest {
 
 	@Override
 	public AuthResponse refresh(AuthToken oldToken) {
-		String refreshTokenUrl = UrlBuilder.getWeChatRefreshUrl(config.getClientId(), oldToken.getRefreshToken());
+		JsonNode jsonNode = HttpRequest.get(authSource.refresh())
+			.query("appid", config.getClientId())
+			.query("grant_type", "refresh_token")
+			.query("refresh_token", oldToken.getRefreshToken())
+			.execute()
+			.asJsonNode();
 		return AuthResponse.builder()
 			.code(ResponseStatus.SUCCESS.getCode())
-			.data(this.getToken(refreshTokenUrl))
+			.data(this.getToken(jsonNode))
 			.build();
 	}
 
@@ -85,20 +99,34 @@ public class AuthWeChatRequest extends BaseAuthRequest {
 	/**
 	 * 获取token，适用于获取access_token和刷新token
 	 *
-	 * @param accessTokenUrl 实际请求token的地址
+	 * @param object JsonNode
 	 * @return token对象
 	 */
-	private AuthToken getToken(String accessTokenUrl) {
-		JsonNode object = HttpRequest.get(accessTokenUrl)
-			.execute()
-			.asJsonNode();
+	private AuthToken getToken(JsonNode object) {
 		this.checkResponse(object);
-
 		return AuthToken.builder()
 			.accessToken(object.get("access_token").asText())
 			.refreshToken(object.get("refresh_token").asText())
 			.expireIn(object.get("expires_in").asInt())
 			.openId(object.get("openid").asText())
 			.build();
+	}
+
+	/**
+	 * 微信使用的 appid 和 secret
+	 *
+	 * @param code code码
+	 * @return HttpResponse
+	 */
+	@Override
+	protected HttpResponse doGetAuthorizationCode(String code) {
+		return HttpRequest.get(authSource.accessToken())
+			.log()
+			.query("code", code)
+			.query("appid", config.getClientId())
+			.query("secret", config.getClientSecret())
+			.query("grant_type", "authorization_code")
+			.query("redirect_uri", config.getRedirectUri())
+			.execute();
 	}
 }

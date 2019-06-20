@@ -8,14 +8,11 @@ import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
 import net.dreamlu.mica.social.model.AuthUserGender;
-import net.dreamlu.mica.social.utils.UrlBuilder;
 
 /**
  * oschina登录
  *
- * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
- * @version 1.0
- * @since 1.8
+ * @author L.cm
  */
 public class AuthOschinaRequest extends BaseAuthRequest {
 
@@ -24,28 +21,21 @@ public class AuthOschinaRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getOschinaAuthorizeUrl(config.getClientId(), config.getRedirectUri());
-	}
-
-	@Override
 	protected AuthToken getAccessToken(String code) {
-		String accessTokenUrl = UrlBuilder.getOschinaAccessTokenUrl(config.getClientId(), config.getClientSecret(), code, config.getRedirectUri());
-		JsonNode accessTokenObject = HttpRequest.post(accessTokenUrl)
-			.execute()
-			.asJsonNode();
-		if (accessTokenObject.has("error")) {
+		JsonNode jsonNode = doPostAuthorizationCode(code).asJsonNode();
+		if (jsonNode.has("error")) {
 			throw new AuthException("Unable to get token from oschina using code [" + code + "]");
 		}
 		return AuthToken.builder()
-			.accessToken(accessTokenObject.get("access_token").asText())
+			.accessToken(jsonNode.get("access_token").asText())
 			.build();
 	}
 
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
-		JsonNode object = HttpRequest.get(UrlBuilder.getOschinaUserInfoUrl(accessToken))
+		JsonNode object = HttpRequest.get(authSource.userInfo())
+			.query("access_token", accessToken)
 			.execute()
 			.asJsonNode();
 		if (object.has("error")) {

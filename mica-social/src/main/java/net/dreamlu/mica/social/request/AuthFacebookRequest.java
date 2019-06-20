@@ -8,14 +8,11 @@ import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
 import net.dreamlu.mica.social.model.AuthUserGender;
-import net.dreamlu.mica.social.utils.UrlBuilder;
 
 /**
  * Facebook登录
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
- * @version 1.0
- * @since 1.8
  */
 public class AuthFacebookRequest extends BaseAuthRequest {
 
@@ -24,21 +21,11 @@ public class AuthFacebookRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getFacebookAuthorizeUrl(config.getClientId(), config.getRedirectUri());
-	}
-
-	@Override
 	protected AuthToken getAccessToken(String code) {
-		String accessTokenUrl = UrlBuilder.getFacebookAccessTokenUrl(config.getClientId(), config.getClientSecret(), code, config.getRedirectUri());
-
-		JsonNode object = HttpRequest.post(accessTokenUrl)
-			.execute()
-			.asJsonNode();
+		JsonNode object = doPostAuthorizationCode(code).asJsonNode();
 		if (object.has("error")) {
-			throw new AuthException(object.get("error").get("message").asText());
+			throw new AuthException(object.at("/error/message").asText());
 		}
-
 		return AuthToken.builder()
 			.accessToken(object.get("access_token").asText())
 			.expireIn(object.get("expires_in").asInt())
@@ -49,22 +36,24 @@ public class AuthFacebookRequest extends BaseAuthRequest {
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
-		JsonNode object = HttpRequest.get(UrlBuilder.getFacebookUserInfoUrl(accessToken))
+		JsonNode object = HttpRequest.get(authSource.userInfo())
+			.query("access_token", accessToken)
+			.query("fields", "id,name,birthday,gender,hometown,email,devices,picture.width(400)")
 			.execute()
 			.asJsonNode();
 		if (object.has("error")) {
-			throw new AuthException(object.get("error").get("message").asText());
+			throw new AuthException(object.get("/error/message").asText());
 		}
 		return AuthUser.builder()
 			.uuid(object.get("id").asText())
 			.username(object.get("name").asText())
 			.nickname(object.get("name").asText())
-			.avatar(object.get("/picture/data/url").asText())
-			.location(object.get("locale").asText())
-			.email(object.get("email").asText())
+			.avatar(object.at("/picture/data/url").asText())
+			.location(object.at("/locale").asText())
+			.email(object.at("/email").asText())
 			.gender(AuthUserGender.getRealGender(object.get("gender").asText()))
 			.token(authToken)
-			.source(AuthSource.FACEBOOK)
+			.source(authSource)
 			.build();
 	}
 

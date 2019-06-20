@@ -8,15 +8,13 @@ import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthResponse;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
-import net.dreamlu.mica.social.utils.UrlBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 
 /**
  * 抖音登录
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
- * @version 1.0
- * @since 1.8
  */
 public class AuthDouyinRequest extends BaseAuthRequest {
 
@@ -25,26 +23,33 @@ public class AuthDouyinRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getDouyinAuthorizeUrl(config.getClientId(), config.getRedirectUri());
+	public String authorize(String state) {
+		return UriComponentsBuilder.fromUriString(authSource.authorize())
+			.queryParam("response_type", "code")
+			.queryParam("client_key", config.getClientId())
+			.queryParam("redirect_uri", config.getRedirectUri())
+			.queryParam("state", state)
+			.queryParam("scope", "user_info")
+			.build()
+			.toUriString();
 	}
 
 	@Override
 	protected AuthToken getAccessToken(String code) {
-		String accessTokenUrl = UrlBuilder.getDouyinAccessTokenUrl(config.getClientId(), config.getClientSecret(), code);
-		return this.getToken(accessTokenUrl);
+		JsonNode jsonNode = doPostAuthorizationCode(code).asJsonNode();
+		return this.getToken(jsonNode);
 	}
 
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
 		String openId = authToken.getOpenId();
-
-		JsonNode object = HttpRequest.get(UrlBuilder.getDouyinUserInfoUrl(accessToken, openId))
+		JsonNode object = HttpRequest.get(authSource.userInfo())
+			.query("access_token", accessToken)
+			.query("open_id", openId)
 			.execute()
 			.asJsonNode();
 		JsonNode userInfoObject = this.checkResponse(object);
-
 		return AuthUser.builder()
 			.uuid(userInfoObject.get("open_id").asText())
 			.username(userInfoObject.get("nickname").asText())
@@ -57,10 +62,15 @@ public class AuthDouyinRequest extends BaseAuthRequest {
 
 	@Override
 	public AuthResponse refresh(AuthToken oldToken) {
-		String refreshTokenUrl = UrlBuilder.getDouyinRefreshUrl(config.getClientId(), oldToken.getRefreshToken());
+		JsonNode jsonNode = HttpRequest.post(authSource.refresh())
+			.query("client_key", config.getClientId())
+			.query("refresh_token", oldToken.getRefreshToken())
+			.query("grant_type", "refresh_token")
+			.execute()
+			.asJsonNode();
 		return AuthResponse.builder()
 			.code(ResponseStatus.SUCCESS.getCode())
-			.data(this.getToken(refreshTokenUrl))
+			.data(this.getToken(jsonNode))
 			.build();
 	}
 
@@ -83,13 +93,10 @@ public class AuthDouyinRequest extends BaseAuthRequest {
 	/**
 	 * 获取token，适用于获取access_token和刷新token
 	 *
-	 * @param accessTokenUrl 实际请求token的地址
+	 * @param object JsonNode
 	 * @return token对象
 	 */
-	private AuthToken getToken(String accessTokenUrl) {
-		JsonNode object = HttpRequest.post(accessTokenUrl)
-			.execute()
-			.asJsonNode();
+	private AuthToken getToken(JsonNode object) {
 		JsonNode accessTokenObject = this.checkResponse(object);
 		return AuthToken.builder()
 			.accessToken(accessTokenObject.get("access_token").asText())

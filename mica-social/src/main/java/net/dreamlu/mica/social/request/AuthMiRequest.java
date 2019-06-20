@@ -11,16 +11,12 @@ import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthResponse;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
-import net.dreamlu.mica.social.utils.UrlBuilder;
-
-import java.text.MessageFormat;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * 小米登录
  *
  * @author yangkai.shen (https://xkcoding.com), L.cm
- * @version 1.5
- * @since 1.5
  */
 public class AuthMiRequest extends BaseAuthRequest {
 	private static final String PREFIX = "&&&START&&&";
@@ -30,27 +26,31 @@ public class AuthMiRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getMiAuthorizeUrl(config.getClientId(), config.getRedirectUri());
+	public String authorize(String state) {
+		return UriComponentsBuilder.fromUriString(authSource.authorize())
+			.queryParam("response_type", "code")
+			.queryParam("client_id", config.getClientId())
+			.queryParam("redirect_uri", config.getRedirectUri())
+			.queryParam("state", state)
+			.queryParam("scope", "user/profile%20user/openIdV2%20user/phoneAndEmail")
+			// 默认值为true，授权有效期内的用户在已登录情况下，不显示授权页面，直接通过。如果需要用户每次手动授权，设置为false
+//			.queryParam("skip_confirm", "false")
+			.build()
+			.toUriString();
 	}
 
 	@Override
 	protected AuthToken getAccessToken(String code) {
-		String accessTokenUrl = UrlBuilder.getMiAccessTokenUrl(config.getClientId(), config.getClientSecret(), config.getRedirectUri(), code);
-		return getToken(accessTokenUrl);
+		String result = doGetAuthorizationCode(code).asString();
+		return getToken(result);
 	}
 
-	private AuthToken getToken(String accessTokenUrl) {
-		String result = HttpRequest.get(accessTokenUrl)
-			.execute()
-			.asString();
+	private AuthToken getToken(String result) {
 		String jsonStr = StringUtil.replace(result, PREFIX, StringPool.EMPTY);
-
 		JsonNode object = JsonUtil.readTree(jsonStr);
 		if (object.has("error")) {
 			throw new AuthException(object.get("error_description").asText());
 		}
-
 		return AuthToken.builder()
 			.accessToken(object.get("access_token").asText())
 			.expireIn(object.get("expires_in").asInt())
@@ -66,37 +66,39 @@ public class AuthMiRequest extends BaseAuthRequest {
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		// 获取用户信息
-		JsonNode userProfile = HttpRequest.get(UrlBuilder.getMiUserInfoUrl(config.getClientId(), authToken.getAccessToken()))
+		JsonNode userProfile = HttpRequest.get(authSource.userInfo())
+			.log()
+			.query("clientId", config.getClientId())
+			.query("token", authToken.getAccessToken())
 			.execute()
 			.asJsonNode();
+
 		if ("error".equalsIgnoreCase(userProfile.get("result").asText())) {
 			throw new AuthException(userProfile.get("description").asText());
 		}
 
 		JsonNode user = userProfile.get("data");
-
 		AuthUser authUser = AuthUser.builder()
 			.uuid(authToken.getOpenId())
 			.username(user.get("miliaoNick").asText())
 			.nickname(user.get("miliaoNick").asText())
 			.avatar(user.get("miliaoIcon").asText())
-			.email(user.get("mail").asText())
+			.email(user.at("/mail").asText())
 			.token(authToken)
-			.source(AuthSource.MI)
+			.source(authSource)
 			.build();
 
 		// 获取用户邮箱手机号等信息
-		String emailPhoneUrl = MessageFormat.format("{0}?clientId={1}&token={2}", "https://open.account.xiaomi.com/user/phoneAndEmail", config
-			.getClientId(), authToken.getAccessToken());
-
-		JsonNode userEmailPhone = HttpRequest.get(emailPhoneUrl)
+		// {"result":"error","code":96007,"description":"scope是无效的、未知的，或格式不正确的"}
+		JsonNode userEmailPhone = HttpRequest.get("https://open.account.xiaomi.com/user/phoneAndEmail")
+			.query("clientId", config.getClientId())
+			.query("token", authToken.getAccessToken())
 			.execute()
 			.asJsonNode();
-		if ("error".equalsIgnoreCase(userEmailPhone.get("result").asText())) {
-			JsonNode emailPhone = userEmailPhone.get("data");
-			authUser.setEmail(emailPhone.get("email").asText());
-		}
 
+		if (!"error".equalsIgnoreCase(userEmailPhone.get("result").asText())) {
+			authUser.setEmail(userEmailPhone.at("/data/email").asText());
+		}
 		return authUser;
 	}
 
@@ -108,7 +110,14 @@ public class AuthMiRequest extends BaseAuthRequest {
 	 */
 	@Override
 	public AuthResponse refresh(AuthToken authToken) {
-		String miRefreshUrl = UrlBuilder.getMiRefreshUrl(config.getClientId(), config.getClientSecret(), config.getRedirectUri(), authToken.getRefreshToken());
-		return AuthResponse.builder().code(ResponseStatus.SUCCESS.getCode()).data(getToken(miRefreshUrl)).build();
+		String result = HttpRequest.get(authSource.refresh())
+			.query("client_id", config.getClientId())
+			.query("client_secret", config.getClientSecret())
+			.query("redirect_uri", config.getRedirectUri())
+			.query("refresh_token", authToken.getRefreshToken())
+			.query("grant_type", "refresh_token")
+			.execute()
+			.asString();
+		return AuthResponse.builder().code(ResponseStatus.SUCCESS.getCode()).data(getToken(result)).build();
 	}
 }

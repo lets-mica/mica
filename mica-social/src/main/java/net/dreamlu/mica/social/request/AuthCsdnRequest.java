@@ -7,33 +7,20 @@ import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
-import net.dreamlu.mica.social.utils.UrlBuilder;
 
 /**
  * CSDN登录
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
- * @version 1.0
- * @since 1.8
  */
 public class AuthCsdnRequest extends BaseAuthRequest {
-
 	public AuthCsdnRequest(AuthConfig config) {
 		super(config, AuthSource.CSDN);
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getCsdnAuthorizeUrl(config.getClientId(), config.getRedirectUri());
-	}
-
-	@Override
 	protected AuthToken getAccessToken(String code) {
-		String accessTokenUrl = UrlBuilder.getCsdnAccessTokenUrl(config.getClientId(), config.getClientSecret(), code, config.getRedirectUri());
-
-		JsonNode accessTokenObject = HttpRequest.post(accessTokenUrl)
-			.execute()
-			.asJsonNode();
+		JsonNode accessTokenObject = doPostAuthorizationCode(code).asJsonNode();
 		if (accessTokenObject.has("error_code")) {
 			throw new AuthException("Unable to get token from csdn using code [" + code + "]");
 		}
@@ -45,8 +32,8 @@ public class AuthCsdnRequest extends BaseAuthRequest {
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
-
-		JsonNode object = HttpRequest.get(UrlBuilder.getCsdnUserInfoUrl(accessToken))
+		JsonNode object = HttpRequest.get(authSource.userInfo())
+			.query("access_token", accessToken)
 			.execute()
 			.asJsonNode();
 		if (object.has("error_code")) {
@@ -55,10 +42,10 @@ public class AuthCsdnRequest extends BaseAuthRequest {
 		return AuthUser.builder()
 			.uuid(object.get("username").asText())
 			.username(object.get("username").asText())
-			.remark(object.get("description").asText())
-			.blog(object.get("website").asText())
+			.remark(object.at("/description").asText())
+			.blog(object.at("/website").asText())
 			.token(authToken)
-			.source(AuthSource.CSDN)
+			.source(authSource)
 			.build();
 	}
 }

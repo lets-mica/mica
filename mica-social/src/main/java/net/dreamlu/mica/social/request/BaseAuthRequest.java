@@ -1,6 +1,8 @@
 package net.dreamlu.mica.social.request;
 
 import lombok.Getter;
+import net.dreamlu.http.HttpRequest;
+import net.dreamlu.http.HttpResponse;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
@@ -8,6 +10,7 @@ import net.dreamlu.mica.social.model.AuthResponse;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
 import net.dreamlu.mica.social.utils.AuthConfigChecker;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
@@ -51,5 +54,48 @@ public abstract class BaseAuthRequest implements AuthRequest {
 	}
 
 	@Override
-	public abstract String authorize();
+	public String authorize(String state) {
+		return UriComponentsBuilder.fromUriString(authSource.authorize())
+			.queryParam("response_type", "code")
+			.queryParam("client_id", config.getClientId())
+			.queryParam("redirect_uri", config.getRedirectUri())
+			.queryParam("state", state)
+			.build()
+			.toUriString();
+	}
+
+	/**
+	 * 通用的 authorizationCode 协议
+	 *
+	 * @param code code码
+	 * @return HttpResponse
+	 */
+	protected HttpResponse doPostAuthorizationCode(String code) {
+		return HttpRequest.post(authSource.accessToken())
+			.log()
+			.query("code", code)
+			.query("client_id", config.getClientId())
+			.query("client_secret", config.getClientSecret())
+			.query("grant_type", "authorization_code")
+			.query("redirect_uri", config.getRedirectUri())
+			.execute();
+	}
+
+	/**
+	 * 通用的 authorizationCode 协议
+	 *
+	 * @param code code码
+	 * @return HttpResponse
+	 */
+	protected HttpResponse doGetAuthorizationCode(String code) {
+		return HttpRequest.get(authSource.accessToken())
+			.log()
+			.query("code", code)
+			.query("client_id", config.getClientId())
+			.query("client_secret", config.getClientSecret())
+			.query("grant_type", "authorization_code")
+			.query("redirect_uri", config.getRedirectUri())
+			.execute();
+	}
+
 }

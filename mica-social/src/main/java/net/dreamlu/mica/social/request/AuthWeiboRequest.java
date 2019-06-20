@@ -10,15 +10,12 @@ import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
 import net.dreamlu.mica.social.model.AuthUserGender;
-import net.dreamlu.mica.social.utils.UrlBuilder;
 
 
 /**
  * 微博登录
  *
- * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
- * @version 1.0
- * @since 1.8
+ * @author L.cm
  */
 public class AuthWeiboRequest extends BaseAuthRequest {
 
@@ -27,16 +24,8 @@ public class AuthWeiboRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getWeiboAuthorizeUrl(config.getClientId(), config.getRedirectUri());
-	}
-
-	@Override
 	protected AuthToken getAccessToken(String code) {
-		String accessTokenUrl = UrlBuilder.getWeiboAccessTokenUrl(config.getClientId(), config.getClientSecret(), code, config.getRedirectUri());
-		JsonNode accessTokenObject = HttpRequest.post(accessTokenUrl)
-			.execute()
-			.asJsonNode();
+		JsonNode accessTokenObject = doPostAuthorizationCode(code).asJsonNode();
 		if (accessTokenObject.has("error")) {
 			throw new AuthException("Unable to get token from weibo using code [" + code + "]:" + accessTokenObject.get("error_description").asText());
 		}
@@ -52,7 +41,9 @@ public class AuthWeiboRequest extends BaseAuthRequest {
 		String accessToken = authToken.getAccessToken();
 		String uid = authToken.getUid();
 		String oauthParam = String.format("uid=%s&access_token=%s", uid, accessToken);
-		JsonNode jsonNode = HttpRequest.get(UrlBuilder.getWeiboUserInfoUrl(oauthParam))
+		JsonNode jsonNode = HttpRequest.get(authSource.userInfo())
+			.query("uid", uid)
+			.query("access_token", accessToken)
 			.addHeader("Authorization", "OAuth2 " + oauthParam)
 			.addHeader("API-RemoteIP", INetUtil.getHostIp())
 			.execute()

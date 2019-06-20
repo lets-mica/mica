@@ -7,7 +7,7 @@ import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
-import net.dreamlu.mica.social.utils.UrlBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * Google登录
@@ -23,17 +23,20 @@ public class AuthGoogleRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getGoogleAuthorizeUrl(config.getClientId(), config.getRedirectUri());
+	public String authorize(String state) {
+		return UriComponentsBuilder.fromUriString(authSource.authorize())
+			.queryParam("response_type", "code")
+			.queryParam("client_id", config.getClientId())
+			.queryParam("redirect_uri", config.getRedirectUri())
+			.queryParam("state", state)
+			.queryParam("scope", "openid%20email%20profile")
+			.build()
+			.toUriString();
 	}
 
 	@Override
 	protected AuthToken getAccessToken(String code) {
-		String accessTokenUrl = UrlBuilder.getGoogleAccessTokenUrl(config.getClientId(), config.getClientSecret(), code, config
-			.getRedirectUri());
-		JsonNode object = HttpRequest.post(accessTokenUrl)
-			.execute()
-			.asJsonNode();
+		JsonNode object = doPostAuthorizationCode(code).asJsonNode();
 		if (object.has("error") || object.has("error_description")) {
 			throw new AuthException("get google access_token has error:[" + object.get("error").asText() + "], error_description:[" + object
 				.get("error_description").asText() + "]");
@@ -51,7 +54,8 @@ public class AuthGoogleRequest extends BaseAuthRequest {
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getIdToken();
-		JsonNode object = HttpRequest.get(UrlBuilder.getGoogleUserInfoUrl(accessToken))
+		JsonNode object = HttpRequest.get(authSource.userInfo())
+			.query("id_token", accessToken)
 			.execute()
 			.asJsonNode();
 		return AuthUser.builder()
@@ -62,7 +66,7 @@ public class AuthGoogleRequest extends BaseAuthRequest {
 			.location(object.get("locale").asText())
 			.email(object.get("email").asText())
 			.token(authToken)
-			.source(AuthSource.GOOGLE)
+			.source(authSource)
 			.build();
 	}
 }

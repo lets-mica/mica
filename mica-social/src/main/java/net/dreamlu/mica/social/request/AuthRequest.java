@@ -1,22 +1,33 @@
 package net.dreamlu.mica.social.request;
 
+import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthResponse;
 import net.dreamlu.mica.social.model.AuthToken;
 
 /**
+ * 抽象的认证授权接口
+ *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
- * @version 1.0
- * @since 1.8
  */
 public interface AuthRequest {
 
 	/**
-	 * 返回认证url，可自行跳转页面
+	 * 返回认证url，可自行跳转页面，state 使用的 uuid，不太建议忽略 state 校验
 	 *
 	 * @return 返回授权地址
 	 */
 	default String authorize() {
+		return this.authorize(StringUtil.getUUID());
+	}
+
+	/**
+	 * 返回认证url，可自行跳转页面
+	 *
+	 * @param state OAuth2.0标准协议建议，利用state参数来防止CSRF攻击。可存储于session或其他cache中
+	 * @return 返回授权地址
+	 */
+	default String authorize(String state) {
 		throw new AuthException(ResponseStatus.NOT_IMPLEMENTED);
 	}
 

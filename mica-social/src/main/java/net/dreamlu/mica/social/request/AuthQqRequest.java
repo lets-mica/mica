@@ -12,17 +12,13 @@ import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
 import net.dreamlu.mica.social.model.AuthUserGender;
 import net.dreamlu.mica.social.utils.GlobalAuthUtil;
-import net.dreamlu.mica.social.utils.UrlBuilder;
 
 import java.util.Map;
 
 /**
  * qq登录
  *
- * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
- * @author yangkai.shen (https://xkcoding.com), L.cm
- * @version 1.0
- * @since 1.8
+ * @author L.cm
  */
 public class AuthQqRequest extends BaseAuthRequest {
 	public AuthQqRequest(AuthConfig config) {
@@ -30,17 +26,8 @@ public class AuthQqRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getQqAuthorizeUrl(config.getClientId(), config.getRedirectUri());
-	}
-
-	@Override
 	protected AuthToken getAccessToken(String code) {
-		String accessTokenUrl = UrlBuilder.getQqAccessTokenUrl(config.getClientId(), config.getClientSecret(), code, config
-			.getRedirectUri());
-		String response = HttpRequest.get(accessTokenUrl)
-			.execute()
-			.asString();
+		String response = doGetAuthorizationCode(code).asString();
 		Map<String, String> accessTokenObject = GlobalAuthUtil.parseStringToMap(response);
 		if (!accessTokenObject.containsKey("access_token")) {
 			throw new AuthException("Unable to get token from qq using code [" + code + "]");
@@ -55,15 +42,17 @@ public class AuthQqRequest extends BaseAuthRequest {
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
+		// 获取 openId
 		String openId = this.getOpenId(accessToken);
-
-		JsonNode object = HttpRequest.get(UrlBuilder.getQqUserInfoUrl(config.getClientId(), accessToken, openId))
-			.execute()
-			.asJsonNode();
+		// 用户信息
+		JsonNode object = this.getUserInfo(accessToken, openId);
 		if (object.get("ret").asInt() != 0) {
 			throw new AuthException(object.get("msg").asText());
 		}
-		String avatar = object.get("figureurl_qq_2").asText();
+		String avatar = null;
+		if (object.has("figureurl_qq_2")) {
+			avatar = object.get("figureurl_qq_2").asText();
+		}
 		if (StringUtil.isBlank(avatar)) {
 			avatar = object.get("figureurl_qq_1").asText();
 		}
@@ -71,7 +60,7 @@ public class AuthQqRequest extends BaseAuthRequest {
 			.username(object.get("nickname").asText())
 			.nickname(object.get("nickname").asText())
 			.avatar(avatar)
-			.location(object.get("province") + "-" + object.get("city").asText())
+			.location(object.get("province").asText() + "-" + object.get("city").asText())
 			.uuid(openId)
 			.gender(AuthUserGender.getRealGender(object.get("gender").asText()))
 			.token(authToken)
@@ -80,14 +69,14 @@ public class AuthQqRequest extends BaseAuthRequest {
 	}
 
 	private String getOpenId(String accessToken) {
-		HttpResponse response = HttpRequest.get(UrlBuilder.getQqOpenidUrl("https://graph.qq.com/oauth2.0/me", accessToken))
+		HttpResponse response = HttpRequest.get("https://graph.qq.com/oauth2.0/me")
+			.query("access_token", accessToken)
 			.execute();
 		if (response.isOk()) {
 			String body = response.asString();
 			String removePrefix = StringUtil.replace(body, "callback(", "");
 			String removeSuffix = StringUtil.replace(removePrefix, ");", "");
 			String openId = StringUtil.trimWhitespace(removeSuffix);
-
 			JsonNode object = JsonUtil.readTree(openId);
 			if (object.has("openid")) {
 				return object.get("openid").asText();
@@ -95,5 +84,17 @@ public class AuthQqRequest extends BaseAuthRequest {
 			throw new AuthException("Invalid openId");
 		}
 		throw new AuthException("Invalid openId");
+	}
+
+	private JsonNode getUserInfo(String accessToken, String openId) {
+		// {"ret":0,"msg":"","nickname":"YOUR_NICK_NAME",...}
+		return HttpRequest.get(authSource.userInfo())
+			.log()
+			.query("access_token", accessToken)
+			.query("oauth_consumer_key", config.getClientId())
+			.query("openid", openId)
+			.query("format", "json")
+			.execute()
+			.asJsonNode();
 	}
 }

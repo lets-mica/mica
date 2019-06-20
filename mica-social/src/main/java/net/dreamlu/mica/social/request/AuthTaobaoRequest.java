@@ -1,7 +1,6 @@
 package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import net.dreamlu.http.HttpRequest;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
@@ -9,14 +8,12 @@ import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
 import net.dreamlu.mica.social.model.AuthUserGender;
 import net.dreamlu.mica.social.utils.GlobalAuthUtil;
-import net.dreamlu.mica.social.utils.UrlBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * 淘宝登录
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
- * @version 1.0
- * @since 1.8
  */
 public class AuthTaobaoRequest extends BaseAuthRequest {
 
@@ -25,8 +22,15 @@ public class AuthTaobaoRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getTaobaoAuthorizeUrl(config.getClientId(), config.getRedirectUri());
+	public String authorize(String state) {
+		return UriComponentsBuilder.fromUriString(authSource.authorize())
+			.queryParam("response_type", "code")
+			.queryParam("client_id", config.getClientId())
+			.queryParam("redirect_uri", config.getRedirectUri())
+			.queryParam("state", state)
+			.queryParam("view", "web")
+			.build()
+			.toUriString();
 	}
 
 	@Override
@@ -39,9 +43,7 @@ public class AuthTaobaoRequest extends BaseAuthRequest {
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessCode = authToken.getAccessCode();
-		JsonNode object = HttpRequest.post(UrlBuilder.getTaobaoAccessTokenUrl(this.config.getClientId(), this.config.getClientSecret(), accessCode, this.config.getRedirectUri()))
-			.execute()
-			.asJsonNode();
+		JsonNode object = doPostAuthorizationCode(accessCode).asJsonNode();
 		if (object.has("error")) {
 			throw new AuthException(ResponseStatus.FAILURE + ":" + object.get("error_description").asText());
 		}
@@ -58,7 +60,7 @@ public class AuthTaobaoRequest extends BaseAuthRequest {
 			.nickname(nick)
 			.gender(AuthUserGender.UNKNOW)
 			.token(authToken)
-			.source(AuthSource.TAOBAO)
+			.source(authSource)
 			.build();
 	}
 }

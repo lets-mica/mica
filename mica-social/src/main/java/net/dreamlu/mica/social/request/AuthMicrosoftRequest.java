@@ -8,9 +8,7 @@ import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthResponse;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
-import net.dreamlu.mica.social.utils.GlobalAuthUtil;
-import net.dreamlu.mica.social.utils.UrlBuilder;
-import okhttp3.FormBody;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * 微软登录
@@ -25,37 +23,41 @@ public class AuthMicrosoftRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getMicrosoftAuthorizeUrl(config.getClientId(), config.getRedirectUri());
+	public String authorize(String state) {
+		return UriComponentsBuilder.fromUriString(authSource.authorize())
+			.queryParam("response_type", "code")
+			.queryParam("client_id", config.getClientId())
+			.queryParam("redirect_uri", config.getRedirectUri())
+			.queryParam("state", state)
+			.queryParam("response_mode", "query")
+			.queryParam("scope", "offline_access%20user.read%20mail.read")
+			.build()
+			.toUriString();
 	}
 
 	@Override
 	protected AuthToken getAccessToken(String code) {
-		String accessTokenUrl = UrlBuilder.getMicrosoftAccessTokenUrl(config.getClientId(), config.getClientSecret(), config
-			.getRedirectUri(), code);
-
-		return getToken(accessTokenUrl);
+		JsonNode jsonNode = HttpRequest.post(authSource.accessToken())
+			.formBuilder()
+			.add("client_id", config.getClientId())
+			.add("client_secret", config.getClientSecret())
+			.add("redirect_uri", config.getRedirectUri())
+			.add("scope", "user.read mail.read")
+			.add("code", code)
+			.add("grant_type", "authorization_code")
+			.execute()
+			.asJsonNode();
+		return getToken(jsonNode);
 	}
 
 	/**
 	 * 获取token，适用于获取access_token和刷新token
 	 *
-	 * @param accessTokenUrl 实际请求token的地址
+	 * @param object JsonNode
 	 * @return token对象
 	 */
-	private AuthToken getToken(String accessTokenUrl) {
-		FormBody.Builder formBuilder = new FormBody.Builder();
-		GlobalAuthUtil.parseStringToMap(accessTokenUrl)
-			.forEach(formBuilder::add);
-		JsonNode object = HttpRequest.post(accessTokenUrl)
-			.addHeader("Host", "https://login.microsoftonline.com")
-			.addHeader("Content-Type", "application/x-www-form-urlencoded")
-			.body(formBuilder.build())
-			.execute()
-			.asJsonNode();
-
+	private AuthToken getToken(JsonNode object) {
 		this.checkResponse(object);
-
 		return AuthToken.builder()
 			.accessToken(object.get("access_token").asText())
 			.expireIn(object.get("expires_in").asInt())
@@ -76,7 +78,7 @@ public class AuthMicrosoftRequest extends BaseAuthRequest {
 		String token = authToken.getAccessToken();
 		String tokenType = authToken.getTokenType();
 		String jwt = tokenType + " " + token;
-		JsonNode object = HttpRequest.get(UrlBuilder.getMicrosoftUserInfoUrl())
+		JsonNode object = HttpRequest.get(authSource.userInfo())
 			.addHeader("Authorization", jwt)
 			.execute()
 			.asJsonNode();
@@ -100,9 +102,16 @@ public class AuthMicrosoftRequest extends BaseAuthRequest {
 	 */
 	@Override
 	public AuthResponse refresh(AuthToken authToken) {
-		String refreshTokenUrl = UrlBuilder.getMicrosoftRefreshUrl(config.getClientId(), config.getClientSecret(), config
-			.getRedirectUri(), authToken.getRefreshToken());
-
-		return AuthResponse.builder().code(ResponseStatus.SUCCESS.getCode()).data(getToken(refreshTokenUrl)).build();
+		JsonNode jsonNode = HttpRequest.post(authSource.accessToken())
+			.formBuilder()
+			.add("client_id", config.getClientId())
+			.add("client_secret", config.getClientSecret())
+			.add("redirect_uri", config.getRedirectUri())
+			.add("scope", "user.read mail.read")
+			.add("refresh_token", authToken.getRefreshToken())
+			.add("grant_type", "refresh_token")
+			.execute()
+			.asJsonNode();
+		return AuthResponse.builder().code(ResponseStatus.SUCCESS.getCode()).data(getToken(jsonNode)).build();
 	}
 }

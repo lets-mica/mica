@@ -9,15 +9,13 @@ import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthResponse;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
-import net.dreamlu.mica.social.utils.UrlBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 
 /**
  * 领英登录
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
- * @version 1.0
- * @since 1.8
  */
 public class AuthLinkedinRequest extends BaseAuthRequest {
 
@@ -26,20 +24,28 @@ public class AuthLinkedinRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getLinkedinAuthorizeUrl(config.getClientId(), config.getRedirectUri());
+	public String authorize(String state) {
+		return UriComponentsBuilder.fromUriString(authSource.authorize())
+			.queryParam("response_type", "code")
+			.queryParam("client_id", config.getClientId())
+			.queryParam("redirect_uri", config.getRedirectUri())
+			.queryParam("state", state)
+			.queryParam("scope", "r_liteprofile%20r_emailaddress%20w_member_social")
+			.build()
+			.toUriString();
 	}
 
 	@Override
 	protected AuthToken getAccessToken(String code) {
-		String accessTokenUrl = UrlBuilder.getLinkedinAccessTokenUrl(config.getClientId(), config.getClientSecret(), code, config.getRedirectUri());
-		return this.getToken(accessTokenUrl);
+		JsonNode jsonNode = doPostAuthorizationCode(code).asJsonNode();
+		return this.getToken(jsonNode);
 	}
 
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
-		JsonNode userInfoObject = HttpRequest.get(UrlBuilder.getLinkedinUserInfoUrl())
+		JsonNode userInfoObject = HttpRequest.get(authSource.userInfo())
+			.query("projection", "(id,firstName,lastName,profilePicture(displayImage~:playableStreams))")
 			.addHeader("Host", "api.linkedin.com")
 			.addHeader("Connection", "Keep-Alive")
 			.addHeader("Authorization", "Bearer " + accessToken)
@@ -105,10 +111,16 @@ public class AuthLinkedinRequest extends BaseAuthRequest {
 		if (StringUtil.isBlank(oldToken.getRefreshToken())) {
 			throw new AuthException(ResponseStatus.UNSUPPORTED);
 		}
-		String refreshTokenUrl = UrlBuilder.getLinkedinRefreshUrl(config.getClientId(), config.getClientSecret(), oldToken.getRefreshToken());
+		JsonNode jsonNode = HttpRequest.post(authSource.refresh())
+			.query("client_id", config.getClientId())
+			.query("client_secret", config.getClientSecret())
+			.query("refresh_token", oldToken.getRefreshToken())
+			.query("grant_type", "refresh_token")
+			.execute()
+			.asJsonNode();
 		return AuthResponse.builder()
 			.code(ResponseStatus.SUCCESS.getCode())
-			.data(this.getToken(refreshTokenUrl))
+			.data(this.getToken(jsonNode))
 			.build();
 	}
 
@@ -121,22 +133,15 @@ public class AuthLinkedinRequest extends BaseAuthRequest {
 	/**
 	 * 获取token，适用于获取access_token和刷新token
 	 *
-	 * @param accessTokenUrl 实际请求token的地址
+	 * @param jsonNode JsonNode
 	 * @return token对象
 	 */
-	private AuthToken getToken(String accessTokenUrl) {
-		JsonNode accessTokenObject = HttpRequest.post(accessTokenUrl)
-			.addHeader("Host", "www.linkedin.com")
-			.addHeader("Content-Type", "application/x-www-form-urlencoded")
-			.execute()
-			.asJsonNode();
-
-		this.checkResponse(accessTokenObject);
-
+	private AuthToken getToken(JsonNode jsonNode) {
+		this.checkResponse(jsonNode);
 		return AuthToken.builder()
-			.accessToken(accessTokenObject.get("access_token").asText())
-			.expireIn(accessTokenObject.get("expires_in").asInt())
-			.refreshToken(accessTokenObject.get("refresh_token").asText())
+			.accessToken(jsonNode.get("access_token").asText())
+			.expireIn(jsonNode.get("expires_in").asInt())
+			.refreshToken(jsonNode.get("refresh_token").asText())
 			.build();
 	}
 }

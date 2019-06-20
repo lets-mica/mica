@@ -6,14 +6,11 @@ import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.*;
-import net.dreamlu.mica.social.utils.UrlBuilder;
 
 /**
  * 百度账号登录
  *
- * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
- * @version 1.0
- * @since 1.8
+ * @author L.cm
  */
 public class AuthBaiduRequest extends BaseAuthRequest {
 
@@ -22,19 +19,11 @@ public class AuthBaiduRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getBaiduAuthorizeUrl(config.getClientId(), config.getRedirectUri());
-	}
-
-	@Override
 	protected AuthToken getAccessToken(String code) {
-		String accessTokenUrl = UrlBuilder.getBaiduAccessTokenUrl(config.getClientId(), config.getClientSecret(), code, config.getRedirectUri());
-
-		JsonNode jsonNode = HttpRequest.post(accessTokenUrl)
-			.execute()
-			.asJsonNode();
-		AuthBaiduErrorCode errorCode = AuthBaiduErrorCode.getErrorCode(jsonNode.get("error").asText());
-		if (!AuthBaiduErrorCode.OK.equals(errorCode)) {
+		JsonNode jsonNode = doPostAuthorizationCode(code).asJsonNode();
+		// {"expires_in":2592000,"refresh_token":"","access_token":"","session_secret":"","session_key":"","scope":"basic"}
+		if (jsonNode.has("error")) {
+			AuthBaiduErrorCode errorCode = AuthBaiduErrorCode.getErrorCode(jsonNode.at("error").asText());
 			throw new AuthException(errorCode.getDesc());
 		}
 		return AuthToken.builder()
@@ -45,12 +34,13 @@ public class AuthBaiduRequest extends BaseAuthRequest {
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
-
-		JsonNode jsonNode = HttpRequest.get(UrlBuilder.getBaiduUserInfoUrl(accessToken))
+		JsonNode jsonNode = HttpRequest.post(authSource.userInfo())
+			.query("access_token", accessToken)
 			.execute()
 			.asJsonNode();
-		AuthBaiduErrorCode errorCode = AuthBaiduErrorCode.getErrorCode(jsonNode.get("error").asText());
-		if (!AuthBaiduErrorCode.OK.equals(errorCode)) {
+		// {"marriage":"1","userdetail":"javaer","constellation":"11","job":"0","userid":"","figure":"7","blood":"0","trade":"5","username":"","education":"7","sex":"1","portrait":"","birthday":"","is_bind_mobile":"1","is_realname":"1"}
+		if (jsonNode.has("error")) {
+			AuthBaiduErrorCode errorCode = AuthBaiduErrorCode.getErrorCode(jsonNode.get("error").asText());
 			throw new AuthException(errorCode.getDesc());
 		}
 		return AuthUser.builder()
@@ -66,8 +56,8 @@ public class AuthBaiduRequest extends BaseAuthRequest {
 	@Override
 	public AuthResponse revoke(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
-
-		JsonNode jsonNode = HttpRequest.get(UrlBuilder.getBaiduRevokeUrl(accessToken))
+		JsonNode jsonNode = HttpRequest.post(authSource.revoke())
+			.query("access_token", accessToken)
 			.execute()
 			.asJsonNode();
 		if (jsonNode.has("error_code")) {

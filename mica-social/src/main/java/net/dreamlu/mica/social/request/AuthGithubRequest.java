@@ -8,16 +8,13 @@ import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
 import net.dreamlu.mica.social.utils.GlobalAuthUtil;
-import net.dreamlu.mica.social.utils.UrlBuilder;
 
 import java.util.Map;
 
 /**
  * Github登录
  *
- * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
- * @version 1.0
- * @since 1.8
+ * @author L.cm
  */
 public class AuthGithubRequest extends BaseAuthRequest {
 
@@ -26,16 +23,8 @@ public class AuthGithubRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getGithubAuthorizeUrl(config.getClientId(), config.getRedirectUri());
-	}
-
-	@Override
 	protected AuthToken getAccessToken(String code) {
-		String accessTokenUrl = UrlBuilder.getGithubAccessTokenUrl(config.getClientId(), config.getClientSecret(), code, config.getRedirectUri());
-		String result = HttpRequest.post(accessTokenUrl)
-			.execute()
-			.asString();
+		String result = doPostAuthorizationCode(code).asString();
 		Map<String, String> res = GlobalAuthUtil.parseStringToMap(result);
 		if (res.containsKey("error")) {
 			throw new AuthException(res.get("error") + ":" + res.get("error_description"));
@@ -48,7 +37,8 @@ public class AuthGithubRequest extends BaseAuthRequest {
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
-		JsonNode object = HttpRequest.get(UrlBuilder.getGithubUserInfoUrl(accessToken))
+		JsonNode object = HttpRequest.get(authSource.userInfo())
+			.query("access_token", accessToken)
 			.execute()
 			.asJsonNode();
 		return AuthUser.builder()

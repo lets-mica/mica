@@ -8,14 +8,12 @@ import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
 import net.dreamlu.mica.social.model.AuthUserGender;
-import net.dreamlu.mica.social.utils.UrlBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * Cooding登录
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
- * @version 1.0
- * @since 1.8
  */
 public class AuthCodingRequest extends BaseAuthRequest {
 
@@ -24,17 +22,20 @@ public class AuthCodingRequest extends BaseAuthRequest {
 	}
 
 	@Override
-	public String authorize() {
-		return UrlBuilder.getCodingAuthorizeUrl(config.getClientId(), config.getRedirectUri());
+	public String authorize(String state) {
+		return UriComponentsBuilder.fromUriString(authSource.authorize())
+			.queryParam("response_type", "code")
+			.queryParam("client_id", config.getClientId())
+			.queryParam("redirect_uri", config.getRedirectUri())
+			.queryParam("state", state)
+			.queryParam("scope", "user")
+			.build()
+			.toUriString();
 	}
 
 	@Override
 	protected AuthToken getAccessToken(String code) {
-		String accessTokenUrl = UrlBuilder.getCodingAccessTokenUrl(config.getClientId(), config.getClientSecret(), code);
-
-		JsonNode jsonNode = HttpRequest.get(accessTokenUrl)
-			.execute()
-			.asJsonNode();
+		JsonNode jsonNode = doGetAuthorizationCode(code).asJsonNode();
 		if (jsonNode.get("code").asInt() != 0) {
 			throw new AuthException("Unable to get token from coding using code [" + code + "]");
 		}
@@ -46,8 +47,8 @@ public class AuthCodingRequest extends BaseAuthRequest {
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
-
-		JsonNode jsonNode = HttpRequest.get(UrlBuilder.getCodingUserInfoUrl(accessToken))
+		JsonNode jsonNode = HttpRequest.get(authSource.userInfo())
+			.query("access_token", accessToken)
 			.execute()
 			.asJsonNode();
 		if (jsonNode.get("code").asInt() != 0) {

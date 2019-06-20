@@ -14,7 +14,7 @@ import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
 import net.dreamlu.mica.social.model.AuthUserGender;
-import net.dreamlu.mica.social.utils.UrlBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * 支付宝登录
@@ -32,10 +32,15 @@ public class AuthAlipayRequest extends BaseAuthRequest {
 		this.alipayClient = new DefaultAlipayClient(API_URL.accessToken(), config.getClientId(), config.getClientSecret(), "json", "UTF-8", config.getAlipayPublicKey(), "RSA2");
 	}
 
-
 	@Override
-	public String authorize() {
-		return UrlBuilder.getAlipayAuthorizeUrl(config.getClientId(), config.getRedirectUri());
+	public String authorize(String state) {
+		return UriComponentsBuilder.fromUriString(authSource.authorize())
+			.queryParam("app_id", config.getClientId())
+			.queryParam("scope", "auth_user")
+			.queryParam("redirect_uri", config.getRedirectUri())
+			.queryParam("state", state)
+			.build()
+			.toUriString();
 	}
 
 	@Override
@@ -73,8 +78,8 @@ public class AuthAlipayRequest extends BaseAuthRequest {
 		if (!response.isSuccess()) {
 			throw new AuthException(response.getSubMsg());
 		}
-		String province = response.getProvince(),
-			city = response.getCity();
+		String province = response.getProvince();
+		String city = response.getCity();
 		return AuthUser.builder()
 			.uuid(response.getUserId())
 			.username(StringUtil.isBlank(response.getUserName()) ? response.getNickName() : response.getUserName())
