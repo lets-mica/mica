@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import net.dreamlu.http.HttpRequest;
 import net.dreamlu.http.HttpResponse;
 import net.dreamlu.mica.core.utils.JsonUtil;
+import net.dreamlu.mica.core.utils.ObjectUtil;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
@@ -34,7 +35,7 @@ public class AuthQqRequest extends BaseAuthRequest {
 		}
 		return AuthToken.builder()
 			.accessToken(accessTokenObject.get("access_token"))
-			.expireIn(Integer.valueOf(accessTokenObject.get("expires_in")))
+			.expireIn(ObjectUtil.toInt(accessTokenObject.get("expires_in")))
 			.refreshToken(accessTokenObject.get("refresh_token"))
 			.build();
 	}
