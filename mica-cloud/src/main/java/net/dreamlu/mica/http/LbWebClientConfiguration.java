@@ -22,6 +22,7 @@ import net.dreamlu.mica.context.reactive.HttpHeadersFilterFunction;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.launcher.MicaLogLevel;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerExchangeFilterFunction;
 import org.springframework.context.annotation.Bean;
@@ -43,6 +44,7 @@ import java.util.List;
  */
 @Slf4j
 @Configuration
+@ConditionalOnProperty(value = "mica.http.enabled", matchIfMissing = true)
 @RequiredArgsConstructor
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 public class LbWebClientConfiguration {

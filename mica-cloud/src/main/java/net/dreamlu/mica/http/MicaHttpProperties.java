@@ -35,6 +35,10 @@ import java.util.concurrent.TimeUnit;
 @ConfigurationProperties("mica.http")
 public class MicaHttpProperties {
 	/**
+	 * 是否开启，默认为：true
+	 */
+	private boolean enable = true;
+	/**
 	 * 最大连接数，默认：200
 	 */
 	private int maxConnections = 200;

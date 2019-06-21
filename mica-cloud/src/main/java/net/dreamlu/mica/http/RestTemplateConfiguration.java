@@ -29,6 +29,7 @@ import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,6 +58,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Configuration
 @ConditionalOnClass(OkHttpClient.class)
+@ConditionalOnProperty(value = "mica.http.enabled", matchIfMissing = true)
 @RequiredArgsConstructor
 public class RestTemplateConfiguration {
 	private final ObjectMapper objectMapper;
