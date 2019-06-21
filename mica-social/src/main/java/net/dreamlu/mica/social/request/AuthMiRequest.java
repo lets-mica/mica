@@ -11,6 +11,7 @@ import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthResponse;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
+import net.dreamlu.mica.social.model.AuthUserGender;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -84,6 +85,7 @@ public class AuthMiRequest extends BaseAuthRequest {
 			.nickname(user.get("miliaoNick").asText())
 			.avatar(user.at("/miliaoIcon").asText())
 			.email(user.at("/mail").asText())
+			.gender(AuthUserGender.UNKNOW)
 			.token(authToken)
 			.source(authSource)
 			.build();

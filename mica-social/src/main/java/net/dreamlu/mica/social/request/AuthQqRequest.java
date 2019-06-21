@@ -63,7 +63,7 @@ public class AuthQqRequest extends BaseAuthRequest {
 			.nickname(object.get("nickname").asText())
 			.avatar(avatar)
 			.location(object.at("/province").asText() + "-" + object.at("/city").asText())
-			.uuid(openId)
+			.uuid(Optional.ofNullable(authToken.getUnionId()).orElse(openId))
 			.gender(AuthUserGender.getRealGender(object.get("gender").asText()))
 			.token(authToken)
 			.source(authSource)
@@ -83,7 +83,7 @@ public class AuthQqRequest extends BaseAuthRequest {
 			String openId = object.get("openid").asText();
 			authToken.setUnionId(unionId);
 			authToken.setOpenId(openId);
-			return Optional.ofNullable(unionId).orElse(openId);
+			return openId;
 		}
 		throw new AuthException("request error");
 	}

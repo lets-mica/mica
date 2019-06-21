@@ -8,6 +8,7 @@ import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthResponse;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
+import net.dreamlu.mica.social.model.AuthUserGender;
 import org.springframework.web.util.UriComponentsBuilder;
 
 
@@ -59,6 +60,7 @@ public class AuthDouyinRequest extends BaseAuthRequest {
 			.nickname(userInfoObject.get("nickname").asText())
 			.avatar(userInfoObject.at("/avatar").asText())
 			.remark(userInfoObject.at("/description").asText())
+			.gender(AuthUserGender.UNKNOW)
 			.token(authToken)
 			.source(authSource)
 			.build();

@@ -33,5 +33,6 @@ public interface CharPool {
 	char RIGHT_BRACE      = '}';
 	char LEFT_BRACKET     = '(';
 	char RIGHT_BRACKET    = ')';
+	char DASH             = '-';
 	// @formatter:on
 }

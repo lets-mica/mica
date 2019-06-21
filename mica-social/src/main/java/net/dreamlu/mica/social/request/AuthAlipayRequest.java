@@ -7,6 +7,7 @@ import com.alipay.api.request.AlipaySystemOauthTokenRequest;
 import com.alipay.api.request.AlipayUserInfoShareRequest;
 import com.alipay.api.response.AlipaySystemOauthTokenResponse;
 import com.alipay.api.response.AlipayUserInfoShareResponse;
+import net.dreamlu.mica.core.utils.CharPool;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
@@ -46,7 +47,7 @@ public class AuthAlipayRequest extends BaseAuthRequest {
 		AlipaySystemOauthTokenRequest request = new AlipaySystemOauthTokenRequest();
 		request.setGrantType("authorization_code");
 		request.setCode(code);
-		AlipaySystemOauthTokenResponse response = null;
+		AlipaySystemOauthTokenResponse response;
 		try {
 			response = this.alipayClient.execute(request);
 		} catch (Exception e) {
@@ -67,7 +68,7 @@ public class AuthAlipayRequest extends BaseAuthRequest {
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
 		AlipayUserInfoShareRequest request = new AlipayUserInfoShareRequest();
-		AlipayUserInfoShareResponse response = null;
+		AlipayUserInfoShareResponse response;
 		try {
 			response = this.alipayClient.execute(request, accessToken);
 		} catch (AlipayApiException e) {
@@ -78,12 +79,16 @@ public class AuthAlipayRequest extends BaseAuthRequest {
 		}
 		String province = response.getProvince();
 		String city = response.getCity();
+		String location = province;
+		if (StringUtil.isNotBlank(city)) {
+			location = location + CharPool.DASH + city;
+		}
 		return AuthUser.builder()
 			.uuid(response.getUserId())
 			.username(StringUtil.isBlank(response.getUserName()) ? response.getNickName() : response.getUserName())
 			.nickname(response.getNickName())
 			.avatar(response.getAvatar())
-			.location(String.format("%s %s", StringUtil.isBlank(province) ? "" : province, StringUtil.isBlank(city) ? "" : city))
+			.location(location)
 			.gender(AuthUserGender.getRealGender(response.getGender()))
 			.token(authToken)
 			.source(authSource)
