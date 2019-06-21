@@ -2,7 +2,6 @@ package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import net.dreamlu.http.HttpRequest;
-import net.dreamlu.http.HttpResponse;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
@@ -10,7 +9,6 @@ import net.dreamlu.mica.social.model.AuthDingTalkErrorCode;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
 import net.dreamlu.mica.social.model.AuthUserGender;
-import net.dreamlu.mica.social.utils.AuthConfigChecker;
 import net.dreamlu.mica.social.utils.GlobalAuthUtil;
 import org.springframework.web.util.UriComponentsBuilder;
 

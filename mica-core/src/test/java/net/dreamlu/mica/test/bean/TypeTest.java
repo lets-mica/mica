@@ -2,7 +2,6 @@ package net.dreamlu.mica.test.bean;
 
 import net.dreamlu.mica.core.utils.ClassUtil;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.stream.Stream;
 

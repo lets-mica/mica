@@ -75,13 +75,13 @@ public class MicaCaptchaReactive extends BaseCaptcha {
 			.map(x -> x.getFirst(cookieName))
 			.map(HttpCookie::getValue)
 			.orElseGet(() -> {
-				String cookieValueUUID = StringUtil.getUUID();
-				ResponseCookie cookie = ResponseCookie.from(cookieName, cookieValueUUID)
+				String newCookieValue = StringUtil.getUUID();
+				ResponseCookie cookie = ResponseCookie.from(cookieName, newCookieValue)
 					.maxAge(DEFAULT_MAX_AGE)
 					.path(StringPool.SLASH)
 					.build();
 				response.addCookie(cookie);
-				return cookieValueUUID;
+				return newCookieValue;
 			});
 		ThreadLocalRandom random = ThreadLocalRandom.current();
 		// 转成大写重要

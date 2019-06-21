@@ -78,7 +78,7 @@ public class AesUtil {
 	 * 提供基于PKCS7算法的加解密接口.
 	 */
 	private static class PKCS7Encoder {
-		static int BLOCK_SIZE = 32;
+		private static int BLOCK_SIZE = 32;
 
 		private static byte[] encode(byte[] src) {
 			int count = src.length;

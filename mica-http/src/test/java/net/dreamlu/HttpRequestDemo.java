@@ -16,9 +16,9 @@
 
 package net.dreamlu;
 
-import okhttp3.logging.HttpLoggingInterceptor;
 import net.dreamlu.http.HttpRequest;
 import net.dreamlu.http.HttpResponse;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.time.Duration;
 

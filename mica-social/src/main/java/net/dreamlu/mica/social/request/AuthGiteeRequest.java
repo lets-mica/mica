@@ -2,7 +2,6 @@ package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import net.dreamlu.http.HttpRequest;
-import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;

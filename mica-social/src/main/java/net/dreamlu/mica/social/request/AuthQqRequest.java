@@ -15,7 +15,6 @@ import net.dreamlu.mica.social.model.AuthUserGender;
 import net.dreamlu.mica.social.utils.GlobalAuthUtil;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * qq登录

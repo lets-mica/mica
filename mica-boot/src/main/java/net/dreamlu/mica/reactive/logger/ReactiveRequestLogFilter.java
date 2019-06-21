@@ -68,7 +68,7 @@ public class ReactiveRequestLogFilter implements WebFilter, Ordered {
 		}
 
 		MultiValueMap<String, String> queryParams = request.getQueryParams();
-		String requestURI = UriComponentsBuilder.fromPath(path).queryParams(queryParams).build().toUriString();
+		String requestUrl = UriComponentsBuilder.fromPath(path).queryParams(queryParams).build().toUriString();
 
 		// 构建成一条长 日志，避免并发下日志错乱
 		StringBuilder beforeReqLog = new StringBuilder(300);
@@ -80,7 +80,7 @@ public class ReactiveRequestLogFilter implements WebFilter, Ordered {
 		// 参数
 		String requestMethod = request.getMethodValue();
 		beforeReqArgs.add(requestMethod);
-		beforeReqArgs.add(requestURI);
+		beforeReqArgs.add(requestUrl);
 
 		// 打印请求头
 		if (MicaLogLevel.HEADERS.lte(level)) {

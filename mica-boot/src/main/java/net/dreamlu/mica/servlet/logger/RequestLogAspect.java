@@ -143,7 +143,7 @@ public class RequestLogAspect {
 			}
 		}
 		HttpServletRequest request = WebUtil.getRequest();
-		String requestURI = request.getRequestURI();
+		String requestUrl = request.getRequestURI();
 		String requestMethod = request.getMethod();
 
 		// 构建成一条长 日志，避免并发下日志错乱
@@ -154,7 +154,7 @@ public class RequestLogAspect {
 		// 打印路由
 		beforeReqLog.append("===> {}: {}");
 		beforeReqArgs.add(requestMethod);
-		beforeReqArgs.add(requestURI);
+		beforeReqArgs.add(requestUrl);
 		// 请求参数
 		if (paraMap.isEmpty()) {
 			beforeReqLog.append("\n");
@@ -194,7 +194,7 @@ public class RequestLogAspect {
 			long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
 			afterReqLog.append("<=== {}: {} ({} ms)\n");
 			afterReqArgs.add(requestMethod);
-			afterReqArgs.add(requestURI);
+			afterReqArgs.add(requestUrl);
 			afterReqArgs.add(tookMs);
 			afterReqLog.append("================   Response End   ================\n");
 			log.info(afterReqLog.toString(), afterReqArgs.toArray());
