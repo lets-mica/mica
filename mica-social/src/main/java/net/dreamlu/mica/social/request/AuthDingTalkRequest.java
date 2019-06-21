@@ -68,12 +68,13 @@ public class AuthDingTalkRequest extends BaseAuthRequest {
 			throw new AuthException(errorCode.getDesc());
 		}
 		JsonNode userInfo = object.get("user_info");
+		String unionId = userInfo.get("unionid").asText();
 		AuthToken token = AuthToken.builder()
 			.openId(userInfo.get("openid").asText())
-			.unionId(userInfo.get("unionid").asText())
+			.unionId(unionId)
 			.build();
 		return AuthUser.builder()
-			.uuid(userInfo.get("unionid").asText())
+			.uuid(unionId)
 			.nickname(userInfo.get("nick").asText())
 			.username(userInfo.get("nick").asText())
 			.gender(AuthUserGender.UNKNOW)

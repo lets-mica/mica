@@ -50,11 +50,15 @@ public class AuthDouyinRequest extends BaseAuthRequest {
 			.execute()
 			.asJsonNode();
 		JsonNode userInfoObject = this.checkResponse(object);
+		// unionId
+		String unionId = userInfoObject.get("union_id").asText();
+		authToken.setUnionId(unionId);
 		return AuthUser.builder()
-			.uuid(userInfoObject.get("open_id").asText())
+			.uuid(unionId)
 			.username(userInfoObject.get("nickname").asText())
 			.nickname(userInfoObject.get("nickname").asText())
 			.avatar(userInfoObject.at("/avatar").asText())
+			.remark(userInfoObject.at("/description").asText())
 			.token(authToken)
 			.source(authSource)
 			.build();

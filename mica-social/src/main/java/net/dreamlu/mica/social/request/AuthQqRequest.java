@@ -15,6 +15,7 @@ import net.dreamlu.mica.social.model.AuthUserGender;
 import net.dreamlu.mica.social.utils.GlobalAuthUtil;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * qq登录
@@ -77,17 +78,14 @@ public class AuthQqRequest extends BaseAuthRequest {
 			String body = response.asString();
 			String removePrefix = StringUtil.replace(body, "callback(", "");
 			String removeSuffix = StringUtil.replace(removePrefix, ");", "");
-			String openId = StringUtil.trimWhitespace(removeSuffix);
-			JsonNode object = JsonUtil.readTree(openId);
-			if (object.hasNonNull("unionid")) {
-				authToken.setUnionId(object.get("unionid").asText());
-			}
-			if (object.hasNonNull("openid")) {
-				return object.get("openid").asText();
-			}
-			throw new AuthException("Invalid openId");
+			JsonNode object = JsonUtil.readTree(StringUtil.trimWhitespace(removeSuffix));
+			String unionId = object.at("/unionid").asText();
+			String openId = object.get("openid").asText();
+			authToken.setUnionId(unionId);
+			authToken.setOpenId(openId);
+			return Optional.ofNullable(unionId).orElse(openId);
 		}
-		throw new AuthException("Invalid openId");
+		throw new AuthException("request error");
 	}
 
 	private JsonNode getUserInfo(String accessToken, String openId) {
