@@ -1,4 +1,5 @@
 ## mica（云母）
+[![Build Status](https://www.travis-ci.org/lets-mica/mica.svg?branch=master)](https://www.travis-ci.org/lets-mica/mica)
 [![Mica Maven release](https://img.shields.io/nexus/r/https/oss.sonatype.org/net.dreamlu/mica-bom.svg?style=flat-square)](https://mvnrepository.com/artifact/net.dreamlu/mica-bom)
 [![Mica maven snapshots](https://img.shields.io/nexus/s/https/oss.sonatype.org/net.dreamlu/mica-bom.svg?style=flat-square)](https://oss.sonatype.org/content/repositories/snapshots/net/dreamlu/mica-bom)
 
