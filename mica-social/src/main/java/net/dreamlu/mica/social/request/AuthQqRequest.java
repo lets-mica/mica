@@ -58,12 +58,14 @@ public class AuthQqRequest extends BaseAuthRequest {
 		if (StringUtil.isBlank(avatar)) {
 			avatar = object.get("figureurl_qq_1").asText();
 		}
+		// unionId
+		String unionId = authToken.getUnionId();
 		return AuthUser.builder()
 			.username(object.get("nickname").asText())
 			.nickname(object.get("nickname").asText())
 			.avatar(avatar)
 			.location(object.at("/province").asText() + "-" + object.at("/city").asText())
-			.uuid(Optional.ofNullable(authToken.getUnionId()).orElse(openId))
+			.uuid(StringUtil.isBlank(unionId) ? unionId : openId)
 			.gender(AuthUserGender.getRealGender(object.get("gender").asText()))
 			.token(authToken)
 			.source(authSource)
