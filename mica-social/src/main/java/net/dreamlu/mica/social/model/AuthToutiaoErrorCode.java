@@ -13,6 +13,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum AuthToutiaoErrorCode {
+	/**
+	 * 今日头条授权枚举
+	 */
 	EC0(0, "接口调用成功"),
 	EC1(1, "API配置错误，未传入Client Key"),
 	EC2(2, "API配置错误，Client Key错误，请检查是否和开放平台的ClientKey一致"),

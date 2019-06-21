@@ -15,6 +15,9 @@ import java.util.Arrays;
 @Getter
 @AllArgsConstructor
 public enum AuthUserGender {
+	/**
+	 * 用户性别枚举
+	 */
 	MALE(1, "男"), FEMALE(0, "女"), UNKNOW(-1, "");
 	private int code;
 	private String desc;

@@ -30,24 +30,24 @@
     </xi:include>
     <Loggers>
         <!-- 减少部分debug日志 -->
-        <AsyncLogger name="springfox.bean.validators" level="ERROR"/>
+        <Logger name="springfox.bean.validators" level="ERROR"/>
         <!-- 基础组件 -->
-        <AsyncLogger name="RocketmqClient" level="ERROR"/>
-        <AsyncLogger name="com.alibaba.nacos" level="ERROR"/>
+        <Logger name="RocketmqClient" level="ERROR"/>
+        <Logger name="com.alibaba.nacos" level="ERROR"/>
         <!-- mica日志 -->
-        <AsyncLogger name="net.dreamlu.mica" level="ERROR"/>
+        <Logger name="net.dreamlu.mica" level="ERROR"/>
         <!-- 请求日志打印，全部使用info，方便动态调整 -->
-        <AsyncLogger name="net.dreamlu.mica.servlet.logger" level="INFO"/>
-        <AsyncLogger name="net.dreamlu.mica.reactive.logger" level="INFO"/>
-        <AsyncLogger name="net.dreamlu.mica.http.logger" level="INFO"/>
+        <Logger name="net.dreamlu.mica.servlet.logger" level="INFO"/>
+        <Logger name="net.dreamlu.mica.reactive.logger" level="INFO"/>
+        <Logger name="net.dreamlu.mica.http.logger" level="INFO"/>
         <!-- business 业务日志 -->
-        <AsyncLogger name="BUSINESS" level="INFO" additivity="false">
+        <Logger name="BUSINESS" level="INFO" additivity="false">
             <AppenderRef ref="BusinessRollingFile"/>
-        </AsyncLogger>
-        <Root level="WARN" additivity="false">
+        </Logger>
+        <AsyncRoot level="WARN" additivity="false">
             <AppenderRef ref="Console" />
             <AppenderRef ref="RollingFile" />
             <AppenderRef ref="RollingFileError" />
-        </Root>
+        </AsyncRoot>
     </Loggers>
 </configuration>
