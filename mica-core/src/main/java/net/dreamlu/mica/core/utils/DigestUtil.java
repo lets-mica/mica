@@ -38,6 +38,26 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	private static final char[] HEX_CODE = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
 	/**
+	 * Calculates the MD5 digest.
+	 *
+	 * @param data Data to digest
+	 * @return MD5 digest as a hex array
+	 */
+	public static byte[] md5(final byte[] data) {
+		return DigestUtils.md5Digest(data);
+	}
+
+	/**
+	 * Calculates the MD5 digest.
+	 *
+	 * @param data Data to digest
+	 * @return MD5 digest as a hex array
+	 */
+	public static byte[] md5(final String data) {
+		return DigestUtils.md5Digest(data.getBytes(Charsets.UTF_8));
+	}
+
+	/**
 	 * Calculates the MD5 digest and returns the value as a 32 character hex string.
 	 *
 	 * @param data Data to digest
@@ -58,13 +78,33 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	}
 
 	/**
+	 *  sha1
+	 *
+	 * @param data Data to digest
+	 * @return digest as a hex array
+	 */
+	public static byte[] sha1(String data) {
+		return DigestUtil.sha1(data.getBytes(Charsets.UTF_8));
+	}
+
+	/**
+	 *  sha1
+	 *
+	 * @param bytes Data to digest
+	 * @return digest as a hex array
+	 */
+	public static byte[] sha1(final byte[] bytes) {
+		return DigestUtil.digest("SHA-1", bytes);
+	}
+
+	/**
 	 *  sha1Hex
 	 *
 	 * @param data Data to digest
 	 * @return digest as a hex string
 	 */
 	public static String sha1Hex(String data) {
-		return DigestUtil.sha1Hex(data.getBytes(Charsets.UTF_8));
+		return DigestUtil.encodeHex(sha1(data.getBytes(Charsets.UTF_8)));
 	}
 
 	/**
@@ -74,7 +114,27 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String sha1Hex(final byte[] bytes) {
-		return DigestUtil.digestHex("SHA-1", bytes);
+		return DigestUtil.encodeHex(sha1(bytes));
+	}
+
+	/**
+	 *  SHA224
+	 *
+	 * @param data Data to digest
+	 * @return digest as a byte array
+	 */
+	public static byte[] sha224(String data) {
+		return DigestUtil.sha224(data.getBytes(Charsets.UTF_8));
+	}
+
+	/**
+	 *  SHA224
+	 *
+	 * @param bytes Data to digest
+	 * @return digest as a byte array
+	 */
+	public static byte[] sha224(final byte[] bytes) {
+		return DigestUtil.digest("SHA-224", bytes);
 	}
 
 	/**
@@ -84,7 +144,7 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String sha224Hex(String data) {
-		return DigestUtil.sha224Hex(data.getBytes(Charsets.UTF_8));
+		return DigestUtil.encodeHex(sha224(data.getBytes(Charsets.UTF_8)));
 	}
 
 	/**
@@ -94,7 +154,27 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String sha224Hex(final byte[] bytes) {
-		return DigestUtil.digestHex("SHA-224", bytes);
+		return DigestUtil.encodeHex(sha224(bytes));
+	}
+
+	/**
+	 *  sha256Hex
+	 *
+	 * @param data Data to digest
+	 * @return digest as a byte array
+	 */
+	public static byte[] sha256(String data) {
+		return DigestUtil.sha256(data.getBytes(Charsets.UTF_8));
+	}
+
+	/**
+	 *  sha256Hex
+	 *
+	 * @param bytes Data to digest
+	 * @return digest as a byte array
+	 */
+	public static byte[] sha256(final byte[] bytes) {
+		return DigestUtil.digest("SHA-256", bytes);
 	}
 
 	/**
@@ -104,7 +184,7 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String sha256Hex(String data) {
-		return DigestUtil.sha256Hex(data.getBytes(Charsets.UTF_8));
+		return DigestUtil.encodeHex(sha256(data.getBytes(Charsets.UTF_8)));
 	}
 
 	/**
@@ -114,7 +194,27 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String sha256Hex(final byte[] bytes) {
-		return DigestUtil.digestHex("SHA-256", bytes);
+		return DigestUtil.encodeHex(sha256(bytes));
+	}
+
+	/**
+	 *  sha384
+	 *
+	 * @param data Data to digest
+	 * @return digest as a byte array
+	 */
+	public static byte[] sha384(String data) {
+		return DigestUtil.sha384(data.getBytes(Charsets.UTF_8));
+	}
+
+	/**
+	 *  sha384
+	 *
+	 * @param bytes Data to digest
+	 * @return digest as a byte array
+	 */
+	public static byte[] sha384(final byte[] bytes) {
+		return DigestUtil.digest("SHA-384", bytes);
 	}
 
 	/**
@@ -124,7 +224,7 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String sha384Hex(String data) {
-		return DigestUtil.sha384Hex(data.getBytes(Charsets.UTF_8));
+		return DigestUtil.encodeHex(sha384(data.getBytes(Charsets.UTF_8)));
 	}
 
 	/**
@@ -134,7 +234,27 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String sha384Hex(final byte[] bytes) {
-		return DigestUtil.digestHex("SHA-384", bytes);
+		return DigestUtil.encodeHex(sha384(bytes));
+	}
+
+	/**
+	 *  sha512Hex
+	 *
+	 * @param data Data to digest
+	 * @return digest as a byte array
+	 */
+	public static byte[] sha512(String data) {
+		return DigestUtil.sha512(data.getBytes(Charsets.UTF_8));
+	}
+
+	/**
+	 *  sha512Hex
+	 *
+	 * @param bytes Data to digest
+	 * @return digest as a byte array
+	 */
+	public static byte[] sha512(final byte[] bytes) {
+		return DigestUtil.digest("SHA-512", bytes);
 	}
 
 	/**
@@ -144,7 +264,7 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String sha512Hex(String data) {
-		return DigestUtil.sha512Hex(data.getBytes(Charsets.UTF_8));
+		return DigestUtil.encodeHex(sha512(data.getBytes(Charsets.UTF_8)));
 	}
 
 	/**
@@ -154,7 +274,23 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String sha512Hex(final byte[] bytes) {
-		return DigestUtil.digestHex("SHA-512", bytes);
+		return DigestUtil.encodeHex(sha512(bytes));
+	}
+
+	/**
+	 *  digest
+	 *
+	 * @param algorithm 算法
+	 * @param bytes Data to digest
+	 * @return digest byte array
+	 */
+	public static byte[] digest(String algorithm, byte[] bytes) {
+		try {
+			MessageDigest md = MessageDigest.getInstance(algorithm);
+			return md.digest(bytes);
+		} catch (NoSuchAlgorithmException e) {
+			throw Exceptions.unchecked(e);
+		}
 	}
 
 	/**
@@ -165,12 +301,29 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String digestHex(String algorithm, byte[] bytes) {
-		try {
-			MessageDigest md = MessageDigest.getInstance(algorithm);
-			return encodeHex(md.digest(bytes));
-		} catch (NoSuchAlgorithmException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return DigestUtil.encodeHex(digest(algorithm, bytes));
+	}
+
+	/**
+	 *  hmacMd5
+	 *
+	 * @param data Data to digest
+	 * @param key key
+	 * @return digest as a byte array
+	 */
+	public static byte[] hmacMd5(String data, String key) {
+		return DigestUtil.hmacMd5(data.getBytes(Charsets.UTF_8), key);
+	}
+
+	/**
+	 *  hmacMd5
+	 *
+	 * @param bytes Data to digest
+	 * @param key key
+	 * @return digest as a byte array
+	 */
+	public static byte[] hmacMd5(final byte[] bytes, String key) {
+		return DigestUtil.digestHmac("HmacMD5", bytes, key);
 	}
 
 	/**
@@ -181,7 +334,7 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String hmacMd5Hex(String data, String key) {
-		return DigestUtil.hmacMd5Hex(data.getBytes(Charsets.UTF_8), key);
+		return DigestUtil.encodeHex(hmacMd5(data.getBytes(Charsets.UTF_8), key));
 	}
 
 	/**
@@ -192,7 +345,29 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String hmacMd5Hex(final byte[] bytes, String key) {
-		return DigestUtil.digestHMacHex("HmacMD5", bytes, key);
+		return DigestUtil.encodeHex(hmacMd5(bytes, key));
+	}
+
+	/**
+	 *  hmacSha1
+	 *
+	 * @param data Data to digest
+	 * @param key key
+	 * @return digest as a byte array
+	 */
+	public static byte[] hmacSha1(String data, String key) {
+		return DigestUtil.hmacSha1(data.getBytes(Charsets.UTF_8), key);
+	}
+
+	/**
+	 *  hmacSha1
+	 *
+	 * @param bytes Data to digest
+	 * @param key key
+	 * @return digest as a byte array
+	 */
+	public static byte[] hmacSha1(final byte[] bytes, String key) {
+		return DigestUtil.digestHmac("HmacSHA1", bytes, key);
 	}
 
 	/**
@@ -203,7 +378,7 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha1Hex(String data, String key) {
-		return DigestUtil.hmacSha1Hex(data.getBytes(Charsets.UTF_8), key);
+		return DigestUtil.encodeHex(hmacSha1(data.getBytes(Charsets.UTF_8), key));
 	}
 
 	/**
@@ -214,7 +389,29 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha1Hex(final byte[] bytes, String key) {
-		return DigestUtil.digestHMacHex("HmacSHA1", bytes, key);
+		return DigestUtil.encodeHex(hmacSha1(bytes, key));
+	}
+
+	/**
+	 *  hmacSha224
+	 *
+	 * @param data Data to digest
+	 * @param key key
+	 * @return digest as a hex string
+	 */
+	public static byte[] hmacSha224(String data, String key) {
+		return DigestUtil.hmacSha224(data.getBytes(Charsets.UTF_8), key);
+	}
+
+	/**
+	 *  hmacSha224
+	 *
+	 * @param bytes Data to digest
+	 * @param key key
+	 * @return digest as a hex string
+	 */
+	public static byte[] hmacSha224(final byte[] bytes, String key) {
+		return DigestUtil.digestHmac("HmacSHA224", bytes, key);
 	}
 
 	/**
@@ -225,7 +422,7 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha224Hex(String data, String key) {
-		return DigestUtil.hmacSha224Hex(data.getBytes(Charsets.UTF_8), key);
+		return DigestUtil.encodeHex(hmacSha224(data.getBytes(Charsets.UTF_8), key));
 	}
 
 	/**
@@ -236,7 +433,29 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha224Hex(final byte[] bytes, String key) {
-		return DigestUtil.digestHMacHex("HmacSHA224", bytes, key);
+		return DigestUtil.encodeHex(hmacSha224(bytes, key));
+	}
+
+	/**
+	 *  hmacSha256
+	 *
+	 * @param data Data to digest
+	 * @param key key
+	 * @return digest as a hex string
+	 */
+	public static byte[] hmacSha256(String data, String key) {
+		return DigestUtil.hmacSha256(data.getBytes(Charsets.UTF_8), key);
+	}
+
+	/**
+	 *  hmacSha256
+	 *
+	 * @param bytes Data to digest
+	 * @param key key
+	 * @return digest as a byte array
+	 */
+	public static byte[] hmacSha256(final byte[] bytes, String key) {
+		return DigestUtil.digestHmac("HmacSHA256", bytes, key);
 	}
 
 	/**
@@ -244,10 +463,10 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 *
 	 * @param data Data to digest
 	 * @param key key
-	 * @return digest as a hex string
+	 * @return digest as a byte array
 	 */
 	public static String hmacSha256Hex(String data, String key) {
-		return DigestUtil.hmacSha256Hex(data.getBytes(Charsets.UTF_8), key);
+		return DigestUtil.encodeHex(hmacSha256(data.getBytes(Charsets.UTF_8), key));
 	}
 
 	/**
@@ -258,7 +477,29 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha256Hex(final byte[] bytes, String key) {
-		return DigestUtil.digestHMacHex("HmacSHA256", bytes, key);
+		return DigestUtil.encodeHex(hmacSha256(bytes, key));
+	}
+
+	/**
+	 *  hmacSha384
+	 *
+	 * @param data Data to digest
+	 * @param key key
+	 * @return digest as a byte array
+	 */
+	public static byte[] hmacSha384(String data, String key) {
+		return DigestUtil.hmacSha384(data.getBytes(Charsets.UTF_8), key);
+	}
+
+	/**
+	 *  hmacSha384
+	 *
+	 * @param bytes Data to digest
+	 * @param key key
+	 * @return digest as a byte array
+	 */
+	public static byte[] hmacSha384(final byte[] bytes, String key) {
+		return DigestUtil.digestHmac("HmacSHA384", bytes, key);
 	}
 
 	/**
@@ -269,7 +510,7 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha384Hex(String data, String key) {
-		return DigestUtil.hmacSha384Hex(data.getBytes(Charsets.UTF_8), key);
+		return DigestUtil.encodeHex(hmacSha384(data.getBytes(Charsets.UTF_8), key));
 	}
 
 	/**
@@ -280,7 +521,29 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha384Hex(final byte[] bytes, String key) {
-		return DigestUtil.digestHMacHex("HmacSHA384", bytes, key);
+		return DigestUtil.encodeHex(hmacSha384(bytes, key));
+	}
+
+	/**
+	 *  hmacSha512
+	 *
+	 * @param data Data to digest
+	 * @param key key
+	 * @return digest as a byte array
+	 */
+	public static byte[] hmacSha512(String data, String key) {
+		return DigestUtil.hmacSha512(data.getBytes(Charsets.UTF_8), key);
+	}
+
+	/**
+	 *  hmacSha512
+	 *
+	 * @param bytes Data to digest
+	 * @param key key
+	 * @return digest as a byte array
+	 */
+	public static byte[] hmacSha512(final byte[] bytes, String key) {
+		return DigestUtil.digestHmac("HmacSHA512", bytes, key);
 	}
 
 	/**
@@ -291,7 +554,7 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha512Hex(String data, String key) {
-		return DigestUtil.hmacSha512Hex(data.getBytes(Charsets.UTF_8), key);
+		return DigestUtil.encodeHex(hmacSha512(data.getBytes(Charsets.UTF_8), key));
 	}
 
 	/**
@@ -302,22 +565,33 @@ public class DigestUtil extends org.springframework.util.DigestUtils {
 	 * @return digest as a hex string
 	 */
 	public static String hmacSha512Hex(final byte[] bytes, String key) {
-		return DigestUtil.digestHMacHex("HmacSHA512", bytes, key);
+		return DigestUtil.encodeHex(hmacSha512(bytes, key));
 	}
 
 	/**
-	 *  digest HMac Hex
+	 *  digest Hmac Hex
 	 *
 	 * @param algorithm 算法
 	 * @param bytes Data to digest
 	 * @return digest as a hex string
 	 */
-	public static String digestHMacHex(String algorithm, final byte[] bytes, String key) {
+	public static String digestHmacHex(String algorithm, final byte[] bytes, String key) {
+		return DigestUtil.encodeHex(DigestUtil.digestHmac(algorithm, bytes, key));
+	}
+
+	/**
+	 *  digest Hmac
+	 *
+	 * @param algorithm 算法
+	 * @param bytes Data to digest
+	 * @return digest as a byte array
+	 */
+	public static byte[] digestHmac(String algorithm, final byte[] bytes, String key) {
 		SecretKey secretKey = new SecretKeySpec(key.getBytes(Charsets.UTF_8), algorithm);
 		try {
 			Mac mac = Mac.getInstance(secretKey.getAlgorithm());
 			mac.init(secretKey);
-			return DigestUtil.encodeHex(mac.doFinal(bytes));
+			return mac.doFinal(bytes);
 		} catch (NoSuchAlgorithmException | InvalidKeyException e) {
 			throw Exceptions.unchecked(e);
 		}
