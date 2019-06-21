@@ -58,7 +58,7 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	 */
 	public static <T> T newInstance(String clazzStr) {
 		try {
-			Class<?> clazz = Class.forName(clazzStr);
+			Class<?> clazz = ClassUtil.forName(clazzStr, null);
 			return newInstance(clazz);
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);

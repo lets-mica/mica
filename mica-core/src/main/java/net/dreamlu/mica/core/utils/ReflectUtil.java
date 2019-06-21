@@ -75,9 +75,8 @@ public class ReflectUtil extends ReflectionUtils {
 			} else {
 				List<PropertyDescriptor> properties = new ArrayList<>(all.length);
 				for (PropertyDescriptor pd : all) {
-					if (read && pd.getReadMethod() != null) {
-						properties.add(pd);
-					} else if (write && pd.getWriteMethod() != null) {
+					if ((read && pd.getReadMethod() != null)
+						|| (write && pd.getWriteMethod() != null)) {
 						properties.add(pd);
 					}
 				}
