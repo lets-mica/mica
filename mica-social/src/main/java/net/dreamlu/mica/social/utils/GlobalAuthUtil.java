@@ -15,11 +15,10 @@ import java.util.Map;
  */
 @UtilityClass
 public class GlobalAuthUtil {
-	private static final String DEFAULT_ENCODING = "UTF-8";
 
 	public static String generateDingTalkSignature(String canonicalString, String secret) {
-		String hmacSha256Hex = DigestUtil.hmacSha256Hex(canonicalString, secret);
-		return UrlUtil.encode(Base64Util.encode(hmacSha256Hex));
+		byte[] hmacSha256Bytes = DigestUtil.hmacSha256(canonicalString, secret);
+		return UrlUtil.encode(Base64Util.encodeToString(hmacSha256Bytes));
 	}
 
 	public static Map<String, String> parseStringToMap(String paramsStr) {
