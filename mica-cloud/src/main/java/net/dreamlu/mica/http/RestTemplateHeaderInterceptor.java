@@ -16,7 +16,7 @@
 
 package net.dreamlu.mica.http;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.context.MicaHttpHeadersGetter;
 import net.dreamlu.mica.hystrix.MicaHttpHeadersContextHolder;
 import org.springframework.http.HttpHeaders;
@@ -33,7 +33,7 @@ import java.io.IOException;
  *
  * @author L.cm
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RestTemplateHeaderInterceptor implements ClientHttpRequestInterceptor {
 	@Nullable
 	private final MicaHttpHeadersGetter headersGetter;

@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.context.reactive.HttpHeadersFilterFunction;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.launcher.MicaLogLevel;
-import net.dreamlu.mica.props.MicaRequestLogProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerExchangeFilterFunction;
@@ -49,7 +48,7 @@ import java.util.List;
 public class LbWebClientConfiguration {
 	private final LoadBalancerExchangeFilterFunction lbFunction;
 	private final HttpHeadersFilterFunction filterFunction;
-	private final MicaRequestLogProperties logProperties;
+	private final MicaHttpProperties properties;
 
 	/**
 	 * 负载均衡的 WebClient
@@ -84,14 +83,14 @@ public class LbWebClientConfiguration {
 
 	private ExchangeFilterFunction logFunction() {
 		return (request, next) -> {
-			MicaLogLevel level = logProperties.getLevel();
+			MicaLogLevel level = properties.getLevel();
 			// 日志没有开启直接放行
 			if (MicaLogLevel.NONE == level) {
 				return next.exchange(request);
 			}
 
 			// 记录日志
-			String requestURI = request.url().toString();
+			String requestUrl = request.url().toString();
 			// 构建成一条长 日志，避免并发下日志错乱
 			StringBuilder beforeReqLog = new StringBuilder(300);
 			// 日志参数
@@ -102,7 +101,7 @@ public class LbWebClientConfiguration {
 			// 参数
 			String requestMethod = request.method().name();
 			beforeReqArgs.add(requestMethod);
-			beforeReqArgs.add(requestURI);
+			beforeReqArgs.add(requestUrl);
 
 			// 打印请求头
 			if (MicaLogLevel.HEADERS.lte(level)) {

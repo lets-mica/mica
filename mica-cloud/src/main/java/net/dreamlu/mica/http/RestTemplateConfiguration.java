@@ -19,18 +19,17 @@ package net.dreamlu.mica.http;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.context.MicaHttpHeadersGetter;
 import net.dreamlu.mica.core.utils.Charsets;
 import net.dreamlu.mica.http.logger.HttpLoggingInterceptor;
 import net.dreamlu.mica.http.logger.OkHttpSlf4jLogger;
-import net.dreamlu.mica.props.MicaRequestLogProperties;
+import okhttp3.ConnectionPool;
+import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.commons.httpclient.OkHttpClientConnectionPoolFactory;
-import org.springframework.cloud.commons.httpclient.OkHttpClientFactory;
-import org.springframework.cloud.openfeign.support.FeignHttpClientProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
@@ -40,6 +39,12 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.lang.Nullable;
 import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.*;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -49,12 +54,13 @@ import java.util.concurrent.TimeUnit;
  *
  * @author L.cm
  */
+@Slf4j
 @Configuration
-@ConditionalOnClass(okhttp3.OkHttpClient.class)
+@ConditionalOnClass(OkHttpClient.class)
 @RequiredArgsConstructor
 public class RestTemplateConfiguration {
 	private final ObjectMapper objectMapper;
-	private final MicaRequestLogProperties properties;
+	private final MicaHttpProperties properties;
 
 	/**
 	 * okhttp3 请求日志拦截器
@@ -71,40 +77,30 @@ public class RestTemplateConfiguration {
 	/**
 	 * okhttp3 链接池配置
 	 *
-	 * @param connectionPoolFactory 链接池配置
-	 * @param httpClientProperties  httpClient配置
 	 * @return okhttp3.ConnectionPool
 	 */
 	@Bean
-	@ConditionalOnMissingBean(okhttp3.ConnectionPool.class)
-	public okhttp3.ConnectionPool httpClientConnectionPool(
-		FeignHttpClientProperties httpClientProperties,
-		OkHttpClientConnectionPoolFactory connectionPoolFactory) {
-		Integer maxTotalConnections = httpClientProperties.getMaxConnections();
-		Long timeToLive = httpClientProperties.getTimeToLive();
-		TimeUnit ttlUnit = httpClientProperties.getTimeToLiveUnit();
-		return connectionPoolFactory.create(maxTotalConnections, timeToLive, ttlUnit);
+	@ConditionalOnMissingBean(ConnectionPool.class)
+	public ConnectionPool httpClientConnectionPool() {
+		int maxTotalConnections = properties.getMaxConnections();
+		long timeToLive = properties.getTimeToLive();
+		TimeUnit ttlUnit = properties.getTimeUnit();
+		return new ConnectionPool(maxTotalConnections, timeToLive, ttlUnit);
 	}
 
 	/**
 	 * 配置OkHttpClient
 	 *
-	 * @param httpClientFactory    httpClient 工厂
-	 * @param connectionPool       链接池配置
-	 * @param httpClientProperties httpClient配置
-	 * @param interceptor          拦截器
+	 * @param connectionPool 链接池配置
+	 * @param interceptor    拦截器
 	 * @return OkHttpClient
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public okhttp3.OkHttpClient okHttpClient(
-		OkHttpClientFactory httpClientFactory,
-		okhttp3.ConnectionPool connectionPool,
-		FeignHttpClientProperties httpClientProperties,
-		HttpLoggingInterceptor interceptor) {
-		Boolean followRedirects = httpClientProperties.isFollowRedirects();
-		Integer connectTimeout = httpClientProperties.getConnectionTimeout();
-		return httpClientFactory.createBuilder(httpClientProperties.isDisableSslValidation())
+	public OkHttpClient okHttpClient(ConnectionPool connectionPool, HttpLoggingInterceptor interceptor) {
+		boolean followRedirects = properties.isFollowRedirects();
+		int connectTimeout = properties.getConnectionTimeout();
+		return this.createBuilder(properties.isDisableSslValidation())
 			.connectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
 			.writeTimeout(30, TimeUnit.SECONDS)
 			.readTimeout(30, TimeUnit.SECONDS)
@@ -112,6 +108,46 @@ public class RestTemplateConfiguration {
 			.connectionPool(connectionPool)
 			.addInterceptor(interceptor)
 			.build();
+	}
+
+	private OkHttpClient.Builder createBuilder(boolean disableSslValidation) {
+		OkHttpClient.Builder builder = new OkHttpClient.Builder();
+		if (disableSslValidation) {
+			try {
+				X509TrustManager disabledTrustManager = new DisableValidationTrustManager();
+				TrustManager[] trustManagers = new TrustManager[]{disabledTrustManager};
+				SSLContext sslContext = SSLContext.getInstance("SSL");
+				sslContext.init(null, trustManagers, new SecureRandom());
+				SSLSocketFactory disabledSslSocketFactory = sslContext.getSocketFactory();
+				builder.sslSocketFactory(disabledSslSocketFactory, disabledTrustManager);
+				builder.hostnameVerifier(new TrustAllHostNames());
+			} catch (NoSuchAlgorithmException | KeyManagementException e) {
+				log.warn("Error setting SSLSocketFactory in OKHttpClient", e);
+			}
+		}
+		return builder;
+	}
+
+	public static class TrustAllHostNames implements HostnameVerifier {
+		@Override
+		public boolean verify(String s, SSLSession sslSession) {
+			return true;
+		}
+	}
+
+	public static class DisableValidationTrustManager implements X509TrustManager {
+		@Override
+		public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+		}
+
+		@Override
+		public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+		}
+
+		@Override
+		public X509Certificate[] getAcceptedIssuers() {
+			return new X509Certificate[0];
+		}
 	}
 
 	@Bean
@@ -128,7 +164,7 @@ public class RestTemplateConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public RestTemplate restTemplate(okhttp3.OkHttpClient okHttpClient) {
+	public RestTemplate restTemplate(OkHttpClient okHttpClient) {
 		RestTemplate restTemplate = new RestTemplate(new OkHttp3ClientHttpRequestFactory(okHttpClient));
 		configMessageConverters(restTemplate.getMessageConverters());
 		return restTemplate;
@@ -137,14 +173,14 @@ public class RestTemplateConfiguration {
 	/**
 	 * 支持负载均衡的 LbRestTemplate
 	 *
-	 * @param okHttpClient  OkHttpClient
-	 * @param interceptor RestTemplateHeaderInterceptor
+	 * @param okHttpClient OkHttpClient
+	 * @param interceptor  RestTemplateHeaderInterceptor
 	 * @return LbRestTemplate
 	 */
 	@Bean
 	@LoadBalanced
 	@ConditionalOnMissingBean
-	public LbRestTemplate lbRestTemplate(okhttp3.OkHttpClient okHttpClient, RestTemplateHeaderInterceptor interceptor) {
+	public LbRestTemplate lbRestTemplate(OkHttpClient okHttpClient, RestTemplateHeaderInterceptor interceptor) {
 		LbRestTemplate lbRestTemplate = new LbRestTemplate(new OkHttp3ClientHttpRequestFactory(okHttpClient));
 		lbRestTemplate.setInterceptors(Collections.singletonList(interceptor));
 		configMessageConverters(lbRestTemplate.getMessageConverters());

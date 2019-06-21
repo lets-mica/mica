@@ -2,12 +2,15 @@ package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import net.dreamlu.http.HttpRequest;
+import net.dreamlu.http.HttpResponse;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthDingTalkErrorCode;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
+import net.dreamlu.mica.social.model.AuthUserGender;
+import net.dreamlu.mica.social.utils.AuthConfigChecker;
 import net.dreamlu.mica.social.utils.GlobalAuthUtil;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -49,7 +52,7 @@ public class AuthDingTalkRequest extends BaseAuthRequest {
 		String code = authToken.getAccessCode();
 		// 根据timestamp, appSecret计算签名值
 		String timestamp = String.valueOf(System.currentTimeMillis());
-		String urlEncodeSignature = GlobalAuthUtil.generateDingTalkSignature(config.getClientSecret(), timestamp);
+		String urlEncodeSignature = GlobalAuthUtil.generateDingTalkSignature(timestamp, config.getClientSecret());
 		Map<String, Object> bodyJson = new HashMap<>(1);
 		bodyJson.put("tmp_auth_code", code);
 		JsonNode object = HttpRequest.post(authSource.userInfo())
@@ -65,11 +68,17 @@ public class AuthDingTalkRequest extends BaseAuthRequest {
 			throw new AuthException(errorCode.getDesc());
 		}
 		JsonNode userInfo = object.get("user_info");
+		AuthToken token = AuthToken.builder()
+			.openId(userInfo.get("openid").asText())
+			.unionId(userInfo.get("unionid").asText())
+			.build();
 		return AuthUser.builder()
-			.uuid(userInfo.get("openid").asText())
+			.uuid(userInfo.get("unionid").asText())
 			.nickname(userInfo.get("nick").asText())
 			.username(userInfo.get("nick").asText())
+			.gender(AuthUserGender.UNKNOW)
 			.source(authSource)
+			.token(token)
 			.build();
 	}
 }
