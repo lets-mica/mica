@@ -3,6 +3,7 @@ package net.dreamlu.mica.social;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.model.AuthResponse;
 import net.dreamlu.mica.social.request.*;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -10,6 +11,7 @@ import org.junit.Test;
  * @version 1.0
  * @since 1.8
  */
+@Ignore
 public class AuthRequestTest {
 
 	@Test
