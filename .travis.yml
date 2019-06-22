@@ -22,4 +22,5 @@ install: ./gradlew --version
 script: ./gradlew build --refresh-dependencies --no-daemon --continue
 
 after_success:
+  - chmod u+x ./ci/deploy_snapshot.sh
   - ./ci/deploy_snapshot.sh
