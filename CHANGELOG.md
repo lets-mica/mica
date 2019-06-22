@@ -2,14 +2,19 @@
 
 ## 发行版本
 ### v1.1.3 - 2019-05-16
-- :sparkles: 完善 `mica-plus-redis` `MicaRedisCache`.
+- :sparkles: 完善 `mica-plus-redis` 添加 `MicaRedisCache` Bean，使用同 `redis` 命令.
+- :sparkles: `redis` 序列化方式可配置化.
 - :sparkles: 提高 webflux 的日志和 `ReactiveRequestContextFilter` 排序，方便在 spring cloud gateway 中使用.
 - :sparkles: 调整验证码 base64，加上 base64 图片前缀.
+- :sparkles: `DigestUtil` 对 `Md5`、`Sha`、`Hmac` 等系列签名算法添加非 hex 方法.
 - :bug: bean copy Convert 注解支持问题.
+- :heavy_plus_sign: 添加新组件 `mica-http`.
+- :heavy_plus_sign: 添加新组件 `mica-social`.
+- :heavy_plus_sign: 添加新组件 `mica-plus-social`.
 - :heavy_plus_sign: 添加新组件 `mica-plus-ribbon`.
-- :heavy_plus_sign: 添加新组件 `mica-okhttp`.
-- :arrow_up: 升级 `swagger-bootstrap-ui` 到 1.9.4.
+- :arrow_up: 升级 `Spring boot` 版本到 `2.1.6.RELEASE`.
 - :arrow_up: 升级 `Spring cloud` 版本到 `Greenwich.SR1`.
+- :arrow_up: 升级 `swagger-bootstrap-ui` 到 `1.9.4`.
 
 ### v1.1.2 - 2019-06-05
 - :sparkles: 添加 `mica-plus-swagger` 组件，改用 `swagger-bootstrap-ui`。
