@@ -19,7 +19,7 @@
 - :zap: `BaseController` 改为 `IController` 方便业务中进行二次扩展。
 - :sparkles: 添加 `lbWebClient` 和 `header` 透传处理功能，`Spring cloud gateway` 中用起来特`爽`。
 - :sparkles: `LauncherService` 支持 ordered 排序.
-- :zap: 优化redis组件，
+- :zap: 优化 redis 组件，
 - :zap: 启动监听，如果有 swagger，打印 swagger ui 地址。
 - :zap:  调整验证码旋转度数，避免文字遮挡。
 - :zap:  优化异常处理.
@@ -33,16 +33,16 @@
 
 ### v1.1.1 - 2019-05-11
 - :zap: 减少部分阿里巴巴规范问题。
-- :zap: 优化日志，dev 环境日志，不按内存切分，不使用gz压缩，避免每次本地重启生成日志文件。
-- :zap: 优化 StackTraceAsString 中 FastStringWriter 初始容量为200。
+- :zap: 优化日志，dev 环境日志，不按内存切分，不使用 gz 压缩，避免每次本地重启生成日志文件。
+- :zap: 优化 StackTraceAsString 中 FastStringWriter 初始容量为 200。
 - :zap: 优化 ServiceException R 泛型。
 - :sparkles: 添加 R.throw 系列方法，用于处理异常直接返回的情况。
 - :zap: Try 添加 Runnable、Callable、Comparator 的 Lambda 受检异常处理。
-- :bug: 修复日期添加和减少的bug IW2IM。
+- :bug: 修复日期添加和减少的 bug IW2IM。
 
 ### v1.1.0 - 2019-04-26
 - :zap: 将 mica 版本写入 banner.txt。
-- :mute: nacos 日志影响了gateway 和 webflux 的日志，调高级别。
+- :mute: nacos 日志影响了 gateway 和 webflux 的日志，调高级别。
 - :zap: 优化 Servlet 和 Webflux 请求日志打印效果。
 - :sparkles: 添加部分工具类。
 - :sparkles: 优化验证码生成。
@@ -52,7 +52,7 @@
 - :sparkles: 开源 `mica-plus-error-catch` 模块。
 - :sparkles: 开源 `mica-plus-redis` 模块。
 - :sparkles: 开源 `mica-plus-mongo` 模块。
-- :sparkles: 添加Validated Get、Create、Update、DeleteGroup。
+- :sparkles: 添加 Validated Get、Create、Update、DeleteGroup。
 
 ### v1.0.1 - 2019-04-03
 - :ok_hand: 处理几处 P3C 代码检查问题。@冷冷
@@ -72,7 +72,7 @@
 - :zap: 优化文件下载。
 
 ### v0.0.1-RC4 - 2019-03-13
-- :heavy_plus_sign: webflux url 版本号和 header版本处理。
+- :heavy_plus_sign: webflux url 版本号和 header 版本处理。
 - :heavy_plus_sign: webflux 异常统一处理，未知异常发送 Event 事件，方便监听收集。
 - :heavy_plus_sign: webflux 枚举转换，规则同 jackson。
 - :heavy_plus_sign: webflux RequestContextHolder，方便获取 webflux request。
@@ -81,7 +81,7 @@
 - :zap: 优化 base64 验证码。可完美结合 mica-pro redis cache name # 号分割超时。
 - :loud_sound: 优化`请求日志`，避免并发下顺序错乱。
 - :pushpin: 升级 `mica-auto`。
-- :zap: 优化UUID，采用 java9的方式，提高性能。
+- :zap: 优化 UUID，采用 java9 的方式，提高性能。
 - :heavy_plus_sign: bom 添加 `mica-pro` 依赖。
 - :loud_sound: 异常事件添加触发时间。
 - :pencil2: fix spelling issue about black -> blank。 `感谢：` github @xkcoding

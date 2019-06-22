@@ -27,8 +27,8 @@ compile("net.dreamlu:mica-plus-ribbon:${version}")
 | 配置项                     | 默认值 | 说明                                                     |
 | ------------------------- | ------ | -------------------------------------------------------- |
 | enabled          | true   | 是否启用                                                 |
-| prior-ip-pattern | 空     | 优先的ip列表，支持通配符，例如：172.21.0.81、172.21.0.8*、172.21.0.*    |
-| tag              | 无     | 服务的tag，用于灰度，匹配：nacos.discovery.metadata.tag |
+| prior-ip-pattern | 空     | 优先的 ip 列表，支持通配符，例如：172.21.0.81、172.21.0.8*、172.21.0.*    |
+| tag              | 无     | 服务的 tag，用于灰度，匹配：nacos.discovery.metadata.tag |
 
 ## 配置示例
 

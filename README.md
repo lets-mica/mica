@@ -17,7 +17,7 @@
 
 ![犬夜叉-云母](docs/img/mica-001.jpeg)
 
-想要了解更多可加入【如梦技术】QQ群：`479710041`。
+想要了解更多可加入【如梦技术】QQ 群：`479710041`。
 
 ## 模块划分
 ### mica-auto
@@ -29,7 +29,7 @@
 
 ### mica-core
 - 常用工具包，基于 `Spring-core` 扩展增强，无其他依赖。
-- 增强 cglib Bean copy，高性能（接近直接get set），支持链式 bean，支持类型转换 。
+- 增强 cglib Bean copy，高性能（接近直接 get set），支持链式 bean，支持类型转换 。
 - `$` 工具类快捷方法，不用再记忆到底有哪些工具类。
 - 统一消息返回体，封装得更加好用。
 - Jaskson Read Write HttpMessageConverter，分读写的消息转换器。
@@ -48,8 +48,8 @@
 - 支持 `Spring boot web` 和 `Spring boot webflux`。
 - 异步配置。
 - 异常处理，未知异常发送 Event 事件，方便监听收集。
-- swagger自动化配置，加入jar包即可。
-- jackson配置。
+- swagger 自动化配置，加入 jar 包即可。
+- jackson 配置。
 - 文件上传配置。
 - 文件下载，支持断点续传，浏览器兼容好。
 - 请求日志打印，方便开发。
@@ -59,7 +59,7 @@
 - 方便 mica-boot 测试，注入 mica-launcher 中注入的参数。
 
 ### mica-log4j2
-- mica log4j配置。
+- mica log4j 配置。
 - 基于 disruptor 异步日志，高性能。
 - 非开发环境将 System.out 和 err 写入 log。
 
@@ -71,7 +71,7 @@
 
 ### mica-cloud
 - Feign 自动降级、header 透传、版本处理，结合 `mica-auto` 自动化配置。
-- RestTemplate自动配置，基于okhttp增强，添加请求日志和Header传递。
+- RestTemplate 自动配置，基于 okhttp 增强，添加请求日志和 Header 传递。
 - hystrix 熔断器增强，支持 header 透传、当前用户获取和透传。
 - Apollo Properties 配置刷新。
 
@@ -112,7 +112,7 @@ lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1
 
 参考请注明：参考自 mica：https://github.com/lets-mica/mica
 
-`注意`：若禁止条款被发现有权追讨19999的授权费。
+`注意`：若禁止条款被发现有权追讨 **19999** 的授权费。
 
 ## 授权用户（最佳实践）
 * `pigx` 宇宙最强微服务（架构师必备）：https://pig4cloud.com
@@ -126,10 +126,10 @@ lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1
 * 文档地址（语雀-可关注订阅）：[https://www.yuque.com/dreamlu/mica](https://www.yuque.com/dreamlu/mica)
 
 ## 开源推荐
-- `Avue` 一款基于vue可配置化的神奇框架：[https://gitee.com/smallweigit/avue](https://gitee.com/smallweigit/avue)
+- `Avue` 一款基于 vue 可配置化的神奇框架：[https://gitee.com/smallweigit/avue](https://gitee.com/smallweigit/avue)
 - `pig` 宇宙最强微服务（架构师必备）：[https://gitee.com/log4j/pig](https://gitee.com/log4j/pig)
 - `SpringBlade` 完整的线上解决方案（企业开发必备）：[https://gitee.com/smallc/SpringBlade](https://gitee.com/smallc/SpringBlade)
-- `IJPay` 支付SDK让支付触手可及：[https://gitee.com/javen205/IJPay](https://gitee.com/javen205/IJPay)
+- `IJPay` 支付 SDK 让支付触手可及：[https://gitee.com/javen205/IJPay](https://gitee.com/javen205/IJPay)
 
 ## 鸣谢
 感谢 `如梦技术VIP群` 小伙伴们的支持。

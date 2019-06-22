@@ -1,5 +1,5 @@
 ## mica-bom
-`mica-bom`，可以简化依赖和依赖版本统一处理，避免jar冲突。
+`mica-bom`，可以简化依赖和依赖版本统一处理，避免 jar 冲突。
 
 ### Maven
 ```xml

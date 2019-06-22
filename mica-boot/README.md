@@ -2,8 +2,8 @@
 ## 功能
 1. 异步配置
 2. 异常处理
-3. swagger配置
-4. jackson配置
+3. swagger 配置
+4. jackson 配置
 5. 文件上传配置
 6. 请求日志
 7. `url` 版本号处理
@@ -19,7 +19,7 @@
 3. ... ...
 
 ### 不是用网关，单体应用
-拦截器处理，基于 redis 的 cache 时间或者 RateLimiter处理。
+拦截器处理，基于 redis 的 cache 时间或者 RateLimiter 处理。
 
 结构：serviceName:http-cache:/user/1?queryString If-Modified-Since
 结构：serviceName:RateLimiter:/user/1 99
