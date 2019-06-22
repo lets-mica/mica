@@ -34,7 +34,7 @@ import java.security.NoSuchAlgorithmException;
  * @author L.cm
  */
 @UtilityClass
-public class DigestUtil extends org.springframework.util.DigestUtils {
+public class DigestUtil {
 	private static final char[] HEX_CODE = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
 	/**

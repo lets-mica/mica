@@ -52,7 +52,7 @@ public class MicaFeignClientsRegistrar implements ImportBeanDefinitionRegistrar,
 
 	@Override
 	public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
-		registerFeignClients(metadata, registry);
+		registerFeignClients(registry);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class MicaFeignClientsRegistrar implements ImportBeanDefinitionRegistrar,
 		this.beanClassLoader = classLoader;
 	}
 
-	private void registerFeignClients(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
+	private void registerFeignClients(BeanDefinitionRegistry registry) {
 		List<String> feignClients = SpringFactoriesLoader.loadFactoryNames(getSpringFactoriesLoaderFactoryClass(), getBeanClassLoader());
 		// 如果 spring.factories 里为空
 		if (feignClients.isEmpty()) {

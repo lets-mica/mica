@@ -79,7 +79,7 @@ public class ClassUtil extends org.springframework.util.ClassUtils {
 		// If we are dealing with method with generic parameters, find the original method.
 		specificMethod = BridgeMethodResolver.findBridgedMethod(specificMethod);
 		// 先找方法，再找方法上的类
-		A annotation = AnnotatedElementUtils.findMergedAnnotation(specificMethod, annotationType);;
+		A annotation = AnnotatedElementUtils.findMergedAnnotation(specificMethod, annotationType);
 		if (null != annotation) {
 			return annotation;
 		}
