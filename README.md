@@ -90,6 +90,9 @@
 - 可设置选择的 ip 或者 ip 段，例如：`172.21.0.*`、`172.21.0.8*`。
 - 可设定 `tag`，用于灰度，匹配：`nacos.discovery.metadata.tag`。
 
+### mica-plus-social
+- `mica-social` 自动化配置。
+
 ## 已知问题
 lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861
 
