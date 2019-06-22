@@ -14,8 +14,6 @@ import org.springframework.web.util.UriComponentsBuilder;
  * 微软登录
  *
  * @author yangkai.shen (https://xkcoding.com), L.cm
- * @version 1.5
- * @since 1.5
  */
 public class AuthMicrosoftRequest extends BaseAuthRequest {
 	public AuthMicrosoftRequest(AuthConfig config) {

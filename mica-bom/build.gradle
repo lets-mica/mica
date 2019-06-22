@@ -29,6 +29,7 @@ dependencyManagement {
         dependency "net.dreamlu:mica-plus-mongo:${VERSION}"
         dependency "net.dreamlu:mica-plus-swagger:${VERSION}"
         dependency "net.dreamlu:mica-plus-ribbon:${VERSION}"
+        dependency "net.dreamlu:mica-plus-social:${VERSION}"
         // commons
         dependency "com.google.code.findbugs:jsr305:${findbugsVersion}"
         dependency "io.springfox:springfox-swagger2:${swaggerVersion}"

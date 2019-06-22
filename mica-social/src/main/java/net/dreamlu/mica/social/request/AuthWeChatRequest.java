@@ -16,8 +16,6 @@ import org.springframework.web.util.UriComponentsBuilder;
  * 微信登录
  *
  * @author yangkai.shen (https://xkcoding.com), L.cm
- * @version 1.0
- * @since 1.8
  */
 public class AuthWeChatRequest extends BaseAuthRequest {
 	public AuthWeChatRequest(AuthConfig config) {

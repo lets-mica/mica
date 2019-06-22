@@ -13,8 +13,6 @@ import org.springframework.web.util.UriComponentsBuilder;
  * Google登录
  *
  * @author yangkai.shen (https://xkcoding.com), L.cm
- * @version 1.3
- * @since 1.3
  */
 public class AuthGoogleRequest extends BaseAuthRequest {
 

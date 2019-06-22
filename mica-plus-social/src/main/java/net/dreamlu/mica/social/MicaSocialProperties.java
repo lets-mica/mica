@@ -18,9 +18,10 @@ package net.dreamlu.mica.social;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import net.dreamlu.mica.social.config.AuthConfig;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * 第三方社交登录配置
@@ -32,33 +33,120 @@ import net.dreamlu.mica.social.config.AuthConfig;
 @RefreshScope
 @ConfigurationProperties("mica.social")
 public class MicaSocialProperties {
+
 	/**
 	 * QQ 配置
 	 */
+	@NestedConfigurationProperty
 	private AuthConfig qq;
+
+	/**
+	 * baidu 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig baidu;
+
+	/**
+	 * weibo 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig weibo;
+
+	/**
+	 * oschina 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig oschina;
+
+	/**
+	 * gitee 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig gitee;
 
 	/**
 	 * github 配置
 	 */
+	@NestedConfigurationProperty
 	private AuthConfig github;
 
 	/**
 	 * 微信 配置
 	 */
+	@NestedConfigurationProperty
 	private AuthConfig wechat;
 
 	/**
 	 * Google 配置
 	 */
+	@NestedConfigurationProperty
 	private AuthConfig google;
+
+	/**
+	 * facebook 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig facebook;
+
+	/**
+	 * linkedin 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig linkedin;
 
 	/**
 	 * Microsoft 配置
 	 */
+	@NestedConfigurationProperty
 	private AuthConfig microsoft;
 
 	/**
 	 * Mi 配置
 	 */
+	@NestedConfigurationProperty
 	private AuthConfig mi;
+
+	/**
+	 * csdn 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig csdn;
+
+
+	/**
+	 * coding 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig coding;
+
+	/**
+	 * tencentCloud 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig tencentCloud;
+
+	/**
+	 * alipay 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig alipay;
+
+	/**
+	 * douyin 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig douyin;
+
+	/**
+	 * toutiao 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig toutiao;
+
+	/**
+	 * dingTalk 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig dingTalk;
+
 }

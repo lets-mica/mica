@@ -33,7 +33,7 @@ public class AuthMiRequest extends BaseAuthRequest {
 			.queryParam("client_id", config.getClientId())
 			.queryParam("redirect_uri", config.getRedirectUri())
 			.queryParam("state", state)
-			.queryParam("scope", "user/profile%20user/openIdV2%20user/phoneAndEmail")
+			.queryParam("scope", "1%203%204%206")
 			// 默认值为true，授权有效期内的用户在已登录情况下，不显示授权页面，直接通过。如果需要用户每次手动授权，设置为false
 //			.queryParam("skip_confirm", "false")
 			.build()

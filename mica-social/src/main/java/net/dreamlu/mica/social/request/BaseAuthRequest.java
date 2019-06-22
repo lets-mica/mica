@@ -72,7 +72,6 @@ public abstract class BaseAuthRequest implements AuthRequest {
 	 */
 	protected HttpResponse doPostAuthorizationCode(String code) {
 		return HttpRequest.post(authSource.accessToken())
-			.log()
 			.query("code", code)
 			.query("client_id", config.getClientId())
 			.query("client_secret", config.getClientSecret())
@@ -89,7 +88,6 @@ public abstract class BaseAuthRequest implements AuthRequest {
 	 */
 	protected HttpResponse doGetAuthorizationCode(String code) {
 		return HttpRequest.get(authSource.accessToken())
-			.log()
 			.query("code", code)
 			.query("client_id", config.getClientId())
 			.query("client_secret", config.getClientSecret())
