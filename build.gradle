@@ -67,9 +67,9 @@ configure(subprojects - project(":mica-bom")) {
 }
 
 def getRepositoryUsername() {
-    return hasProperty('NEXUS_OSS_USER_NAME') ? NEXUS_OSS_USER_NAME : ""
+    return hasProperty('NEXUS_OSS_USER_NAME') ? NEXUS_OSS_USER_NAME : System.getenv('NEXUS_OSS_USER_NAME')
 }
 
 def getRepositoryPassword() {
-    return hasProperty('NEXUS_OSS_PASS_WORD') ? NEXUS_OSS_PASS_WORD : ""
+    return hasProperty('NEXUS_OSS_PASS_WORD') ? NEXUS_OSS_PASS_WORD : System.getenv('NEXUS_OSS_PASS_WORD')
 }
