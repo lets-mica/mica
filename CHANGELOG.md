@@ -1,7 +1,7 @@
 # 变更记录
 
 ## 发行版本
-### [1.1.3] - 2019-05-16
+### v1.1.3 - 2019-05-16
 - :sparkles: 完善 `mica-plus-redis` `MicaRedisCache`.
 - :sparkles: 提高 webflux 的日志和 `ReactiveRequestContextFilter` 排序，方便在 spring cloud gateway 中使用.
 - :sparkles: 调整验证码 base64，加上 base64 图片前缀.
@@ -11,7 +11,7 @@
 - :arrow_up: 升级 `swagger-bootstrap-ui` 到 1.9.4.
 - :arrow_up: 升级 `Spring cloud` 版本到 `Greenwich.SR1`.
 
-### [1.1.2] - 2019-06-05
+### v1.1.2 - 2019-06-05
 - :sparkles: 添加 `mica-plus-swagger` 组件，改用 `swagger-bootstrap-ui`。
 - :sparkles: 项目启动完成之后停止控制台日志打印。
 - :zap: 优化 `MicaBeanCopier` 避免 copy 代码未改包造成的出错。
@@ -31,7 +31,7 @@
 - :arrow_up: 升级 Spring boot 到 2.1.5.RELEASE
 - :arrow_up: 升级 mica-auto 到 1.1.0
 
-### [1.1.1] - 2019-05-11
+### v1.1.1 - 2019-05-11
 - :zap: 减少部分阿里巴巴规范问题。
 - :zap: 优化日志，dev 环境日志，不按内存切分，不使用gz压缩，避免每次本地重启生成日志文件。
 - :zap: 优化 StackTraceAsString 中 FastStringWriter 初始容量为200。
@@ -40,7 +40,7 @@
 - :zap: Try 添加 Runnable、Callable、Comparator 的 Lambda 受检异常处理。
 - :bug: 修复日期添加和减少的bug IW2IM。
 
-### [1.1.0] - 2019-04-26
+### v1.1.0 - 2019-04-26
 - :zap: 将 mica 版本写入 banner.txt。
 - :mute: nacos 日志影响了gateway 和 webflux 的日志，调高级别。
 - :zap: 优化 Servlet 和 Webflux 请求日志打印效果。
@@ -54,7 +54,7 @@
 - :sparkles: 开源 `mica-plus-mongo` 模块。
 - :sparkles: 添加Validated Get、Create、Update、DeleteGroup。
 
-### [1.0.1] - 2019-04-03
+### v1.0.1 - 2019-04-03
 - :ok_hand: 处理几处 P3C 代码检查问题。@冷冷
 - :zap: 优化泛型，避免部分环境下的编译问题。
 - :sparkles: 添加 lutool 中的 renderJson。
@@ -62,7 +62,7 @@
 - :zap: 优化 RuntimeUtil，提高性能。
 - :zap: 升级 gradle 到 `5.3.1`。
 
-### [1.0.0] - 2019-03-20
+### v1.0.0 - 2019-03-20
 - :bug: 修复 `webflux` 下不支持的配置。
 - :zap: 异常 event `requestUrl` 拼接 `queryString`，添加 `requestMethod` 参数。
 - :zap: 调整环境处理和请求日志，方便动态调整。
@@ -71,13 +71,13 @@
 - :heavy_plus_sign: 添加 `lutool` 中的资源读取工具。
 - :zap: 优化文件下载。
 
-### [0.0.1-RC4] - 2019-03-13
+### v0.0.1-RC4 - 2019-03-13
 - :heavy_plus_sign: webflux url 版本号和 header版本处理。
 - :heavy_plus_sign: webflux 异常统一处理，未知异常发送 Event 事件，方便监听收集。
 - :heavy_plus_sign: webflux 枚举转换，规则同 jackson。
 - :heavy_plus_sign: webflux RequestContextHolder，方便获取 webflux request。
 
-### [0.0.1-RC3] - 2019-03-05
+### v0.0.1-RC3 - 2019-03-05
 - :zap: 优化 base64 验证码。可完美结合 mica-pro redis cache name # 号分割超时。
 - :loud_sound: 优化`请求日志`，避免并发下顺序错乱。
 - :pushpin: 升级 `mica-auto`。
@@ -88,12 +88,12 @@
 - :zap: 优化日志，`spring boot admin` 中显示 `info` 日志。
 - :zap: 升级 gradle 版本到 `5.2.1`。
 
-### [0.0.1-RC2] - 2019-02-19
+### v0.0.1-RC2 - 2019-02-19
 - 修复 `PathUtil` 导包问题。
 - 优化 `mica props`。
 - 优化 `Bean copy` 逻辑。
 
-### [0.0.1-RC1] - 2019-01-23
+### v0.0.1-RC1 - 2019-01-23
 #### 初始化项目
 - `mica-bom` 依赖 bom。
 - `mica-core` mica 核心工具集。
