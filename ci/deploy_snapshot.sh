@@ -3,7 +3,7 @@
 set -e -u
 
 function gradle_publish() {
-    ./gradlew clean bulid publish
+    ./gradlew clean build publish
 }
 
 if [ "$TRAVIS_REPO_SLUG" == "lets-mica/mica" ] && \
