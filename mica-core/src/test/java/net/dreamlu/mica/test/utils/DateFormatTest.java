@@ -3,6 +3,7 @@ package net.dreamlu.mica.test.utils;
 import net.dreamlu.mica.core.utils.DateUtil;
 import net.dreamlu.mica.core.utils.Try;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.text.ParseException;
@@ -42,6 +43,7 @@ public class DateFormatTest {
 	}
 
 	@Test
+	@Ignore
 	public void test2() throws InterruptedException {
 		Set<String> dateSet = new TreeSet<>();
 		ExecutorService executorService = Executors.newFixedThreadPool(10);
