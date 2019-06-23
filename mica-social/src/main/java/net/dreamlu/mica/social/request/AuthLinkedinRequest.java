@@ -71,7 +71,7 @@ public class AuthLinkedinRequest extends BaseAuthRequest {
 		String userName = firstName + " " + lastName;
 
 		// 获取用户头像
-		String avatar = userInfoObject.get("/profilePicture/displayImage~/elements/0/identifiers/0/identifier").asText();
+		String avatar = userInfoObject.at("/profilePicture/displayImage~/elements/0/identifiers/0/identifier").asText();
 
 		// 获取用户邮箱地址
 		String email = this.getUserEmail(accessToken);
@@ -88,12 +88,13 @@ public class AuthLinkedinRequest extends BaseAuthRequest {
 
 	private String getUserEmail(String accessToken) {
 		return HttpRequest.get("https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))")
+			.log()
 			.addHeader("Host", "api.linkedin.com")
 			.addHeader("Connection", "Keep-Alive")
 			.addHeader("Authorization", "Bearer " + accessToken)
 			.execute()
 			.asJsonNode()
-			.at("/elements/0/handle~/emailAddress")
+			.at("/elements/0/handle~0/emailAddress")
 			.asText();
 	}
 
@@ -141,7 +142,7 @@ public class AuthLinkedinRequest extends BaseAuthRequest {
 		return AuthToken.builder()
 			.accessToken(jsonNode.get("access_token").asText())
 			.expireIn(jsonNode.get("expires_in").asInt())
-			.refreshToken(jsonNode.get("refresh_token").asText())
+			.refreshToken(jsonNode.at("/refresh_token").asText())
 			.build();
 	}
 }

@@ -14,8 +14,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
- * @version 1.0
- * @since 1.8
  */
 @Getter
 public abstract class BaseAuthRequest implements AuthRequest {

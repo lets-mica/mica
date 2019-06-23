@@ -8,8 +8,6 @@ import org.junit.Test;
 
 /**
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
- * @version 1.0
- * @since 1.8
  */
 @Ignore
 public class AuthRequestTest {
@@ -185,6 +183,20 @@ public class AuthRequestTest {
 	@Test
 	public void microsoftTest() {
 		AuthRequest authRequest = new AuthMicrosoftRequest(AuthConfig.builder()
+			.clientId("clientId")
+			.clientSecret("clientSecret")
+			.redirectUri("redirectUri")
+			.build());
+		// 返回授权页面，可自行调整
+		String authorize = authRequest.authorize();
+		System.out.println(authorize);
+		// 授权登录后会返回一个code，用这个code进行登录
+		AuthResponse login = authRequest.login("code");
+	}
+
+	@Test
+	public void linkedinTest() {
+		AuthRequest authRequest = new AuthLinkedinRequest(AuthConfig.builder()
 			.clientId("clientId")
 			.clientSecret("clientSecret")
 			.redirectUri("redirectUri")
