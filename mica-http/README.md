@@ -26,7 +26,7 @@ private String getUserEmail(String accessToken) {
             .log()
             .execute()
             .asJsonNode()
-            .at("/elements/0/handle~/emailAddress")
+            .at("/elements/0/handle~0/emailAddress")
             .asText();
 }
 
