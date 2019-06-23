@@ -41,6 +41,8 @@ import java.util.concurrent.TimeUnit;
  */
 public final class HttpLoggingInterceptor implements Interceptor {
 	private static final Charset UTF8 = StandardCharsets.UTF_8;
+	private final Logger logger;
+	private volatile MicaLogLevel level = MicaLogLevel.NONE;
 
 	public interface Logger {
 		/**
@@ -53,10 +55,6 @@ public final class HttpLoggingInterceptor implements Interceptor {
 	public HttpLoggingInterceptor(Logger logger) {
 		this.logger = logger;
 	}
-
-	private final Logger logger;
-
-	private volatile MicaLogLevel level = MicaLogLevel.NONE;
 
 	/**
 	 * Change the level at which this interceptor logs.
@@ -166,7 +164,8 @@ public final class HttpLoggingInterceptor implements Interceptor {
 
 		if (logHeaders) {
 			Headers headers = response.headers();
-			for (int i = 0, count = headers.size(); i < count; i++) {
+			int count = headers.size();
+			for (int i = 0; i < count; i++) {
 				logger.log(headers.name(i) + ": " + headers.value(i));
 			}
 

@@ -34,6 +34,12 @@ import java.util.stream.Stream;
  */
 @UtilityClass
 public class StringUtil extends org.springframework.util.StringUtils {
+	/**
+	 * 随机字符串因子
+	 */
+	private static final String INT_STR = "0123456789";
+	private static final String STR_STR = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	private static final String ALL_STR = INT_STR + STR_STR;
 
 	/**
 	 * 首字母变小写
@@ -344,13 +350,6 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	public static String escapeHtml(String html) {
 		return HtmlUtils.htmlEscape(html);
 	}
-
-	/**
-	 * 随机字符串因子
- 	 */
-	private static final String INT_STR = "0123456789";
-	private static final String STR_STR = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	private static final String ALL_STR = INT_STR + STR_STR;
 
 	/**
 	 * 随机数生成

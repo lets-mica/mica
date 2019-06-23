@@ -86,6 +86,18 @@ public enum MicaLogLevel {
 	 */
 	BODY(3);
 
+	/**
+	 * 请求日志配置前缀
+	 */
+	public static final String REQ_LOG_PROPS_PREFIX = "mica.log.request";
+	/**
+	 * 控制台日志是否启用
+	 */
+	public static final String CONSOLE_LOG_ENABLED_PROP = "mica.log.console.enabled";
+
+	/**
+	 * 级别
+	 */
 	private int level;
 
 	/**
@@ -98,12 +110,4 @@ public enum MicaLogLevel {
 		return this.level <= level.level;
 	}
 
-	/**
-	 * 请求日志配置前缀
-	 */
-	public static final String REQ_LOG_PROPS_PREFIX = "mica.log.request";
-	/**
-	 * 控制台日志是否启用
-	 */
-	public static final String CONSOLE_LOG_ENABLED_PROP = "mica.log.console.enabled";
 }

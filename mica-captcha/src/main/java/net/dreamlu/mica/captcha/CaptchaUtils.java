@@ -112,7 +112,8 @@ public class CaptchaUtils {
 				degree = degree * (-1);
 			}
 			//定义坐标
-			int x = 22 * i, y = 21;
+			int x = 22 * i;
+			int y = 21;
 			//旋转区域
 			double radians = Math.toRadians(degree);
 			g.rotate(radians, x, y);
