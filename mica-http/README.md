@@ -1,4 +1,4 @@
-# mica-okhttp
+# mica-http
 `mica-http` 是 `okhttp` 的封装，Fluent 语法的 http 工具包，语法参考 HttpClient Fluent API。
 
 ## 使用
