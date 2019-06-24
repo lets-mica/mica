@@ -90,9 +90,9 @@
         <Logger name="net.dreamlu.mica.reactive.logger" level="INFO"/>
         <Logger name="net.dreamlu.mica.http.logger" level="INFO"/>
         <!-- business 业务日志 -->
-        <Logger name="BUSINESS" level="INFO" additivity="false">
+        <AsyncLogger name="BUSINESS" level="INFO" additivity="false">
             <AppenderRef ref="BusinessRollingFile"/>
-        </Logger>
+        </AsyncLogger>
         <AsyncRoot level="INFO" includeLocation="true" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="RollingFile"/>
