@@ -45,6 +45,7 @@ public class HttpRequest {
 	private RequestBody requestBody;
 	private Boolean followRedirects;
 	private HttpLoggingInterceptor.Level level;
+	private CookieJar cookieJar;
 	private Interceptor interceptor;
 	private Authenticator authenticator;
 	private Duration connectTimeout;
@@ -175,6 +176,9 @@ public class HttpRequest {
 		if (this.interceptor != null) {
 			builder.addInterceptor(this.interceptor);
 		}
+		if (this.cookieJar != null) {
+			builder.cookieJar(cookieJar);
+		}
 		if (this.followRedirects != null) {
 			builder.followSslRedirects(this.followRedirects);
 		}
@@ -264,6 +268,11 @@ public class HttpRequest {
 
 	public HttpRequest interceptor(Interceptor interceptor) {
 		this.interceptor = interceptor;
+		return this;
+	}
+
+	public HttpRequest cookieManager(CookieJar cookieJar) {
+		this.cookieJar = cookieJar;
 		return this;
 	}
 
