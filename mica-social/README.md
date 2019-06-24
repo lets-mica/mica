@@ -5,28 +5,28 @@
 `mica-social` 参考了 `JustAuth` 和我之前的 [`JFinal-oauth2.0-login`](https://gitee.com/596392912/JFinal-oauth2.0-login)
 
 ## API 列表
-|  :computer: 平台  | 测试通过 |
-|:------:|--------|
-|  gitee  | ✔️ |
-|  github  | ✔️ |
-|  weibo  | ✔️ |
-|  dingtalk  | ✔️ |
-|  baidu  | ✔️ |
-|  coding  | 未申请应用 |
-|  tencentCloud  | ✔️ |
-|  oschina  | ✔️ |
-|  alipay  | 未申请应用 |
-|  qq  | ✔️ |
-|  wechat  | ✔️ |
-|  taobao  | 未申请应用 |
-|  google  | ✔️ |
-|  facebook  | ✔️ |
-|  douyin  | 未申请应用 |
-|  linkedin  | ✔️ |
-|  microsoft  | ✔️ |
-|  mi  | ✔️ |
-|  toutiao  | 未申请应用 |
-|  csdn  | 未申请应用 |
+|  :computer: 平台  | 测试通过 | 类 |
+|:------:|--------|--------|
+|  gitee  | ✔️ | AuthGiteeRequest |
+|  github  | ✔️ | AuthGithubRequest |
+|  weibo  | ✔️ | AuthWeiboRequest |
+|  dingtalk  | ✔️ | AuthDingTalkRequest |
+|  baidu  | ✔️ | AuthBaiduRequest |
+|  coding  | 未申请应用 | AuthCodingRequest |
+|  tencentCloud  | ✔️ | AuthTencentCloudRequest |
+|  oschina  | ✔️ | AuthOschinaRequest |
+|  alipay  | 未申请应用 | AuthAlipayRequest |
+|  qq  | ✔️ | AuthQqRequest |
+|  wechat  | ✔️ | AuthWeChatRequest |
+|  taobao  | 未申请应用 | AuthTaobaoRequest |
+|  google  | ✔️ | AuthGoogleRequest |
+|  facebook  | ✔️ | AuthFacebookRequest |
+|  douyin  | 未申请应用 | AuthDouyinRequest |
+|  linkedin  | ✔️ | AuthLinkedinRequest |
+|  microsoft  | ✔️ | AuthMicrosoftRequest |
+|  mi  | ✔️ | AuthMiRequest |
+|  toutiao  | 未申请应用 | AuthToutiaoRequest |
+|  csdn  | 未申请应用 | AuthCsdnRequest |
 
 `注`：CSDN 的授权开放平台已经下线。so, 本项目中的 CSDN 登录只能针对少部分用户使用。
 
