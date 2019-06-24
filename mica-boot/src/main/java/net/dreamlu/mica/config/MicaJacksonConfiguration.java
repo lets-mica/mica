@@ -41,7 +41,7 @@ import java.util.TimeZone;
 public class MicaJacksonConfiguration {
 
 	@Bean
-	public Jackson2ObjectMapperBuilderCustomizer customizer() {
+	public Jackson2ObjectMapperBuilderCustomizer micaJacksonCustomizer() {
 		return builder -> {
 			builder.locale(Locale.CHINA);
 			builder.timeZone(TimeZone.getTimeZone(ZoneId.systemDefault()));

@@ -32,8 +32,10 @@ import java.util.List;
 @Getter
 @Setter
 @RefreshScope
-@ConfigurationProperties("mica.ribbon.rule")
+@ConfigurationProperties(MicaRibbonRuleProperties.PROPERTIES_PREFIX)
 public class MicaRibbonRuleProperties {
+	public static final String PROPERTIES_PREFIX = "mica.ribbon.rule";
+
 	/**
 	 * 是否开启，默认：true
 	 */

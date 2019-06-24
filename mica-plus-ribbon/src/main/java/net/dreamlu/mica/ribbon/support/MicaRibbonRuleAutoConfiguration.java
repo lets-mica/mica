@@ -41,7 +41,7 @@ import org.springframework.context.annotation.Scope;
 @ConditionalOnClass(NacosServer.class)
 @AutoConfigureBefore(RibbonClientConfiguration.class)
 @EnableConfigurationProperties(MicaRibbonRuleProperties.class)
-@ConditionalOnProperty(value = "mica.ribbon.rule.enabled", matchIfMissing = true)
+@ConditionalOnProperty(value = MicaRibbonRuleProperties.PROPERTIES_PREFIX + ".enabled", matchIfMissing = true)
 public class MicaRibbonRuleAutoConfiguration {
 
 	@Bean

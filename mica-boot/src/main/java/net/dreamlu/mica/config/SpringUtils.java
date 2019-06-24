@@ -43,9 +43,16 @@ public class SpringUtils implements ApplicationContextAware {
 	}
 
 	@Nullable
+	@SuppressWarnings("unchecked")
+	public static <T> T getBean(String beanName){
+		if (context == null) { return null; }
+		return (T) context.getBean(beanName);
+	}
+
+	@Nullable
 	public static <T> T getBean(String beanName, Class<T> clazz) {
 		if (context == null) { return null; }
-		return (T) context.getBean(beanName, clazz);
+		return context.getBean(beanName, clazz);
 	}
 
 	@Nullable
