@@ -41,7 +41,7 @@
         <Logger name="net.dreamlu.mica.reactive.logger" level="INFO"/>
         <Logger name="net.dreamlu.mica.http.logger" level="INFO"/>
         <!-- business 业务日志 -->
-        <AsyncLogger name="BUSINESS" level="INFO" additivity="false">
+        <AsyncLogger name="BUSINESS" level="INFO" includeLocation="true" additivity="false">
             <AppenderRef ref="BusinessRollingFile"/>
         </AsyncLogger>
         <AsyncRoot level="WARN" includeLocation="true" additivity="false">
