@@ -19,9 +19,12 @@ package net.dreamlu.mica.social;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.request.*;
 import net.dreamlu.mica.social.utils.AuthConfigChecker;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 
 /**
  * 第三方社交登录自动配置
@@ -33,6 +36,7 @@ import org.springframework.context.annotation.Configuration;
 public class MicaSocialAutoConfiguration {
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthQqRequest authQqRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getQq();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -42,6 +46,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthBaiduRequest authBaiduRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getBaidu();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -51,6 +56,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthWeiboRequest authWeiboRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getWeibo();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -60,6 +66,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthWeChatRequest weChatRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getWechat();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -69,6 +76,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthGithubRequest authGithubRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getGithub();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -78,6 +86,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthGiteeRequest authGiteeRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getGitee();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -87,6 +96,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthCodingRequest authCodingRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getCoding();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -96,6 +106,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthTencentCloudRequest authTencentCloudRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getTencentCloud();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -105,6 +116,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthOschinaRequest authOschinaRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getOschina();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -114,6 +126,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthGoogleRequest authGoogleRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getGoogle();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -123,6 +136,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthFacebookRequest authFacebookRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getFacebook();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -132,6 +146,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthLinkedinRequest authLinkedinRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getLinkedin();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -141,6 +156,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthToutiaoRequest authToutiaoRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getToutiao();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -150,6 +166,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthCsdnRequest authCsdnRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getCsdn();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -159,6 +176,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthMiRequest authMiRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getMi();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -168,6 +186,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthMicrosoftRequest authMicrosoftRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getMicrosoft();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -177,6 +196,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthAlipayRequest authAlipayRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getAlipay();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -186,6 +206,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthDingTalkRequest authDingTalkRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getDingTalk();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
@@ -195,6 +216,7 @@ public class MicaSocialAutoConfiguration {
 	}
 
 	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public AuthDouyinRequest authDouyinRequest(MicaSocialProperties properties) {
 		AuthConfig authConfig = properties.getDouyin();
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
