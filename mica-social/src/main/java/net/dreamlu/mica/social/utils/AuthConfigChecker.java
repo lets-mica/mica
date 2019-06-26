@@ -17,7 +17,8 @@ public class AuthConfigChecker {
 	 * @return true or false
 	 */
 	public static boolean isSupportedAuth(AuthConfig config) {
-		return StringUtil.isNotBlank(config.getClientId())
+		return config != null
+			&& StringUtil.isNotBlank(config.getClientId())
 			&& StringUtil.isNotBlank(config.getClientSecret())
 			&& StringUtil.isNotBlank(config.getRedirectUri());
 	}
