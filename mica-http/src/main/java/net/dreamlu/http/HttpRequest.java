@@ -17,6 +17,7 @@
 package net.dreamlu.http;
 
 import net.dreamlu.mica.core.utils.JsonUtil;
+import net.dreamlu.mica.core.utils.UrlUtil;
 import okhttp3.*;
 import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -112,6 +113,11 @@ public class HttpRequest {
 		return this;
 	}
 
+	public HttpRequest queryEncoded(String name, String value) {
+		this.uriBuilder.queryParam(UrlUtil.encode(name), UrlUtil.encode(value));
+		return this;
+	}
+
 	HttpRequest form(FormBody formBody) {
 		this.requestBody = formBody;
 		return this;
@@ -185,7 +191,7 @@ public class HttpRequest {
 		// 设置 User-Agent
 		this.requestBuilder.header("User-Agent", userAgent);
 		// url
-		requestBuilder.url(uriBuilder.toUriString());
+		requestBuilder.url(uriBuilder.build().toUriString());
 		String method = this.httpMethod;
 		Request request;
 		if (HttpMethod.requiresRequestBody(method) && requestBody == null) {

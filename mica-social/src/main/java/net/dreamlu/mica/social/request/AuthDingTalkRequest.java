@@ -54,7 +54,6 @@ public class AuthDingTalkRequest extends BaseAuthRequest {
 		Map<String, Object> bodyJson = new HashMap<>(1);
 		bodyJson.put("tmp_auth_code", code);
 		JsonNode object = HttpRequest.post(authSource.userInfo())
-			.log()
 			.query("signature", urlEncodeSignature)
 			.query("timestamp", timestamp)
 			.query("accessKey", config.getClientId())
