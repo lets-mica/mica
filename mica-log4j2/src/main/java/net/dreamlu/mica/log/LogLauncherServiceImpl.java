@@ -22,6 +22,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 
+import java.util.Properties;
+
 /**
  * 日志启动器
  *
@@ -34,13 +36,16 @@ public class LogLauncherServiceImpl implements LauncherService {
 		// 读取系统配置的日志目录，默认为项目下 logs
 		String logBase = env.getProperty("LOGGING_PATH", "logs");
 		// 用于 spring boot admin 中展示日志
-		System.setProperty("logging.file", String.format("%s/%s/info.log", logBase, appName));
+		Properties properties = System.getProperties();
+		properties.setProperty("logging.file", String.format("%s/%s/info.log", logBase, appName));
 		// 配置区分环境的日志
-		System.setProperty("logging.config", String.format("classpath:log/log4j2_%s.xml", micaEnv.getLogFileLevel()));
+		properties.setProperty("logging.config", String.format("classpath:log/log4j2_%s.xml", micaEnv.getLogFileLevel()));
 		// RocketMQ-Client 4.2.0 Log4j2 配置文件冲突问题解决：https://www.jianshu.com/p/b30ae6dd3811
-		System.setProperty("rocketmq.client.log.loadconfig", "false");
+		properties.setProperty("rocketmq.client.log.loadconfig", "false");
 		//  RocketMQ-Client 4.3 设置默认为 slf4j
-		System.setProperty("rocketmq.client.logUseSlf4j", "true");
+		properties.setProperty("rocketmq.client.logUseSlf4j", "true");
+		// 关闭 nacos 默认的 log 配置
+		properties.setProperty("nacos.logging.default.config.enabled", "false");
 	}
 
 	@Override

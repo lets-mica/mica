@@ -38,6 +38,8 @@ dependencyManagement {
         dependency "io.springfox:springfox-bean-validators:${swaggerVersion}"
         dependency "io.protostuff:protostuff-runtime:${protostuffVersion}"
         dependency "io.protostuff:protostuff-core:${protostuffVersion}"
+        dependency "com.squareup.okhttp3:okhttp:${okhttpVersion}"
+        dependency "com.squareup.okhttp3:logging-interceptor:${okhttpVersion}"
         dependency "org.projectlombok:lombok:${lombokVersion}"
     }
 }
