@@ -29,6 +29,7 @@ import java.util.Map;
  * @author L.cm
  */
 public class MetadataAwarePredicate extends DiscoveryEnabledPredicate {
+	public static final MetadataAwarePredicate INSTANCE = new MetadataAwarePredicate();
 
 	@Override
 	protected boolean apply(NacosServer server) {

@@ -35,10 +35,9 @@ import java.util.List;
  * @author dream.lu
  */
 public class MetadataAwareRule extends DiscoveryEnabledRule {
-	private static final MetadataAwarePredicate INSTANCE = new MetadataAwarePredicate();
 
 	public MetadataAwareRule() {
-		this(INSTANCE);
+		this(MetadataAwarePredicate.INSTANCE);
 	}
 
 	public MetadataAwareRule(DiscoveryEnabledPredicate predicate) {
