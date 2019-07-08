@@ -322,6 +322,17 @@ public class $ {
 	}
 
 	/**
+	 * 清理字符串，清理出某些不可见字符和一些sql特殊字符
+	 *
+	 * @param txt 文本
+	 * @return {String}
+	 */
+	@Nullable
+	public static String cleanText(@Nullable String txt) {
+		return StringUtil.cleanText(txt);
+	}
+
+	/**
 	 * 安全的 equals
 	 *
 	 * @param o1 first Object to compare

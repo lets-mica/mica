@@ -25,6 +25,7 @@ import org.springframework.web.util.HtmlUtils;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
@@ -35,6 +36,10 @@ import java.util.stream.Stream;
 @UtilityClass
 public class StringUtil extends org.springframework.util.StringUtils {
 	/**
+	 * 特殊字符正则，sql特殊字符和空白符
+	 */
+	private final static Pattern SPECIAL_CHARS_REGEX = Pattern.compile("[`'\"|/,;()-+*%#·•�　\\s]");
+	/**
 	 * 随机字符串因子
 	 */
 	private static final String INT_STR = "0123456789";
@@ -43,6 +48,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 
 	/**
 	 * 首字母变小写
+	 *
 	 * @param str 字符串
 	 * @return {String}
 	 */
@@ -58,6 +64,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 
 	/**
 	 * 首字母变大写
+	 *
 	 * @param str 字符串
 	 * @return {String}
 	 */
@@ -114,6 +121,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 
 	/**
 	 * 有 任意 一个 Blank
+	 *
 	 * @param css CharSequence
 	 * @return boolean
 	 */
@@ -126,6 +134,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 
 	/**
 	 * 是否全非 Blank
+	 *
 	 * @param css CharSequence
 	 * @return boolean
 	 */
@@ -138,6 +147,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 
 	/**
 	 * 判断一个字符串是否是数字
+	 *
 	 * @param cs the CharSequence to check, may be null
 	 * @return {boolean}
 	 */
@@ -145,7 +155,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		if (StringUtil.isBlank(cs)) {
 			return false;
 		}
-		for ( int i = cs.length(); --i >= 0; ) {
+		for (int i = cs.length(); --i >= 0; ) {
 			int chr = cs.charAt(i);
 			if (chr < 48 || chr > 57) {
 				return false;
@@ -156,11 +166,11 @@ public class StringUtil extends org.springframework.util.StringUtils {
 
 	/**
 	 * 将字符串中特定模式的字符转换成map中对应的值
-	 *
+	 * <p>
 	 * use: format("my name is ${name}, and i like ${like}!", {"name":"L.cm", "like": "Java"})
 	 *
 	 * @param message 需要转换的字符串
-	 * @param params 转换所需的键值对集合
+	 * @param params  转换所需的键值对集合
 	 * @return 转换后的字符串
 	 */
 	public static String format(@Nullable String message, @Nullable Map<String, Object> params) {
@@ -173,13 +183,13 @@ public class StringUtil extends org.springframework.util.StringUtils {
 			return message;
 		}
 		// 替换变量
-		StringBuilder sb = new StringBuilder((int)(message.length() * 1.5));
+		StringBuilder sb = new StringBuilder((int) (message.length() * 1.5));
 		int cursor = 0;
-		for (int start, end; (start = message.indexOf(StringPool.DOLLAR_LEFT_BRACE, cursor)) != -1 && (end = message.indexOf(CharPool.RIGHT_BRACE, start)) != -1;) {
+		for (int start, end; (start = message.indexOf(StringPool.DOLLAR_LEFT_BRACE, cursor)) != -1 && (end = message.indexOf(CharPool.RIGHT_BRACE, start)) != -1; ) {
 			sb.append(message, cursor, start);
 			String key = message.substring(start + 2, end);
 			Object value = params.get(StringUtil.trimWhitespace(key));
-			sb.append(value == null ? StringPool.EMPTY: value);
+			sb.append(value == null ? StringPool.EMPTY : value);
 			cursor = end + 1;
 		}
 		sb.append(message.substring(cursor));
@@ -188,10 +198,10 @@ public class StringUtil extends org.springframework.util.StringUtils {
 
 	/**
 	 * 同 log 格式的 format 规则
-	 *
+	 * <p>
 	 * use: format("my name is {}, and i like {}!", "L.cm", "Java")
 	 *
-	 * @param message 需要转换的字符串
+	 * @param message   需要转换的字符串
 	 * @param arguments 需要替换的变量
 	 * @return 转换后的字符串
 	 */
@@ -204,7 +214,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		if (arguments == null || arguments.length == 0) {
 			return message;
 		}
-		StringBuilder sb = new StringBuilder((int)(message.length() * 1.5));
+		StringBuilder sb = new StringBuilder((int) (message.length() * 1.5));
 		int cursor = 0;
 		int index = 0;
 		int argsLength = arguments.length;
@@ -267,7 +277,8 @@ public class StringUtil extends org.springframework.util.StringUtils {
 
 	/**
 	 * 分割 字符串
-	 * @param str 字符串
+	 *
+	 * @param str       字符串
 	 * @param delimiter 分割符
 	 * @return 字符串数组
 	 */
@@ -277,7 +288,8 @@ public class StringUtil extends org.springframework.util.StringUtils {
 
 	/**
 	 * 分割 字符串 删除常见 空白符
-	 * @param str 字符串
+	 *
+	 * @param str       字符串
 	 * @param delimiter 分割符
 	 * @return 字符串数组
 	 */
@@ -289,10 +301,11 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * 字符串是否符合指定的 表达式
 	 *
 	 * <p>
-	 *     pattern styles: "xxx*", "*xxx", "*xxx*" and "xxx*yyy"
+	 * pattern styles: "xxx*", "*xxx", "*xxx*" and "xxx*yyy"
 	 * </p>
+	 *
 	 * @param pattern 表达式
-	 * @param str 字符串
+	 * @param str     字符串
 	 * @return 是否匹配
 	 */
 	public static boolean simpleMatch(@Nullable String pattern, @Nullable String str) {
@@ -303,10 +316,11 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * 字符串是否符合指定的 表达式
 	 *
 	 * <p>
-	 *     pattern styles: "xxx*", "*xxx", "*xxx*" and "xxx*yyy"
+	 * pattern styles: "xxx*", "*xxx", "*xxx*" and "xxx*yyy"
 	 * </p>
+	 *
 	 * @param patterns 表达式 数组
-	 * @param str 字符串
+	 * @param str      字符串
 	 * @return 是否匹配
 	 */
 	public static boolean simpleMatch(@Nullable String[] patterns, String str) {
@@ -326,8 +340,8 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		formatUnsignedLong(lsb, buf, 20, 12);
 		formatUnsignedLong(lsb >>> 48, buf, 16, 4);
 		formatUnsignedLong(msb, buf, 12, 4);
-		formatUnsignedLong(msb >>> 16, buf, 8,  4);
-		formatUnsignedLong(msb >>> 32, buf, 0,  8);
+		formatUnsignedLong(msb >>> 16, buf, 8, 4);
+		formatUnsignedLong(msb >>> 32, buf, 0, 8);
 		return new String(buf, Charsets.UTF_8);
 	}
 
@@ -349,6 +363,20 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 */
 	public static String escapeHtml(String html) {
 		return HtmlUtils.htmlEscape(html);
+	}
+
+	/**
+	 * 清理字符串，清理出某些不可见字符和一些sql特殊字符
+	 *
+	 * @param txt 文本
+	 * @return {String}
+	 */
+	@Nullable
+	public static String cleanText(@Nullable String txt) {
+		if (txt == null) {
+			return null;
+		}
+		return SPECIAL_CHARS_REGEX.matcher(txt).replaceAll(StringPool.EMPTY);
 	}
 
 	/**
