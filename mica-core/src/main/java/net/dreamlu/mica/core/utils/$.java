@@ -333,6 +333,17 @@ public class $ {
 	}
 
 	/**
+	 * 获取标识符，用于参数清理
+	 *
+	 * @param param 参数
+	 * @return 清理后的标识符
+	 */
+	@Nullable
+	public static String cleanIdentifier(@Nullable String param) {
+		return StringUtil.cleanIdentifier(param);
+	}
+
+	/**
 	 * 安全的 equals
 	 *
 	 * @param o1 first Object to compare

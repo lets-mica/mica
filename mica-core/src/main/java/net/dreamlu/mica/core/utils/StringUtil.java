@@ -380,6 +380,27 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
+	 * 获取标识符，用于参数清理
+	 *
+	 * @param param 参数
+	 * @return 清理后的标识符
+	 */
+	@Nullable
+	public static String cleanIdentifier(@Nullable String param) {
+		if (param == null) {
+			return null;
+		}
+		StringBuilder paramBuilder = new StringBuilder();
+		for (int i = 0; i < param.length(); i++) {
+			char c = param.charAt(i);
+			if (Character.isJavaIdentifierPart(c)) {
+				paramBuilder.append(c);
+			}
+		}
+		return paramBuilder.toString();
+	}
+
+	/**
 	 * 随机数生成
 	 *
 	 * @param count 字符长度
