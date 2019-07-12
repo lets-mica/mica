@@ -39,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 public class HttpRequest {
 	private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36";
 	private static OkHttpClient httpClient = new OkHttpClient();
+	private static HttpLoggingInterceptor globalLoggingInterceptor = null;
 	private final Request.Builder requestBuilder;
 	private final UriComponentsBuilder uriBuilder;
 	private final String httpMethod;
@@ -172,9 +173,9 @@ public class HttpRequest {
 			builder.proxy(this.proxy);
 		}
 		if (this.level != null && HttpLoggingInterceptor.Level.NONE != this.level) {
-			HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(Slf4jLogger.INSTANCE);
-			loggingInterceptor.setLevel(level);
-			builder.addInterceptor(loggingInterceptor);
+			builder.addInterceptor(getLoggingInterceptor(level));
+		} else if (globalLoggingInterceptor != null) {
+			builder.addInterceptor(globalLoggingInterceptor);
 		}
 		if (this.authenticator != null) {
 			builder.authenticator(authenticator);
@@ -257,13 +258,19 @@ public class HttpRequest {
 		return this;
 	}
 
+	private static HttpLoggingInterceptor getLoggingInterceptor(HttpLoggingInterceptor.Level level) {
+		HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(Slf4jLogger.INSTANCE);
+		loggingInterceptor.setLevel(level);
+		return loggingInterceptor;
+	}
+
 	public HttpRequest log() {
 		this.level = HttpLoggingInterceptor.Level.BODY;
 		return this;
 	}
 
-	public HttpRequest log(HttpLoggingInterceptor.Level level) {
-		this.level = level;
+	public HttpRequest log(LogLevel logLevel) {
+		this.level = logLevel.getLevel();
 		return this;
 	}
 
@@ -310,5 +317,9 @@ public class HttpRequest {
 
 	public static void setHttpClient(OkHttpClient httpClient) {
 		HttpRequest.httpClient = httpClient;
+	}
+
+	public static void setGlobalLog(LogLevel logLevel) {
+		HttpRequest.globalLoggingInterceptor = getLoggingInterceptor(logLevel.getLevel());
 	}
 }
