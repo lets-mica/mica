@@ -17,6 +17,7 @@
 package net.dreamlu.mica.launcher;
 
 import net.dreamlu.mica.core.utils.CollectionUtil;
+import net.dreamlu.mica.core.utils.SystemUtil;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.*;
@@ -32,10 +33,6 @@ import java.util.function.Function;
  * @author L.cm
  */
 public class MicaApplication {
-	/**
-	 * 代码部署于 linux 上，工作默认为 mac 和 Windows
-	 */
-	private static final String OS_NAME_LINUX = "LINUX";
 
 	/**
 	 * Create an application context
@@ -94,7 +91,8 @@ public class MicaApplication {
 		String startJarPath = MicaApplication.class.getResource("/").getPath().split("!")[0];
 		String activePros = joinFun.apply(activeProfileList.toArray());
 		System.err.println(String.format("---[%s]---启动中，读取到的环境变量:[%s]，jar地址:[%s]---", appName, activePros, startJarPath));
-		boolean isLocalDev = MicaApplication.isLocalDev();
+		// 代码部署于 linux 上，工作默认为 mac 和 Windows
+		boolean isLocalDev = SystemUtil.isLocalDev();
 		// 设定到 sys 中供 log4j2 中使用 yml 配置无效
 		System.setProperty("spring.application.name", appName);
 		System.setProperty("mica.env", profile);
@@ -114,13 +112,4 @@ public class MicaApplication {
 		return builder;
 	}
 
-	/**
-	 * 判断是否为本地开发环境
-	 *
-	 * @return boolean
-	 */
-	public static boolean isLocalDev() {
-		String osName = System.getProperty("os.name");
-		return StringUtils.hasText(osName) && !(OS_NAME_LINUX.equals(osName.toUpperCase()));
-	}
 }

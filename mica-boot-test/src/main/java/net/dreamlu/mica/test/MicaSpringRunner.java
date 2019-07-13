@@ -17,8 +17,8 @@
 package net.dreamlu.mica.test;
 
 import net.dreamlu.mica.core.utils.CollectionUtil;
+import net.dreamlu.mica.core.utils.SystemUtil;
 import net.dreamlu.mica.launcher.LauncherService;
-import net.dreamlu.mica.launcher.MicaApplication;
 import net.dreamlu.mica.launcher.MicaEnv;
 import org.junit.runners.model.InitializationError;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -52,7 +52,7 @@ public class MicaSpringRunner extends SpringJUnit4ClassRunner {
 		}
 		String appName = micaBootTest.appName();
 		String profile = micaBootTest.profile();
-		boolean isLocalDev = MicaApplication.isLocalDev();
+		boolean isLocalDev = SystemUtil.isLocalDev();
 		Properties props = System.getProperties();
 		props.setProperty("spring.application.name", appName);
 		props.setProperty("spring.profiles.active", profile);
