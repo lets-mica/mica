@@ -1,7 +1,15 @@
 # 变更记录
 
 ## 发行版本
-### v1.1.3 - 2019-05-16
+### v1.1.5 - 2019-07-14
+注意：1.1.3 和 1.1.4 第三方登录，钉钉都有签名问题，请使用最新的 `1.1.5`.
+- :zap: 关闭 nacos 默认的 log 配置.
+- :sparkles: mica-http 添加 `queryEncoded` 方法.
+- :sparkles: mica-http 添加 `HttpRequest.setGlobalLog` 方法，并优化日志级别枚举.
+- :bug: mica-bom 中添加 okhttp 版本.
+- :bug: 钉钉登录.
+
+### v1.1.3 - 2019-06-16
 - :sparkles: 完善 `mica-plus-redis` 添加 `MicaRedisCache` Bean，使用同 `redis` 命令.
 - :sparkles: `redis` 序列化方式可配置化.
 - :sparkles: 提高 webflux 的日志和 `ReactiveRequestContextFilter` 排序，方便在 spring cloud gateway 中使用.
