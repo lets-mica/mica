@@ -37,8 +37,8 @@ public class AuthFacebookRequest extends BaseAuthRequest {
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
 		JsonNode object = HttpRequest.get(authSource.userInfo())
-			.query("access_token", accessToken)
-			.query("fields", "id,name,birthday,gender,hometown,email,devices,picture.width(400)")
+			.queryEncoded("access_token", accessToken)
+			.queryEncoded("fields", "id,name,birthday,gender,hometown,email,devices,picture.width(400)")
 			.execute()
 			.asJsonNode();
 		if (object.has("error")) {

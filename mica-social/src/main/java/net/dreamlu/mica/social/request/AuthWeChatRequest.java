@@ -51,9 +51,9 @@ public class AuthWeChatRequest extends BaseAuthRequest {
 		String accessToken = authToken.getAccessToken();
 		String openId = authToken.getOpenId();
 		JsonNode object = HttpRequest.get(authSource.userInfo())
-			.query("access_token", accessToken)
-			.query("openid", openId)
-			.query("lang", "zh_CN")
+			.queryEncoded("access_token", accessToken)
+			.queryEncoded("openid", openId)
+			.queryEncoded("lang", "zh_CN")
 			.execute()
 			.asJsonNode();
 		this.checkResponse(object);
@@ -74,9 +74,9 @@ public class AuthWeChatRequest extends BaseAuthRequest {
 	@Override
 	public AuthResponse refresh(AuthToken oldToken) {
 		JsonNode jsonNode = HttpRequest.get(authSource.refresh())
-			.query("appid", config.getClientId())
-			.query("grant_type", "refresh_token")
-			.query("refresh_token", oldToken.getRefreshToken())
+			.queryEncoded("appid", config.getClientId())
+			.queryEncoded("grant_type", "refresh_token")
+			.queryEncoded("refresh_token", oldToken.getRefreshToken())
 			.execute()
 			.asJsonNode();
 		return AuthResponse.builder()
@@ -121,11 +121,11 @@ public class AuthWeChatRequest extends BaseAuthRequest {
 	@Override
 	protected HttpResponse doGetAuthorizationCode(String code) {
 		return HttpRequest.get(authSource.accessToken())
-			.query("code", code)
-			.query("appid", config.getClientId())
-			.query("secret", config.getClientSecret())
-			.query("grant_type", "authorization_code")
-			.query("redirect_uri", config.getRedirectUri())
+			.queryEncoded("code", code)
+			.queryEncoded("appid", config.getClientId())
+			.queryEncoded("secret", config.getClientSecret())
+			.queryEncoded("grant_type", "authorization_code")
+			.queryEncoded("redirect_uri", config.getRedirectUri())
 			.execute();
 	}
 }

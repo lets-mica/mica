@@ -46,8 +46,8 @@ public class AuthDouyinRequest extends BaseAuthRequest {
 		String accessToken = authToken.getAccessToken();
 		String openId = authToken.getOpenId();
 		JsonNode object = HttpRequest.get(authSource.userInfo())
-			.query("access_token", accessToken)
-			.query("open_id", openId)
+			.queryEncoded("access_token", accessToken)
+			.queryEncoded("open_id", openId)
 			.execute()
 			.asJsonNode();
 		JsonNode userInfoObject = this.checkResponse(object);
@@ -69,9 +69,9 @@ public class AuthDouyinRequest extends BaseAuthRequest {
 	@Override
 	public AuthResponse refresh(AuthToken oldToken) {
 		JsonNode jsonNode = HttpRequest.post(authSource.refresh())
-			.query("client_key", config.getClientId())
-			.query("refresh_token", oldToken.getRefreshToken())
-			.query("grant_type", "refresh_token")
+			.queryEncoded("client_key", config.getClientId())
+			.queryEncoded("refresh_token", oldToken.getRefreshToken())
+			.queryEncoded("grant_type", "refresh_token")
 			.execute()
 			.asJsonNode();
 		return AuthResponse.builder()

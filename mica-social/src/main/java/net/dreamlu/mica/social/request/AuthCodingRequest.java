@@ -48,7 +48,7 @@ public class AuthCodingRequest extends BaseAuthRequest {
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
 		JsonNode jsonNode = HttpRequest.get(authSource.userInfo())
-			.query("access_token", accessToken)
+			.queryEncoded("access_token", accessToken)
 			.execute()
 			.asJsonNode();
 		if (jsonNode.get("code").asInt() != 0) {

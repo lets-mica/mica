@@ -38,7 +38,7 @@ public class AuthGithubRequest extends BaseAuthRequest {
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
 		JsonNode object = HttpRequest.get(authSource.userInfo())
-			.query("access_token", accessToken)
+			.queryEncoded("access_token", accessToken)
 			.execute()
 			.asJsonNode();
 		return AuthUser.builder()

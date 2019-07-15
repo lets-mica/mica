@@ -45,7 +45,7 @@ public class AuthLinkedinRequest extends BaseAuthRequest {
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getAccessToken();
 		JsonNode userInfoObject = HttpRequest.get(authSource.userInfo())
-			.query("projection", "(id,firstName,lastName,profilePicture(displayImage~:playableStreams))")
+			.queryEncoded("projection", "(id,firstName,lastName,profilePicture(displayImage~:playableStreams))")
 			.addHeader("Host", "api.linkedin.com")
 			.addHeader("Connection", "Keep-Alive")
 			.addHeader("Authorization", "Bearer " + accessToken)
@@ -88,7 +88,6 @@ public class AuthLinkedinRequest extends BaseAuthRequest {
 
 	private String getUserEmail(String accessToken) {
 		return HttpRequest.get("https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))")
-			.log()
 			.addHeader("Host", "api.linkedin.com")
 			.addHeader("Connection", "Keep-Alive")
 			.addHeader("Authorization", "Bearer " + accessToken)
@@ -113,10 +112,10 @@ public class AuthLinkedinRequest extends BaseAuthRequest {
 			throw new AuthException(ResponseStatus.UNSUPPORTED);
 		}
 		JsonNode jsonNode = HttpRequest.post(authSource.refresh())
-			.query("client_id", config.getClientId())
-			.query("client_secret", config.getClientSecret())
-			.query("refresh_token", oldToken.getRefreshToken())
-			.query("grant_type", "refresh_token")
+			.queryEncoded("client_id", config.getClientId())
+			.queryEncoded("client_secret", config.getClientSecret())
+			.queryEncoded("refresh_token", oldToken.getRefreshToken())
+			.queryEncoded("grant_type", "refresh_token")
 			.execute()
 			.asJsonNode();
 		return AuthResponse.builder()

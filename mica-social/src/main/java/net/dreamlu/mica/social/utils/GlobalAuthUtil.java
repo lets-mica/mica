@@ -18,7 +18,7 @@ public class GlobalAuthUtil {
 
 	public static String generateDingTalkSignature(String timestamp, String secret) {
 		byte[] hmacSha256Bytes = DigestUtil.hmacSha256(timestamp, secret);
-		return UrlUtil.encode(Base64Util.encodeToString(hmacSha256Bytes));
+		return Base64Util.encodeToString(hmacSha256Bytes);
 	}
 
 	public static Map<String, String> parseStringToMap(String paramsStr) {

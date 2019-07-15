@@ -42,8 +42,8 @@ public class AuthWeiboRequest extends BaseAuthRequest {
 		String uid = authToken.getUid();
 		String oauthParam = String.format("uid=%s&access_token=%s", uid, accessToken);
 		JsonNode jsonNode = HttpRequest.get(authSource.userInfo())
-			.query("uid", uid)
-			.query("access_token", accessToken)
+			.queryEncoded("uid", uid)
+			.queryEncoded("access_token", accessToken)
 			.addHeader("Authorization", "OAuth2 " + oauthParam)
 			.addHeader("API-RemoteIP", INetUtil.getHostIp())
 			.execute()

@@ -70,11 +70,11 @@ public abstract class BaseAuthRequest implements AuthRequest {
 	 */
 	protected HttpResponse doPostAuthorizationCode(String code) {
 		return HttpRequest.post(authSource.accessToken())
-			.query("code", code)
-			.query("client_id", config.getClientId())
-			.query("client_secret", config.getClientSecret())
-			.query("grant_type", "authorization_code")
-			.query("redirect_uri", config.getRedirectUri())
+			.queryEncoded("code", code)
+			.queryEncoded("client_id", config.getClientId())
+			.queryEncoded("client_secret", config.getClientSecret())
+			.queryEncoded("grant_type", "authorization_code")
+			.queryEncoded("redirect_uri", config.getRedirectUri())
 			.execute();
 	}
 
@@ -86,11 +86,11 @@ public abstract class BaseAuthRequest implements AuthRequest {
 	 */
 	protected HttpResponse doGetAuthorizationCode(String code) {
 		return HttpRequest.get(authSource.accessToken())
-			.query("code", code)
-			.query("client_id", config.getClientId())
-			.query("client_secret", config.getClientSecret())
-			.query("grant_type", "authorization_code")
-			.query("redirect_uri", config.getRedirectUri())
+			.queryEncoded("code", code)
+			.queryEncoded("client_id", config.getClientId())
+			.queryEncoded("client_secret", config.getClientSecret())
+			.queryEncoded("grant_type", "authorization_code")
+			.queryEncoded("redirect_uri", config.getRedirectUri())
 			.execute();
 	}
 

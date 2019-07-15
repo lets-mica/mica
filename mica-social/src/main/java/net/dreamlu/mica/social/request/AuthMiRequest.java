@@ -68,9 +68,8 @@ public class AuthMiRequest extends BaseAuthRequest {
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		// 获取用户信息
 		JsonNode userProfile = HttpRequest.get(authSource.userInfo())
-			.log()
-			.query("clientId", config.getClientId())
-			.query("token", authToken.getAccessToken())
+			.queryEncoded("clientId", config.getClientId())
+			.queryEncoded("token", authToken.getAccessToken())
 			.execute()
 			.asJsonNode();
 
@@ -93,8 +92,8 @@ public class AuthMiRequest extends BaseAuthRequest {
 		// 获取用户邮箱手机号等信息
 		// {"result":"error","code":96007,"description":"scope是无效的、未知的，或格式不正确的"}
 		JsonNode userEmailPhone = HttpRequest.get("https://open.account.xiaomi.com/user/phoneAndEmail")
-			.query("clientId", config.getClientId())
-			.query("token", authToken.getAccessToken())
+			.queryEncoded("clientId", config.getClientId())
+			.queryEncoded("token", authToken.getAccessToken())
 			.execute()
 			.asJsonNode();
 
@@ -113,11 +112,11 @@ public class AuthMiRequest extends BaseAuthRequest {
 	@Override
 	public AuthResponse refresh(AuthToken authToken) {
 		String result = HttpRequest.get(authSource.refresh())
-			.query("client_id", config.getClientId())
-			.query("client_secret", config.getClientSecret())
-			.query("redirect_uri", config.getRedirectUri())
-			.query("refresh_token", authToken.getRefreshToken())
-			.query("grant_type", "refresh_token")
+			.queryEncoded("client_id", config.getClientId())
+			.queryEncoded("client_secret", config.getClientSecret())
+			.queryEncoded("redirect_uri", config.getRedirectUri())
+			.queryEncoded("refresh_token", authToken.getRefreshToken())
+			.queryEncoded("grant_type", "refresh_token")
 			.execute()
 			.asString();
 		return AuthResponse.builder().code(ResponseStatus.SUCCESS.getCode()).data(getToken(result)).build();

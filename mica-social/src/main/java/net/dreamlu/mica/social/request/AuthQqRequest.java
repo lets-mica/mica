@@ -73,7 +73,7 @@ public class AuthQqRequest extends BaseAuthRequest {
 
 	private String getOpenId(String accessToken, AuthToken authToken) {
 		HttpResponse response = HttpRequest.get("https://graph.qq.com/oauth2.0/me")
-			.query("access_token", accessToken)
+			.queryEncoded("access_token", accessToken)
 			.execute();
 		if (response.isOk()) {
 			String body = response.asString();
@@ -92,10 +92,10 @@ public class AuthQqRequest extends BaseAuthRequest {
 	private JsonNode getUserInfo(String accessToken, String openId) {
 		// {"ret":0,"msg":"","nickname":"YOUR_NICK_NAME",...}
 		return HttpRequest.get(authSource.userInfo())
-			.query("access_token", accessToken)
-			.query("oauth_consumer_key", config.getClientId())
-			.query("openid", openId)
-			.query("format", "json")
+			.queryEncoded("access_token", accessToken)
+			.queryEncoded("oauth_consumer_key", config.getClientId())
+			.queryEncoded("openid", openId)
+			.queryEncoded("format", "json")
 			.execute()
 			.asJsonNode();
 	}

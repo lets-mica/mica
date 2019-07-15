@@ -50,13 +50,13 @@ public class AuthDingTalkRequest extends BaseAuthRequest {
 		String code = authToken.getAccessCode();
 		// 根据timestamp, appSecret计算签名值
 		String timestamp = String.valueOf(System.currentTimeMillis());
-		String urlEncodeSignature = GlobalAuthUtil.generateDingTalkSignature(timestamp, config.getClientSecret());
+		String signature = GlobalAuthUtil.generateDingTalkSignature(timestamp, config.getClientSecret());
 		Map<String, Object> bodyJson = new HashMap<>(1);
 		bodyJson.put("tmp_auth_code", code);
 		JsonNode object = HttpRequest.post(authSource.userInfo())
-			.queryEncoded("signature", urlEncodeSignature)
-			.query("timestamp", timestamp)
-			.query("accessKey", config.getClientId())
+			.query("signature", signature)
+			.queryEncoded("timestamp", timestamp)
+			.queryEncoded("accessKey", config.getClientId())
 			.bodyJson(bodyJson)
 			.execute()
 			.asJsonNode();

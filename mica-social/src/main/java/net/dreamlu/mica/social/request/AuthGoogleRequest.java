@@ -53,7 +53,7 @@ public class AuthGoogleRequest extends BaseAuthRequest {
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getIdToken();
 		JsonNode object = HttpRequest.get(authSource.userInfo())
-			.query("id_token", accessToken)
+			.queryEncoded("id_token", accessToken)
 			.execute()
 			.asJsonNode();
 		return AuthUser.builder()

@@ -38,11 +38,11 @@ public class AuthToutiaoRequest extends BaseAuthRequest {
 	@Override
 	protected AuthToken getAccessToken(String code) {
 		JsonNode object = HttpRequest.get(authSource.accessToken())
-			.query("code", code)
-			.query("client_key", config.getClientId())
-			.query("client_secret", config.getClientSecret())
-			.query("grant_type", "authorization_code")
-			.query("redirect_uri", config.getRedirectUri())
+			.queryEncoded("code", code)
+			.queryEncoded("client_key", config.getClientId())
+			.queryEncoded("client_secret", config.getClientSecret())
+			.queryEncoded("grant_type", "authorization_code")
+			.queryEncoded("redirect_uri", config.getRedirectUri())
 			.execute()
 			.asJsonNode();
 		if (object.has("error_code")) {
@@ -58,8 +58,8 @@ public class AuthToutiaoRequest extends BaseAuthRequest {
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		JsonNode userProfile = HttpRequest.get(authSource.userInfo())
-			.query("client_key", config.getClientId())
-			.query("access_token", authToken.getAccessToken())
+			.queryEncoded("client_key", config.getClientId())
+			.queryEncoded("access_token", authToken.getAccessToken())
 			.execute()
 			.asJsonNode();
 		if (userProfile.has("error_code")) {
