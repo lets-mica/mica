@@ -1,8 +1,11 @@
 package net.dreamlu.mica.social;
 
+import net.dreamlu.http.HttpRequest;
+import net.dreamlu.http.LogLevel;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.model.AuthResponse;
 import net.dreamlu.mica.social.request.*;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -11,6 +14,11 @@ import org.junit.Test;
  */
 @Ignore
 public class AuthRequestTest {
+
+	@Before
+	public void setUp() {
+		HttpRequest.setGlobalLog(LogLevel.BODY);
+	}
 
 	@Test
 	public void giteeTest() {
