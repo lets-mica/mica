@@ -1,6 +1,7 @@
 package net.dreamlu.mica.social.request;
 
 import net.dreamlu.mica.core.utils.StringUtil;
+import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthResponse;
 import net.dreamlu.mica.social.model.AuthToken;
@@ -11,6 +12,15 @@ import net.dreamlu.mica.social.model.AuthToken;
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
  */
 public interface AuthRequest {
+
+	/**
+	 * 获取 AuthSource
+	 *
+	 * @return AuthSource
+	 */
+	default AuthSource getAuthSource() {
+		return null;
+	}
 
 	/**
 	 * 返回认证url，可自行跳转页面，state 使用的 uuid，不太建议忽略 state 校验

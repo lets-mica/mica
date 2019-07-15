@@ -35,13 +35,13 @@ private AuthRequestFactory requestFactory;
 
 @GetMapping("auth/{source}")
 public String auth(@PathVariable String source) {
-	BaseAuthRequest authRequest = requestFactory.get(source);
+	AuthRequest authRequest = requestFactory.get(source);
     return "redirect:" + authRequest.authorize();
 }
 
 @GetMapping("callback/{source}")
 public String callback(@PathVariable String source, String code) {
-	BaseAuthRequest authRequest = requestFactory.get(source);
+	AuthRequest authRequest = requestFactory.get(source);
 	AuthResponse authResponse = authRequest.login(code);
     // 业务代码
     
