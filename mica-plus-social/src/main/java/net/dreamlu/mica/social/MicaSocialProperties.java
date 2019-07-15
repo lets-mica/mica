@@ -144,6 +144,12 @@ public class MicaSocialProperties {
 	private AuthConfig toutiao;
 
 	/**
+	 * taobao 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig taobao;
+
+	/**
 	 * dingTalk 配置
 	 */
 	@NestedConfigurationProperty

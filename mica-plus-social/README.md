@@ -30,16 +30,18 @@ mica:
 ### 构造授权地址
 ```java
 @Autowired
-private AuthQqRequest authRequest;
+private AuthRequestFactory requestFactory;
 
 
-@GetMapping("auth/qq")
-public String auth() {
+@GetMapping("auth/{source}")
+public String auth(@PathVariable String source) {
+	BaseAuthRequest authRequest = requestFactory.get(source);
     return "redirect:" + authRequest.authorize();
 }
 
-@GetMapping("callback/qq")
-public String callback(String code) {
+@GetMapping("callback/{source}")
+public String callback(@PathVariable String source, String code) {
+	BaseAuthRequest authRequest = requestFactory.get(source);
 	AuthResponse authResponse = authRequest.login(code);
     // 业务代码
     
@@ -47,7 +49,7 @@ public String callback(String code) {
 ```
 
 ### API 列表
-|  :computer: 平台  | 测试通过 | 类 |
+|  :computer: source(平台)  | 测试通过 | 类 |
 |:------:|--------|--------|
 |  gitee  | ✔️ | AuthGiteeRequest |
 |  github  | ✔️ | AuthGithubRequest |
@@ -55,7 +57,7 @@ public String callback(String code) {
 |  dingtalk  | ✔️ | AuthDingTalkRequest |
 |  baidu  | ✔️ | AuthBaiduRequest |
 |  coding  | 未申请应用 | AuthCodingRequest |
-|  tencentCloud  | ✔️ | AuthTencentCloudRequest |
+|  tencent_cloud  | ✔️ | AuthTencentCloudRequest |
 |  oschina  | ✔️ | AuthOschinaRequest |
 |  alipay  | 未申请应用 | AuthAlipayRequest |
 |  qq  | ✔️ | AuthQqRequest |

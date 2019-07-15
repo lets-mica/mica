@@ -1,5 +1,6 @@
 package net.dreamlu.mica.social.config;
 
+import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.request.ResponseStatus;
 
@@ -461,4 +462,22 @@ public enum AuthSource {
 		throw new AuthException(ResponseStatus.UNSUPPORTED);
 	}
 
+	/**
+	 * 构造枚举
+	 *
+	 * @param source 字符串
+	 * @return 枚举
+	 */
+	public static AuthSource of(String source) {
+		if (StringUtil.isBlank(source)) {
+			return null;
+		}
+		AuthSource[] values = AuthSource.values();
+		for (AuthSource value : values) {
+			if (value.name().equals(source.toUpperCase())) {
+				return value;
+			}
+		}
+		return null;
+	}
 }
