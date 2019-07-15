@@ -17,11 +17,9 @@
 package net.dreamlu.http;
 
 import net.dreamlu.mica.core.utils.JsonUtil;
-import net.dreamlu.mica.core.utils.UrlUtil;
 import okhttp3.*;
 import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -41,7 +39,7 @@ public class HttpRequest {
 	private static OkHttpClient httpClient = new OkHttpClient();
 	private static HttpLoggingInterceptor globalLoggingInterceptor = null;
 	private final Request.Builder requestBuilder;
-	private final UriComponentsBuilder uriBuilder;
+	private final HttpUrl.Builder uriBuilder;
 	private final String httpMethod;
 	private String userAgent;
 	private RequestBody requestBody;
@@ -56,66 +54,76 @@ public class HttpRequest {
 	private Proxy proxy;
 
 	public static HttpRequest get(final String url) {
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
-		return new HttpRequest(new Request.Builder(), uriBuilder, Method.GET);
+		HttpUrl httpUrl = HttpUrl.parse(url);
+		return new HttpRequest(new Request.Builder(), httpUrl, Method.GET);
 	}
 
 	public static HttpRequest get(final URI uri) {
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
-		return new HttpRequest(new Request.Builder(), uriBuilder, Method.GET);
+		HttpUrl httpUrl = HttpUrl.get(uri);
+		return new HttpRequest(new Request.Builder(), httpUrl, Method.GET);
 	}
 
 	public static HttpRequest post(final String url) {
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
-		return new HttpRequest(new Request.Builder(), uriBuilder, Method.POST);
+		HttpUrl httpUrl = HttpUrl.parse(url);
+		return new HttpRequest(new Request.Builder(), httpUrl, Method.POST);
 	}
 
 	public static HttpRequest post(final URI uri) {
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
-		return new HttpRequest(new Request.Builder(), uriBuilder, Method.POST);
+		HttpUrl httpUrl = HttpUrl.get(uri);
+		return new HttpRequest(new Request.Builder(), httpUrl, Method.POST);
 	}
 
 	public static HttpRequest patch(final String url) {
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
-		return new HttpRequest(new Request.Builder(), uriBuilder, Method.PATCH);
+		HttpUrl httpUrl = HttpUrl.parse(url);
+		return new HttpRequest(new Request.Builder(), httpUrl, Method.PATCH);
 	}
 
 	public static HttpRequest patch(final URI uri) {
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
-		return new HttpRequest(new Request.Builder(), uriBuilder, Method.PATCH);
+		HttpUrl httpUrl = HttpUrl.get(uri);
+		return new HttpRequest(new Request.Builder(), httpUrl, Method.PATCH);
 	}
 
 	public static HttpRequest put(final String url) {
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
-		return new HttpRequest(new Request.Builder(), uriBuilder, Method.PUT);
+		HttpUrl httpUrl = HttpUrl.parse(url);
+		return new HttpRequest(new Request.Builder(), httpUrl, Method.PUT);
 	}
 
 	public static HttpRequest put(final URI uri) {
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
-		return new HttpRequest(new Request.Builder(), uriBuilder, Method.PUT);
+		HttpUrl httpUrl = HttpUrl.get(uri);
+		return new HttpRequest(new Request.Builder(), httpUrl, Method.PUT);
 	}
 
 	public static HttpRequest delete(final String url) {
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
-		return new HttpRequest(new Request.Builder(), uriBuilder, Method.DELETE);
+		HttpUrl httpUrl = HttpUrl.parse(url);
+		return new HttpRequest(new Request.Builder(), httpUrl, Method.DELETE);
 	}
 
 	public static HttpRequest delete(final URI uri) {
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
-		return new HttpRequest(new Request.Builder(), uriBuilder, Method.DELETE);
+		HttpUrl httpUrl = HttpUrl.get(uri);
+		return new HttpRequest(new Request.Builder(), httpUrl, Method.DELETE);
 	}
 
 	private static RequestBody emptyBody() {
 		return RequestBody.create(null, new byte[0]);
 	}
 
-	public HttpRequest query(String name, Object... values) {
-		this.uriBuilder.queryParam(name, values);
+	public HttpRequest query(String query) {
+		this.uriBuilder.query(query);
 		return this;
 	}
 
-	public HttpRequest queryEncoded(String name, String value) {
-		this.uriBuilder.queryParam(UrlUtil.encode(name), UrlUtil.encode(value));
+	public HttpRequest encodedQuery(String encodedQuery) {
+		this.uriBuilder.encodedQuery(encodedQuery);
+		return this;
+	}
+
+	public HttpRequest query(String name, Object value) {
+		this.uriBuilder.addQueryParameter(name, value == null ? null : String.valueOf(value));
+		return this;
+	}
+
+	public HttpRequest queryEncoded(String encodedName, String encodedValue) {
+		this.uriBuilder.addEncodedQueryParameter(encodedName, encodedValue);
 		return this;
 	}
 
@@ -151,9 +159,9 @@ public class HttpRequest {
 		return bodyString(JsonUtil.toJson(body));
 	}
 
-	private HttpRequest(final Request.Builder requestBuilder, UriComponentsBuilder uriBuilder, String httpMethod) {
+	private HttpRequest(final Request.Builder requestBuilder, HttpUrl httpUrl, String httpMethod) {
 		this.requestBuilder = requestBuilder;
-		this.uriBuilder = uriBuilder;
+		this.uriBuilder = httpUrl.newBuilder();
 		this.httpMethod = httpMethod;
 		this.userAgent = DEFAULT_USER_AGENT;
 	}
@@ -192,7 +200,7 @@ public class HttpRequest {
 		// 设置 User-Agent
 		this.requestBuilder.header("User-Agent", userAgent);
 		// url
-		requestBuilder.url(uriBuilder.build().toUriString());
+		requestBuilder.url(uriBuilder.build());
 		String method = this.httpMethod;
 		Request request;
 		if (HttpMethod.requiresRequestBody(method) && requestBody == null) {
