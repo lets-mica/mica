@@ -395,7 +395,7 @@ public class JsonUtil {
 	 * @return 集合
 	 */
 	@Nullable
-	private static <K, V> Map<K, V> readMap(@Nullable String content, Class<?> keyClass, Class<?> valueClass) {
+	public static <K, V> Map<K, V> readMap(@Nullable String content, Class<?> keyClass, Class<?> valueClass) {
 		if (ObjectUtil.isEmpty(content)) {
 			return Collections.emptyMap();
 		}

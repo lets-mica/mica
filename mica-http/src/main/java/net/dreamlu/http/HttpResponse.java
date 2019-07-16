@@ -73,7 +73,7 @@ public class HttpResponse {
 	}
 
 	public JsonNode asJsonNode() {
-		return JsonUtil.readTree(this.asBytes());
+		return JsonUtil.readTree(this.asStream());
 	}
 
 	public <T> T asObject(Class<T> valueType) {
