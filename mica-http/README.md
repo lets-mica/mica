@@ -18,12 +18,14 @@ compile("net.dreamlu:mica-http:${version}")
 
 ### 示例代码
 ```java
+// 设置全局日志级别
+HttpRequest.setGlobalLog(LogLevel.BODY);
+
 private String getUserEmail(String accessToken) {
     return HttpRequest.get("https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))")
             .addHeader("Host", "api.linkedin.com")
             .addHeader("Connection", "Keep-Alive")
             .addHeader("Authorization", "Bearer " + accessToken)
-            .log()
             .execute()
             .asJsonNode()
             .at("/elements/0/handle~0/emailAddress")
@@ -32,7 +34,7 @@ private String getUserEmail(String accessToken) {
 
 public static void test() {
 	HttpRequest.post("https://www.baidu.com/do-stuff")
-		.log(HttpLoggingInterceptor.Level.BASIC)
+		.log(LogLevel.BASIC)
 		.formBuilder()
 		.add("a", "b")
 		.execute()
