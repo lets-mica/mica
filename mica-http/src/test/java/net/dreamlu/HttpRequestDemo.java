@@ -21,6 +21,7 @@ import net.dreamlu.http.HttpResponse;
 import net.dreamlu.http.LogLevel;
 import net.dreamlu.mica.core.utils.Base64Util;
 
+import java.net.URI;
 import java.time.Duration;
 
 /**
@@ -32,7 +33,7 @@ public class HttpRequestDemo {
 		HttpRequest.setGlobalLog(LogLevel.BODY);
 
 		// Execute a GET with timeout settings and return response content as String.
-		HttpRequest.get("https://www.baidu.com/")
+		HttpRequest.get("")
 			.connectTimeout(Duration.ofSeconds(1000))
 			.query("test", "a")
 			.query("name", "張三")
@@ -44,7 +45,7 @@ public class HttpRequestDemo {
 
 		// Execute a POST with the 'expect-continue' handshake, using HTTP/1.1,
 		// containing a request body as String and return response content as byte array.
-		HttpRequest.post("https://www.baidu.com/do-stuff")
+		HttpRequest.post(URI.create("https://www.baidu.com/do-stuff"))
 			.bodyString("Important stuff")
 			.formBuilder()
 			.add("a", "b")

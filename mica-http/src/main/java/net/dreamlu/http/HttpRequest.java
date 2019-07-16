@@ -22,6 +22,7 @@ import okhttp3.*;
 import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -56,53 +57,43 @@ public class HttpRequest {
 	private Proxy proxy;
 
 	public static HttpRequest get(final String url) {
-		HttpUrl httpUrl = HttpUrl.parse(url);
-		return new HttpRequest(new Request.Builder(), httpUrl, Method.GET);
+		return new HttpRequest(new Request.Builder(), url, Method.GET);
 	}
 
 	public static HttpRequest get(final URI uri) {
-		HttpUrl httpUrl = HttpUrl.get(uri);
-		return new HttpRequest(new Request.Builder(), httpUrl, Method.GET);
+		return get(uri.toString());
 	}
 
 	public static HttpRequest post(final String url) {
-		HttpUrl httpUrl = HttpUrl.parse(url);
-		return new HttpRequest(new Request.Builder(), httpUrl, Method.POST);
+		return new HttpRequest(new Request.Builder(), url, Method.POST);
 	}
 
 	public static HttpRequest post(final URI uri) {
-		HttpUrl httpUrl = HttpUrl.get(uri);
-		return new HttpRequest(new Request.Builder(), httpUrl, Method.POST);
+		return post(uri.toString());
 	}
 
 	public static HttpRequest patch(final String url) {
-		HttpUrl httpUrl = HttpUrl.parse(url);
-		return new HttpRequest(new Request.Builder(), httpUrl, Method.PATCH);
+		return new HttpRequest(new Request.Builder(), url, Method.PATCH);
 	}
 
 	public static HttpRequest patch(final URI uri) {
-		HttpUrl httpUrl = HttpUrl.get(uri);
-		return new HttpRequest(new Request.Builder(), httpUrl, Method.PATCH);
+		return patch(uri.toString());
 	}
 
 	public static HttpRequest put(final String url) {
-		HttpUrl httpUrl = HttpUrl.parse(url);
-		return new HttpRequest(new Request.Builder(), httpUrl, Method.PUT);
+		return new HttpRequest(new Request.Builder(), url, Method.PUT);
 	}
 
 	public static HttpRequest put(final URI uri) {
-		HttpUrl httpUrl = HttpUrl.get(uri);
-		return new HttpRequest(new Request.Builder(), httpUrl, Method.PUT);
+		return put(uri.toString());
 	}
 
 	public static HttpRequest delete(final String url) {
-		HttpUrl httpUrl = HttpUrl.parse(url);
-		return new HttpRequest(new Request.Builder(), httpUrl, Method.DELETE);
+		return new HttpRequest(new Request.Builder(), url, Method.DELETE);
 	}
 
 	public static HttpRequest delete(final URI uri) {
-		HttpUrl httpUrl = HttpUrl.get(uri);
-		return new HttpRequest(new Request.Builder(), httpUrl, Method.DELETE);
+		return delete(uri.toString());
 	}
 
 	private static RequestBody emptyBody() {
@@ -161,7 +152,9 @@ public class HttpRequest {
 		return bodyString(JsonUtil.toJson(body));
 	}
 
-	private HttpRequest(final Request.Builder requestBuilder, HttpUrl httpUrl, String httpMethod) {
+	private HttpRequest(final Request.Builder requestBuilder, String url, String httpMethod) {
+		HttpUrl httpUrl = HttpUrl.parse(url);
+		Assert.notNull(httpUrl, String.format("Url 不能解析: %s: [%s]。", httpMethod.toLowerCase(), url));
 		this.requestBuilder = requestBuilder;
 		this.uriBuilder = httpUrl.newBuilder();
 		this.httpMethod = httpMethod;
