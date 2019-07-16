@@ -33,7 +33,7 @@ public class HttpRequestDemo {
 		HttpRequest.setGlobalLog(LogLevel.BODY);
 
 		// Execute a GET with timeout settings and return response content as String.
-		HttpRequest.get("")
+		HttpRequest.get("https://www.baidu.com")
 			.connectTimeout(Duration.ofSeconds(1000))
 			.query("test", "a")
 			.query("name", "張三")
