@@ -17,6 +17,7 @@
 package net.dreamlu.http;
 
 import okhttp3.FormBody;
+import org.springframework.lang.Nullable;
 
 /**
  * 表单构造器
@@ -32,23 +33,13 @@ public class FormBuilder {
 		this.formBuilder = new FormBody.Builder();
 	}
 
-	public FormBuilder add(String name, String value) {
-		this.formBuilder.add(name, value);
+	public FormBuilder add(String name, @Nullable Object value) {
+		this.formBuilder.add(name, HttpRequest.handleValue(value));
 		return this;
 	}
 
-	public FormBuilder addEncoded(String name, String value) {
-		this.formBuilder.addEncoded(name, value);
-		return this;
-	}
-
-	public FormBuilder add(String name, Object value) {
-		this.add(name, String.valueOf(value));
-		return this;
-	}
-
-	public FormBuilder addEncoded(String name, Object value) {
-		this.addEncoded(name, String.valueOf(value));
+	public FormBuilder addEncoded(String name, @Nullable Object encodedValue) {
+		this.formBuilder.addEncoded(name, HttpRequest.handleValue(encodedValue));
 		return this;
 	}
 

@@ -19,8 +19,8 @@ package net.dreamlu.http;
 import okhttp3.Headers;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import org.springframework.lang.Nullable;
 
-import javax.annotation.Nullable;
 import java.io.File;
 
 /**
@@ -37,13 +37,8 @@ public class MultipartFormBuilder {
 		this.formBuilder = new MultipartBody.Builder();
 	}
 
-	public MultipartFormBuilder add(String name, String value) {
-		this.formBuilder.addFormDataPart(name, value);
-		return this;
-	}
-
-	public MultipartFormBuilder add(String name, Object value) {
-		this.add(name, String.valueOf(value));
+	public MultipartFormBuilder add(String name, @Nullable Object value) {
+		this.formBuilder.addFormDataPart(name, HttpRequest.handleValue(value));
 		return this;
 	}
 

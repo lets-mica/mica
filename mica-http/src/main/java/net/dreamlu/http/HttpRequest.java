@@ -17,9 +17,11 @@
 package net.dreamlu.http;
 
 import net.dreamlu.mica.core.utils.JsonUtil;
+import net.dreamlu.mica.core.utils.StringPool;
 import okhttp3.*;
 import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
+import org.springframework.lang.Nullable;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -117,13 +119,13 @@ public class HttpRequest {
 		return this;
 	}
 
-	public HttpRequest query(String name, Object value) {
+	public HttpRequest query(String name, @Nullable Object value) {
 		this.uriBuilder.addQueryParameter(name, value == null ? null : String.valueOf(value));
 		return this;
 	}
 
-	public HttpRequest queryEncoded(String encodedName, String encodedValue) {
-		this.uriBuilder.addEncodedQueryParameter(encodedName, encodedValue);
+	public HttpRequest queryEncoded(String encodedName, @Nullable Object encodedValue) {
+		this.uriBuilder.addEncodedQueryParameter(encodedName, encodedValue == null ? null : String.valueOf(encodedValue));
 		return this;
 	}
 
@@ -329,5 +331,15 @@ public class HttpRequest {
 
 	public static void setGlobalLog(LogLevel logLevel) {
 		HttpRequest.globalLoggingInterceptor = getLoggingInterceptor(logLevel.getLevel());
+	}
+
+	static String handleValue(@Nullable Object value) {
+		if (value == null) {
+			return StringPool.EMPTY;
+		}
+		if (value instanceof String) {
+			return (String) value;
+		}
+		return String.valueOf(value);
 	}
 }
