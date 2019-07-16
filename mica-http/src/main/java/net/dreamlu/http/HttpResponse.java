@@ -18,11 +18,13 @@ package net.dreamlu.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
+import net.dreamlu.mica.core.utils.Charsets;
 import net.dreamlu.mica.core.utils.JsonUtil;
-import net.dreamlu.mica.core.utils.XmlHelper;
 import okhttp3.MediaType;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import org.jsoup.helper.DataUtil;
+import org.jsoup.nodes.Document;
 
 import java.io.File;
 import java.io.IOException;
@@ -94,8 +96,12 @@ public class HttpResponse {
 		return JsonUtil.readMap(this.asStream(), String.class, valueClass);
 	}
 
-	public XmlHelper asXmlHelper() {
-		return XmlHelper.of(this.asStream());
+	public Document asDocument() {
+		try {
+			return DataUtil.load(this.asStream(), Charsets.UTF_8_NAME, "");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void toFile(File file) {

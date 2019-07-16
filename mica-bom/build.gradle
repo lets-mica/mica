@@ -40,6 +40,7 @@ dependencyManagement {
         dependency "io.protostuff:protostuff-core:${protostuffVersion}"
         dependency "com.squareup.okhttp3:okhttp:${okhttpVersion}"
         dependency "com.squareup.okhttp3:logging-interceptor:${okhttpVersion}"
+        dependency "org.jsoup:jsoup:${jsoupVersion}"
         dependency "org.projectlombok:lombok:${lombokVersion}"
     }
 }
