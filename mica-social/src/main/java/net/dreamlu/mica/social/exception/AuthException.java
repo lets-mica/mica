@@ -1,6 +1,7 @@
 package net.dreamlu.mica.social.exception;
 
 
+import lombok.Getter;
 import net.dreamlu.mica.core.utils.StringPool;
 import net.dreamlu.mica.social.request.ResponseStatus;
 
@@ -9,6 +10,7 @@ import net.dreamlu.mica.social.request.ResponseStatus;
  * @version 1.0
  * @since 1.8
  */
+@Getter
 public class AuthException extends RuntimeException {
 
 	private int errorCode;
@@ -32,11 +34,4 @@ public class AuthException extends RuntimeException {
 		super(message, cause);
 	}
 
-	public int getErrorCode() {
-		return errorCode;
-	}
-
-	public String getErrorMsg() {
-		return errorMsg;
-	}
 }

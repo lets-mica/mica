@@ -1,9 +1,7 @@
 package net.dreamlu.mica.social.utils;
 
 import lombok.experimental.UtilityClass;
-import net.dreamlu.mica.core.utils.Base64Util;
-import net.dreamlu.mica.core.utils.DigestUtil;
-import net.dreamlu.mica.core.utils.UrlUtil;
+import net.dreamlu.mica.core.utils.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,16 +20,16 @@ public class GlobalAuthUtil {
 	}
 
 	public static Map<String, String> parseStringToMap(String paramsStr) {
-		int pathEndPos = paramsStr.indexOf('?');
+		int pathEndPos = paramsStr.indexOf(CharPool.QUESTION_MARK);
 		if (pathEndPos > -1) {
 			paramsStr = paramsStr.split("\\?")[1];
 		}
 		Map<String, String> res = new HashMap<>();
-		if (paramsStr.contains("&")) {
-			String[] fields = paramsStr.split("&");
+		if (paramsStr.contains(StringPool.AMPERSAND)) {
+			String[] fields = paramsStr.split(StringPool.AMPERSAND);
 			for (String field : fields) {
-				if (field.contains("=")) {
-					String[] keyValue = field.split("=");
+				if (field.contains(StringPool.EQUALS)) {
+					String[] keyValue = field.split(StringPool.EQUALS);
 					res.put(UrlUtil.decode(keyValue[0]), keyValue.length == 2 ? UrlUtil.decode(keyValue[1]) : null);
 				}
 			}
