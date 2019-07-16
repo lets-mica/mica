@@ -42,6 +42,16 @@ public class FormBuilder {
 		return this;
 	}
 
+	public FormBuilder add(String name, Object value) {
+		this.add(name, String.valueOf(value));
+		return this;
+	}
+
+	public FormBuilder addEncoded(String name, Object value) {
+		this.addEncoded(name, String.valueOf(value));
+		return this;
+	}
+
 	public HttpRequest build() {
 		FormBody formBody = formBuilder.build();
 		this.request.form(formBody);

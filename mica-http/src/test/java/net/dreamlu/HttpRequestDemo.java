@@ -34,9 +34,9 @@ public class HttpRequestDemo {
 		// Execute a GET with timeout settings and return response content as String.
 		HttpRequest.get("https://www.baidu.com/")
 			.connectTimeout(Duration.ofSeconds(1000))
-			.query("test", "a", "b", "c")
+			.query("test", "a")
 			.query("name", "張三")
-			.query("x", "1", "2")
+			.query("x", 1)
 			.query("abd", Base64Util.encode("123&$#%"))
 			.queryEncoded("abc", Base64Util.encode("123&$#%"))
 			.execute()

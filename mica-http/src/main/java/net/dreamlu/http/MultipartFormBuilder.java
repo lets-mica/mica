@@ -42,6 +42,11 @@ public class MultipartFormBuilder {
 		return this;
 	}
 
+	public MultipartFormBuilder add(String name, Object value) {
+		this.add(name, String.valueOf(value));
+		return this;
+	}
+
 	public MultipartFormBuilder add(String name, File file) {
 		String fileName = file.getName();
 		return add(name, fileName, file);

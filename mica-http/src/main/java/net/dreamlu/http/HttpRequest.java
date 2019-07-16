@@ -112,7 +112,7 @@ public class HttpRequest {
 		return this;
 	}
 
-	public HttpRequest encodedQuery(String encodedQuery) {
+	public HttpRequest queryEncoded(String encodedQuery) {
 		this.uriBuilder.encodedQuery(encodedQuery);
 		return this;
 	}
