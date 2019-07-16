@@ -19,8 +19,8 @@ package net.dreamlu.http;
 import okhttp3.Headers;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import org.springframework.lang.Nullable;
 
+import javax.annotation.Nullable;
 import java.io.File;
 
 /**

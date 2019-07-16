@@ -18,7 +18,6 @@ package net.dreamlu.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import net.dreamlu.mica.core.utils.Charsets;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import okhttp3.MediaType;
 import okhttp3.Response;
@@ -29,6 +28,7 @@ import org.jsoup.nodes.Document;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -98,7 +98,7 @@ public class HttpResponse {
 
 	public Document asDocument() {
 		try {
-			return DataUtil.load(this.asStream(), Charsets.UTF_8_NAME, "");
+			return DataUtil.load(this.asStream(), StandardCharsets.UTF_8.name(), "");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

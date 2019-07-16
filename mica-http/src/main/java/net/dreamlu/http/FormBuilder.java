@@ -17,7 +17,8 @@
 package net.dreamlu.http;
 
 import okhttp3.FormBody;
-import org.springframework.lang.Nullable;
+
+import javax.annotation.Nullable;
 
 /**
  * 表单构造器

@@ -21,9 +21,9 @@ import net.dreamlu.mica.core.utils.StringPool;
 import okhttp3.*;
 import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
