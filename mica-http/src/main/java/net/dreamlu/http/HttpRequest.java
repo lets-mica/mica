@@ -21,7 +21,6 @@ import net.dreamlu.mica.core.utils.StringPool;
 import okhttp3.*;
 import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
-import org.springframework.util.Assert;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -154,7 +153,9 @@ public class HttpRequest {
 
 	private HttpRequest(final Request.Builder requestBuilder, String url, String httpMethod) {
 		HttpUrl httpUrl = HttpUrl.parse(url);
-		Assert.notNull(httpUrl, String.format("Url 不能解析: %s: [%s]。", httpMethod.toLowerCase(), url));
+		if (httpUrl == null) {
+			throw new IllegalArgumentException(String.format("Url 不能解析: %s: [%s]。", httpMethod.toLowerCase(), url));
+		}
 		this.requestBuilder = requestBuilder;
 		this.uriBuilder = httpUrl.newBuilder();
 		this.httpMethod = httpMethod;
