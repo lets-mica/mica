@@ -23,9 +23,13 @@ import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import javax.annotation.Nullable;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.net.ProxySelector;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Map;
@@ -54,6 +58,11 @@ public class HttpRequest {
 	private Duration readTimeout;
 	private Duration writeTimeout;
 	private Proxy proxy;
+	private ProxySelector proxySelector;
+	private Authenticator proxyAuthenticator;
+	private HostnameVerifier hostnameVerifier;
+	private SSLSocketFactory sslSocketFactory;
+	private X509TrustManager trustManager;
 
 	public static HttpRequest get(final String url) {
 		return new HttpRequest(new Request.Builder(), url, Method.GET);
@@ -175,6 +184,18 @@ public class HttpRequest {
 		}
 		if (this.proxy != null) {
 			builder.proxy(this.proxy);
+		}
+		if (this.proxySelector != null) {
+			builder.proxySelector(this.proxySelector);
+		}
+		if (this.proxyAuthenticator != null) {
+			builder.proxyAuthenticator(proxyAuthenticator);
+		}
+		if (this.hostnameVerifier != null) {
+			builder.hostnameVerifier(hostnameVerifier);
+		}
+		if (this.sslSocketFactory != null && this.trustManager != null) {
+			builder.sslSocketFactory(sslSocketFactory, trustManager);
 		}
 		if (this.level != null && HttpLoggingInterceptor.Level.NONE != this.level) {
 			builder.addInterceptor(getLoggingInterceptor(level));
@@ -309,8 +330,29 @@ public class HttpRequest {
 		return this;
 	}
 
-	public HttpRequest viaProxy(final InetSocketAddress address) {
+	public HttpRequest proxy(final InetSocketAddress address) {
 		this.proxy = new Proxy(Proxy.Type.HTTP, address);
+		return this;
+	}
+
+	public HttpRequest proxySelector(final ProxySelector proxySelector) {
+		this.proxySelector = proxySelector;
+		return this;
+	}
+
+	public HttpRequest proxyAuthenticator(final Authenticator proxyAuthenticator) {
+		this.proxyAuthenticator = proxyAuthenticator;
+		return this;
+	}
+
+	public HttpRequest hostnameVerifier(HostnameVerifier hostnameVerifier) {
+		this.hostnameVerifier = hostnameVerifier;
+		return this;
+	}
+
+	public HttpRequest sslSocketFactory(SSLSocketFactory sslSocketFactory, X509TrustManager trustManager) {
+		this.sslSocketFactory = sslSocketFactory;
+		this.trustManager = trustManager;
 		return this;
 	}
 
