@@ -34,7 +34,7 @@ public class HttpRequestDemo {
 	public static void main(String[] args) {
 		HttpRequest.setGlobalLog(LogLevel.BODY);
 
-		// Execute a GET with timeout settings and return response content as String.
+		// 同步，异常时 返回 null
 		String html = HttpRequest.get("www.baidu.com")
 			.connectTimeout(Duration.ofSeconds(1000))
 			.query("test", "a")
@@ -49,8 +49,7 @@ public class HttpRequestDemo {
 			.onSuccess(ResponseSpec::asString);
 		System.out.println(html);
 
-		// Execute a POST with the 'expect-continue' handshake, using HTTP/1.1,
-		// containing a request body as String and return response content as byte array.
+		// 同步调用，返回 Optional，异常时返回 Optional.empty()
 		Optional<String> opt = HttpRequest.post(URI.create("https://www.baidu.com"))
 			.bodyString("Important stuff")
 			.formBuilder()
@@ -58,14 +57,16 @@ public class HttpRequestDemo {
 			.execute()
 			.onSuccessOpt(ResponseSpec::asString);
 
-		// Execute a POST with a custom header through the proxy containing a request body
-		// as an HTML form and save the result to the file
-		HttpResponse httpResponse = HttpRequest.post("https://www.baidu.com/some-form")
+		// 同步，成功时消费（处理） response
+		HttpRequest.post("https://www.baidu.com/some-form")
 			.addHeader("X-Custom-header", "stuff")
-			.execute();
-		System.out.println(httpResponse);
+			.execute()
+			.onSuccessful(responseSpec -> {
+				String text = responseSpec.asString();
+				System.out.println(text);
+			});
 
-		// async，异步执行结果
+		// async，异步执行结果，失败时打印堆栈
 		HttpRequest.get("https://www.baidu.com/some-form")
 			.async()
 			.onSuccessful(System.out::println)

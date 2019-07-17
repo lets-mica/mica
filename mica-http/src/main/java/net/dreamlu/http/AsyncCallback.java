@@ -16,12 +16,12 @@
 
 package net.dreamlu.http;
 
-import lombok.RequiredArgsConstructor;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -31,10 +31,16 @@ import java.util.function.Consumer;
  *
  * @author L.cm
  */
-@RequiredArgsConstructor
+@ParametersAreNonnullByDefault
 public class AsyncCallback implements Callback {
 	private final Consumer<ResponseSpec> consumer;
 	private final BiConsumer<Request, IOException> biConsumer;
+
+	AsyncCallback(Consumer<ResponseSpec> consumer,
+				  BiConsumer<Request, IOException> biConsumer) {
+		this.consumer = consumer;
+		this.biConsumer = biConsumer;
+	}
 
 	@Override
 	public void onFailure(Call call, IOException e) {
