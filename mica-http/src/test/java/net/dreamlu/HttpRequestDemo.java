@@ -72,7 +72,8 @@ public class HttpRequestDemo {
 			.onSuccessful(System.out::println)
 			.onFailed((request, e) -> {
 				e.printStackTrace();
-			});
+			})
+			.execute();
 	}
 
 }
