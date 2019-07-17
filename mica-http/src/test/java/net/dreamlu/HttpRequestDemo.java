@@ -35,7 +35,7 @@ public class HttpRequestDemo {
 		HttpRequest.setGlobalLog(LogLevel.BODY);
 
 		// 同步，异常时 返回 null
-		String html = HttpRequest.get("www.baidu.com")
+		String html = HttpRequest.get("https://www.baidu.com")
 			.connectTimeout(Duration.ofSeconds(1000))
 			.query("test", "a")
 			.query("name", "張三")
