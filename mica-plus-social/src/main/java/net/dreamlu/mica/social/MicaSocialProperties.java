@@ -155,4 +155,9 @@ public class MicaSocialProperties {
 	@NestedConfigurationProperty
 	private AuthConfig dingTalk;
 
+	/**
+	 * teambition 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig teambition;
 }

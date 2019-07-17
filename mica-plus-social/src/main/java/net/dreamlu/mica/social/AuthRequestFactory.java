@@ -67,6 +67,8 @@ public class AuthRequestFactory {
 				return authMicrosoftRequest(properties.getMicrosoft());
 			case TENCENT_CLOUD:
 				return authTencentCloudRequest(properties.getTencentCloud());
+			case TEAMBITION:
+				return authTeambitionRequest(properties.getTeambition());
 			default:
 				return null;
 		}
@@ -211,4 +213,12 @@ public class AuthRequestFactory {
 		}
 		return null;
 	}
+
+	private AuthRequest authTeambitionRequest(AuthConfig authConfig) {
+		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
+			return new AuthTeambitionRequest(authConfig);
+		}
+		return null;
+	}
+
 }
