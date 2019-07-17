@@ -421,6 +421,30 @@ public enum AuthSource {
 		public String userInfo() {
 			return "https://open.snssdk.com/data/user_profile";
 		}
+	},
+	/**
+	 * Teambition
+	 */
+	TEAMBITION {
+		@Override
+		public String authorize() {
+			return "https://account.teambition.com/oauth2/authorize";
+		}
+
+		@Override
+		public String accessToken() {
+			return "https://account.teambition.com/oauth2/access_token";
+		}
+
+		@Override
+		public String refresh() {
+			return "https://account.teambition.com/oauth2/refresh_token";
+		}
+
+		@Override
+		public String userInfo() {
+			return "https://api.teambition.com/users/me";
+		}
 	};
 
 	/**
