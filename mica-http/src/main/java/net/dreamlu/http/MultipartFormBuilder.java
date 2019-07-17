@@ -22,6 +22,7 @@ import okhttp3.RequestBody;
 
 import javax.annotation.Nullable;
 import java.io.File;
+import java.util.Map;
 
 /**
  * 表单构造器
@@ -39,6 +40,13 @@ public class MultipartFormBuilder {
 
 	public MultipartFormBuilder add(String name, @Nullable Object value) {
 		this.formBuilder.addFormDataPart(name, HttpRequest.handleValue(value));
+		return this;
+	}
+
+	public MultipartFormBuilder addMap(Map<String, Object> formMap) {
+		if (formMap != null && !formMap.isEmpty()) {
+			formMap.forEach(this::add);
+		}
 		return this;
 	}
 
@@ -81,5 +89,9 @@ public class MultipartFormBuilder {
 
 	public HttpResponse execute() {
 		return this.build().execute();
+	}
+
+	public AsyncCall async() {
+		return this.build().async();
 	}
 }

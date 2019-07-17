@@ -21,6 +21,7 @@ compile("net.dreamlu:mica-http:${version}")
 // 设置全局日志级别
 HttpRequest.setGlobalLog(LogLevel.BODY);
 
+// 直接用 jackson json path 语法
 private String getUserEmail(String accessToken) {
     return HttpRequest.get("https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))")
             .addHeader("Host", "api.linkedin.com")
@@ -32,12 +33,16 @@ private String getUserEmail(String accessToken) {
             .asText();
 }
 
+// 异步
 public static void test() {
-	HttpRequest.post("https://www.baidu.com/do-stuff")
-		.log(LogLevel.BASIC)
-		.formBuilder()
-		.add("a", "b")
-		.execute()
-		.asBytes();
+    HttpRequest.post("https://www.baidu.com/do-stuff")
+        .log(LogLevel.BASIC)                // 日志级别
+        .formBuilder()                      // 表单构造器
+        .add("a", "b")
+        .async()                            // 使用异步
+        .onSuccessful(System.out::println)  // 异步成功时的函数
+        .onFailed((request, e) -> {         // 异步失败，可无
+            e.printStackTrace();
+        });
 }
 ```

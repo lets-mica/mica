@@ -19,6 +19,7 @@ package net.dreamlu.http;
 import okhttp3.FormBody;
 
 import javax.annotation.Nullable;
+import java.util.Map;
 
 /**
  * 表单构造器
@@ -39,6 +40,13 @@ public class FormBuilder {
 		return this;
 	}
 
+	public FormBuilder addMap(Map<String, Object> formMap) {
+		if (formMap != null && !formMap.isEmpty()) {
+			formMap.forEach(this::add);
+		}
+		return this;
+	}
+
 	public FormBuilder addEncoded(String name, @Nullable Object encodedValue) {
 		this.formBuilder.addEncoded(name, HttpRequest.handleValue(encodedValue));
 		return this;
@@ -52,5 +60,9 @@ public class FormBuilder {
 
 	public HttpResponse execute() {
 		return this.build().execute();
+	}
+
+	public AsyncCall async() {
+		return this.build().async();
 	}
 }

@@ -118,6 +118,13 @@ public class HttpRequest {
 		return this;
 	}
 
+	public HttpRequest queryMap(Map<String, Object> queryMap) {
+		if (queryMap != null && !queryMap.isEmpty()) {
+			queryMap.forEach(this::query);
+		}
+		return this;
+	}
+
 	public HttpRequest query(String name, @Nullable Object value) {
 		this.uriBuilder.addQueryParameter(name, value == null ? null : String.valueOf(value));
 		return this;
@@ -171,7 +178,7 @@ public class HttpRequest {
 		this.userAgent = DEFAULT_USER_AGENT;
 	}
 
-	private Response internalExecute(final OkHttpClient client) throws IOException {
+	private Call internalCall(final OkHttpClient client) {
 		OkHttpClient.Builder builder = client.newBuilder();
 		if (this.connectTimeout != null) {
 			builder.connectTimeout(this.connectTimeout.toMillis(), TimeUnit.MILLISECONDS);
@@ -225,15 +232,21 @@ public class HttpRequest {
 		} else {
 			request = this.requestBuilder.method(method, requestBody).build();
 		}
-		return builder.build().newCall(request).execute();
+		return builder.build().newCall(request);
 	}
 
 	public HttpResponse execute() {
+		Call call = internalCall(httpClient);
 		try {
-			return new HttpResponse(internalExecute(httpClient));
+			return new HttpResponse(call.execute());
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			return new HttpResponse(call.request(), e);
 		}
+	}
+
+	public AsyncCall async() {
+		Call call = internalCall(httpClient);
+		return new AsyncCall(call);
 	}
 
 	public HttpRequest baseAuth(String userName, String password) {
@@ -265,6 +278,11 @@ public class HttpRequest {
 
 	public HttpRequest removeHeader(final String name) {
 		this.requestBuilder.removeHeader(name);
+		return this;
+	}
+
+	public HttpRequest addCookie(final Cookie cookie) {
+		this.addHeader("Cookie", cookie.toString());
 		return this;
 	}
 
