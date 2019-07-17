@@ -66,6 +66,11 @@ public class HttpRequestDemo {
 				System.out.println(text);
 			});
 
+		// 同步，异常时直接抛出
+		HttpRequest.get("https://www.baidu.com/some-form")
+			.execute()
+			.asString();
+
 		// async，异步执行结果，失败时打印堆栈
 		HttpRequest.get("https://www.baidu.com/some-form")
 			.async()
