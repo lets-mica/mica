@@ -121,7 +121,7 @@ public class HttpResponse implements ResponseSpec {
 	}
 
 	public HttpResponse onFailed(BiConsumer<Request, IOException> consumer) {
-		if (!this.isOk()) {
+		if (this.exception != null) {
 			consumer.accept(this.request, this.exception);
 		}
 		return this;
