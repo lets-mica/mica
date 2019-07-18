@@ -29,29 +29,50 @@ import java.util.function.Consumer;
  * @author L.cm
  */
 public class AsyncCall {
-	private final static Consumer<ResponseSpec> DEFAULT_SUCCESS_CONSUMER = (r) -> {};
-	private final static BiConsumer<Request, IOException> DEFAULT_FAIL_CONSUMER = (r, e) -> {};
+	private final static Consumer<ResponseSpec> DEFAULT_CONSUMER = (r) -> {
+	};
+	private final static BiConsumer<Request, IOException> DEFAULT_FAIL_CONSUMER = (r, e) -> {
+	};
 	private final Call call;
-	private Consumer<ResponseSpec> consumer;
-	private BiConsumer<Request, IOException> biConsumer;
+	private Consumer<ResponseSpec> successConsumer;
+	private Consumer<ResponseSpec> responseConsumer;
+	private BiConsumer<Request, IOException> failedBiConsumer;
 
 	AsyncCall(Call call) {
 		this.call = call;
-		this.consumer = DEFAULT_SUCCESS_CONSUMER;
-		this.biConsumer = DEFAULT_FAIL_CONSUMER;
+		this.successConsumer = DEFAULT_CONSUMER;
+		this.responseConsumer = DEFAULT_CONSUMER;
+		this.failedBiConsumer = DEFAULT_FAIL_CONSUMER;
 	}
 
 	public AsyncCall onSuccessful(Consumer<ResponseSpec> consumer) {
-		this.consumer = consumer;
+		this.successConsumer = consumer;
 		return this;
 	}
 
-	public AsyncCall onFailed(BiConsumer<Request, IOException> consumer) {
-		this.biConsumer = consumer;
+	public AsyncCall onResponse(Consumer<ResponseSpec> consumer) {
+		this.responseConsumer = consumer;
+		return this;
+	}
+
+	public AsyncCall onFailed(BiConsumer<Request, IOException> biConsumer) {
+		this.failedBiConsumer = biConsumer;
 		return this;
 	}
 
 	public void execute() {
-		call.enqueue(new AsyncCallback(consumer, biConsumer));
+		call.enqueue(new AsyncCallback(this));
+	}
+
+	void onResponse(HttpResponse httpResponse) {
+		responseConsumer.accept(httpResponse);
+	}
+
+	void onSuccess(HttpResponse httpResponse) {
+		successConsumer.accept(httpResponse);
+	}
+
+	void onFailure(Request request, IOException e) {
+		failedBiConsumer.accept(request, e);
 	}
 }

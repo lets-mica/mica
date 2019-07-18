@@ -18,13 +18,10 @@ package net.dreamlu.http;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Request;
 import okhttp3.Response;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  * 异步处理
@@ -33,23 +30,24 @@ import java.util.function.Consumer;
  */
 @ParametersAreNonnullByDefault
 public class AsyncCallback implements Callback {
-	private final Consumer<ResponseSpec> consumer;
-	private final BiConsumer<Request, IOException> biConsumer;
+	private final AsyncCall asyncCall;
 
-	AsyncCallback(Consumer<ResponseSpec> consumer,
-				  BiConsumer<Request, IOException> biConsumer) {
-		this.consumer = consumer;
-		this.biConsumer = biConsumer;
+	AsyncCallback(AsyncCall asyncCall) {
+		this.asyncCall = asyncCall;
 	}
 
 	@Override
 	public void onFailure(Call call, IOException e) {
-        biConsumer.accept(call.request(), e);
+		asyncCall.onFailure(call.request(), e);
 	}
 
 	@Override
 	public void onResponse(Call call, Response response) throws IOException {
-        consumer.accept(new HttpResponse(response));
+		HttpResponse httpResponse = new HttpResponse(response);
+		asyncCall.onResponse(httpResponse);
+		if (response.isSuccessful()) {
+			asyncCall.onSuccess(httpResponse);
+		}
 	}
 
 }

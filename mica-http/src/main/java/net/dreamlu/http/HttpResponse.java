@@ -79,6 +79,7 @@ public class HttpResponse implements ResponseSpec {
 		return response.message();
 	}
 
+	@Override
 	public boolean isOk() {
 		return response != null && response.isSuccessful();
 	}
@@ -87,6 +88,14 @@ public class HttpResponse implements ResponseSpec {
 	public boolean isRedirect() {
 		checkIfException();
 		return response.isRedirect();
+	}
+
+	@Nullable
+	public <T> T onResponse(Function<ResponseSpec, T> function) {
+		if (this.response != null) {
+			return function.apply(this);
+		}
+		return null;
 	}
 
 	public HttpResponse onSuccessful(Consumer<ResponseSpec> consumer) {

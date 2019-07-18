@@ -49,6 +49,13 @@ public interface ResponseSpec {
 	String message();
 
 	/**
+	 * Returns the HTTP isSuccessful.
+	 *
+	 * @return boolean
+	 */
+	boolean isOk();
+
+	/**
 	 * Returns the is Redirect.
 	 *
 	 * @return is Redirect
