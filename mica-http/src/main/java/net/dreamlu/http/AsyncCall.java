@@ -29,10 +29,8 @@ import java.util.function.Consumer;
  * @author L.cm
  */
 public class AsyncCall {
-	private final static Consumer<ResponseSpec> DEFAULT_CONSUMER = (r) -> {
-	};
-	private final static BiConsumer<Request, IOException> DEFAULT_FAIL_CONSUMER = (r, e) -> {
-	};
+	private final static Consumer<ResponseSpec> DEFAULT_CONSUMER = (r) -> {};
+	private final static BiConsumer<Request, IOException> DEFAULT_FAIL_CONSUMER = (r, e) -> {};
 	private final Call call;
 	private Consumer<ResponseSpec> successConsumer;
 	private Consumer<ResponseSpec> responseConsumer;
