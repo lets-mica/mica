@@ -24,7 +24,7 @@
 ### mica-auto
 1. 编译期生成 `spring.factories`。
 2. 编译期生成 `spring-devtools.properties`。
-3. 编译期生成 `FeignClient` 信息到 `spring.factories` 中，供 `mica-pro` 中完成 `Feign` 自动化配置。
+3. 编译期生成 `FeignClient` 信息到 `spring.factories` 中，供 `mica-cloud` 中完成 `Feign` 自动化配置。
 
 `源码地址`：[https://gitee.com/596392912/mica-auto](https://gitee.com/596392912/mica-auto)
 
