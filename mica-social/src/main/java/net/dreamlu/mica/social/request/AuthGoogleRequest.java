@@ -36,10 +36,8 @@ public class AuthGoogleRequest extends BaseAuthRequest {
 	protected AuthToken getAccessToken(String code) {
 		JsonNode object = doPostAuthorizationCode(code).asJsonNode();
 		if (object.has("error") || object.has("error_description")) {
-			throw new AuthException("get google access_token has error:[" + object.get("error").asText() + "], error_description:[" + object
-				.get("error_description").asText() + "]");
+			throw new AuthException(object.get("error_description").asText());
 		}
-
 		return AuthToken.builder()
 			.accessToken(object.get("access_token").asText())
 			.expireIn(object.get("expires_in").asInt())
@@ -52,15 +50,15 @@ public class AuthGoogleRequest extends BaseAuthRequest {
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
 		String accessToken = authToken.getIdToken();
-		JsonNode object = HttpRequest.get(authSource.userInfo())
-			.queryEncoded("id_token", accessToken)
+		JsonNode object = HttpRequest.post(authSource.userInfo())
+			.addHeader("Authorization", "Bearer " + accessToken)
 			.execute()
 			.asJsonNode();
 		return AuthUser.builder()
 			.uuid(object.get("sub").asText())
-			.username(object.get("name").asText())
+			.username(object.at("/name").asText())
 			.avatar(object.at("/picture").asText())
-			.nickname(object.get("name").asText())
+			.nickname(object.at("/name").asText())
 			.location(object.at("/locale").asText())
 			.email(object.at("/email").asText())
 			.token(authToken)

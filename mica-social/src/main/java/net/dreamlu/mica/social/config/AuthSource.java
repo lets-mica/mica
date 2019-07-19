@@ -285,7 +285,7 @@ public enum AuthSource {
 
 		@Override
 		public String userInfo() {
-			return "https://oauth2.googleapis.com/tokeninfo";
+			return "https://www.googleapis.com/oauth2/v3/userinfo";
 		}
 	},
 	/**
