@@ -43,7 +43,8 @@ public static void test() {
         .onSuccessful(System.out::println)  // 异步成功时的函数
         .onFailed((request, e) -> {         // 异步失败，可无
             e.printStackTrace();
-        });
+        })
+        .execute();
 }
 ```
 
