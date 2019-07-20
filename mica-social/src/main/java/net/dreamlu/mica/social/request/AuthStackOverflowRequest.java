@@ -52,7 +52,7 @@ public class AuthStackOverflowRequest extends AuthDefaultRequest {
 			.execute()
 			.asJsonNode();
 		this.checkResponse(jsonNode);
-		JsonNode userObj = jsonNode.at("/items/1");
+		JsonNode userObj = jsonNode.at("/items/0");
 		return AuthUser.builder()
 			.uuid(userObj.get("user_id").asText())
 			.avatar(userObj.at("/profile_image").asText())
@@ -69,7 +69,7 @@ public class AuthStackOverflowRequest extends AuthDefaultRequest {
 	public String authorize(String state) {
 		return UriComponentsBuilder.fromUriString(authSource.authorize())
 			.queryParam("response_type", "code")
-			.queryParam("appid", config.getClientId())
+			.queryParam("client_id", config.getClientId())
 			.queryParam("redirect_uri", config.getRedirectUri())
 			.queryParam("scope", "read_inbox")
 			.queryParam("state", state.concat("#wechat_redirect"))

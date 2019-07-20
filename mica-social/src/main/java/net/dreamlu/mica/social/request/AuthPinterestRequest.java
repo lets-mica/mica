@@ -3,13 +3,12 @@ package net.dreamlu.mica.social.request;
 import com.fasterxml.jackson.databind.JsonNode;
 import net.dreamlu.mica.http.HttpRequest;
 import net.dreamlu.mica.social.config.AuthConfig;
+import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
 import net.dreamlu.mica.social.model.AuthToken;
 import net.dreamlu.mica.social.model.AuthUser;
 import net.dreamlu.mica.social.model.AuthUserGender;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import static net.dreamlu.mica.social.config.AuthSource.PINTEREST;
 
 /**
  * Pinterest登录
@@ -23,7 +22,7 @@ public class AuthPinterestRequest extends AuthDefaultRequest {
 	private static final String FAILURE = "failure";
 
 	public AuthPinterestRequest(AuthConfig config) {
-		super(config, PINTEREST);
+		super(config, AuthSource.PINTEREST);
 	}
 
 	@Override
@@ -50,7 +49,7 @@ public class AuthPinterestRequest extends AuthDefaultRequest {
 
 	@Override
 	protected AuthUser getUserInfo(AuthToken authToken) {
-		JsonNode jsonNode = HttpRequest.post(authSource.userInfo())
+		JsonNode jsonNode = HttpRequest.get(authSource.userInfo())
 			.query("access_token", authToken.getAccessToken())
 			.query("fields", "id,username,first_name,last_name,bio,image")
 			.execute()
@@ -75,7 +74,7 @@ public class AuthPinterestRequest extends AuthDefaultRequest {
 	 * @param object 请求响应内容
 	 */
 	private void checkResponse(JsonNode object) {
-		if (!object.hasNonNull("status") && FAILURE.equals(object.get("status").asText())) {
+		if (object.hasNonNull("status") && FAILURE.equals(object.get("status").asText())) {
 			throw new AuthException(object.get("message").asText());
 		}
 	}
