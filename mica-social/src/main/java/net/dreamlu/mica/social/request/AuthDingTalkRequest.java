@@ -1,7 +1,7 @@
 package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import net.dreamlu.http.HttpRequest;
+import net.dreamlu.mica.http.HttpRequest;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
@@ -20,7 +20,7 @@ import java.util.Map;
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
  */
-public class AuthDingTalkRequest extends BaseAuthRequest {
+public class AuthDingTalkRequest extends AuthDefaultRequest {
 
 	public AuthDingTalkRequest(AuthConfig config) {
 		super(config, AuthSource.DINGTALK);

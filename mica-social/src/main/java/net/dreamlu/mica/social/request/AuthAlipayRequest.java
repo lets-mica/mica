@@ -22,7 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
  */
-public class AuthAlipayRequest extends BaseAuthRequest {
+public class AuthAlipayRequest extends AuthDefaultRequest {
 	private static final AuthSource API_URL = AuthSource.ALIPAY;
 	private AlipayClient alipayClient;
 

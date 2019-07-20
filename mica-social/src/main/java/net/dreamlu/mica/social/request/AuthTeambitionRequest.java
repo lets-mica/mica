@@ -1,7 +1,7 @@
 package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import net.dreamlu.http.HttpRequest;
+import net.dreamlu.mica.http.HttpRequest;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
@@ -18,7 +18,7 @@ import net.dreamlu.mica.social.model.AuthUserGender;
  * @version 1.0
  * @since 1.8
  */
-public class AuthTeambitionRequest extends BaseAuthRequest {
+public class AuthTeambitionRequest extends AuthDefaultRequest {
 
 	public AuthTeambitionRequest(AuthConfig config) {
 		super(config, AuthSource.TEAMBITION);

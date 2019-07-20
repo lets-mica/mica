@@ -69,6 +69,9 @@ public class AuthRequestFactory {
 				return authTencentCloudRequest(properties.getTencentCloud());
 			case TEAMBITION:
 				return authTeambitionRequest(properties.getTeambition());
+			case RENREN:
+			case PINTEREST:
+			case STACK_OVERFLOW:
 			default:
 				return null;
 		}
@@ -217,6 +220,27 @@ public class AuthRequestFactory {
 	private AuthRequest authTeambitionRequest(AuthConfig authConfig) {
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
 			return new AuthTeambitionRequest(authConfig);
+		}
+		return null;
+	}
+
+	private AuthRequest authRenrenRequest(AuthConfig authConfig) {
+		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
+			return new AuthRenrenRequest(authConfig);
+		}
+		return null;
+	}
+
+	private AuthRequest authPinterestRequest(AuthConfig authConfig) {
+		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
+			return new AuthPinterestRequest(authConfig);
+		}
+		return null;
+	}
+
+	private AuthRequest authStackOverflowRequest(AuthConfig authConfig) {
+		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
+			return new AuthStackOverflowRequest(authConfig);
 		}
 		return null;
 	}

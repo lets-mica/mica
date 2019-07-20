@@ -1,7 +1,7 @@
 package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import net.dreamlu.http.HttpRequest;
+import net.dreamlu.mica.http.HttpRequest;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.core.utils.StringPool;
 import net.dreamlu.mica.core.utils.StringUtil;
@@ -19,7 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  *
  * @author yangkai.shen (https://xkcoding.com), L.cm
  */
-public class AuthMiRequest extends BaseAuthRequest {
+public class AuthMiRequest extends AuthDefaultRequest {
 	private static final String PREFIX = "&&&START&&&";
 
 	public AuthMiRequest(AuthConfig config) {

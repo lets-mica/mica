@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.dreamlu.http;
+package net.dreamlu.mica.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;

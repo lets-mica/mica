@@ -33,4 +33,9 @@ public class AuthConfig {
 	 * 支付宝公钥：当选择支付宝登录时，该值可用
 	 */
 	private String alipayPublicKey;
+
+	/**
+	 * Stack Overflow Key
+	 */
+	private String stackOverflowKey;
 }

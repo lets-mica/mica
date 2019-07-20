@@ -1,7 +1,7 @@
 package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import net.dreamlu.http.HttpRequest;
+import net.dreamlu.mica.http.HttpRequest;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * @author L.cm
  */
-public class AuthGithubRequest extends BaseAuthRequest {
+public class AuthGithubRequest extends AuthDefaultRequest {
 
 	public AuthGithubRequest(AuthConfig config) {
 		super(config, AuthSource.GITHUB);

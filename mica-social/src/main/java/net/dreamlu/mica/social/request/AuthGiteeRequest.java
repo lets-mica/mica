@@ -1,7 +1,7 @@
 package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import net.dreamlu.http.HttpRequest;
+import net.dreamlu.mica.http.HttpRequest;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
@@ -13,7 +13,7 @@ import net.dreamlu.mica.social.model.AuthUser;
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
  */
-public class AuthGiteeRequest extends BaseAuthRequest {
+public class AuthGiteeRequest extends AuthDefaultRequest {
 
 	public AuthGiteeRequest(AuthConfig config) {
 		super(config, AuthSource.GITEE);

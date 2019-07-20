@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.dreamlu.http;
+package net.dreamlu.mica.http;
 
 import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.core.utils.StringPool;

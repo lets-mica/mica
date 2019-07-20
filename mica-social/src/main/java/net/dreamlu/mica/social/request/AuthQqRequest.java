@@ -1,8 +1,8 @@
 package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import net.dreamlu.http.HttpRequest;
-import net.dreamlu.http.HttpResponse;
+import net.dreamlu.mica.http.HttpRequest;
+import net.dreamlu.mica.http.HttpResponse;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.core.utils.ObjectUtil;
 import net.dreamlu.mica.core.utils.StringUtil;
@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author L.cm
  */
-public class AuthQqRequest extends BaseAuthRequest {
+public class AuthQqRequest extends AuthDefaultRequest {
 	public AuthQqRequest(AuthConfig config) {
 		super(config, AuthSource.QQ);
 	}

@@ -1,7 +1,7 @@
 package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import net.dreamlu.http.HttpRequest;
+import net.dreamlu.mica.http.HttpRequest;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
@@ -17,7 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
  */
-public class AuthLinkedinRequest extends BaseAuthRequest {
+public class AuthLinkedinRequest extends AuthDefaultRequest {
 
 	public AuthLinkedinRequest(AuthConfig config) {
 		super(config, AuthSource.LINKEDIN);

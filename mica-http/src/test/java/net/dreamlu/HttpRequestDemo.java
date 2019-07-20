@@ -16,10 +16,9 @@
 
 package net.dreamlu;
 
-import net.dreamlu.http.HttpRequest;
-import net.dreamlu.http.HttpResponse;
-import net.dreamlu.http.LogLevel;
-import net.dreamlu.http.ResponseSpec;
+import net.dreamlu.mica.http.HttpRequest;
+import net.dreamlu.mica.http.LogLevel;
+import net.dreamlu.mica.http.ResponseSpec;
 import net.dreamlu.mica.core.utils.Base64Util;
 
 import java.net.URI;

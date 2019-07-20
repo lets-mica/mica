@@ -15,7 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
  */
-public class AuthTaobaoRequest extends BaseAuthRequest {
+public class AuthTaobaoRequest extends AuthDefaultRequest {
 
 	public AuthTaobaoRequest(AuthConfig config) {
 		super(config, AuthSource.TAOBAO);

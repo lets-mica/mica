@@ -160,4 +160,23 @@ public class MicaSocialProperties {
 	 */
 	@NestedConfigurationProperty
 	private AuthConfig teambition;
+
+	/**
+	 * renren 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig renren;
+
+	/**
+	 * pinterest 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig pinterest;
+
+	/**
+	 * STACK_OVERFLOW 配置
+	 */
+	@NestedConfigurationProperty
+	private AuthConfig stackOverflow;
+
 }

@@ -14,23 +14,29 @@
  * limitations under the License.
  */
 
-package net.dreamlu.http;
+package net.dreamlu.mica.http;
 
-import lombok.extern.slf4j.Slf4j;
-import okhttp3.logging.HttpLoggingInterceptor;
+import lombok.RequiredArgsConstructor;
+import okhttp3.*;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
- * OkHttp Slf4j logger
+ * BaseAuth
  *
  * @author L.cm
  */
-@Slf4j
-public class Slf4jLogger implements HttpLoggingInterceptor.Logger {
-
-	public static final HttpLoggingInterceptor.Logger INSTANCE = new Slf4jLogger();
+@RequiredArgsConstructor
+public class BaseAuthenticator implements Authenticator {
+	private final String userName;
+	private final String password;
 
 	@Override
-	public void log(String message) {
-		log.info(message);
+	public Request authenticate(Route route, Response response) throws IOException {
+		String credential = Credentials.basic(userName, password, StandardCharsets.UTF_8);
+		return response.request().newBuilder()
+			.header("Authorization", credential)
+			.build();
 	}
 }

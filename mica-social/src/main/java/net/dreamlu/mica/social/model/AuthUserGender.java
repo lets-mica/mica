@@ -18,13 +18,13 @@ public enum AuthUserGender {
 	/**
 	 * 用户性别枚举
 	 */
-	MALE(1, "男"), FEMALE(0, "女"), UNKNOW(-1, "");
+	MALE(1, "男"), FEMALE(0, "女"), UNKNOWN(-1, "");
 	private int code;
 	private String desc;
 
 	public static AuthUserGender getRealGender(String code) {
 		if (code == null) {
-			return UNKNOW;
+			return UNKNOWN;
 		}
 		String[] males = {"m", "男", "1", "male", "F"};
 		if (Arrays.asList(males).contains(code)) {
@@ -34,6 +34,6 @@ public enum AuthUserGender {
 		if (Arrays.asList(females).contains(code)) {
 			return FEMALE;
 		}
-		return UNKNOW;
+		return UNKNOWN;
 	}
 }

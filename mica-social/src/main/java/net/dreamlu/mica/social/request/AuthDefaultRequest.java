@@ -1,8 +1,8 @@
 package net.dreamlu.mica.social.request;
 
 import lombok.Getter;
-import net.dreamlu.http.HttpRequest;
-import net.dreamlu.http.HttpResponse;
+import net.dreamlu.mica.http.HttpRequest;
+import net.dreamlu.mica.http.HttpResponse;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
@@ -16,11 +16,11 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com), L.cm
  */
 @Getter
-public abstract class BaseAuthRequest implements AuthRequest {
+public abstract class AuthDefaultRequest implements AuthRequest {
 	protected final AuthConfig config;
 	protected final AuthSource authSource;
 
-	public BaseAuthRequest(AuthConfig config, AuthSource authSource) {
+	public AuthDefaultRequest(AuthConfig config, AuthSource authSource) {
 		this.config = config;
 		this.authSource = authSource;
 		if (!AuthConfigChecker.isSupportedAuth(config)) {

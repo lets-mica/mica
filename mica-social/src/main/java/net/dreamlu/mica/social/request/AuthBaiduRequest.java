@@ -1,7 +1,7 @@
 package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import net.dreamlu.http.HttpRequest;
+import net.dreamlu.mica.http.HttpRequest;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
@@ -12,7 +12,7 @@ import net.dreamlu.mica.social.model.*;
  *
  * @author L.cm
  */
-public class AuthBaiduRequest extends BaseAuthRequest {
+public class AuthBaiduRequest extends AuthDefaultRequest {
 
 	public AuthBaiduRequest(AuthConfig config) {
 		super(config, AuthSource.BAIDU);

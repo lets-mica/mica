@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.dreamlu.http;
+package net.dreamlu.mica.http;
 
 import okhttp3.Headers;
 import okhttp3.MultipartBody;

@@ -1,7 +1,7 @@
 package net.dreamlu.mica.social;
 
-import net.dreamlu.http.HttpRequest;
-import net.dreamlu.http.LogLevel;
+import net.dreamlu.mica.http.HttpRequest;
+import net.dreamlu.mica.http.LogLevel;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.model.AuthResponse;
 import net.dreamlu.mica.social.request.*;
