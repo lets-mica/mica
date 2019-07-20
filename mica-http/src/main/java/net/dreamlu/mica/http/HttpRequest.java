@@ -50,6 +50,7 @@ public class HttpRequest {
 	private String userAgent;
 	private RequestBody requestBody;
 	private Boolean followRedirects;
+	private Boolean followSslRedirects;
 	private HttpLoggingInterceptor.Level level;
 	private CookieJar cookieJar;
 	private Interceptor interceptor;
@@ -219,7 +220,10 @@ public class HttpRequest {
 			builder.cookieJar(cookieJar);
 		}
 		if (this.followRedirects != null) {
-			builder.followSslRedirects(this.followRedirects);
+			builder.followRedirects(this.followRedirects);
+		}
+		if (this.followSslRedirects != null) {
+			builder.followSslRedirects(this.followSslRedirects);
 		}
 		// 设置 User-Agent
 		this.requestBuilder.header("User-Agent", userAgent);
@@ -298,6 +302,11 @@ public class HttpRequest {
 
 	public HttpRequest followRedirects(boolean followRedirects) {
 		this.followRedirects = followRedirects;
+		return this;
+	}
+
+	public HttpRequest followSslRedirects(boolean followSslRedirects) {
+		this.followSslRedirects = followSslRedirects;
 		return this;
 	}
 
