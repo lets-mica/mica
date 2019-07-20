@@ -72,5 +72,8 @@ public String callback(@PathVariable String source, String code) {
 |  toutiao  | 未申请应用 | AuthToutiaoRequest |
 |  csdn  | 未申请应用 | AuthCsdnRequest |
 |  teambition  | ✔️ | AuthTeambitionRequest |
+|  renren  | ✔️ | AuthRenrenRequest |
+|  pinterest  | 未申请应用️ | AuthPinterestRequest |
+|  stack_overflow  | 未申请应用️ | AuthStackOverflowRequest |
 
 `注`：CSDN 的授权开放平台已经下线。so, 本项目中的 CSDN 登录只能针对少部分用户使用。

@@ -244,4 +244,19 @@ public class AuthRequestTest {
 		AuthResponse login = authRequest.login("code");
 		System.out.println(login);
 	}
+
+	@Test
+	public void RenrenTest() {
+		AuthRequest authRequest = new AuthRenrenRequest(AuthConfig.builder()
+			.clientId("clientId")
+			.clientSecret("clientSecret")
+			.redirectUri("redirectUri")
+			.build());
+		// 返回授权页面，可自行调整
+		String authorize = authRequest.authorize();
+		System.out.println(authorize);
+		// 授权登录后会返回一个code，用这个code进行登录
+		AuthResponse login = authRequest.login("code");
+		System.out.println(login);
+	}
 }

@@ -58,7 +58,7 @@ public class AuthTaobaoRequest extends AuthDefaultRequest {
 			.uuid(object.get("taobao_user_id").asText())
 			.username(nick)
 			.nickname(nick)
-			.gender(AuthUserGender.UNKNOW)
+			.gender(AuthUserGender.UNKNOWN)
 			.token(authToken)
 			.source(authSource)
 			.build();

@@ -84,7 +84,7 @@ public class AuthMiRequest extends AuthDefaultRequest {
 			.nickname(user.get("miliaoNick").asText())
 			.avatar(user.at("/miliaoIcon").asText())
 			.email(user.at("/mail").asText())
-			.gender(AuthUserGender.UNKNOW)
+			.gender(AuthUserGender.UNKNOWN)
 			.token(authToken)
 			.source(authSource)
 			.build();

@@ -40,10 +40,10 @@ public class AuthRenrenRequest extends AuthDefaultRequest {
 			.execute()
 			.asJsonNode()
 			.get("response");
-
 		return AuthUser.builder()
 			.uuid(jsonNode.get("id").asText())
 			.avatar(jsonNode.at("/avatar/0/url").asText())
+			.username(jsonNode.at("/name").asText())
 			.nickname(jsonNode.at("/name").asText())
 			.company(jsonNode.at("/work/0/name").asText())
 			.gender(getGender(jsonNode))

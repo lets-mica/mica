@@ -62,7 +62,7 @@ public class AuthTeambitionRequest extends AuthDefaultRequest {
 			.blog(jsonNode.at("/website").asText())
 			.location(jsonNode.at("/location").asText())
 			.email(jsonNode.at("/email").asText())
-			.gender(AuthUserGender.UNKNOW)
+			.gender(AuthUserGender.UNKNOWN)
 			.token(authToken)
 			.source(authSource)
 			.build();

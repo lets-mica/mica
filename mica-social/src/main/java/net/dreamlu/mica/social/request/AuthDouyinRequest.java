@@ -60,7 +60,7 @@ public class AuthDouyinRequest extends AuthDefaultRequest {
 			.nickname(userInfoObject.get("nickname").asText())
 			.avatar(userInfoObject.at("/avatar").asText())
 			.remark(userInfoObject.at("/description").asText())
-			.gender(AuthUserGender.UNKNOW)
+			.gender(AuthUserGender.UNKNOWN)
 			.token(authToken)
 			.source(authSource)
 			.build();

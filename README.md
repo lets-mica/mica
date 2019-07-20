@@ -133,7 +133,7 @@ lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1
 - `IJPay` 支付 SDK 让支付触手可及：[https://gitee.com/javen205/IJPay](https://gitee.com/javen205/IJPay)
 
 ## 鸣谢
-`mica-social` 参考了 [`JustAuth`](https://github.com/zhangyd-c/JustAuth) 并已经加入 JustAuth 开发群，感谢 `JustAuth` 所有开发者的奉献。
+`mica-social` 参考了 [`JustAuth`](https://github.com/zhangyd-c/JustAuth) 并已经加入 JustAuth 开发者群，感谢 `JustAuth` 所有开发者的奉献。
 
 感谢 `如梦技术VIP群` 小伙伴们的支持。
 
