@@ -16,7 +16,63 @@
 compile("net.dreamlu:mica-http:${version}")
 ```
 
-### 示例代码
+### 使用文档
+```java
+// 设定全局日志级别 NONE，BASIC，HEADERS，BODY， 默认：NONE
+HttpRequest.setGlobalLog(LogLevel.BODY);
+
+// 同步请求 url，方法支持 get、post、patch、put、delete
+HttpRequest.get("https://www.baidu.com")
+    .log(LogLevel.BASIC)             //设定本次的日志级别，优先于全局
+    .addHeader("x-account-id", "mica001") // 添加 header
+    .addCookie(new Cookie.Builder()  // 添加 cookie
+        .name("sid")
+        .value("mica_user_001")
+        .build()
+    )
+    .query("q", "mica") //设置 url 参数，默认进行 url encode
+    .queryEncoded("name", "encodedValue")
+    .formBuilder()    // 表单构造器，同类 multipartFormBuilder 文件上传表单
+    .add("id", 123123) // 表单参数
+    .execute()                      // 发起请求
+    .asJsonNode();                  // 结果集转换，注：如果网络异常等会直接抛出异常。
+// 同类的方法有 asString、asBytes、asStream
+// json 类响应：asJsonNode、asObject、asList、asMap，采用 jackson 处理
+// xml、html响应：asDocument，采用的 jsoup 处理
+// file 文件：toFile
+
+// 同步
+String html = HttpRequest.post("https://www.baidu.com")
+    .execute()
+    .onFailed((request, e) -> {// 网络等异常情况的消费处理，可无
+        e.printStackTrace();
+    })
+    .onResponse(ResponseSpec::asString);// 处理响应，有网络异常等直接返回 null
+
+// 同步
+String text = HttpRequest.patch("https://www.baidu.com")
+    .execute()
+    .onSuccess(ResponseSpec::asString);
+// onSuccess http code in [200..300) 处理响应，有网络异常等直接返回 null
+
+// 发送异步请求
+HttpRequest.delete("https://www.baidu.com")
+    .async() // 开启异步
+    .onFailed((request, e) -> {    // 异常时的处理
+        e.printStackTrace();
+    })
+    .onResponse(responseSpec -> {  // 消费响应， 注意：响应的流只能读一次
+        int httpCode = responseSpec.code();
+
+    })
+    .onSuccessful(responseSpec -> { // 消费响应成功 http code in [200..300)
+        // 注意：响应结果流只能读一次
+        JsonNode jsonNode = responseSpec.asJsonNode();
+    })
+    .execute(); // 异步最后发起请求
+```
+
+### 示例代码1
 ```java
 // 设置全局日志级别
 HttpRequest.setGlobalLog(LogLevel.BODY);
