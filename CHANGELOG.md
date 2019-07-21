@@ -2,6 +2,7 @@
 
 ## 发行版本
 ### v1.1.6 - 2019-07-21
+- :zap: `mica http` 调整包 由 `net.dreamlu.http` -> `net.dreamlu.mica.http`。
 - :zap: `mica http` 去除对 spring 的依赖，使用 jsoup 解析 html 或 xml.
 - :zap: `mica-http` 添加异步支持和添加更多使用方法.
 - :zap: 完善 `mica-core` CharPool.
