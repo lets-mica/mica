@@ -1,6 +1,14 @@
 # 变更记录
 
 ## 发行版本
+### v1.1.6 - 2019-07-21
+- :zap: `mica http` 去除对 spring 的依赖，使用 jsoup 解析 html 或 xml.
+- :zap: `mica-http` 添加异步支持，和优化使用方法.
+- :zap: 完善 `mica-core` CharPool.
+- :zap: 简化 `mica-plus-social` 第三方登录使用.
+- :zap: 更新 `mica-social` google 授权登录升级接口.
+- :sparkles: 更新 `mica-social` 同步 [JustAuth](https://gitee.com/yadong.zhang/JustAuth) 1.9，添加 Teambition、人人、Pinterest、Stack Overflow登录。
+
 ### v1.1.5 - 2019-07-14
 注意：1.1.3 和 1.1.4 第三方登录，钉钉都有签名问题，请使用最新的 `1.1.5`.
 - :zap: 关闭 nacos 默认的 log 配置.
