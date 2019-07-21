@@ -30,7 +30,7 @@
 
 ### mica-core
 - 常用工具包，基于 `Spring-core` 扩展增强，无其他依赖。
-- 增强 cglib Bean copy，高性能（接近直接 get set），支持链式 bean，支持类型转换 。
+- 增强 cglib Bean copy，高性能（接近直接 get set），支持链式 bean，支持自动类型转换 。
 - `$` 工具类快捷方法，不用再记忆到底有哪些工具类。
 - 统一消息返回体，封装得更加好用。
 - Jaskson Read Write HttpMessageConverter，分读写的消息转换器。
