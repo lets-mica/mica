@@ -21,6 +21,7 @@ import lombok.Setter;
 import net.dreamlu.mica.launcher.MicaLogLevel;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.TimeUnit;
 
@@ -66,4 +67,30 @@ public class MicaHttpProperties {
 	 * 日志级别
 	 */
 	private MicaLogLevel level = MicaLogLevel.NONE;
+	/**
+	 * RestTemplate
+	 */
+	private RestTemplate restTemplate = new RestTemplate();
+	/**
+	 * 负载均衡的 RestTemplate
+	 */
+	private RestTemplate lbRestTemplate = new RestTemplate();
+
+	@Getter
+	@Setter
+	public static class RestTemplate {
+		/**
+		 * 是否开启，默认为：true
+		 */
+		private boolean enable = true;
+	}
+
+	@Getter
+	@Setter
+	public static class LbRestTemplate {
+		/**
+		 * 是否开启，默认为：true
+		 */
+		private boolean enable = true;
+	}
 }
