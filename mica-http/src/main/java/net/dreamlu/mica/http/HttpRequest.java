@@ -55,6 +55,7 @@ public class HttpRequest {
 	private Boolean followSslRedirects;
 	private HttpLoggingInterceptor.Level level;
 	private CookieJar cookieJar;
+	private EventListener eventListener;
 	private final List<Interceptor> interceptors = new ArrayList<>();
 	private Authenticator authenticator;
 	private Duration connectTimeout;
@@ -121,7 +122,7 @@ public class HttpRequest {
 		return this;
 	}
 
-	public HttpRequest queryMap(Map<String, Object> queryMap) {
+	public HttpRequest queryMap(@Nullable Map<String, Object> queryMap) {
 		if (queryMap != null && !queryMap.isEmpty()) {
 			queryMap.forEach(this::query);
 		}
@@ -183,60 +184,63 @@ public class HttpRequest {
 
 	private Call internalCall(final OkHttpClient client) {
 		OkHttpClient.Builder builder = client.newBuilder();
-		if (this.connectTimeout != null) {
-			builder.connectTimeout(this.connectTimeout.toMillis(), TimeUnit.MILLISECONDS);
+		if (connectTimeout != null) {
+			builder.connectTimeout(connectTimeout.toMillis(), TimeUnit.MILLISECONDS);
 		}
-		if (this.readTimeout != null) {
-			builder.readTimeout(this.readTimeout.toMillis(), TimeUnit.MILLISECONDS);
+		if (readTimeout != null) {
+			builder.readTimeout(readTimeout.toMillis(), TimeUnit.MILLISECONDS);
 		}
-		if (this.writeTimeout != null) {
-			builder.writeTimeout(this.writeTimeout.toMillis(), TimeUnit.MILLISECONDS);
+		if (writeTimeout != null) {
+			builder.writeTimeout(writeTimeout.toMillis(), TimeUnit.MILLISECONDS);
 		}
-		if (this.proxy != null) {
-			builder.proxy(this.proxy);
+		if (proxy != null) {
+			builder.proxy(proxy);
 		}
-		if (this.proxySelector != null) {
-			builder.proxySelector(this.proxySelector);
+		if (proxySelector != null) {
+			builder.proxySelector(proxySelector);
 		}
-		if (this.proxyAuthenticator != null) {
+		if (proxyAuthenticator != null) {
 			builder.proxyAuthenticator(proxyAuthenticator);
 		}
-		if (this.hostnameVerifier != null) {
+		if (hostnameVerifier != null) {
 			builder.hostnameVerifier(hostnameVerifier);
 		}
-		if (this.sslSocketFactory != null && this.trustManager != null) {
+		if (sslSocketFactory != null && trustManager != null) {
 			builder.sslSocketFactory(sslSocketFactory, trustManager);
 		}
-		if (this.authenticator != null) {
+		if (authenticator != null) {
 			builder.authenticator(authenticator);
 		}
-		if (!this.interceptors.isEmpty()) {
-			builder.interceptors().addAll(this.interceptors);
+		if (eventListener != null) {
+			builder.eventListener(eventListener);
 		}
-		if (this.cookieJar != null) {
+		if (!interceptors.isEmpty()) {
+			builder.interceptors().addAll(interceptors);
+		}
+		if (cookieJar != null) {
 			builder.cookieJar(cookieJar);
 		}
-		if (this.followRedirects != null) {
-			builder.followRedirects(this.followRedirects);
+		if (followRedirects != null) {
+			builder.followRedirects(followRedirects);
 		}
-		if (this.followSslRedirects != null) {
-			builder.followSslRedirects(this.followSslRedirects);
+		if (followSslRedirects != null) {
+			builder.followSslRedirects(followSslRedirects);
 		}
-		if (this.level != null && HttpLoggingInterceptor.Level.NONE != this.level) {
+		if (level != null && HttpLoggingInterceptor.Level.NONE != level) {
 			builder.addInterceptor(getLoggingInterceptor(level));
 		} else if (globalLoggingInterceptor != null) {
 			builder.addInterceptor(globalLoggingInterceptor);
 		}
 		// 设置 User-Agent
-		this.requestBuilder.header("User-Agent", userAgent);
+		requestBuilder.header("User-Agent", userAgent);
 		// url
 		requestBuilder.url(uriBuilder.build());
-		String method = this.httpMethod;
+		String method = httpMethod;
 		Request request;
 		if (HttpMethod.requiresRequestBody(method) && requestBody == null) {
-			request = this.requestBuilder.method(method, emptyBody()).build();
+			request = requestBuilder.method(method, emptyBody()).build();
 		} else {
-			request = this.requestBuilder.method(method, requestBody).build();
+			request = requestBuilder.method(method, requestBody).build();
 		}
 		return builder.build().newCall(request);
 	}
@@ -330,6 +334,11 @@ public class HttpRequest {
 
 	public HttpRequest authenticator(Authenticator authenticator) {
 		this.authenticator = authenticator;
+		return this;
+	}
+
+	public HttpRequest eventListener(EventListener eventListener) {
+		this.eventListener = eventListener;
 		return this;
 	}
 

@@ -46,9 +46,9 @@ configure(subprojects - project(":mica-bom")) {
 
     dependencies {
         // import BOM.
-        implementation enforcedPlatform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
-        implementation enforcedPlatform("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
-        implementation enforcedPlatform("org.springframework.cloud:spring-cloud-alibaba-dependencies:$springCloudAlibabaVersion")
+        implementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+        implementation platform("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
+        implementation platform("org.springframework.cloud:spring-cloud-alibaba-dependencies:$springCloudAlibabaVersion")
         compileOnly "org.slf4j:slf4j-api"
         compileOnly "javax.servlet:javax.servlet-api"
         compileOnly "org.springframework:spring-web"
