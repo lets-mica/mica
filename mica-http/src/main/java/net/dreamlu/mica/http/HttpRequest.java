@@ -32,6 +32,8 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -53,7 +55,7 @@ public class HttpRequest {
 	private Boolean followSslRedirects;
 	private HttpLoggingInterceptor.Level level;
 	private CookieJar cookieJar;
-	private Interceptor interceptor;
+	private final List<Interceptor> interceptors = new ArrayList<>();
 	private Authenticator authenticator;
 	private Duration connectTimeout;
 	private Duration readTimeout;
@@ -205,16 +207,11 @@ public class HttpRequest {
 		if (this.sslSocketFactory != null && this.trustManager != null) {
 			builder.sslSocketFactory(sslSocketFactory, trustManager);
 		}
-		if (this.level != null && HttpLoggingInterceptor.Level.NONE != this.level) {
-			builder.addInterceptor(getLoggingInterceptor(level));
-		} else if (globalLoggingInterceptor != null) {
-			builder.addInterceptor(globalLoggingInterceptor);
-		}
 		if (this.authenticator != null) {
 			builder.authenticator(authenticator);
 		}
-		if (this.interceptor != null) {
-			builder.addInterceptor(this.interceptor);
+		if (!this.interceptors.isEmpty()) {
+			builder.interceptors().addAll(this.interceptors);
 		}
 		if (this.cookieJar != null) {
 			builder.cookieJar(cookieJar);
@@ -224,6 +221,11 @@ public class HttpRequest {
 		}
 		if (this.followSslRedirects != null) {
 			builder.followSslRedirects(this.followSslRedirects);
+		}
+		if (this.level != null && HttpLoggingInterceptor.Level.NONE != this.level) {
+			builder.addInterceptor(getLoggingInterceptor(level));
+		} else if (globalLoggingInterceptor != null) {
+			builder.addInterceptor(globalLoggingInterceptor);
 		}
 		// 设置 User-Agent
 		this.requestBuilder.header("User-Agent", userAgent);
@@ -332,7 +334,7 @@ public class HttpRequest {
 	}
 
 	public HttpRequest interceptor(Interceptor interceptor) {
-		this.interceptor = interceptor;
+		this.interceptors.add(interceptor);
 		return this;
 	}
 
