@@ -19,7 +19,6 @@ package net.dreamlu.mica.http;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.core.utils.StringPool;
 import okhttp3.*;
-import okhttp3.internal.annotations.EverythingIsNonNull;
 import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
 
