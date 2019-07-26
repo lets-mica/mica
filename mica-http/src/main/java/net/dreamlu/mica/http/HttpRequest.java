@@ -19,6 +19,7 @@ package net.dreamlu.mica.http;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.core.utils.StringPool;
 import okhttp3.*;
+import okhttp3.internal.annotations.EverythingIsNonNull;
 import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -45,27 +46,46 @@ import java.util.concurrent.TimeUnit;
 public class HttpRequest {
 	private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36";
 	private static OkHttpClient httpClient = new OkHttpClient();
+	@Nullable
 	private static HttpLoggingInterceptor globalLoggingInterceptor = null;
 	private final Request.Builder requestBuilder;
 	private final HttpUrl.Builder uriBuilder;
 	private final String httpMethod;
 	private String userAgent;
+	@Nullable
 	private RequestBody requestBody;
+	@Nullable
 	private Boolean followRedirects;
+	@Nullable
 	private Boolean followSslRedirects;
+	@Nullable
 	private HttpLoggingInterceptor.Level level;
+	@Nullable
 	private CookieJar cookieJar;
+	@Nullable
 	private EventListener eventListener;
 	private final List<Interceptor> interceptors = new ArrayList<>();
+	@Nullable
 	private Authenticator authenticator;
+	@Nullable
 	private Duration connectTimeout;
+	@Nullable
 	private Duration readTimeout;
+	@Nullable
 	private Duration writeTimeout;
+	@Nullable
 	private Proxy proxy;
+	@Nullable
 	private ProxySelector proxySelector;
+	@Nullable
 	private Authenticator proxyAuthenticator;
+	@Nullable
+	private RetryPolicy retryPolicy;
+	@Nullable
 	private HostnameVerifier hostnameVerifier;
+	@Nullable
 	private SSLSocketFactory sslSocketFactory;
+	@Nullable
 	private X509TrustManager trustManager;
 
 	public static HttpRequest get(final String url) {
@@ -226,6 +246,9 @@ public class HttpRequest {
 		if (followSslRedirects != null) {
 			builder.followSslRedirects(followSslRedirects);
 		}
+		if (retryPolicy != null) {
+			builder.addInterceptor(new RetryInterceptor(retryPolicy));
+		}
 		if (level != null && HttpLoggingInterceptor.Level.NONE != level) {
 			builder.addInterceptor(getLoggingInterceptor(level));
 		} else if (globalLoggingInterceptor != null) {
@@ -380,6 +403,16 @@ public class HttpRequest {
 
 	public HttpRequest proxyAuthenticator(final Authenticator proxyAuthenticator) {
 		this.proxyAuthenticator = proxyAuthenticator;
+		return this;
+	}
+
+	public HttpRequest retry() {
+		this.retryPolicy = RetryPolicy.INSTANCE;
+		return this;
+	}
+
+	public HttpRequest retry(int maxAttempts, long sleepMillis) {
+		this.retryPolicy = new RetryPolicy(maxAttempts, sleepMillis);
 		return this;
 	}
 

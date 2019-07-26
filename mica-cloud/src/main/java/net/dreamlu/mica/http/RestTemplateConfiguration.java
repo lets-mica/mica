@@ -179,7 +179,6 @@ public class RestTemplateConfiguration {
 		public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder, OkHttpClient okHttpClient) {
 			restTemplateBuilder.requestFactory(() -> new OkHttp3ClientHttpRequestFactory(okHttpClient));
 			RestTemplate restTemplate = restTemplateBuilder.build();
-			restTemplate.getInterceptors().add(context.getBean(RestTemplateHeaderInterceptor.class));
 			configMessageConverters(context, restTemplate.getMessageConverters());
 			return restTemplate;
 		}

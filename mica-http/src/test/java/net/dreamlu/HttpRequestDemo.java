@@ -22,21 +22,17 @@ import net.dreamlu.mica.http.HttpRequest;
 import net.dreamlu.mica.http.LogLevel;
 import net.dreamlu.mica.http.ResponseSpec;
 import okhttp3.Cookie;
-import okhttp3.Request;
 
-import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Optional;
 
 /**
  * This example of mica http
+ *
+ * @author L.cm
  */
 public class HttpRequestDemo {
-
-	private static void accept(Request request, IOException e) {
-		e.printStackTrace();
-	}
 
 	public void doc() {
 		// 设定全局日志级别 NONE，BASIC，HEADERS，BODY， 默认：NONE
