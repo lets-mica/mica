@@ -16,29 +16,18 @@
 
 package net.dreamlu.mica.http;
 
-import lombok.Getter;
-import lombok.ToString;
-import org.springframework.retry.policy.SimpleRetryPolicy;
-
 /**
- * 重试策略
+ * http 请求异常封装
  *
- * @author dream.lu
+ * @author L.cm
  */
-@Getter
-@ToString
-public class RetryPolicy {
-	public static final RetryPolicy INSTANCE = new RetryPolicy();
+public class MicaHttpException extends RuntimeException {
 
-	private final int maxAttempts;
-	private final long sleepMillis;
-
-	public RetryPolicy() {
-		this(SimpleRetryPolicy.DEFAULT_MAX_ATTEMPTS, 0L);
+	public MicaHttpException(String message) {
+		super(message);
 	}
 
-	public RetryPolicy(int maxAttempts, long sleepMillis) {
-		this.maxAttempts = maxAttempts;
-		this.sleepMillis = sleepMillis;
+	public MicaHttpException(Throwable cause) {
+		super(cause.getMessage(), cause);
 	}
 }

@@ -16,13 +16,13 @@
 
 package net.dreamlu;
 
+import net.dreamlu.mica.http.MicaHttpException;
 import net.dreamlu.mica.http.HttpRequest;
-import net.dreamlu.mica.http.RetryInterceptor;
 import org.junit.Test;
 
 public class HttpRequestProxyTest {
 
-	@Test(expected = RetryInterceptor.RetryException.class)
+	@Test(expected = MicaHttpException.class)
 	public void test1() {
 		// 代理都不可用
 		HttpRequest.get("https://www.baidu.com")

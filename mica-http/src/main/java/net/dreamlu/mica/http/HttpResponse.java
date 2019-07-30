@@ -46,6 +46,7 @@ public class HttpResponse implements ResponseSpec {
 	private final Request request;
 	private final Response response;
 	private final ResponseBody body;
+	@Nullable
 	private IOException exception;
 
 	HttpResponse(final Response response) {
@@ -63,7 +64,7 @@ public class HttpResponse implements ResponseSpec {
 
 	private void checkIfException() {
 		if (exception != null) {
-			throw new RuntimeException(exception);
+			throw new MicaHttpException(exception);
 		}
 	}
 
@@ -210,12 +211,12 @@ public class HttpResponse implements ResponseSpec {
 	}
 
 	@Override
-	public <T> T asObject(Class<T> valueType) {
+	public <T> T asValue(Class<T> valueType) {
 		return JsonUtil.readValue(this.asStream(), valueType);
 	}
 
 	@Override
-	public <T> T asObject(TypeReference<?> typeReference) {
+	public <T> T asValue(TypeReference<?> typeReference) {
 		return JsonUtil.readValue(this.asStream(), typeReference);
 	}
 
@@ -242,6 +243,17 @@ public class HttpResponse implements ResponseSpec {
 			throw new RuntimeException(e);
 		}
 	}
+
+	@Override
+	public <T> T asDomValue(Class<T> valueType) {
+		return DomMapper.readValue(this.asDocument(), valueType);
+	}
+
+	@Override
+	public <T> List<T> asDomList(Class<T> valueType) {
+		return DomMapper.readList(this.asDocument(), valueType);
+	}
+
 
 	@Override
 	public void toFile(File file) {

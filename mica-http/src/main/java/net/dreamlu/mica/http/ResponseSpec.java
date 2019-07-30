@@ -110,7 +110,7 @@ public interface ResponseSpec {
 	 * @param valueType value value type
 	 * @return Object
 	 */
-	<T> T asObject(Class<T> valueType);
+	<T> T asValue(Class<T> valueType);
 
 	/**
 	 * Returns body to Object.
@@ -118,7 +118,7 @@ public interface ResponseSpec {
 	 * @param typeReference value Type Reference
 	 * @return Object
 	 */
-	<T> T asObject(TypeReference<?> typeReference);
+	<T> T asValue(TypeReference<?> typeReference);
 
 	/**
 	 * Returns body to List.
@@ -151,6 +151,24 @@ public interface ResponseSpec {
 	 * @return Document
 	 */
 	Document asDocument();
+
+	/**
+	 * 将 xml、heml 转成对象
+	 *
+	 * @param valueType 对象类
+	 * @param <T>       泛型
+	 * @return 对象
+	 */
+	<T> T asDomValue(Class<T> valueType);
+
+	/**
+	 * 将 xml、heml 转成对象
+	 *
+	 * @param valueType 对象类
+	 * @param <T>       泛型
+	 * @return 对象集合
+	 */
+	<T> List<T> asDomList(Class<T> valueType);
 
 	/**
 	 * toFile.

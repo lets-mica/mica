@@ -2,5 +2,6 @@ dependencies {
     api project(":mica-core")
     api "com.squareup.okhttp3:okhttp:${okhttpVersion}"
     api "com.squareup.okhttp3:logging-interceptor:${okhttpVersion}"
+    implementation "org.springframework.retry:spring-retry"
     implementation "org.jsoup:jsoup:${jsoupVersion}"
 }

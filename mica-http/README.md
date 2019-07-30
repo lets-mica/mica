@@ -37,8 +37,8 @@ HttpRequest.get("https://www.baidu.com")
     .execute()                      // 发起请求
     .asJsonNode();                  // 结果集转换，注：如果网络异常等会直接抛出异常。
 // 同类的方法有 asString、asBytes、asStream
-// json 类响应：asJsonNode、asObject、asList、asMap，采用 jackson 处理
-// xml、html响应：asDocument，采用的 jsoup 处理
+// json 类响应：asJsonNode、asValue、asList、asMap，采用 jackson 处理
+// xml、html响应：asDocument，asDomValue、asDomList采用的 jsoup 处理
 // file 文件：toFile
 
 // 同步
