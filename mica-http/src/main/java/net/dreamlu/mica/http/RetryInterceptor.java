@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.http;
 
+import lombok.RequiredArgsConstructor;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -30,12 +31,9 @@ import java.io.IOException;
  *
  * @author L.cm
  */
+@RequiredArgsConstructor
 public class RetryInterceptor implements Interceptor {
 	private final RetryPolicy retryPolicy;
-
-	public RetryInterceptor(RetryPolicy retryPolicy) {
-		this.retryPolicy = retryPolicy;
-	}
 
 	@Override
 	public Response intercept(Chain chain) throws IOException {
