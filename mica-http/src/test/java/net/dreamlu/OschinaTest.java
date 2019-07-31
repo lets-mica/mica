@@ -18,7 +18,7 @@ public class OschinaTest {
 
 		List<VNews> vNews = oschina.getVNews();
 		for (VNews vNew : vNews) {
-			System.out.println(vNew.getTitle() + "\t" + vNew.getHref());
+			System.out.println(vNew.getTitle() + "\t" + vNew.getHref() + "\t" + vNew.getDate());
 		}
 	}
 }

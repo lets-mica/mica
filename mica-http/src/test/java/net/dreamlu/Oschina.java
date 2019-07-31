@@ -13,7 +13,7 @@ public class Oschina {
 	@CssQuery(value = "head > title", attr = "text")
 	private String title;
 
-	@CssQuery(value = "#v_news .page a", inner = true)
+	@CssQuery(value = "#v_news .page .news", inner = true)
 	private List<VNews> vNews;
 
 }
