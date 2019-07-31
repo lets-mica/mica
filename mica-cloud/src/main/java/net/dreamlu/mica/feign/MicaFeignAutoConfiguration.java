@@ -23,8 +23,7 @@ import feign.RequestInterceptor;
 import feign.hystrix.HystrixFeign;
 import net.dreamlu.mica.core.convert.EnumToStringConverter;
 import net.dreamlu.mica.core.convert.StringToEnumConverter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -36,7 +35,6 @@ import org.springframework.context.annotation.*;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.ConverterRegistry;
 import org.springframework.core.convert.support.DefaultConversionService;
-import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
 
@@ -53,7 +51,7 @@ import java.util.ArrayList;
 public class MicaFeignAutoConfiguration {
 
 	@Configuration("hystrixFeignConfiguration")
-	@ConditionalOnClass({ HystrixCommand.class, HystrixFeign.class })
+	@ConditionalOnClass({HystrixCommand.class, HystrixFeign.class})
 	protected static class HystrixFeignConfiguration {
 		@Bean
 		@Primary
@@ -76,17 +74,14 @@ public class MicaFeignAutoConfiguration {
 
 	/**
 	 * mica enum 《-》 String 转换配置
-	 * @param conversionService ConversionService
+	 *
+	 * @param objectProvider ObjectProvider
 	 * @return SpringMvcContract
 	 */
 	@Bean
-	public Contract feignContract(
-		@Nullable @Autowired(required = false)
-		@Qualifier("mvcConversionService") ConversionService conversionService) {
-		if (conversionService == null) {
-			conversionService = new DefaultConversionService();
-		}
-		ConverterRegistry converterRegistry =  ((ConverterRegistry) conversionService);
+	public Contract feignContract(ObjectProvider<ConversionService> objectProvider) {
+		ConversionService conversionService = objectProvider.getIfAvailable(DefaultConversionService::new);
+		ConverterRegistry converterRegistry = ((ConverterRegistry) conversionService);
 		converterRegistry.addConverter(new EnumToStringConverter());
 		converterRegistry.addConverter(new StringToEnumConverter());
 		return new MicaSpringMvcContract(new ArrayList<>(), conversionService);

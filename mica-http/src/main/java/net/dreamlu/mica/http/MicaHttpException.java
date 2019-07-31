@@ -23,10 +23,6 @@ package net.dreamlu.mica.http;
  */
 public class MicaHttpException extends RuntimeException {
 
-	public MicaHttpException(String message) {
-		super(message);
-	}
-
 	public MicaHttpException(Throwable cause) {
 		super(cause.getMessage(), cause);
 	}

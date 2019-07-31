@@ -29,31 +29,31 @@ import java.lang.annotation.*;
 @Inherited
 public @interface CssQuery {
 
-    /**
-     * CssQuery
-     *
-     * @return CssQuery
-     */
-    String value();
+	/**
+	 * CssQuery
+	 *
+	 * @return CssQuery
+	 */
+	String value();
 
-    /**
-     * 读取的 dom attr
-     *
-     * <p>
-     *     attr：元素对于的 attr 的值
-     *     html：整个元素的html
-     *     text：元素内文本
-     *     allText：多个元素的文本值
-     * </p>
-     *
-     * @return attr
-     */
-    String attr() default "";
+	/**
+	 * 读取的 dom attr
+	 *
+	 * <p>
+	 * attr：元素对于的 attr 的值
+	 * html：整个元素的html
+	 * text：元素内文本
+	 * allText：多个元素的文本值
+	 * </p>
+	 *
+	 * @return attr
+	 */
+	String attr() default "";
 
-    /**
-     * 嵌套的内部模型：默认 false
-     *
-     * @return 是否为内部模型
-     */
-    boolean inner() default false;
+	/**
+	 * 嵌套的内部模型：默认 false
+	 *
+	 * @return 是否为内部模型
+	 */
+	boolean inner() default false;
 }

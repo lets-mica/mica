@@ -31,42 +31,42 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class DomMapper {
 
-    /**
-     * 读取 xml 信息为 java Bean
-     *
-     * @param doc   xml element
-     * @param clazz bean Class
-     * @param <T>   泛型
-     * @return 对象
-     */
-    public static <T> T readValue(final Element doc, final Class<T> clazz) {
-        Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(clazz);
-        enhancer.setUseCache(true);
-        enhancer.setCallback(new CssQueryMethodInterceptor(clazz, doc));
-        return (T) enhancer.create();
-    }
+	/**
+	 * 读取 xml 信息为 java Bean
+	 *
+	 * @param doc   xml element
+	 * @param clazz bean Class
+	 * @param <T>   泛型
+	 * @return 对象
+	 */
+	public static <T> T readValue(final Element doc, final Class<T> clazz) {
+		Enhancer enhancer = new Enhancer();
+		enhancer.setSuperclass(clazz);
+		enhancer.setUseCache(true);
+		enhancer.setCallback(new CssQueryMethodInterceptor(clazz, doc));
+		return (T) enhancer.create();
+	}
 
-    /**
-     * 读取 xml 信息为 java Bean
-     *
-     * @param doc   xml element
-     * @param clazz bean Class
-     * @param <T>   泛型
-     * @return 对象列表
-     */
-    public static <T> List<T> readList(Element doc, Class<T> clazz) {
-        CssQuery annotation = clazz.getAnnotation(CssQuery.class);
-        if (annotation == null) {
-            throw new IllegalArgumentException("DomMapper readList " + clazz + " mast has annotation @CssQuery.");
-        }
-        String cssQueryValue = annotation.value();
-        Elements elements = doc.select(cssQueryValue);
-        List<T> valueList = new ArrayList<>();
-        for (Element element : elements) {
-            valueList.add(readValue(element, clazz));
-        }
-        return valueList;
-    }
+	/**
+	 * 读取 xml 信息为 java Bean
+	 *
+	 * @param doc   xml element
+	 * @param clazz bean Class
+	 * @param <T>   泛型
+	 * @return 对象列表
+	 */
+	public static <T> List<T> readList(Element doc, Class<T> clazz) {
+		CssQuery annotation = clazz.getAnnotation(CssQuery.class);
+		if (annotation == null) {
+			throw new IllegalArgumentException("DomMapper readList " + clazz + " mast has annotation @CssQuery.");
+		}
+		String cssQueryValue = annotation.value();
+		Elements elements = doc.select(cssQueryValue);
+		List<T> valueList = new ArrayList<>();
+		for (Element element : elements) {
+			valueList.add(readValue(element, clazz));
+		}
+		return valueList;
+	}
 
 }

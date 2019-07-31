@@ -70,8 +70,11 @@ public class AuthRequestFactory {
 			case TEAMBITION:
 				return authTeambitionRequest(properties.getTeambition());
 			case RENREN:
+				return authRenrenRequest(properties.getRenren());
 			case PINTEREST:
+				return authPinterestRequest(properties.getPinterest());
 			case STACK_OVERFLOW:
+				return authStackOverflowRequest(properties.getStackOverflow());
 			default:
 				return null;
 		}
