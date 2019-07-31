@@ -164,7 +164,7 @@ public class RestTemplateConfiguration {
 	@Configuration
 	@RequiredArgsConstructor
 	@ConditionalOnClass(OkHttpClient.class)
-	@ConditionalOnProperty(value = "mica.http.rest-template.enable", matchIfMissing = true)
+	@ConditionalOnProperty(value = "mica.http.rest-template.enable")
 	public static class RestTemplateAutoConfiguration {
 		private final ApplicationContext context;
 
@@ -187,7 +187,7 @@ public class RestTemplateConfiguration {
 	@Configuration
 	@RequiredArgsConstructor
 	@ConditionalOnClass(OkHttpClient.class)
-	@ConditionalOnProperty(value = "mica.http.lb-rest-template.enable", matchIfMissing = true)
+	@ConditionalOnProperty(value = "mica.http.lb-rest-template.enable")
 	public static class LbRestTemplateAutoConfiguration {
 		private final ApplicationContext context;
 
