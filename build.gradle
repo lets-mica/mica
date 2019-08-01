@@ -8,7 +8,7 @@ ext {
     protostuffVersion = "1.6.0"
     disruptorVersion = "3.4.2"
     swaggerVersion = "2.9.2"
-    swaggerBootstrapUiVersion = "1.9.4"
+    swaggerBootstrapUiVersion = "1.9.5"
     okhttpVersion = "3.14.2"
     jsoupVersion = "1.12.1"
     alipaySdkVersion = "3.7.4.ALL"

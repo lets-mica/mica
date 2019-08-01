@@ -22,18 +22,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 
@@ -51,38 +48,62 @@ public class XmlHelper {
 	private final XPath path;
 	private final Document doc;
 
-	private XmlHelper(InputSource inputSource) throws ParserConfigurationException, SAXException, IOException {
-		DocumentBuilderFactory dbf = XmlHelper.getDocumentBuilderFactory();
+	private XmlHelper(InputSource inputSource, boolean unsafe) throws Exception {
+		DocumentBuilderFactory dbf = unsafe ?
+			XmlHelper.getUnsafeDocumentBuilderFactory() :
+			XmlHelper.getDocumentBuilderFactory();
 		DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
 		doc = documentBuilder.parse(inputSource);
-		path = XmlHelper.getXPathFactory().newXPath();
+		path = XmlHelper.getXpathFactory().newXPath();
 	}
 
-	private static XmlHelper create(InputSource inputSource) {
+	private static XmlHelper createSafe(InputSource inputSource) {
+		return create(inputSource, false);
+	}
+
+	private static XmlHelper createUnsafe(InputSource inputSource) {
+		return create(inputSource, true);
+	}
+
+	private static XmlHelper create(InputSource inputSource, boolean unsafe) {
 		try {
-			return new XmlHelper(inputSource);
-		} catch (ParserConfigurationException | SAXException | IOException e) {
+			return new XmlHelper(inputSource, unsafe);
+		} catch (Exception e) {
 			throw Exceptions.unchecked(e);
 		}
 	}
 
-	public static XmlHelper of(InputStream is) {
+	public static XmlHelper safe(InputStream is) {
 		InputSource inputSource = new InputSource(is);
-		return create(inputSource);
+		return createSafe(inputSource);
 	}
 
-	public static XmlHelper of(String xmlStr) {
+	public static XmlHelper safe(String xmlStr) {
 		StringReader sr = new StringReader(xmlStr.trim());
 		InputSource inputSource = new InputSource(sr);
-		XmlHelper xmlHelper = XmlHelper.create(inputSource);
+		XmlHelper xmlHelper = XmlHelper.createSafe(inputSource);
+		IoUtil.closeQuietly(sr);
+		return xmlHelper;
+	}
+
+	public static XmlHelper unsafe(InputStream is) {
+		InputSource inputSource = new InputSource(is);
+		return createUnsafe(inputSource);
+	}
+
+	public static XmlHelper unsafe(String xmlStr) {
+		StringReader sr = new StringReader(xmlStr.trim());
+		InputSource inputSource = new InputSource(sr);
+		XmlHelper xmlHelper = XmlHelper.createUnsafe(inputSource);
 		IoUtil.closeQuietly(sr);
 		return xmlHelper;
 	}
 
 	/**
 	 * 执行 xpath 语法
+	 *
 	 * @param expression xpath 语法
-	 * @param item 子节点
+	 * @param item       子节点
 	 * @param returnType 返回的类型
 	 * @return {Object}
 	 */
@@ -204,7 +225,16 @@ public class XmlHelper {
 		return XmlHelper.XmlHelperHolder.DOCUMENT_BUILDER_FACTORY;
 	}
 
-	private static XPathFactory getXPathFactory() {
+	/**
+	 * 不安全的 Document 构造器，用来解析部分可靠的 html、xml
+	 *
+	 * @return DocumentBuilderFactory
+	 */
+	private static DocumentBuilderFactory getUnsafeDocumentBuilderFactory() {
+		return XmlHelper.XmlHelperHolder.UNSAFE_DOCUMENT_BUILDER_FACTORY;
+	}
+
+	private static XPathFactory getXpathFactory() {
 		return XmlHelper.XmlHelperHolder.XPATH_FACTORY;
 	}
 
@@ -216,6 +246,7 @@ public class XmlHelper {
 		private static final String FEATURE_HTTP_XML_ORG_SAX_FEATURES_EXTERNAL_GENERAL_ENTITIES = "http://xml.org/sax/features/external-general-entities";
 		private static final String FEATURE_HTTP_XML_ORG_SAX_FEATURES_EXTERNAL_PARAMETER_ENTITIES = "http://xml.org/sax/features/external-parameter-entities";
 		private static final DocumentBuilderFactory DOCUMENT_BUILDER_FACTORY = XmlHelperHolder.newDocumentBuilderFactory();
+		private static final DocumentBuilderFactory UNSAFE_DOCUMENT_BUILDER_FACTORY = DocumentBuilderFactory.newInstance();
 		private static final XPathFactory XPATH_FACTORY = XPathFactory.newInstance();
 
 		private static DocumentBuilderFactory newDocumentBuilderFactory() {

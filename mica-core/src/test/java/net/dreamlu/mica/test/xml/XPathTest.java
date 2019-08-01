@@ -25,7 +25,7 @@ public class XPathTest {
 				"</book>\n" +
 				"</bookstore>";
 
-		XmlHelper xmlHelper = XmlHelper.of(xml);
+		XmlHelper xmlHelper = XmlHelper.safe(xml);
 		String title1 = xmlHelper.getString("//book[1]/title");
 		Assert.assertEquals(title1, "Harry Potter");
 

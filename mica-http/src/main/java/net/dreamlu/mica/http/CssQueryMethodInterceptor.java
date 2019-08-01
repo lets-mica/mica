@@ -87,12 +87,19 @@ public class CssQueryMethodInterceptor implements InvocationHandler {
 		return ConvertUtil.convert(proxyValue, typeDescriptor);
 	}
 
+	@Nullable
 	private Object proxyValue(String cssQueryValue, String attrName, Class<?> returnType, boolean isColl) {
 		if (isColl) {
 			Elements elements = Selector.select(cssQueryValue, element);
 			Collection<Object> valueList = newColl(returnType);
+			if (elements.isEmpty()) {
+				return valueList;
+			}
 			for (Element select : elements) {
-				valueList.add(getValue(select, attrName));
+				String value = getValue(select, attrName);
+				if (value != null) {
+					valueList.add(value);
+				}
 			}
 			return valueList;
 		}
@@ -106,6 +113,9 @@ public class CssQueryMethodInterceptor implements InvocationHandler {
 			Collection<Object> valueList = newColl(returnType);
 			ResolvableType resolvableType = ResolvableType.forMethodReturnType(method);
 			Class<?> innerType = resolvableType.getGeneric(0).resolve();
+			if (innerType == null) {
+				throw new IllegalArgumentException("Class " + returnType + " 读取泛型失败。");
+			}
 			for (Element select : elements) {
 				valueList.add(DomMapper.readValue(select, innerType));
 			}
@@ -115,7 +125,11 @@ public class CssQueryMethodInterceptor implements InvocationHandler {
 		return DomMapper.readValue(select, returnType);
 	}
 
-	private String getValue(Element element, String attrName) {
+	@Nullable
+	private String getValue(@Nullable Element element, String attrName) {
+		if (element == null) {
+			return null;
+		}
 		if (StringUtil.isBlank(attrName)) {
 			return element.outerHtml();
 		} else if ("html".equalsIgnoreCase(attrName)) {
