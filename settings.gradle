@@ -2,6 +2,7 @@ rootProject.name = "mica"
 include "mica-bom"
 include "mica-core"
 include "mica-http"
+include "mica-laytpl"
 include "mica-launcher"
 include "mica-log4j2"
 include "mica-boot"
@@ -15,4 +16,5 @@ include "mica-plus-mongo"
 include "mica-plus-swagger"
 include "mica-plus-ribbon"
 include "mica-plus-social"
+
 
