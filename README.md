@@ -39,6 +39,9 @@
 ### mica-http
 - `mica-http` 是 `okhttp` 的封装，Fluent 语法的 http 工具包，语法参考 HttpClient Fluent API。
 
+### mica-laytpl 
+- laytpl 模板（将其引入到 java 中）
+
 ### mica-launcher
 - 项目启动器
 - 启动信息打印
