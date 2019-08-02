@@ -30,12 +30,12 @@ import org.springframework.context.annotation.Configuration;
 public class MicaTemplateAutoConfiguration {
 
 	@Bean("fmt")
-	public FmtFunc fmtFunc() {
-		return new FmtFunc();
+	public FmtFunc fmtFunc(MicaLayTplProperties properties) {
+		return new FmtFunc(properties);
 	}
 
 	@Bean("micaTpl")
-	public MicaTemplate micaTemplate(MicaLayTplProperties properties) {
-		return new MicaTemplate(properties);
+	public MicaTemplate micaTemplate(FmtFunc fmtFunc, MicaLayTplProperties properties) {
+		return new MicaTemplate(properties, fmtFunc);
 	}
 }

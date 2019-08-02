@@ -20,9 +20,13 @@
 
 package net.dreamlu.mica.laytpl;
 
+import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.DateUtil;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Date;
@@ -34,7 +38,29 @@ import java.util.Date;
  *
  * @author L.cm
  */
+@RequiredArgsConstructor
 public class FmtFunc {
+	private final MicaLayTplProperties properties;
+
+	/**
+	 * 对象格式化
+	 * @param object 格式化对象
+	 * @return 格式化后的字符串
+	 */
+	public String format(Object object) {
+		if (object instanceof Number) {
+			return format(object, properties.getNumPattern());
+		} else if (object instanceof Date) {
+			return format(object, properties.getDatePattern());
+		} else if (object instanceof LocalTime) {
+			return format(object, properties.getLocalTimePattern());
+		} else if (object instanceof LocalDate) {
+			return format(object, properties.getLocalDatePattern());
+		} else if (object instanceof LocalDateTime) {
+			return format(object, properties.getLocalDateTimePattern());
+		}
+		throw new MicaTplException("未支持的对象格式" + object);
+	}
 
 	/**
 	 * 对象格式化

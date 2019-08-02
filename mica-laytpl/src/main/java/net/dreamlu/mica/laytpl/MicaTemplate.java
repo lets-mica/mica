@@ -43,12 +43,14 @@ public class MicaTemplate implements ApplicationContextAware, InitializingBean {
 		return IoUtil.readToString(resource.getInputStream());
 	});
 	private final MicaLayTplProperties tplProperties;
+	private final JsConsole console;
+	private final FmtFunc fmtFunc;
 	private ApplicationContext applicationContext;
 	private ScriptEngine engine;
-	private JsConsole console;
 
-	public MicaTemplate(MicaLayTplProperties tplProperties) {
+	public MicaTemplate(MicaLayTplProperties tplProperties, FmtFunc fmtFunc) {
 		this.tplProperties = tplProperties;
+		this.fmtFunc = fmtFunc;
 		this.console = new JsConsole();
 	}
 
@@ -71,6 +73,15 @@ public class MicaTemplate implements ApplicationContextAware, InitializingBean {
 		} catch (ScriptException e) {
 			throw new MicaTplException(e);
 		}
+	}
+
+	/**
+	 * 渲染html字符串
+	 * @param html html字符串
+	 * @return 渲染后的html
+	 */
+	public String render(String html) {
+		return render(html, new HashMap<>(0));
 	}
 
 	/**
@@ -104,7 +115,8 @@ public class MicaTemplate implements ApplicationContextAware, InitializingBean {
 		config.put("open", tplProperties.getOpen());
 		config.put("close", tplProperties.getClose());
 		bindings.put("console", console);
-		bindings.put("dream", new JsContext(applicationContext));
+		bindings.put("fmt", fmtFunc);
+		bindings.put("mica", new JsContext(applicationContext));
 		bindings.put("_config", config);
 		engine.setBindings(bindings, ScriptContext.GLOBAL_SCOPE);
 		engine.eval(JsLayTpl.LAY_TPL_JS, bindings);

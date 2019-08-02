@@ -20,6 +20,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +35,8 @@ public class MicaTemplateTest {
 
 	@Before
 	public void setup() throws Exception {
-		micaTemplate = new MicaTemplate(new MicaLayTplProperties());
+		MicaLayTplProperties properties = new MicaLayTplProperties();
+		micaTemplate = new MicaTemplate(properties, new FmtFunc(properties));
 		micaTemplate.afterPropertiesSet();
 	}
 
@@ -53,12 +55,13 @@ public class MicaTemplateTest {
 			"{{#\n" +
 			"console.log();\n" +
 			"console.log(\"im {}\", \"L.cm\");\n" +
-			"\n" +
 			"console.error(\"hi im {}\", \"L.cm\");\n" +
-			"\n" +
-			"console.log(\"laytpl version:{}\", laytpl.v)\n" +
+			"console.log(fmt.format( d.date ));\n" +
+			"console.log(\"laytpl version:{}\", laytpl.v);\n" +
 			"}}";
 
-		micaTemplate.render(html, new HashMap<>());
+		Map<String, Object> data = new HashMap<>();
+		data.put("date", new Date());
+		micaTemplate.render(html, data);
 	}
 }
