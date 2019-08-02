@@ -26,7 +26,7 @@
 2. 编译期生成 `spring-devtools.properties`。
 3. 编译期生成 `FeignClient` 信息到 `spring.factories` 中，供 `mica-cloud` 中完成 `Feign` 自动化配置。
 
-`源码地址`：[https://gitee.com/596392912/mica-auto](https://gitee.com/596392912/mica-auto)
+`文档地址`：[https://gitee.com/596392912/mica-auto](https://gitee.com/596392912/mica-auto)
 
 ### mica-core
 - 常用工具包，基于 `Spring-core` 扩展增强，无其他依赖。
@@ -36,17 +36,25 @@
 - Jaskson Read Write HttpMessageConverter，分读写的消息转换器。
 - Spring 枚举转换器，规则同 Jackson。
 
+`文档地址`：[mica-core](https://www.dreamlu.net/docs/utils-common.html)
+
 ### mica-http
 - `mica-http` 是 `okhttp` 的封装，Fluent 语法的 http 工具包，语法参考 HttpClient Fluent API。
 
+`文档地址`：[mica-http](mica-http/README.md)
+
 ### mica-laytpl 
 - laytpl 模板（将其引入到 java 中）
+
+`文档地址`：[mica-laytpl](mica-laytpl/README.md)
 
 ### mica-launcher
 - 项目启动器
 - 启动信息打印
 - 系统环境处理
 - spi 扩展
+
+`文档地址`：[mica-launcher](https://www.dreamlu.net/docs/launcher-profile.html)
 
 ### mica-boot
 - 支持 `Spring boot web` 和 `Spring boot webflux`。
@@ -59,19 +67,29 @@
 - 请求日志打印，方便开发。
 - url 版本号和 header 版本处理。
 
+`文档地址`：[mica-boot](https://www.dreamlu.net/docs/boot-version.html)
+
 ### mica-boot-test
 - 方便 mica-boot 测试，注入 mica-launcher 中注入的参数。
+
+`文档地址`：[mica-boot-test](https://www.dreamlu.net/docs/boot-test.html)
 
 ### mica-log4j2
 - mica log4j 配置。
 - 基于 disruptor 异步日志，高性能。
 - 非开发环境将 System.out 和 err 写入 log。
 
+`文档地址`：[mica-log4j2](https://www.dreamlu.net/docs/log4j2.html)
+
 ### mica-captcha
 - 验证码，支持 `webflux` 和 `serlvet`。
 
+`文档地址`：[mica-captcha](https://www.dreamlu.net/docs/captcha.html)
+
 ### mica-social
 - 第三方登录组件
+
+`文档地址`：[mica-social](mica-social/README.md)
 
 ### mica-cloud
 - Feign 自动降级、header 透传、版本处理，结合 `mica-auto` 自动化配置。
@@ -85,6 +103,8 @@
 ### mica-plus-redis
 - redis cache name # 自动配置超时时间。
 
+`文档地址`：[mica-plus-redis](mica-plus-redis/README.md)
+
 ### mica-plus-mongo
 - mongo 复杂 tree 和 jsonNode 转换处理。
 
@@ -96,8 +116,12 @@
 - 可设置选择的 ip 或者 ip 段，例如：`172.21.0.*`、`172.21.0.8*`。
 - 可设定 `tag`，用于灰度，匹配：`nacos.discovery.metadata.tag`。
 
+`文档地址`：[mica-plus-ribbon](mica-plus-ribbon/README.md)
+
 ### mica-plus-social
 - `mica-social` 自动化配置。
+
+`文档地址`：[mica-plus-social](mica-plus-social/README.md)
 
 ## 已知问题
 lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861
