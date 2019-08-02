@@ -64,4 +64,11 @@ public class MicaTemplateTest {
 		data.put("date", new Date());
 		micaTemplate.render(html, data);
 	}
+
+	@Test
+	public void test3() {
+		String html = "{{!#1+1!}}";
+		String render = micaTemplate.render(html);
+		Assert.assertEquals(render, "#1+1");
+	}
 }
