@@ -6,8 +6,7 @@
 - :zap: 添加 .codacy.yml 配置.
 - :zap: 添加模块 mica-laytpl 模块.
 - :zap: mica-core 增强 XmlHelper 支持安全和非安全模式.
-- :white_check_mark: mica-http 添加 html、xml 转 Bean.
-- :zap: mica-http html、xml 转 Bean，支持类型转换.
+- :zap: mica-http html、xml 转 Bean，并支持类型转换.
 - :zap: mica-http 添加重试机制.
 - :zap: mica-http add EventListener。
 - :zap: mica-http 优化拦截器，支持多个，将日志拦截器放到最后。
