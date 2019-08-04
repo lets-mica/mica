@@ -1,6 +1,20 @@
 # 变更记录
 
 ## 发行版本
+### v1.1.7 - 2019-08-04
+- :zap: 优化 readme 添加文档地址.
+- :zap: 添加 .codacy.yml 配置.
+- :zap: 添加模块 mica-laytpl 模块.
+- :zap: mica-core 增强 XmlHelper 支持安全和非安全模式.
+- :white_check_mark: mica-http 添加 html、xml 转 Bean.
+- :zap: mica-http html、xml 转 Bean，支持类型转换.
+- :zap: mica-http 添加重试机制.
+- :zap: mica-http add EventListener。
+- :zap: mica-http 优化拦截器，支持多个，将日志拦截器放到最后。
+- :zap: gradle use platform replace enforcedPlatform。
+- :zap: mica-cloud 优化 RestTemplate Bean 添加配置开关，默认不开启.
+- :arrow_up: 依赖升级 swagger-bootstrap-ui 到 `1.9.5`.
+
 ### v1.1.6 - 2019-07-21
 - :zap: `mica http` 调整包 由 `net.dreamlu.http` -> `net.dreamlu.mica.http`。
 - :zap: `mica http` 去除对 spring 的依赖，使用 jsoup 解析 html 或 xml.
