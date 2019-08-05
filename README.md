@@ -159,6 +159,7 @@ LGPL是GPL的一个为主要为类库使用设计的开源协议。和GPL要求�
 * `示例项目`：[https://github.com/lets-mica/mica-example](https://github.com/lets-mica/mica-example)
 * mica 源码 Github：[https://github.com/lets-mica](https://github.com/lets-mica)
 * mica 源码 Gitee（码云）：[https://gitee.com/596392912/mica](https://gitee.com/596392912/mica)
+* mica 性能压测：[https://github.com/lets-mica/mica-jmh](https://github.com/lets-mica/mica-jmh)
 * 文档地址（官网）：[https://www.dreamlu.net/docs/](https://www.dreamlu.net/docs/)
 * 文档地址（语雀-可关注订阅）：[https://www.yuque.com/dreamlu/mica](https://www.yuque.com/dreamlu/mica)
 
