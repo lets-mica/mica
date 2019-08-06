@@ -45,13 +45,26 @@ public class Exceptions {
 			e instanceof NoSuchMethodException) {
 			return new IllegalArgumentException(e);
 		} else if (e instanceof InvocationTargetException) {
-			return new RuntimeException(((InvocationTargetException) e).getTargetException());
+			return Exceptions.runtime(((InvocationTargetException) e).getTargetException());
 		} else if (e instanceof RuntimeException) {
 			return (RuntimeException) e;
 		} else if (e instanceof InterruptedException) {
 			Thread.currentThread().interrupt();
 		}
-		return new RuntimeException(e);
+		return Exceptions.runtime(e);
+	}
+
+	/**
+	 * 不采用 RuntimeException 包装，直接抛出，使异常更加精准
+	 *
+	 * @param throwable Throwable
+	 * @param <T>       泛型标记
+	 * @return Throwable
+	 * @throws T 泛型
+	 */
+	@SuppressWarnings("unchecked")
+	private static <T extends Throwable> T runtime(Throwable throwable) throws T {
+		throw (T) throwable;
 	}
 
 	/**
