@@ -16,10 +16,10 @@
 
 package net.dreamlu.mica.ribbon.predicate;
 
+import com.alibaba.cloud.nacos.ribbon.NacosServer;
 import net.dreamlu.mica.config.SpringUtils;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.ribbon.support.MicaRibbonRuleProperties;
-import org.springframework.cloud.alibaba.nacos.ribbon.NacosServer;
 
 import java.util.Map;
 

@@ -1,5 +1,5 @@
 dependencies {
     api project(":mica-boot")
-    api "org.springframework.cloud:spring-cloud-starter-alibaba-nacos-discovery"
+    api "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery"
     annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
 }
