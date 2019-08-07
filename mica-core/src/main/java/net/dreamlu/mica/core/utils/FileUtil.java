@@ -24,8 +24,13 @@ import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +72,7 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	/**
 	 * 扫描目录下的文件
 	 *
-	 * @param path   路径
+	 * @param path            路径
 	 * @param fileNamePattern 文件名 * 号
 	 * @return 文件集合
 	 */
@@ -105,7 +110,7 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	/**
 	 * 扫描目录下的文件
 	 *
-	 * @param file   文件
+	 * @param file            文件
 	 * @param fileNamePattern Spring AntPathMatcher 规则
 	 * @return 文件集合
 	 */
@@ -156,6 +161,7 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 
 	/**
 	 * 获取文件后缀名
+	 *
 	 * @param fullName 文件全名
 	 * @return {String}
 	 */
@@ -168,6 +174,7 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 
 	/**
 	 * 获取文件名，去除后缀名
+	 *
 	 * @param file 文件
 	 * @return {String}
 	 */
@@ -227,7 +234,7 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	 * Reads the contents of a file into a String.
 	 * The file is always closed.
 	 *
-	 * @param file     the file to read, must not be {@code null}
+	 * @param file the file to read, must not be {@code null}
 	 * @return the file contents, never {@code null}
 	 */
 	public static byte[] readToByteArray(final File file) {
@@ -256,7 +263,7 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	 * @param append if {@code true}, then the String will be added to the
 	 *               end of the file rather than overwriting
 	 */
-	public static void writeToFile(final File file, final String data, final boolean append){
+	public static void writeToFile(final File file, final String data, final boolean append) {
 		writeToFile(file, data, Charsets.UTF_8, append);
 	}
 
@@ -290,8 +297,9 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 
 	/**
 	 * 转成file
+	 *
 	 * @param multipartFile MultipartFile
-	 * @param file File
+	 * @param file          File
 	 */
 	public static void toFile(MultipartFile multipartFile, final File file) {
 		try {
@@ -303,7 +311,8 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 
 	/**
 	 * 转成file
-	 * @param in InputStream
+	 *
+	 * @param in   InputStream
 	 * @param file File
 	 */
 	public static void toFile(InputStream in, final File file) {
@@ -381,4 +390,116 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 		}
 	}
 
+	/**
+	 * NIO 按行读取文件
+	 *
+	 * @param path 文件路径
+	 * @return 行列表
+	 */
+	public static List<String> readLines(String path) {
+		return readLines(Paths.get(path));
+	}
+
+	/**
+	 * NIO 按行读取文件
+	 *
+	 * @param file 文件
+	 * @return 行列表
+	 */
+	public static List<String> readLines(File file) {
+		return readLines(file.toPath());
+	}
+
+	/**
+	 * NIO 按行读取文件
+	 *
+	 * @param path 文件路径
+	 * @return 行列表
+	 */
+	public static List<String> readLines(Path path) {
+		return readLines(path, Charsets.UTF_8);
+	}
+
+	/**
+	 * NIO 按行读取文件
+	 *
+	 * @param path 文件路径
+	 * @param cs   字符集
+	 * @return 行列表
+	 */
+	public static List<String> readLines(String path, Charset cs) {
+		return readLines(Paths.get(path), cs);
+	}
+
+	/**
+	 * NIO 按行读取文件
+	 *
+	 * @param file 文件
+	 * @param cs   字符集
+	 * @return 行列表
+	 */
+	public static List<String> readLines(File file, Charset cs) {
+		return readLines(file.toPath(), cs);
+	}
+
+	/**
+	 * NIO 按行读取文件
+	 *
+	 * @param path 文件路径
+	 * @param cs   字符集
+	 * @return 行列表
+	 */
+	public static List<String> readLines(Path path, Charset cs) {
+		List<String> lines = new ArrayList<>();
+		try (
+			SeekableByteChannel channel = Files.newByteChannel(path, StandardOpenOption.READ)) {
+			ByteBuffer buffer = ByteBuffer.allocate(1024 * 1024);
+			int bytesRead = channel.read(buffer);
+			ByteBuffer stringBuffer = ByteBuffer.allocate(100);
+			while (bytesRead != -1) {
+				// 之前是写buffer，现在要读buffer，切换模式，写->读
+				buffer.flip();
+				while (buffer.hasRemaining()) {
+					byte b = buffer.get();
+					// 如果是换行符
+					if (b == 10 || b == 13) {
+						stringBuffer.flip();
+						final String line = cs.decode(stringBuffer).toString();
+						lines.add(line);
+						stringBuffer.clear();
+					} else {
+						if (stringBuffer.hasRemaining()) {
+							stringBuffer.put(b);
+						} else {
+							// 空间不够扩容
+							stringBuffer = reAllocate(stringBuffer);
+							stringBuffer.put(b);
+						}
+					}
+				}
+				// 清空,position位置为0，limit = capacity
+				buffer.clear();
+				// 继续往buffer中写
+				bytesRead = channel.read(buffer);
+			}
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+		return lines;
+	}
+
+	/**
+	 * ByteBuffer 扩容
+	 *
+	 * @param byteBuffer ByteBuffer
+	 * @return ByteBuffer
+	 */
+	private static ByteBuffer reAllocate(ByteBuffer byteBuffer) {
+		final int capacity = byteBuffer.capacity();
+		byte[] newBuffer = new byte[capacity * 2];
+		System.arraycopy(byteBuffer.array(), 0, newBuffer, 0, capacity);
+		ByteBuffer newByteBuffer = ByteBuffer.wrap(newBuffer);
+		newByteBuffer.position(capacity);
+		return newByteBuffer;
+	}
 }
