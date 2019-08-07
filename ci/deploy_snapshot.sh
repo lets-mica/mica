@@ -7,7 +7,7 @@ function gradle_publish() {
 }
 
 if [ "$TRAVIS_REPO_SLUG" == "lets-mica/mica" ] && \
-   [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ] && \
+   [ "$TRAVIS_JDK_VERSION" == "openjdk8" ] && \
    [ "$TRAVIS_PULL_REQUEST" == "false" ] && \
    [ "$TRAVIS_BRANCH" == "master" ]; then
   echo "Publishing To Maven snapshot..."
