@@ -63,7 +63,7 @@ public interface RateLimiterClient {
 		if (isAllowed) {
 			return supplier.get();
 		}
-		throw new RateLimiterException("您的访问次数已超限：" + key + "，速率：" + max + "/s");
+		throw new RateLimiterException("您的访问次数已超限：" + key + "，速率：" + max + "/" + ttl + "s");
 	}
 
 }
