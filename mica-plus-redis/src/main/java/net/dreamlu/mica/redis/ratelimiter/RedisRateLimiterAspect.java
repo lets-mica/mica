@@ -32,6 +32,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.TimeUnit;
 
 /**
  * redis 限流
@@ -71,13 +72,16 @@ public class RedisRateLimiterAspect {
 			rateKey = limitKey;
 		}
 		long max = limiter.max();
+		long ttl = limiter.ttl();
+		TimeUnit timeUnit = limiter.timeUnit();
 		// 执行命令
-		boolean isAllowed = rateLimiterClient.isAllowed(rateKey, max, limiter.ttl(), limiter.timeUnit());
+		boolean isAllowed = rateLimiterClient.isAllowed(rateKey, max, ttl, timeUnit);
 		// 判断是否有被限流
 		if (isAllowed) {
 			return point.proceed();
 		}
-		throw new RateLimiterException("您的访问次数已超限：" + rateKey + "，最大次数：" + max);
+		long seconds = timeUnit.toSeconds(ttl);
+		throw new RateLimiterException("您的访问次数已超限：" + rateKey + "，速率：" + max + "/" + seconds + "s");
 	}
 
 	/**
