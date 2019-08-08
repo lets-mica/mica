@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2029, Dreamlu (596392912@qq.com & www.dreamlu.net).
+ * Copyright (c) 2019-2029, Dreamlu 卢春梦 (596392912@qq.com & www.dreamlu.net).
  * <p>
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE 3.0;
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.http;
+package net.dreamlu.mica.redis.ratelimiter;
 
 /**
- * http 请求异常封装
+ * 限流异常
  *
  * @author L.cm
  */
-public class MicaHttpException extends RuntimeException {
+public class RateLimiterException extends RuntimeException {
 
-	public MicaHttpException(Throwable cause) {
-		super(cause.getMessage(), cause);
+	public RateLimiterException(String message) {
+		super(message);
 	}
 }

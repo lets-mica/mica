@@ -18,16 +18,15 @@ package net.dreamlu.mica.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
+import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import okhttp3.*;
-import org.jsoup.helper.DataUtil;
 import org.jsoup.nodes.Document;
 
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -64,7 +63,7 @@ public class HttpResponse implements ResponseSpec {
 
 	private void checkIfException() {
 		if (exception != null) {
-			throw new MicaHttpException(exception);
+			throw Exceptions.unchecked(exception);
 		}
 	}
 
@@ -237,11 +236,7 @@ public class HttpResponse implements ResponseSpec {
 
 	@Override
 	public Document asDocument() {
-		try {
-			return DataUtil.load(this.asStream(), StandardCharsets.UTF_8.name(), "");
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		return DomMapper.readDocument(this.asStream());
 	}
 
 	@Override

@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.http;
 
+import net.dreamlu.mica.core.utils.Exceptions;
 import org.jsoup.helper.DataUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -34,8 +35,31 @@ import java.util.List;
  *
  * @author L.cm
  */
-@SuppressWarnings("unchecked")
 public class DomMapper {
+
+	/**
+	 * 将流读取为 jsoup Document
+	 *
+	 * @param inputStream InputStream
+	 * @return Document
+	 */
+	public static Document readDocument(InputStream inputStream) {
+		try {
+			return DataUtil.load(inputStream, StandardCharsets.UTF_8.name(), "");
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 将 html 字符串读取为 jsoup Document
+	 *
+	 * @param html String
+	 * @return Document
+	 */
+	public static Document readDocument(String html) {
+		return Parser.parse(html, "");
+	}
 
 	/**
 	 * 读取 xml 信息为 java Bean
@@ -46,12 +70,7 @@ public class DomMapper {
 	 * @return 对象
 	 */
 	public static <T> T readValue(InputStream inputStream, final Class<T> clazz) {
-		try {
-			Document document = DataUtil.load(inputStream, StandardCharsets.UTF_8.name(), "");
-			return readValue(document, clazz);
-		} catch (IOException e) {
-			throw new MicaHttpException(e);
-		}
+		return readValue(readDocument(inputStream), clazz);
 	}
 
 	/**
@@ -63,8 +82,7 @@ public class DomMapper {
 	 * @return 对象
 	 */
 	public static <T> T readValue(String html, final Class<T> clazz) {
-		Document document = Parser.parse(html, "");
-		return readValue(document, clazz);
+		return readValue(readDocument(html), clazz);
 	}
 
 	/**
@@ -75,6 +93,7 @@ public class DomMapper {
 	 * @param <T>   泛型
 	 * @return 对象
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> T readValue(final Element doc, final Class<T> clazz) {
 		Enhancer enhancer = new Enhancer();
 		enhancer.setSuperclass(clazz);
@@ -92,12 +111,7 @@ public class DomMapper {
 	 * @return 对象
 	 */
 	public static <T> List<T> readList(InputStream inputStream, final Class<T> clazz) {
-		try {
-			Document document = DataUtil.load(inputStream, StandardCharsets.UTF_8.name(), "");
-			return readList(document, clazz);
-		} catch (IOException e) {
-			throw new MicaHttpException(e);
-		}
+		return readList(readDocument(inputStream), clazz);
 	}
 
 	/**
@@ -109,8 +123,7 @@ public class DomMapper {
 	 * @return 对象
 	 */
 	public static <T> List<T> readList(String html, final Class<T> clazz) {
-		Document document = Parser.parse(html, "");
-		return readList(document, clazz);
+		return readList(readDocument(html), clazz);
 	}
 
 	/**

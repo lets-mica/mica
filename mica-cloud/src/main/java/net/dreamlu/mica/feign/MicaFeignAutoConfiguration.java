@@ -24,6 +24,7 @@ import feign.hystrix.HystrixFeign;
 import net.dreamlu.mica.core.convert.EnumToStringConverter;
 import net.dreamlu.mica.core.convert.StringToEnumConverter;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -79,7 +80,7 @@ public class MicaFeignAutoConfiguration {
 	 * @return SpringMvcContract
 	 */
 	@Bean
-	public Contract feignContract(ObjectProvider<ConversionService> objectProvider) {
+	public Contract feignContract(@Qualifier("mvcConversionService") ObjectProvider<ConversionService> objectProvider) {
 		ConversionService conversionService = objectProvider.getIfAvailable(DefaultConversionService::new);
 		ConverterRegistry converterRegistry = ((ConverterRegistry) conversionService);
 		converterRegistry.addConverter(new EnumToStringConverter());

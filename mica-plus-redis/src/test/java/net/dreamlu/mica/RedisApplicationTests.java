@@ -1,21 +1,21 @@
 package net.dreamlu.mica;
 
-import net.dreamlu.mica.test.MicaBaseTest;
-import net.dreamlu.mica.test.MicaBootTest;
 import org.junit.Test;
-import org.springframework.boot.SpringBootConfiguration;
+import org.junit.runner.RunWith;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * 验证码 测试
+ * redis 测试
  *
  * @author L.cm
  */
+@RunWith(SpringRunner.class)
 @SpringBootTest
-@MicaBootTest(appName = "redis")
-public class RedisApplicationTests extends MicaBaseTest {
+public class RedisApplicationTests {
 
-	@SpringBootConfiguration
+	@SpringBootApplication
 	public static class App {
 
 	}

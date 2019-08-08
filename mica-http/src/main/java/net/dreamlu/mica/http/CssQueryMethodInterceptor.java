@@ -23,10 +23,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.jsoup.select.Selector;
-import org.springframework.cglib.proxy.InvocationHandler;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.convert.TypeDescriptor;
-import org.springframework.util.ReflectionUtils;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
@@ -43,31 +43,23 @@ import java.util.stream.Collectors;
  * @author L.cm
  */
 @RequiredArgsConstructor
-public class CssQueryMethodInterceptor implements InvocationHandler {
+public class CssQueryMethodInterceptor implements MethodInterceptor {
 	private final Class<?> clazz;
 	private final Element element;
 
 	@Nullable
 	@Override
-	public Object invoke(Object object, Method method, Object[] args) throws Throwable {
-		// 如果是 toString eq 等方法都不准确，故直接返回死值
-		if (ReflectionUtils.isToStringMethod(method)) {
-			return clazz.toString();
-		} else if (ReflectionUtils.isEqualsMethod(method)) {
-			return false;
-		} else if (ReflectionUtils.isHashCodeMethod(method)) {
-			return 1;
-		}
+	public Object intercept(Object object, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
 		// 只处理 get 方法 is
 		String name = method.getName();
 		if (!name.startsWith("get")) {
-			return method.invoke(object, args);
+			return methodProxy.invokeSuper(object, args);
 		}
 		Field field = clazz.getDeclaredField(StringUtil.firstCharToLower(name.substring(3)));
 		CssQuery annotation = field.getAnnotation(CssQuery.class);
 		// 没有注解，不代理
 		if (annotation == null) {
-			return method.invoke(object, args);
+			return methodProxy.invokeSuper(object, args);
 		}
 		Class<?> returnType = method.getReturnType();
 		boolean isColl = Collection.class.isAssignableFrom(returnType);
@@ -82,7 +74,7 @@ public class CssQueryMethodInterceptor implements InvocationHandler {
 		if (String.class.isAssignableFrom(returnType)) {
 			return proxyValue;
 		}
-		// 类型转换
+		// 用于读取 field 上的注解
 		TypeDescriptor typeDescriptor = new TypeDescriptor(field);
 		return ConvertUtil.convert(proxyValue, typeDescriptor);
 	}
