@@ -17,7 +17,7 @@
 package net.dreamlu.mica.laytpl;
 
 import net.dreamlu.mica.core.utils.IoUtil;
-import net.dreamlu.mica.core.utils.Try;
+import net.dreamlu.mica.core.utils.Unchecked;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -38,7 +38,7 @@ import java.util.function.Function;
  */
 public class MicaTemplate implements ApplicationContextAware, InitializingBean {
 	private final ConcurrentMap<String, String> tplCache = new ConcurrentHashMap<>();
-	private final Function<String, String> tplFunction = Try.of(tpl -> {
+	private final Function<String, String> tplFunction = Unchecked.function(tpl -> {
 		Resource resource = MicaTemplate.this.getApplicationContext().getResource(tpl);
 		return IoUtil.readToString(resource.getInputStream());
 	});

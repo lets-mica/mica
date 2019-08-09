@@ -16,8 +16,10 @@
 
 package net.dreamlu.mica.redis.ratelimiter;
 
+import net.dreamlu.mica.core.function.CheckedSupplier;
+import net.dreamlu.mica.core.utils.Exceptions;
+
 import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 
 /**
  * RateLimiter 限流 Client
@@ -58,12 +60,29 @@ public interface RateLimiterClient {
 	 * @param supplier Supplier 函数式
 	 * @return 函数执行结果
 	 */
-	default <T> T allow(String key, long max, long ttl, Supplier<T> supplier) {
-		boolean isAllowed = this.isAllowed(key, max, ttl);
-		if (isAllowed) {
-			return supplier.get();
-		}
-		throw new RateLimiterException("您的访问次数已超限：" + key + "，速率：" + max + "/" + ttl + "s");
+	default <T> T allow(String key, long max, long ttl, CheckedSupplier<T> supplier) {
+		return allow(key, max, ttl, TimeUnit.SECONDS, supplier);
 	}
 
+	/**
+	 * 服务是否被限流
+	 *
+	 * @param key      自定义的key，请保证唯一
+	 * @param max      支持的最大请求
+	 * @param ttl      时间
+	 * @param supplier Supplier 函数式
+	 * @return 函数执行结果
+	 */
+	default <T> T allow(String key, long max, long ttl, TimeUnit timeUnit, CheckedSupplier<T> supplier) {
+		boolean isAllowed = this.isAllowed(key, max, ttl, timeUnit);
+		if (isAllowed) {
+			try {
+				return supplier.get();
+			} catch (Throwable e) {
+				throw Exceptions.unchecked(e);
+			}
+		}
+		long seconds = timeUnit.toSeconds(ttl);
+		throw new RateLimiterException("您的访问次数已超限：" + key + "，速率：" + max + "/" + seconds + "s");
+	}
 }

@@ -1,9 +1,8 @@
 package net.dreamlu.mica.test.utils;
 
 import net.dreamlu.mica.core.utils.DateUtil;
-import net.dreamlu.mica.core.utils.Try;
+import net.dreamlu.mica.core.utils.Unchecked;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.text.ParseException;
@@ -29,7 +28,7 @@ public class DateFormatTest {
 	public void test1() throws InterruptedException {
 		Set<String> dateSet = new TreeSet<>();
 		ExecutorService executorService = Executors.newFixedThreadPool(10);
-		Runnable task = Try.of(() -> {
+		Runnable task = Unchecked.runnable(() -> {
 			String date = parseDate1(dateStr);
 			dateSet.add(date);
 		});
@@ -46,7 +45,7 @@ public class DateFormatTest {
 	public void test2() throws InterruptedException {
 		Set<String> dateSet = new TreeSet<>();
 		ExecutorService executorService = Executors.newFixedThreadPool(10);
-		Runnable task = Try.of(() -> {
+		Runnable task = Unchecked.runnable(() -> {
 			String date = parseDate2(dateStr);
 			dateSet.add(date);
 		});

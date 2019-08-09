@@ -17,7 +17,7 @@
 package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
-import org.springframework.lang.Nullable;
+import net.dreamlu.mica.core.function.*;
 
 import java.util.Comparator;
 import java.util.Objects;
@@ -37,9 +37,9 @@ import java.util.function.Supplier;
  * @author L.cm
  */
 @UtilityClass
-public class Try {
+public class Unchecked {
 
-	public static <T, R> Function<T, R> of(UncheckedFunction<T, R> mapper) {
+	public static <T, R> Function<T, R> function(CheckedFunction<T, R> mapper) {
 		Objects.requireNonNull(mapper);
 		return t -> {
 			try {
@@ -50,7 +50,7 @@ public class Try {
 		};
 	}
 
-	public static <T> Consumer<T> of(UncheckedConsumer<T> mapper) {
+	public static <T> Consumer<T> consumer(CheckedConsumer<T> mapper) {
 		Objects.requireNonNull(mapper);
 		return t -> {
 			try {
@@ -61,7 +61,7 @@ public class Try {
 		};
 	}
 
-	public static <T> Supplier<T> of(UncheckedSupplier<T> mapper) {
+	public static <T> Supplier<T> supplier(CheckedSupplier<T> mapper) {
 		Objects.requireNonNull(mapper);
 		return () -> {
 			try {
@@ -72,7 +72,7 @@ public class Try {
 		};
 	}
 
-	public static Runnable of(UncheckedRunnable runnable) {
+	public static Runnable runnable(CheckedRunnable runnable) {
 		Objects.requireNonNull(runnable);
 		return () -> {
 			try {
@@ -83,7 +83,7 @@ public class Try {
 		};
 	}
 
-	public static <T> Callable<T> of(UncheckedCallable<T> callable) {
+	public static <T> Callable<T> callable(CheckedCallable<T> callable) {
 		Objects.requireNonNull(callable);
 		return () -> {
 			try {
@@ -94,7 +94,7 @@ public class Try {
 		};
 	}
 
-	public static <T> Comparator<T> of(UncheckedComparator<T> comparator) {
+	public static <T> Comparator<T> comparator(CheckedComparator<T> comparator) {
 		Objects.requireNonNull(comparator);
 		return (T o1, T o2) -> {
 			try {
@@ -105,75 +105,4 @@ public class Try {
 		};
 	}
 
-	@FunctionalInterface
-	public interface UncheckedFunction<T, R> {
-		/**
-		 * Run the Consumer
-		 *
-		 * @param t T
-		 * @return R R
-		 * @throws Throwable UncheckedException
-		 */
-		@Nullable
-		R apply(@Nullable T t) throws Throwable;
-	}
-
-	@FunctionalInterface
-	public interface UncheckedConsumer<T> {
-		/**
-		 * Run the Consumer
-		 *
-		 * @param t T
-		 * @throws Throwable UncheckedException
-		 */
-		@Nullable
-		void accept(@Nullable T t) throws Throwable;
-	}
-
-	@FunctionalInterface
-	public interface UncheckedSupplier<T> {
-		/**
-		 * Run the Supplier
-		 *
-		 * @return T
-		 * @throws Throwable UncheckedException
-		 */
-		@Nullable
-		T get() throws Throwable;
-	}
-
-	@FunctionalInterface
-	public interface UncheckedRunnable {
-		/**
-		 * Run this runnable.
-		 *
-		 * @throws Throwable UncheckedException
-		 */
-		void run() throws Throwable;
-	}
-
-	@FunctionalInterface
-	public interface UncheckedCallable<T> {
-		/**
-		 * Run this callable.
-		 *
-		 * @return result
-		 * @throws Throwable UncheckedException
-		 */
-		@Nullable
-		T call() throws Throwable;
-	}
-
-	@FunctionalInterface
-	public interface UncheckedComparator<T> {
-		/**
-		 * Compares its two arguments for order.
-		 *
-		 * @param o1 o1
-		 * @param o2 o2
-		 * @return int
-		 * @throws Throwable UncheckedException
-		 */
-		int compare(T o1, T o2) throws Throwable;
-	}
 }

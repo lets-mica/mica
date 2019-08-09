@@ -18,10 +18,11 @@ package net.dreamlu.mica.core.convert;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.core.function.CheckedFunction;
 import net.dreamlu.mica.core.utils.ClassUtil;
 import net.dreamlu.mica.core.utils.ConvertUtil;
 import net.dreamlu.mica.core.utils.ReflectUtil;
-import net.dreamlu.mica.core.utils.Try;
+import net.dreamlu.mica.core.utils.Unchecked;
 import org.springframework.cglib.core.Converter;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.lang.Nullable;
@@ -45,8 +46,9 @@ public class MicaConverter implements Converter {
 
 	/**
 	 * cglib convert
-	 * @param value 源对象属性
-	 * @param target 目标对象属性类
+	 *
+	 * @param value     源对象属性
+	 * @param target    目标对象属性类
 	 * @param fieldName 目标的field名，原为 set 方法名，MicaBeanCopier 里做了更改
 	 * @return {Object}
 	 */
@@ -78,7 +80,7 @@ public class MicaConverter implements Converter {
 	private static TypeDescriptor getTypeDescriptor(final Class<?> clazz, final String fieldName) {
 		String srcCacheKey = clazz.getName() + fieldName;
 		// 忽略抛出异常的函数，定义完整泛型，避免编译问题
-		Try.UncheckedFunction<String, TypeDescriptor> uncheckedFunction = (key) -> {
+		CheckedFunction<String, TypeDescriptor> uncheckedFunction = (key) -> {
 			// 这里 property 理论上不会为 null
 			Field field = ReflectUtil.getField(clazz, fieldName);
 			if (field == null) {
@@ -86,6 +88,6 @@ public class MicaConverter implements Converter {
 			}
 			return new TypeDescriptor(field);
 		};
-		return TYPE_CACHE.computeIfAbsent(srcCacheKey, Try.of(uncheckedFunction));
+		return TYPE_CACHE.computeIfAbsent(srcCacheKey, Unchecked.function(uncheckedFunction));
 	}
 }

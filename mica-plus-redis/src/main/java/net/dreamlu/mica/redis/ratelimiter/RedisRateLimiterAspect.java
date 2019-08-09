@@ -24,11 +24,16 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.expression.BeanFactoryResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Method;
@@ -41,7 +46,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Aspect
 @RequiredArgsConstructor
-public class RedisRateLimiterAspect {
+public class RedisRateLimiterAspect implements ApplicationContextAware {
 	/**
 	 * 表达式处理
 	 */
@@ -50,6 +55,7 @@ public class RedisRateLimiterAspect {
 	 * redis 限流服务
 	 */
 	private final RedisRateLimiterClient rateLimiterClient;
+	private ApplicationContext applicationContext;
 
 	/**
 	 * AOP 环切 注解 @RateLimiter
@@ -74,14 +80,7 @@ public class RedisRateLimiterAspect {
 		long max = limiter.max();
 		long ttl = limiter.ttl();
 		TimeUnit timeUnit = limiter.timeUnit();
-		// 执行命令
-		boolean isAllowed = rateLimiterClient.isAllowed(rateKey, max, ttl, timeUnit);
-		// 判断是否有被限流
-		if (isAllowed) {
-			return point.proceed();
-		}
-		long seconds = timeUnit.toSeconds(ttl);
-		throw new RateLimiterException("您的访问次数已超限：" + rateKey + "，速率：" + max + "/" + seconds + "s");
+		return rateLimiterClient.allow(rateKey, max, ttl, timeUnit, point::proceed);
 	}
 
 	/**
@@ -93,6 +92,8 @@ public class RedisRateLimiterAspect {
 	private StandardEvaluationContext getEvaluationContext(ProceedingJoinPoint point, Method method) {
 		// 初始化Sp el表达式上下文
 		StandardEvaluationContext context = new StandardEvaluationContext();
+		// 设置表达式支持spring bean
+		context.setBeanResolver(new BeanFactoryResolver(applicationContext));
 		Object[] args = point.getArgs();
 		for (int i = 0; i < args.length; i++) {
 			// 读取方法参数
@@ -104,4 +105,8 @@ public class RedisRateLimiterAspect {
 		return context;
 	}
 
+	@Override
+	public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
 }

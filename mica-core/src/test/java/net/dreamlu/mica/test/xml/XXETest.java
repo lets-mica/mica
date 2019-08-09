@@ -30,7 +30,7 @@ public class XXETest {
 		try {
 			XmlHelper helper = XmlHelper.unsafe(xml);
 			System.out.println(helper.getString("c"));
-		} catch (RuntimeException e) {
+		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 
