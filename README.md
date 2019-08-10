@@ -102,6 +102,8 @@
 
 ### mica-plus-redis
 - redis cache name # 自动配置超时时间。
+- 通用 MicaRedisCache Spring Bean。
+- 分布式限流。
 
 `文档地址`：[mica-plus-redis](mica-plus-redis/README.md)
 
