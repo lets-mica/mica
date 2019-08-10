@@ -52,7 +52,7 @@ public interface RateLimiterClient {
 	boolean isAllowed(String key, long max, long ttl, TimeUnit timeUnit);
 
 	/**
-	 * 服务是否被限流
+	 * 服务限流，被限制时抛出 RateLimiterException 异常，需要自行处理异常
 	 *
 	 * @param key      自定义的key，请保证唯一
 	 * @param max      支持的最大请求
@@ -65,7 +65,7 @@ public interface RateLimiterClient {
 	}
 
 	/**
-	 * 服务是否被限流
+	 * 服务限流，被限制时抛出 RateLimiterException 异常，需要自行处理异常
 	 *
 	 * @param key      自定义的key，请保证唯一
 	 * @param max      支持的最大请求

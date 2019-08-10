@@ -37,9 +37,9 @@ public @interface RateLimiter {
 	String value();
 
 	/**
-	 * 限流的参数，支持 spring el 表达式
+	 * 限流的参数，可选，支持 spring el # 读取方法参数和 @ 读取 spring bean
 	 *
-	 * @return key
+	 * @return param
 	 */
 	String param() default "";
 
