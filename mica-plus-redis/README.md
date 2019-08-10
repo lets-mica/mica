@@ -1,19 +1,8 @@
 # redis-plus-redis
-redis cache 增强
+- redis cache 增强
+- 分布式限流组件
 
-## 功能
-1. 支持 # 号分隔 cachename 和 超时 timeOut。
-
-示例：
-```java
-@Cacheable(value = "user#300", key = "#id")
-public String selectById(Serializable id) {
-    log.info("selectById");
-    return "selectById:" + id;
-}
-```
-
-## 使用
+## 依赖引用
 ### maven
 ```xml
 <dependency>
@@ -28,6 +17,18 @@ public String selectById(Serializable id) {
 compile("net.dreamlu:redis-plus-redis:${version}")
 ```
 
+##1. redis cache 增强
+1. 支持 # 号分隔 cachename 和 超时 timeOut。
+
+示例：
+```java
+@Cacheable(value = "user#300", key = "#id")
+public String selectById(Serializable id) {
+    log.info("selectById");
+    return "selectById:" + id;
+}
+```
+
 ### MicaRedisCache
 MicaRedisCache 为简化 redis 使用的 bean。
 ```java
@@ -40,7 +41,7 @@ public String findById(Serializable id) {
 }
 ```
 
-## 注意
+### 注意
 使用 `protostuff` 做的 `redis` 序列化和反序列化。
 
 `protostuff` 默认是根据 Model `属性顺序`进行序列化，如果在`中间插入`或者`删除字段`。
@@ -54,3 +55,24 @@ public String findById(Serializable id) {
 | @Tag(1)  |  Model `属性顺序` 标注        |
 | @Exclude | 排除字段，不进行序列化和反序列化 |
 | @Morph   | Set、List、Map 等集合添加 |
+
+
+##2. 分布式限流
+### 2.1 开启限流组件
+```yaml
+mica:
+  redis:
+    rate-limiter:
+      enable: true
+```
+
+### 2.2 使用注解
+```java
+@RateLimiter
+```
+
+### 2.3 使用 Client
+```java
+@Autowired
+private RateLimiterClient rateLimiterClient;
+```

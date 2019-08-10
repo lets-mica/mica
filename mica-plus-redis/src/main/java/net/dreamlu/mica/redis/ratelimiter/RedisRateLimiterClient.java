@@ -62,8 +62,10 @@ public class RedisRateLimiterClient implements RateLimiterClient {
 		List<String> keys = Collections.singletonList(redisKeyBuilder);
 		// 毫秒，考虑主从策略和脚本回放机制，这个time由客户端获取传入
 		long now = System.currentTimeMillis();
+		// 转为毫秒，pexpire
+		long ttlMillis = timeUnit.toMillis(ttl);
 		// 执行命令
-		List<Long> results = this.redisTemplate.execute(this.script, keys, max + "", ttl + "", now + "");
+		List<Long> results = this.redisTemplate.execute(this.script, keys, max + "", ttlMillis + "", now + "");
 		// 结果为空返回失败
 		if (results == null || results.isEmpty()) {
 			return false;

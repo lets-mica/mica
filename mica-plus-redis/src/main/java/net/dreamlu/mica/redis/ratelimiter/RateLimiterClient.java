@@ -82,7 +82,6 @@ public interface RateLimiterClient {
 				throw Exceptions.unchecked(e);
 			}
 		}
-		long seconds = timeUnit.toSeconds(ttl);
-		throw new RateLimiterException("您的访问次数已超限：" + key + "，速率：" + max + "/" + seconds + "s");
+		throw new RateLimiterException(key, max, ttl, timeUnit);
 	}
 }

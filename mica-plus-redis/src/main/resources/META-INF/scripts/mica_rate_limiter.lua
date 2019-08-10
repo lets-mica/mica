@@ -23,6 +23,6 @@ else
     -- 没有达到阈值 value + 1
     redis.call("zadd", key, now, now)
     -- 秒为单位设置 key 的生存时间
-    redis.call("expire", key, ttl)
+    redis.call("pexpire", key, ttl)
     return nextLimit
 end
