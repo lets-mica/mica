@@ -17,7 +17,7 @@
 compile("net.dreamlu:redis-plus-redis:${version}")
 ```
 
-##1. redis cache 增强
+## 1. redis cache 增强
 1. 支持 # 号分隔 cachename 和 超时 timeOut。
 
 示例：
@@ -57,7 +57,7 @@ public String findById(Serializable id) {
 | @Morph   | Set、List、Map 等集合添加 |
 
 
-##2. 分布式限流
+## 2. 分布式限流
 ### 2.1 开启限流组件
 ```yaml
 mica:
