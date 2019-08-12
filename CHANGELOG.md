@@ -1,6 +1,18 @@
 # 变更记录
 
 ## 发行版本
+### v1.1.8 - 2019-08-12
+- :zap: mica-http 去掉 asDocument 方法，不强制依赖 jsoup，CssQuery 添加取值正则.
+- :zap: mica-http 优化 DomMapper 添加更多方法.
+- :zap: mica-http proxy 改用 MethodInterceptor.
+- :bug: mica-cloud Fixing Feign feignContract mvcConversionService.
+- :zap: mica-plus-redis 添加 redis 限流组件.
+- :zap: mica-core 优化 Exceptions 工具，添加 NIO 文件读取.
+- :zap: mica-core 拆分 lambda Try 为 Unchecked.
+- :bug: 优化 gradle 配置，自动发布snapshots 版本.
+- :building_construction: 迁移 spring-cloud-alibaba 依赖到新版。
+- :arrow_up: Spring boot 升级到 2.1.7.RELEASE.
+
 ### v1.1.7 - 2019-08-04
 - :zap: 优化 readme 添加文档地址.
 - :zap: 添加 .codacy.yml 配置.
