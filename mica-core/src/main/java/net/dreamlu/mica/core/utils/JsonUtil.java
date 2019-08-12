@@ -329,7 +329,7 @@ public class JsonUtil {
 	 * @return 集合
 	 */
 	@Nullable
-	private static <T> List<T> readList(@Nullable String content, Class<T> elementClass) {
+	public static <T> List<T> readList(@Nullable String content, Class<T> elementClass) {
 		if (ObjectUtil.isEmpty(content)) {
 			return Collections.emptyList();
 		}

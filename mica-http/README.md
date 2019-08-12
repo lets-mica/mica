@@ -11,10 +11,25 @@
 </dependency>
 ```
 
+jsoup 可选依赖，用来将 html 转换成 java Bean。
+```xml
+<dependency>
+    <groupId>org.jsoup</groupId>
+    <artifactId>jsoup</artifactId>
+    <version>${jsoup.version}</version>
+</dependency>
+```
+
 ### gradle
 ```groovy
 compile("net.dreamlu:mica-http:${version}")
 ```
+
+jsoup 可选依赖，用来将 html 转换成 java Bean。
+```groovy
+compile("org.jsoup:jsoup:${jsoupVersion}")
+```
+
 
 ### 使用文档
 ```java
@@ -38,7 +53,7 @@ HttpRequest.get("https://www.baidu.com")
     .asJsonNode();                  // 结果集转换，注：如果网络异常等会直接抛出异常。
 // 同类的方法有 asString、asBytes、asStream
 // json 类响应：asJsonNode、asValue、asList、asMap，采用 jackson 处理
-// xml、html响应：asDocument，asDomValue、asDomList采用的 jsoup 处理
+// xml、html响应：asDomValue、asDomList 采用的 jsoup 处理，需要添加 Jsoup 依赖。
 // file 文件：toFile
 
 // 同步
@@ -71,6 +86,15 @@ HttpRequest.delete("https://www.baidu.com")
     })
     .execute(); // 异步最后发起请求
 ```
+
+### DomMapper 工具
+
+`DomMapper` 工具采用 `cglib` 动态代理和 `Jsoup` html 解析，不到 `200` 行代码实现了 `html` 转 `java Bean` 工具，爬虫必备。  
+
+主要方法有：
+- DomMapper.readDocument
+- DomMapper.readValue
+- DomMapper.readList
 
 ### 示例代码1
 ```java

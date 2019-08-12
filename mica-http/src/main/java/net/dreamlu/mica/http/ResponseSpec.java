@@ -19,7 +19,6 @@ package net.dreamlu.mica.http;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import okhttp3.*;
-import org.jsoup.nodes.Document;
 
 import java.io.File;
 import java.io.InputStream;
@@ -144,13 +143,6 @@ public interface ResponseSpec {
 	 * @return Map
 	 */
 	<V> Map<String, V> asMap(Class<?> valueType);
-
-	/**
-	 * Returns body to jsoup Document.
-	 *
-	 * @return Document
-	 */
-	Document asDocument();
 
 	/**
 	 * 将 xml、heml 转成对象

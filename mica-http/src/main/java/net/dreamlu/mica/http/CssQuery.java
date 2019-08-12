@@ -51,6 +51,13 @@ public @interface CssQuery {
 	String attr() default "";
 
 	/**
+	 * 正则，用于对 attr value 处理
+	 *
+	 * @return regex
+	 */
+	String regex() default "";
+
+	/**
 	 * 嵌套的内部模型：默认 false
 	 *
 	 * @return 是否为内部模型

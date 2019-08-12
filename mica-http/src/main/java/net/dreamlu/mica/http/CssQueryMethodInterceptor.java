@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -70,7 +72,8 @@ public class CssQueryMethodInterceptor implements MethodInterceptor {
 			return proxyInner(cssQueryValue, method, returnType, isColl);
 		}
 		String attrName = annotation.attr();
-		Object proxyValue = proxyValue(cssQueryValue, attrName, returnType, isColl);
+		String valueRegex = annotation.regex();
+		Object proxyValue = proxyValue(cssQueryValue, attrName, valueRegex, returnType, isColl);
 		if (String.class.isAssignableFrom(returnType)) {
 			return proxyValue;
 		}
@@ -80,7 +83,7 @@ public class CssQueryMethodInterceptor implements MethodInterceptor {
 	}
 
 	@Nullable
-	private Object proxyValue(String cssQueryValue, String attrName, Class<?> returnType, boolean isColl) {
+	private Object proxyValue(String cssQueryValue, String attrName, String valueRegex, Class<?> returnType, boolean isColl) {
 		if (isColl) {
 			Elements elements = Selector.select(cssQueryValue, element);
 			Collection<Object> valueList = newColl(returnType);
@@ -88,7 +91,7 @@ public class CssQueryMethodInterceptor implements MethodInterceptor {
 				return valueList;
 			}
 			for (Element select : elements) {
-				String value = getValue(select, attrName);
+				String value = getValue(select, attrName, valueRegex);
 				if (value != null) {
 					valueList.add(value);
 				}
@@ -96,7 +99,7 @@ public class CssQueryMethodInterceptor implements MethodInterceptor {
 			return valueList;
 		}
 		Element select = Selector.selectFirst(cssQueryValue, element);
-		return getValue(select, attrName);
+		return getValue(select, attrName, valueRegex);
 	}
 
 	private Object proxyInner(String cssQueryValue, Method method, Class<?> returnType, boolean isColl) {
@@ -118,21 +121,31 @@ public class CssQueryMethodInterceptor implements MethodInterceptor {
 	}
 
 	@Nullable
-	private String getValue(@Nullable Element element, String attrName) {
+	private String getValue(@Nullable Element element, String attrName, String valueRegex) {
 		if (element == null) {
 			return null;
 		}
+		String attrValue;
 		if (StringUtil.isBlank(attrName)) {
-			return element.outerHtml();
+			attrValue = element.outerHtml();
 		} else if ("html".equalsIgnoreCase(attrName)) {
-			return element.html();
+			attrValue = element.html();
 		} else if ("text".equalsIgnoreCase(attrName)) {
-			return getText(element);
+			attrValue = getText(element);
 		} else if ("allText".equalsIgnoreCase(attrName)) {
-			return element.text();
+			attrValue = element.text();
 		} else {
-			return element.attr(attrName);
+			attrValue = element.attr(attrName);
 		}
+		if (StringUtil.isBlank(attrValue) || StringUtil.isBlank(valueRegex)) {
+			return attrValue;
+		}
+		// 处理正则表达式
+		Matcher matcher = Pattern.compile(valueRegex).matcher(attrValue);
+		if (matcher.find()) {
+			return matcher.group();
+		}
+		return null;
 	}
 
 	private String getText(Element element) {

@@ -1641,8 +1641,93 @@ public class $ {
 	 * @return Bean
 	 */
 	@Nullable
-	public static <T> T readJson(@Nullable InputStream in, TypeReference<?> typeReference) {
+	public static <T> T readJsonAsJson(@Nullable InputStream in, TypeReference<?> typeReference) {
 		return JsonUtil.readValue(in, typeReference);
+	}
+
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content      bytes
+	 * @param elementClass elementClass
+	 * @param <T>          泛型
+	 * @return 集合
+	 */
+	@Nullable
+	public static <T> List<T> readJsonAsList(@Nullable byte[] content, Class<T> elementClass) {
+		return JsonUtil.readList(content, elementClass);
+	}
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content      InputStream
+	 * @param elementClass elementClass
+	 * @param <T>          泛型
+	 * @return 集合
+	 */
+	@Nullable
+	public static <T> List<T> readJsonAsList(@Nullable InputStream content, Class<T> elementClass) {
+		return JsonUtil.readList(content, elementClass);
+	}
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content      bytes
+	 * @param elementClass elementClass
+	 * @param <T>          泛型
+	 * @return 集合
+	 */
+	@Nullable
+	public static <T> List<T> readJsonAsList(@Nullable String content, Class<T> elementClass) {
+		return JsonUtil.readList(content, elementClass);
+	}
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content    bytes
+	 * @param keyClass   key类型
+	 * @param valueClass 值类型
+	 * @param <K>        泛型
+	 * @param <V>        泛型
+	 * @return 集合
+	 */
+	@Nullable
+	public static <K, V> Map<K, V> readJsonAsMap(@Nullable byte[] content, Class<?> keyClass, Class<?> valueClass) {
+		return JsonUtil.readMap(content, keyClass, valueClass);
+	}
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content    InputStream
+	 * @param keyClass   key类型
+	 * @param valueClass 值类型
+	 * @param <K>        泛型
+	 * @param <V>        泛型
+	 * @return 集合
+	 */
+	@Nullable
+	public static <K, V> Map<K, V> readJsonAsMap(@Nullable InputStream content, Class<?> keyClass, Class<?> valueClass) {
+		return JsonUtil.readMap(content, keyClass, valueClass);
+	}
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content    bytes
+	 * @param keyClass   key类型
+	 * @param valueClass 值类型
+	 * @param <K>        泛型
+	 * @param <V>        泛型
+	 * @return 集合
+	 */
+	@Nullable
+	public static <K, V> Map<K, V> readJsonAsMap(@Nullable String content, Class<?> keyClass, Class<?> valueClass) {
+		return JsonUtil.readMap(content, keyClass, valueClass);
 	}
 
 	/**

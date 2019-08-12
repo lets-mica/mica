@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import okhttp3.*;
-import org.jsoup.nodes.Document;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -184,7 +183,7 @@ public class HttpResponse implements ResponseSpec {
 		try {
 			return body.string();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw Exceptions.unchecked(e);
 		}
 	}
 
@@ -194,7 +193,7 @@ public class HttpResponse implements ResponseSpec {
 		try {
 			return body.bytes();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw Exceptions.unchecked(e);
 		}
 	}
 
@@ -206,49 +205,43 @@ public class HttpResponse implements ResponseSpec {
 
 	@Override
 	public JsonNode asJsonNode() {
-		return JsonUtil.readTree(this.asStream());
+		return JsonUtil.readTree(this.asString());
 	}
 
 	@Override
 	public <T> T asValue(Class<T> valueType) {
-		return JsonUtil.readValue(this.asStream(), valueType);
+		return JsonUtil.readValue(this.asString(), valueType);
 	}
 
 	@Override
 	public <T> T asValue(TypeReference<?> typeReference) {
-		return JsonUtil.readValue(this.asStream(), typeReference);
+		return JsonUtil.readValue(this.asString(), typeReference);
 	}
 
 	@Override
 	public <T> List<T> asList(Class<T> valueType) {
-		return JsonUtil.readList(this.asStream(), valueType);
+		return JsonUtil.readList(this.asString(), valueType);
 	}
 
 	@Override
 	public <K, V> Map<K, V> asMap(Class<?> keyClass, Class<?> valueType) {
-		return JsonUtil.readMap(this.asStream(), keyClass, valueType);
+		return JsonUtil.readMap(this.asString(), keyClass, valueType);
 	}
 
 	@Override
 	public <V> Map<String, V> asMap(Class<?> valueType) {
-		return JsonUtil.readMap(this.asStream(), String.class, valueType);
-	}
-
-	@Override
-	public Document asDocument() {
-		return DomMapper.readDocument(this.asStream());
+		return JsonUtil.readMap(this.asString(), String.class, valueType);
 	}
 
 	@Override
 	public <T> T asDomValue(Class<T> valueType) {
-		return DomMapper.readValue(this.asDocument(), valueType);
+		return DomMapper.readValue(this.asString(), valueType);
 	}
 
 	@Override
 	public <T> List<T> asDomList(Class<T> valueType) {
-		return DomMapper.readList(this.asDocument(), valueType);
+		return DomMapper.readList(this.asString(), valueType);
 	}
-
 
 	@Override
 	public void toFile(File file) {
@@ -260,7 +253,7 @@ public class HttpResponse implements ResponseSpec {
 		try {
 			Files.copy(this.asStream(), path);
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw Exceptions.unchecked(e);
 		}
 	}
 
