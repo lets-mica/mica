@@ -58,22 +58,20 @@ public class CssQueryMethodInterceptor implements MethodInterceptor {
 			return methodProxy.invokeSuper(object, args);
 		}
 		Field field = clazz.getDeclaredField(StringUtil.firstCharToLower(name.substring(3)));
-		CssQuery annotation = field.getAnnotation(CssQuery.class);
+		CssQuery cssQuery = field.getAnnotation(CssQuery.class);
 		// 没有注解，不代理
-		if (annotation == null) {
+		if (cssQuery == null) {
 			return methodProxy.invokeSuper(object, args);
 		}
 		Class<?> returnType = method.getReturnType();
 		boolean isColl = Collection.class.isAssignableFrom(returnType);
-		String cssQueryValue = annotation.value();
+		String cssQueryValue = cssQuery.value();
 		// 是否为 bean 中 bean
-		boolean isInner = annotation.inner();
+		boolean isInner = cssQuery.inner();
 		if (isInner) {
 			return proxyInner(cssQueryValue, method, returnType, isColl);
 		}
-		String attrName = annotation.attr();
-		String valueRegex = annotation.regex();
-		Object proxyValue = proxyValue(cssQueryValue, attrName, valueRegex, returnType, isColl);
+		Object proxyValue = proxyValue(cssQueryValue, cssQuery, returnType, isColl);
 		if (String.class.isAssignableFrom(returnType)) {
 			return proxyValue;
 		}
@@ -83,7 +81,7 @@ public class CssQueryMethodInterceptor implements MethodInterceptor {
 	}
 
 	@Nullable
-	private Object proxyValue(String cssQueryValue, String attrName, String valueRegex, Class<?> returnType, boolean isColl) {
+	private Object proxyValue(String cssQueryValue, CssQuery cssQuery, Class<?> returnType, boolean isColl) {
 		if (isColl) {
 			Elements elements = Selector.select(cssQueryValue, element);
 			Collection<Object> valueList = newColl(returnType);
@@ -91,7 +89,7 @@ public class CssQueryMethodInterceptor implements MethodInterceptor {
 				return valueList;
 			}
 			for (Element select : elements) {
-				String value = getValue(select, attrName, valueRegex);
+				String value = getValue(select, cssQuery);
 				if (value != null) {
 					valueList.add(value);
 				}
@@ -99,7 +97,7 @@ public class CssQueryMethodInterceptor implements MethodInterceptor {
 			return valueList;
 		}
 		Element select = Selector.selectFirst(cssQueryValue, element);
-		return getValue(select, attrName, valueRegex);
+		return getValue(select, cssQuery);
 	}
 
 	private Object proxyInner(String cssQueryValue, Method method, Class<?> returnType, boolean isColl) {
@@ -121,10 +119,13 @@ public class CssQueryMethodInterceptor implements MethodInterceptor {
 	}
 
 	@Nullable
-	private String getValue(@Nullable Element element, String attrName, String valueRegex) {
+	private String getValue(@Nullable Element element, CssQuery cssQuery) {
 		if (element == null) {
 			return null;
 		}
+		// 读取的属性名
+		String attrName = cssQuery.attr();
+		// 读取的值
 		String attrValue;
 		if (StringUtil.isBlank(attrName)) {
 			attrValue = element.outerHtml();
@@ -137,15 +138,27 @@ public class CssQueryMethodInterceptor implements MethodInterceptor {
 		} else {
 			attrValue = element.attr(attrName);
 		}
-		if (StringUtil.isBlank(attrValue) || StringUtil.isBlank(valueRegex)) {
+		// 判断是否需要正则处理
+		String regex = cssQuery.regex();
+		if (StringUtil.isBlank(attrValue) || StringUtil.isBlank(regex)) {
 			return attrValue;
 		}
 		// 处理正则表达式
-		Matcher matcher = Pattern.compile(valueRegex).matcher(attrValue);
-		if (matcher.find()) {
-			return matcher.group();
+		return getRegexValue(regex, cssQuery.regexGroup(), attrValue);
+	}
+
+	@Nullable
+	private String getRegexValue(String regex, int regexGroup, String value) {
+		// 处理正则表达式
+		Matcher matcher = Pattern.compile(regex, Pattern.DOTALL | Pattern.CASE_INSENSITIVE).matcher(value);
+		if (!matcher.find()) {
+			return null;
 		}
-		return null;
+		// 正则 group
+		if (regexGroup > CssQuery.DEFAULT_REGEX_GROUP) {
+			return matcher.group(regexGroup);
+		}
+		return matcher.group();
 	}
 
 	private String getText(Element element) {

@@ -16,4 +16,7 @@ public class Oschina {
 	@CssQuery(value = "#v_news .page .news", inner = true)
 	private List<VNews> vNews;
 
+	@CssQuery(value = ".blog-container .blog-list div", inner = true)
+	private List<VBlog> vBlogList;
+
 }

@@ -58,6 +58,18 @@ public @interface CssQuery {
 	String regex() default "";
 
 	/**
+	 * 默认的正则 group
+	 */
+	int DEFAULT_REGEX_GROUP = 0;
+
+	/**
+	 * 正则 group，默认为 0
+	 *
+	 * @return regexGroup
+	 */
+	int regexGroup() default DEFAULT_REGEX_GROUP;
+
+	/**
 	 * 嵌套的内部模型：默认 false
 	 *
 	 * @return 是否为内部模型

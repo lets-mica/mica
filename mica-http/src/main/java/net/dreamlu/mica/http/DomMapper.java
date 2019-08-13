@@ -38,6 +38,15 @@ import java.util.List;
 public class DomMapper {
 
 	/**
+	 * Returns body to jsoup Document.
+	 *
+	 * @return Document
+	 */
+	public static Document asDocument(ResponseSpec response) {
+		return readDocument(response.asString());
+	}
+
+	/**
 	 * 将流读取为 jsoup Document
 	 *
 	 * @param inputStream InputStream
