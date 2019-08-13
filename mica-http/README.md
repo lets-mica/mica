@@ -135,7 +135,7 @@ public @interface CssQuery {
 	int DEFAULT_REGEX_GROUP = 0;
 
 	/**
-	 * 正则 group，默认为 1
+	 * 正则 group，默认为 0
 	 *
 	 * @return regexGroup
 	 */
