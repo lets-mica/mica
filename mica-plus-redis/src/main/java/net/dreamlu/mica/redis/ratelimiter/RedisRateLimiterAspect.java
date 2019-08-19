@@ -17,8 +17,8 @@
 package net.dreamlu.mica.redis.ratelimiter;
 
 import lombok.RequiredArgsConstructor;
+import net.dreamlu.mica.core.spel.MicaExpressionEvaluator;
 import net.dreamlu.mica.core.utils.CharPool;
-import net.dreamlu.mica.core.utils.ClassUtil;
 import net.dreamlu.mica.core.utils.StringUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -27,12 +27,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.expression.BeanFactoryResolver;
-import org.springframework.core.MethodParameter;
-import org.springframework.expression.Expression;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.context.expression.AnnotatedElementKey;
+import org.springframework.expression.EvaluationContext;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
@@ -50,7 +46,7 @@ public class RedisRateLimiterAspect implements ApplicationContextAware {
 	/**
 	 * 表达式处理
 	 */
-	private static final ExpressionParser SP_EL_PARSER = new SpelExpressionParser();
+	private final MicaExpressionEvaluator evaluator = new MicaExpressionEvaluator();
 	/**
 	 * redis 限流服务
 	 */
@@ -62,8 +58,6 @@ public class RedisRateLimiterAspect implements ApplicationContextAware {
 	 */
 	@Around("@annotation(limiter)")
 	public Object aroundRateLimiter(ProceedingJoinPoint point, RateLimiter limiter) throws Throwable {
-		MethodSignature ms = (MethodSignature) point.getSignature();
-		Method method = ms.getMethod();
 		String limitKey = limiter.value();
 		Assert.hasText(limitKey, "@RateLimiter value must have length; it must not be null or empty");
 		// el 表达式
@@ -71,9 +65,8 @@ public class RedisRateLimiterAspect implements ApplicationContextAware {
 		// 表达式不为空
 		String rateKey;
 		if (StringUtil.isNotBlank(limitParam)) {
-			Expression expression = SP_EL_PARSER.parseExpression(limitParam);
-			StandardEvaluationContext context = getEvaluationContext(point, method);
-			rateKey = limitKey + CharPool.COLON + expression.getValue(context, String.class);
+			String evalAsText = evalLimitParam(point, limitParam);
+			rateKey = limitKey + CharPool.COLON + evalAsText;
 		} else {
 			rateKey = limitKey;
 		}
@@ -84,25 +77,21 @@ public class RedisRateLimiterAspect implements ApplicationContextAware {
 	}
 
 	/**
-	 * 获取方法上的参数
+	 * 计算参数表达式
 	 *
-	 * @param point 切点
-	 * @return {SimpleEvaluationContext}
+	 * @param point      ProceedingJoinPoint
+	 * @param limitParam limitParam
+	 * @return 结果
 	 */
-	private StandardEvaluationContext getEvaluationContext(ProceedingJoinPoint point, Method method) {
-		// 初始化Sp el表达式上下文
-		StandardEvaluationContext context = new StandardEvaluationContext();
-		// 设置表达式支持spring bean
-		context.setBeanResolver(new BeanFactoryResolver(applicationContext));
+	private String evalLimitParam(ProceedingJoinPoint point, String limitParam) {
+		MethodSignature ms = (MethodSignature) point.getSignature();
+		Method method = ms.getMethod();
 		Object[] args = point.getArgs();
-		for (int i = 0; i < args.length; i++) {
-			// 读取方法参数
-			MethodParameter methodParam = ClassUtil.getMethodParameter(method, i);
-			Object value = args[i];
-			// 设置方法参数名和值为sp el变量
-			context.setVariable(methodParam.getParameterName(), value);
-		}
-		return context;
+		Object target = point.getTarget();
+		Class<?> targetClass = target.getClass();
+		EvaluationContext context = evaluator.createContext(method, args, target, targetClass, applicationContext);
+		AnnotatedElementKey elementKey = new AnnotatedElementKey(method, targetClass);
+		return evaluator.evalAsText(limitParam, elementKey, context);
 	}
 
 	@Override
