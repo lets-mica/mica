@@ -20,11 +20,13 @@ import lombok.RequiredArgsConstructor;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
 import java.io.IOException;
+import java.util.function.Predicate;
 
 /**
  * 重试拦截器，应对代理问题
@@ -39,7 +41,21 @@ public class RetryInterceptor implements Interceptor {
 	public Response intercept(Chain chain) throws IOException {
 		Request request = chain.request();
 		RetryTemplate template = createRetryTemplate(retryPolicy);
-		return template.execute(context -> chain.proceed(request));
+		return template.execute(context -> {
+			Response response = chain.proceed(request);
+			// 结果集校验
+			Predicate<ResponseSpec> respPredicate = retryPolicy.getRespPredicate();
+			if (respPredicate == null) {
+				return response;
+			}
+			// copy 一份 body
+			ResponseBody body = response.peekBody(Long.MAX_VALUE);
+			boolean tested = respPredicate.test(new HttpResponse(response));
+			if (tested) {
+				throw new IOException("Http Retry ResponsePredicate test Failure.");
+			}
+			return response.newBuilder().body(body).build();
+		});
 	}
 
 	private static RetryTemplate createRetryTemplate(RetryPolicy policy) {

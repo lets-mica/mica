@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 /**
  * ok http 封装，请求结构体
@@ -410,7 +411,17 @@ public class HttpRequest {
 		return this;
 	}
 
+	public HttpRequest retryOn(Predicate<ResponseSpec> respPredicate) {
+		this.retryPolicy = new RetryPolicy(respPredicate);
+		return this;
+	}
+
 	public HttpRequest retry(int maxAttempts, long sleepMillis) {
+		this.retryPolicy = new RetryPolicy(maxAttempts, sleepMillis);
+		return this;
+	}
+
+	public HttpRequest retry(int maxAttempts, long sleepMillis, Predicate<ResponseSpec> respPredicate) {
 		this.retryPolicy = new RetryPolicy(maxAttempts, sleepMillis);
 		return this;
 	}
