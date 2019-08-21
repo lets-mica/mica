@@ -41,4 +41,35 @@ public @interface RedisLock {
 	 * @return param
 	 */
 	String param() default "";
+
+	/**
+	 * 等待锁超时时间，单位：秒
+	 * 默认30s
+	 *
+	 * @return int
+	 */
+	int waitTime() default 30;
+
+	/**
+	 * 自动解锁时间，单位秒
+	 * 自动解锁时间一定得大于方法执行时间，否则会导致锁提前释放
+	 * 默认100s
+	 *
+	 * @return int
+	 */
+	int leaseTime() default 100;
+
+	/**
+	 * 忽略所有异常，否则会往外抛
+	 *
+	 * @return int
+	 */
+	boolean ignoreException() default false;
+
+	/**
+	 * 忽略没有获取到锁的异常，默认为true
+	 *
+	 * @return int
+	 */
+	boolean ignoreUnableToAcquiredLockException() default true;
 }

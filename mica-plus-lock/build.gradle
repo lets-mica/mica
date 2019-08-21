@@ -1,3 +1,7 @@
 dependencies {
     api "org.redisson:redisson:${redissonVersion}"
+    compileOnly "org.springframework.boot:spring-boot-autoconfigure"
+    compileOnly "org.springframework.cloud:spring-cloud-context"
+    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 }

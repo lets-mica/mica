@@ -20,7 +20,7 @@ import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 分布式 限流注解
+ * 分布式 限流注解，默认速率为 600/ms
  *
  * @author L.cm
  */
@@ -44,23 +44,23 @@ public @interface RateLimiter {
 	String param() default "";
 
 	/**
-	 * 支持的最大请求，默认: 2500
+	 * 支持的最大请求，默认: 100
 	 *
 	 * @return 请求数
 	 */
-	long max() default 2500L;
+	long max() default 100L;
 
 	/**
 	 * 持续时间，默认: 3600
 	 *
 	 * @return 持续时间
 	 */
-	long ttl() default 3600L;
+	long ttl() default 1L;
 
 	/**
-	 * 时间单位，默认为秒
+	 * 时间单位，默认为分
 	 *
 	 * @return TimeUnit
 	 */
-	TimeUnit timeUnit() default TimeUnit.SECONDS;
+	TimeUnit timeUnit() default TimeUnit.MINUTES;
 }
