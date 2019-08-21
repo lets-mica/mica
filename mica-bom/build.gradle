@@ -31,6 +31,7 @@ dependencyManagement {
         dependency "net.dreamlu:mica-plus-swagger:${VERSION}"
         dependency "net.dreamlu:mica-plus-ribbon:${VERSION}"
         dependency "net.dreamlu:mica-plus-social:${VERSION}"
+        dependency "net.dreamlu:mica-plus-lock:${VERSION}"
         // commons
         dependency "com.google.code.findbugs:jsr305:${findbugsVersion}"
         dependency "io.springfox:springfox-swagger2:${swaggerVersion}"
@@ -42,6 +43,7 @@ dependencyManagement {
         dependency "com.squareup.okhttp3:okhttp:${okhttpVersion}"
         dependency "com.squareup.okhttp3:logging-interceptor:${okhttpVersion}"
         dependency "org.jsoup:jsoup:${jsoupVersion}"
+        dependency "org.redisson:redisson:${redissonVersion}"
         dependency "org.projectlombok:lombok:${lombokVersion}"
     }
 }

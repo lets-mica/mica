@@ -48,11 +48,27 @@ public class MicaExpressionEvaluator extends CachedExpressionEvaluator {
 	 * @param targetClass the target class
 	 * @return the evaluation context
 	 */
-	public EvaluationContext createContext(Method method, Object[] args,
-													 Object target, Class<?> targetClass,
-													 @Nullable BeanFactory beanFactory) {
+	public EvaluationContext createContext(Method method, Object[] args, Object target, Class<?> targetClass, @Nullable BeanFactory beanFactory) {
 		Method targetMethod = getTargetMethod(targetClass, method);
 		MicaExpressionRootObject rootObject = new MicaExpressionRootObject(method, args, target, targetClass, targetMethod);
+		MethodBasedEvaluationContext evaluationContext = new MethodBasedEvaluationContext(rootObject, targetMethod, args, getParameterNameDiscoverer());
+		if (beanFactory != null) {
+			evaluationContext.setBeanResolver(new BeanFactoryResolver(beanFactory));
+		}
+		return evaluationContext;
+	}
+
+	/**
+	 * Create an {@link EvaluationContext}.
+	 *
+	 * @param method      the method
+	 * @param args        the method arguments
+	 * @param rootObject  rootObject
+	 * @param targetClass the target class
+	 * @return the evaluation context
+	 */
+	public EvaluationContext createContext(Method method, Object[] args, Class<?> targetClass, Object rootObject, @Nullable BeanFactory beanFactory) {
+		Method targetMethod = getTargetMethod(targetClass, method);
 		MethodBasedEvaluationContext evaluationContext = new MethodBasedEvaluationContext(rootObject, targetMethod, args, getParameterNameDiscoverer());
 		if (beanFactory != null) {
 			evaluationContext.setBeanResolver(new BeanFactoryResolver(beanFactory));

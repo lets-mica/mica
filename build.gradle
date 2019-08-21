@@ -11,6 +11,7 @@ ext {
     swaggerBootstrapUiVersion = "1.9.5"
     okhttpVersion = "3.14.2"
     jsoupVersion = "1.12.1"
+    redissonVersion = "3.11.2"
     alipaySdkVersion = "3.7.4.ALL"
     lombokVersion = "1.18.8"
     findbugsVersion = "3.0.2"

@@ -16,5 +16,5 @@ include "mica-plus-mongo"
 include "mica-plus-swagger"
 include "mica-plus-ribbon"
 include "mica-plus-social"
-
+include 'mica-plus-lock'
 
