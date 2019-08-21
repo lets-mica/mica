@@ -24,13 +24,10 @@ import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -450,56 +447,11 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	 * @return 行列表
 	 */
 	public static List<String> readLines(Path path, Charset cs) {
-		List<String> lines = new ArrayList<>();
-		try (
-			SeekableByteChannel channel = Files.newByteChannel(path, StandardOpenOption.READ)) {
-			ByteBuffer buffer = ByteBuffer.allocate(1024 * 1024);
-			int bytesRead = channel.read(buffer);
-			ByteBuffer stringBuffer = ByteBuffer.allocate(100);
-			while (bytesRead != -1) {
-				// 之前是写buffer，现在要读buffer，切换模式，写->读
-				buffer.flip();
-				while (buffer.hasRemaining()) {
-					byte b = buffer.get();
-					// 如果是换行符
-					if (b == 10 || b == 13) {
-						stringBuffer.flip();
-						final String line = cs.decode(stringBuffer).toString();
-						lines.add(line);
-						stringBuffer.clear();
-					} else {
-						if (stringBuffer.hasRemaining()) {
-							stringBuffer.put(b);
-						} else {
-							// 空间不够扩容
-							stringBuffer = reAllocate(stringBuffer);
-							stringBuffer.put(b);
-						}
-					}
-				}
-				// 清空,position位置为0，limit = capacity
-				buffer.clear();
-				// 继续往buffer中写
-				bytesRead = channel.read(buffer);
-			}
+		try {
+			return Files.readAllLines(path, cs);
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
-		return lines;
 	}
 
-	/**
-	 * ByteBuffer 扩容
-	 *
-	 * @param byteBuffer ByteBuffer
-	 * @return ByteBuffer
-	 */
-	private static ByteBuffer reAllocate(ByteBuffer byteBuffer) {
-		final int capacity = byteBuffer.capacity();
-		byte[] newBuffer = new byte[capacity * 2];
-		System.arraycopy(byteBuffer.array(), 0, newBuffer, 0, capacity);
-		ByteBuffer newByteBuffer = ByteBuffer.wrap(newBuffer);
-		newByteBuffer.position(capacity);
-		return newByteBuffer;
-	}
 }
