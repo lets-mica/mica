@@ -16,6 +16,8 @@
 
 package net.dreamlu.mica.core.io;
 
+import net.dreamlu.mica.core.utils.StringPool;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
@@ -145,7 +147,7 @@ public class FastStringWriter extends Writer {
 	 */
 	@Override
 	public FastStringWriter append(CharSequence csq) {
-		String s = (csq == null ? "null" : csq.toString());
+		String s = (csq == null ? StringPool.NULL : csq.toString());
 		write(s, 0, s.length());
 		return this;
 	}
@@ -174,7 +176,7 @@ public class FastStringWriter extends Writer {
 	 */
 	@Override
 	public FastStringWriter append(CharSequence csq, int start, int end) {
-		String s = (csq == null ? "null" : csq).subSequence(start, end).toString();
+		String s = (csq == null ? StringPool.NULL : csq).subSequence(start, end).toString();
 		write(s, 0, s.length());
 		return this;
 	}
