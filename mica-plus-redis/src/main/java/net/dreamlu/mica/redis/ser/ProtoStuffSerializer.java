@@ -30,7 +30,11 @@ import org.springframework.data.redis.serializer.SerializationException;
  * @author L.cm
  */
 public class ProtoStuffSerializer implements RedisSerializer<Object> {
-	private static final Schema<BytesWrapper> SCHEMA = RuntimeSchema.getSchema(BytesWrapper.class);
+	private final Schema<BytesWrapper> schema;
+
+	public ProtoStuffSerializer() {
+		this.schema = RuntimeSchema.getSchema(BytesWrapper.class);
+	}
 
 	@Override
 	public byte[] serialize(Object object) throws SerializationException {
@@ -39,7 +43,7 @@ public class ProtoStuffSerializer implements RedisSerializer<Object> {
 		}
 		LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
 		try {
-			return ProtostuffIOUtil.toByteArray(new BytesWrapper<>(object), SCHEMA, buffer);
+			return ProtostuffIOUtil.toByteArray(new BytesWrapper<>(object), schema, buffer);
 		} finally {
 			buffer.clear();
 		}
@@ -51,7 +55,7 @@ public class ProtoStuffSerializer implements RedisSerializer<Object> {
 			return null;
 		}
 		BytesWrapper<Object> wrapper = new BytesWrapper<>();
-		ProtostuffIOUtil.mergeFrom(bytes, wrapper, SCHEMA);
+		ProtostuffIOUtil.mergeFrom(bytes, wrapper, schema);
 		return wrapper.getValue();
 	}
 }
