@@ -19,7 +19,15 @@ package net.dreamlu.mica.lock.annotation;
 import java.lang.annotation.*;
 
 /**
- * 分布式锁注解
+ * 分布式锁注解，redisson，支持的锁的种类有很多，适合注解形式的只有重入锁、公平锁
+ *
+ * <p>
+ * 1. 可重入锁（Reentrant Lock）
+ * 2. 公平锁（Fair Lock）
+ * 3. 联锁（MultiLock）
+ * 4. 红锁（RedLock）
+ * 5. 读写锁（ReadWriteLock）
+ * </p>
  *
  * @author L.cm
  */
@@ -60,16 +68,10 @@ public @interface RedisLock {
 	int leaseTime() default 100;
 
 	/**
-	 * 忽略所有异常，否则会往外抛
+	 * 默认公平锁
 	 *
-	 * @return int
+	 * @return LockType
 	 */
-	boolean ignoreException() default false;
+	LockType type() default LockType.FAIR;
 
-	/**
-	 * 忽略没有获取到锁的异常，默认为true
-	 *
-	 * @return int
-	 */
-	boolean ignoreUnableToAcquiredLockException() default true;
 }

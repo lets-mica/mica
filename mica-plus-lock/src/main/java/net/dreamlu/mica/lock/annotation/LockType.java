@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.lock.client;
+package net.dreamlu.mica.lock.annotation;
 
 /**
- * 锁客户端
+ * 锁类型
  *
- * @author L.cm
+ * @author lcm
  */
-public interface RedisLockClient {
-
-
+public enum LockType {
+	/**
+	 * 重入锁
+	 */
+	REENTRANT,
+	/**
+	 * 公平锁
+	 */
+	FAIR
 }
