@@ -1,9 +1,9 @@
 dependencies {
     api project(":mica-core")
-    api "io.protostuff:protostuff-runtime:${protostuffVersion}"
-    api "io.protostuff:protostuff-core:${protostuffVersion}"
     api "org.springframework.boot:spring-boot-starter-aop"
     api "org.springframework.boot:spring-boot-starter-data-redis"
+    implementation "io.protostuff:protostuff-runtime:${protostuffVersion}"
+    implementation "io.protostuff:protostuff-core:${protostuffVersion}"
     compileOnly "org.springframework.cloud:spring-cloud-context"
     annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
