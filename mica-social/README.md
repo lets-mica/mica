@@ -26,7 +26,6 @@
 |  microsoft  | ✔️ | AuthMicrosoftRequest |
 |  mi  | ✔️ | AuthMiRequest |
 |  toutiao  | 未申请应用 | AuthToutiaoRequest |
-|  csdn  | 未申请应用 | AuthCsdnRequest |
 |  teambition  | ✔️ | AuthTeambitionRequest |
 |  renren  | ✔️ | AuthRenrenRequest |
 |  pinterest  | ✔️ | AuthPinterestRequest |

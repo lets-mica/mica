@@ -19,7 +19,8 @@ package net.dreamlu.mica.servlet.cache;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.util.Assert;
+
+import java.util.Objects;
 
 /**
  * Http Cache 服务
@@ -55,9 +56,9 @@ public class HttpCacheService implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		Assert.notNull(cacheManager, "cacheManager must not be null!");
+		Objects.requireNonNull(cacheManager, "cacheManager must not be null!");
 		String cacheName = properties.getCacheName();
 		this.cache = cacheManager.getCache(cacheName);
-		Assert.notNull(this.cache, "HttpCacheCache cacheName: " + cacheName + " is not config.");
+		Objects.requireNonNull(this.cache, "HttpCacheCache cacheName: " + cacheName + " is not config.");
 	}
 }

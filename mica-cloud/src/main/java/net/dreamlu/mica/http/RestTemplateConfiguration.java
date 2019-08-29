@@ -21,12 +21,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.context.MicaHttpHeadersGetter;
+import net.dreamlu.mica.core.ssl.DisableValidationTrustManager;
+import net.dreamlu.mica.core.ssl.TrustAllHostNames;
 import net.dreamlu.mica.core.utils.Charsets;
+import net.dreamlu.mica.core.utils.Holder;
 import net.dreamlu.mica.http.logger.HttpLoggingInterceptor;
 import net.dreamlu.mica.http.logger.OkHttpSlf4jLogger;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -39,15 +42,14 @@ import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.lang.Nullable;
 import org.springframework.web.client.RestTemplate;
 
-import javax.net.ssl.*;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -62,7 +64,6 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnProperty(value = "mica.http.enabled", matchIfMissing = true)
 @RequiredArgsConstructor
 public class RestTemplateConfiguration {
-	private final static SecureRandom SECURE_RANDOM = new SecureRandom();
 	private final MicaHttpProperties properties;
 
 	/**
@@ -117,10 +118,10 @@ public class RestTemplateConfiguration {
 		OkHttpClient.Builder builder = new OkHttpClient.Builder();
 		if (disableSslValidation) {
 			try {
-				X509TrustManager disabledTrustManager = new DisableValidationTrustManager();
+				X509TrustManager disabledTrustManager = DisableValidationTrustManager.INSTANCE;
 				TrustManager[] trustManagers = new TrustManager[]{disabledTrustManager};
 				SSLContext sslContext = SSLContext.getInstance("SSL");
-				sslContext.init(null, trustManagers, SECURE_RANDOM);
+				sslContext.init(null, trustManagers, Holder.SECURE_RANDOM);
 				SSLSocketFactory disabledSslSocketFactory = sslContext.getSocketFactory();
 				builder.sslSocketFactory(disabledSslSocketFactory, disabledTrustManager);
 				builder.hostnameVerifier(TrustAllHostNames.INSTANCE);
@@ -131,33 +132,10 @@ public class RestTemplateConfiguration {
 		return builder;
 	}
 
-	public static class TrustAllHostNames implements HostnameVerifier {
-		public static final TrustAllHostNames INSTANCE = new TrustAllHostNames();
-
-		@Override
-		public boolean verify(String s, SSLSession sslSession) {
-			return true;
-		}
-	}
-
-	public static class DisableValidationTrustManager implements X509TrustManager {
-		@Override
-		public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-		}
-
-		@Override
-		public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-		}
-
-		@Override
-		public X509Certificate[] getAcceptedIssuers() {
-			return new X509Certificate[0];
-		}
-	}
-
 	@Bean
 	public RestTemplateHeaderInterceptor requestHeaderInterceptor(
-		@Autowired(required = false) @Nullable MicaHttpHeadersGetter headersGetter) {
+		ObjectProvider<MicaHttpHeadersGetter> objectProvider) {
+		MicaHttpHeadersGetter headersGetter = objectProvider.getIfAvailable();
 		return new RestTemplateHeaderInterceptor(headersGetter);
 	}
 

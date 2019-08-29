@@ -192,12 +192,40 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	}
 
 	/**
+	 * 拼接临时文件目录.
+	 *
+	 * @return 临时文件目录.
+	 */
+	public static String toTempDirPath(String subDirFile) {
+		return FileUtil.toTempDir(subDirFile).getAbsolutePath();
+	}
+
+	/**
 	 * Returns a {@link File} representing the system temporary directory.
 	 *
 	 * @return the system temporary directory.
 	 */
 	public static File getTempDir() {
 		return new File(getTempDirPath());
+	}
+
+	/**
+	 * 拼接临时文件目录.
+	 *
+	 * @return the system temporary directory.
+	 */
+	public static File toTempDir(String subDirFile) {
+		String tempDirPath = FileUtil.getTempDirPath();
+		if (subDirFile.startsWith(StringPool.SLASH)) {
+			subDirFile.substring(1);
+		}
+		String fullPath = tempDirPath.concat(subDirFile);
+		File fullFilePath = new File(fullPath);
+		File dir = fullFilePath.getParentFile();
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		return fullFilePath;
 	}
 
 	/**

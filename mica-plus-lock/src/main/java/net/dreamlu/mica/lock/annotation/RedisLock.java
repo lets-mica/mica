@@ -17,6 +17,7 @@
 package net.dreamlu.mica.lock.annotation;
 
 import java.lang.annotation.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 分布式锁注解，redisson，支持的锁的种类有很多，适合注解形式的只有重入锁、公平锁
@@ -51,21 +52,25 @@ public @interface RedisLock {
 	String param() default "";
 
 	/**
-	 * 等待锁超时时间，单位：秒
-	 * 默认30s
+	 * 等待锁超时时间，默认30
 	 *
 	 * @return int
 	 */
-	int waitTime() default 30;
+	long waitTime() default 30;
 
 	/**
-	 * 自动解锁时间，单位秒
-	 * 自动解锁时间一定得大于方法执行时间，否则会导致锁提前释放
-	 * 默认100s
+	 * 自动解锁时间，自动解锁时间一定得大于方法执行时间，否则会导致锁提前释放，默认100
 	 *
 	 * @return int
 	 */
-	int leaseTime() default 100;
+	long leaseTime() default 100;
+
+	/**
+	 * 时间单温，默认为 分
+	 *
+	 * @return 时间单位
+	 */
+	TimeUnit timeUnit() default TimeUnit.SECONDS;
 
 	/**
 	 * 默认公平锁

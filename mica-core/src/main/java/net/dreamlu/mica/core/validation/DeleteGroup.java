@@ -1,4 +1,4 @@
-package net.dreamlu.mica.validation;
+package net.dreamlu.mica.core.validation;
 
 /**
  * Validated Delete group.

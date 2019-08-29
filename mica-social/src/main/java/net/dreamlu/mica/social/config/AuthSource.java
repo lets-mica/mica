@@ -113,25 +113,6 @@ public enum AuthSource {
 		}
 	},
 	/**
-	 * csdn
-	 */
-	CSDN {
-		@Override
-		public String authorize() {
-			return "https://api.csdn.net/oauth2/authorize";
-		}
-
-		@Override
-		public String accessToken() {
-			return "https://api.csdn.net/oauth2/access_token";
-		}
-
-		@Override
-		public String userInfo() {
-			return "https://api.csdn.net/user/getinfo";
-		}
-	},
-	/**
 	 * Coding
 	 */
 	CODING {

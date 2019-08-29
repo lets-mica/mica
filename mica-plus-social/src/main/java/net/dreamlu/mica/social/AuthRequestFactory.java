@@ -31,8 +31,6 @@ public class AuthRequestFactory {
 				return authQqRequest(properties.getQq());
 			case MI:
 				return authMiRequest(properties.getMi());
-			case CSDN:
-				return authCsdnRequest(properties.getCsdn());
 			case BAIDU:
 				return authBaiduRequest(properties.getBaidu());
 			case GITEE:
@@ -174,13 +172,6 @@ public class AuthRequestFactory {
 	private AuthRequest authTaobaoRequest(AuthConfig authConfig) {
 		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
 			return new AuthTaobaoRequest(authConfig);
-		}
-		return null;
-	}
-
-	private AuthRequest authCsdnRequest(AuthConfig authConfig) {
-		if (AuthConfigChecker.isSupportedAuth(authConfig)) {
-			return new AuthCsdnRequest(authConfig);
 		}
 		return null;
 	}

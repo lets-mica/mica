@@ -1,0 +1,5 @@
+dependencies {
+    api "com.baomidou:mybatis-plus-boot-starter:${mybatisPlusVersion}"
+    compileOnly "org.springframework.boot:spring-boot-starter-jdbc"
+    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+}

@@ -16,6 +16,11 @@
 
 package net.dreamlu.mica.lock.client;
 
+import net.dreamlu.mica.core.function.CheckedSupplier;
+import net.dreamlu.mica.lock.annotation.LockType;
+
+import java.util.concurrent.TimeUnit;
+
 /**
  * 锁客户端
  *
@@ -23,5 +28,22 @@ package net.dreamlu.mica.lock.client;
  */
 public interface RedisLockClient {
 
+
+	boolean tryLock(String lockName, LockType lockType, long waitTime, long leaseTime, TimeUnit timeUnit) throws InterruptedException;
+
+	void unLock(String lockName, LockType lockType);
+
+	/**
+	 * 获取锁
+	 *
+	 * @param lockName  锁名
+	 * @param lockType  锁类型
+	 * @param waitTime  等待锁超时时间
+	 * @param leaseTime 自动解锁时间，自动解锁时间一定得大于方法执行时间，否则会导致锁提前释放，默认100
+	 * @param timeUnit  时间单温
+	 * @param supplier  获取锁后的回调
+	 * @return 返回的数据
+	 */
+	<T> T lock(String lockName, LockType lockType, long waitTime, long leaseTime, TimeUnit timeUnit, CheckedSupplier<T> supplier);
 
 }

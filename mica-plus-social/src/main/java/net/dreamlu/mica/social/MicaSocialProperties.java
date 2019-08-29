@@ -107,13 +107,6 @@ public class MicaSocialProperties {
 	private AuthConfig mi;
 
 	/**
-	 * csdn 配置
-	 */
-	@NestedConfigurationProperty
-	private AuthConfig csdn;
-
-
-	/**
 	 * coding 配置
 	 */
 	@NestedConfigurationProperty

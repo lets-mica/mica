@@ -16,6 +16,10 @@
 
 package net.dreamlu.mica.http;
 
+import net.dreamlu.mica.core.ssl.DisableValidationTrustManager;
+import net.dreamlu.mica.core.ssl.TrustAllHostNames;
+import net.dreamlu.mica.core.utils.Exceptions;
+import net.dreamlu.mica.core.utils.Holder;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.core.utils.StringPool;
 import okhttp3.*;
@@ -23,14 +27,14 @@ import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import javax.annotation.Nullable;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +85,8 @@ public class HttpRequest {
 	private Authenticator proxyAuthenticator;
 	@Nullable
 	private RetryPolicy retryPolicy;
+	@Nullable
+	private Boolean disableSslValidation;
 	@Nullable
 	private HostnameVerifier hostnameVerifier;
 	@Nullable
@@ -227,6 +233,9 @@ public class HttpRequest {
 		}
 		if (sslSocketFactory != null && trustManager != null) {
 			builder.sslSocketFactory(sslSocketFactory, trustManager);
+		}
+		if (Boolean.TRUE.equals(disableSslValidation)) {
+			disableSslValidation(builder);
 		}
 		if (authenticator != null) {
 			builder.authenticator(authenticator);
@@ -426,6 +435,16 @@ public class HttpRequest {
 		return this;
 	}
 
+	/**
+	 * 关闭 ssl 校验
+	 *
+	 * @return HttpRequest
+	 */
+	public HttpRequest disableSslValidation() {
+		this.disableSslValidation = Boolean.TRUE;
+		return this;
+	}
+
 	public HttpRequest hostnameVerifier(HostnameVerifier hostnameVerifier) {
 		this.hostnameVerifier = hostnameVerifier;
 		return this;
@@ -458,5 +477,19 @@ public class HttpRequest {
 			return (String) value;
 		}
 		return String.valueOf(value);
+	}
+
+	private static void disableSslValidation(OkHttpClient.Builder builder) {
+		try {
+			X509TrustManager disabledTrustManager = DisableValidationTrustManager.INSTANCE;
+			TrustManager[] trustManagers = new TrustManager[]{disabledTrustManager};
+			SSLContext sslContext = SSLContext.getInstance("SSL");
+			sslContext.init(null, trustManagers, Holder.SECURE_RANDOM);
+			SSLSocketFactory disabledSslSocketFactory = sslContext.getSocketFactory();
+			builder.sslSocketFactory(disabledSslSocketFactory, disabledTrustManager);
+			builder.hostnameVerifier(TrustAllHostNames.INSTANCE);
+		} catch (NoSuchAlgorithmException | KeyManagementException e) {
+			throw Exceptions.unchecked(e);
+		}
 	}
 }
