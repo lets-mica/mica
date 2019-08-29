@@ -174,6 +174,10 @@ LGPL是GPL的一个为主要为类库使用设计的开源协议。和GPL要求�
 ## 鸣谢
 `mica-social` 参考了 `JustAuth` 并已经加入 [JustAuth](https://github.com/zhangyd-c/JustAuth) 开发者群，想了解更多请求访问：[https://github.com/zhangyd-c/JustAuth](https://github.com/zhangyd-c/JustAuth)
 
+感谢 JetBrains 提供的免费开源 License：
+
+[![JetBrains](docs/img/jetbrains.png)](https://www.jetbrains.com/?from=mica)
+
 感谢 `如梦技术VIP群` 小伙伴们的大力支持。
 
 ## 微信公众号
