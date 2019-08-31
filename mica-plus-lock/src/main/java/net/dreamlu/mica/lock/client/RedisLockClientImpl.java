@@ -70,6 +70,7 @@ public class RedisLockClientImpl implements RedisLockClient {
 		} finally {
 			this.unLock(lockName, lockType);
 		}
+		return null;
 	}
 
 }

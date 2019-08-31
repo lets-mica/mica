@@ -217,7 +217,7 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	public static File toTempDir(String subDirFile) {
 		String tempDirPath = FileUtil.getTempDirPath();
 		if (subDirFile.startsWith(StringPool.SLASH)) {
-			subDirFile.substring(1);
+			subDirFile = subDirFile.substring(1);
 		}
 		String fullPath = tempDirPath.concat(subDirFile);
 		File fullFilePath = new File(fullPath);
