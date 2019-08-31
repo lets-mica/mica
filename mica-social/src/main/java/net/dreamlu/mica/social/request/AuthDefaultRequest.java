@@ -2,7 +2,7 @@ package net.dreamlu.mica.social.request;
 
 import lombok.Getter;
 import net.dreamlu.mica.http.HttpRequest;
-import net.dreamlu.mica.http.HttpResponse;
+import net.dreamlu.mica.http.ResponseSpec;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
@@ -68,7 +68,7 @@ public abstract class AuthDefaultRequest implements AuthRequest {
 	 * @param code code码
 	 * @return HttpResponse
 	 */
-	protected HttpResponse doPostAuthorizationCode(String code) {
+	protected ResponseSpec doPostAuthorizationCode(String code) {
 		return HttpRequest.post(authSource.accessToken())
 			.queryEncoded("code", code)
 			.queryEncoded("client_id", config.getClientId())
@@ -84,7 +84,7 @@ public abstract class AuthDefaultRequest implements AuthRequest {
 	 * @param code code码
 	 * @return HttpResponse
 	 */
-	protected HttpResponse doGetAuthorizationCode(String code) {
+	protected ResponseSpec doGetAuthorizationCode(String code) {
 		return HttpRequest.get(authSource.accessToken())
 			.queryEncoded("code", code)
 			.queryEncoded("client_id", config.getClientId())

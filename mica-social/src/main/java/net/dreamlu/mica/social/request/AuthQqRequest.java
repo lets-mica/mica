@@ -1,11 +1,11 @@
 package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import net.dreamlu.mica.http.HttpRequest;
-import net.dreamlu.mica.http.HttpResponse;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.core.utils.ObjectUtil;
 import net.dreamlu.mica.core.utils.StringUtil;
+import net.dreamlu.mica.http.HttpRequest;
+import net.dreamlu.mica.http.ResponseSpec;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
@@ -72,7 +72,7 @@ public class AuthQqRequest extends AuthDefaultRequest {
 	}
 
 	private String getOpenId(String accessToken, AuthToken authToken) {
-		HttpResponse response = HttpRequest.get("https://graph.qq.com/oauth2.0/me")
+		ResponseSpec response = HttpRequest.get("https://graph.qq.com/oauth2.0/me")
 			.queryEncoded("access_token", accessToken)
 			.execute();
 		if (response.isOk()) {

@@ -2,7 +2,7 @@ package net.dreamlu.mica.social.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import net.dreamlu.mica.http.HttpRequest;
-import net.dreamlu.mica.http.HttpResponse;
+import net.dreamlu.mica.http.ResponseSpec;
 import net.dreamlu.mica.social.config.AuthConfig;
 import net.dreamlu.mica.social.config.AuthSource;
 import net.dreamlu.mica.social.exception.AuthException;
@@ -119,7 +119,7 @@ public class AuthWeChatRequest extends AuthDefaultRequest {
 	 * @return HttpResponse
 	 */
 	@Override
-	protected HttpResponse doGetAuthorizationCode(String code) {
+	protected ResponseSpec doGetAuthorizationCode(String code) {
 		return HttpRequest.get(authSource.accessToken())
 			.queryEncoded("code", code)
 			.queryEncoded("appid", config.getClientId())
