@@ -43,7 +43,7 @@ public class MultipartFormBuilder {
 		return this;
 	}
 
-	public MultipartFormBuilder addMap(Map<String, Object> formMap) {
+	public MultipartFormBuilder addMap(@Nullable Map<String, Object> formMap) {
 		if (formMap != null && !formMap.isEmpty()) {
 			formMap.forEach(this::add);
 		}
@@ -87,7 +87,7 @@ public class MultipartFormBuilder {
 		return this.request;
 	}
 
-	public HttpResponse execute() {
+	public ResponseSpec execute() {
 		return this.build().execute();
 	}
 

@@ -123,6 +123,9 @@ public class HttpRequestDemo {
 			.onSuccessful(responseSpec -> {
 				String text = responseSpec.asString();
 				System.out.println(text);
+			})
+			.onFailed((request, e) -> {
+				e.printStackTrace();
 			});
 
 		// 同步，异常时直接抛出

@@ -40,7 +40,7 @@ public class FormBuilder {
 		return this;
 	}
 
-	public FormBuilder addMap(Map<String, Object> formMap) {
+	public FormBuilder addMap(@Nullable Map<String, Object> formMap) {
 		if (formMap != null && !formMap.isEmpty()) {
 			formMap.forEach(this::add);
 		}
@@ -58,7 +58,7 @@ public class FormBuilder {
 		return this.request;
 	}
 
-	public HttpResponse execute() {
+	public ResponseSpec execute() {
 		return this.build().execute();
 	}
 

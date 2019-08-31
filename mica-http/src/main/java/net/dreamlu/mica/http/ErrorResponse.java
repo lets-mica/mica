@@ -18,66 +18,133 @@ package net.dreamlu.mica.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.AllArgsConstructor;
 import net.dreamlu.mica.core.function.CheckedFunction;
 import net.dreamlu.mica.core.utils.Exceptions;
-import net.dreamlu.mica.core.utils.JsonUtil;
 import okhttp3.*;
-import okhttp3.internal.Util;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
- * ok http 封装，相应结构体
+ * 异常时的 Response 响应体
  *
- * @author L.cm
+ * @author dream.lu
  */
-public class HttpResponse implements ResponseSpec {
+@AllArgsConstructor
+public class ErrorResponse implements ResponseSpec {
 	private final Request request;
-	private final Response response;
-	private final ResponseBody body;
-
-	HttpResponse(final Response response) {
-		this.request = response.request();
-		this.response = response;
-		this.body = ifNullBodyToEmpty(response.body());
-	}
+	private final IOException exception;
 
 	@Override
 	public int code() {
-		return response.code();
+		throw Exceptions.unchecked(exception);
 	}
 
 	@Override
 	public String message() {
-		return response.message();
-	}
-
-	@Override
-	public boolean isOk() {
-		return response.isSuccessful();
+		throw Exceptions.unchecked(exception);
 	}
 
 	@Override
 	public boolean isRedirect() {
-		return response.isRedirect();
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public ResponseSpec onFailed(BiConsumer<Request, IOException> consumer) {
+		consumer.accept(request, exception);
+		return this;
 	}
 
 	@Override
 	public Headers headers() {
-		return response.headers();
+		throw Exceptions.unchecked(exception);
 	}
 
 	@Override
 	public List<Cookie> cookies() {
-		HttpUrl httpUrl = response.request().url();
-		return Cookie.parseAll(httpUrl, this.headers());
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public String asString() {
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public byte[] asBytes() {
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public <T> T onStream(CheckedFunction<InputStream, T> function) {
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public JsonNode asJsonNode() {
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public <T> T asValue(Class<T> valueType) {
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public <T> T asValue(TypeReference<?> typeReference) {
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public <T> List<T> asList(Class<T> valueType) {
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public <K, V> Map<K, V> asMap(Class<?> keyClass, Class<?> valueType) {
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public <V> Map<String, V> asMap(Class<?> valueType) {
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public <T> T asDomValue(Class<T> valueType) {
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public <T> List<T> asDomList(Class<T> valueType) {
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public void toFile(File file) {
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public void toFile(Path path) {
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public MediaType contentType() {
+		throw Exceptions.unchecked(exception);
+	}
+
+	@Override
+	public long contentLength() {
+		throw Exceptions.unchecked(exception);
 	}
 
 	@Override
@@ -87,107 +154,12 @@ public class HttpResponse implements ResponseSpec {
 
 	@Override
 	public Response rawResponse() {
-		return this.response;
+		throw Exceptions.unchecked(exception);
 	}
 
 	@Override
 	public ResponseBody rawBody() {
-		return this.body;
+		throw Exceptions.unchecked(exception);
 	}
 
-	@Override
-	public String asString() {
-		try {
-			return body.string();
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
-	}
-
-	@Override
-	public byte[] asBytes() {
-		try {
-			return body.bytes();
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
-	}
-
-	@Override
-	public <T> T onStream(CheckedFunction<InputStream, T> function) {
-		try (InputStream input = body.byteStream()) {
-			return function.apply(input);
-		} catch (Throwable e) {
-			throw Exceptions.unchecked(e);
-		}
-	}
-
-	@Override
-	public JsonNode asJsonNode() {
-		return JsonUtil.readTree(asBytes());
-	}
-
-	@Override
-	public <T> T asValue(Class<T> valueType) {
-		return JsonUtil.readValue(asBytes(), valueType);
-	}
-
-	@Override
-	public <T> T asValue(TypeReference<?> typeReference) {
-		return JsonUtil.readValue(asBytes(), typeReference);
-	}
-
-	@Override
-	public <T> List<T> asList(Class<T> valueType) {
-		return JsonUtil.readList(asBytes(), valueType);
-	}
-
-	@Override
-	public <K, V> Map<K, V> asMap(Class<?> keyClass, Class<?> valueType) {
-		return JsonUtil.readMap(asBytes(), keyClass, valueType);
-	}
-
-	@Override
-	public <V> Map<String, V> asMap(Class<?> valueType) {
-		return this.asMap(String.class, valueType);
-	}
-
-	@Override
-	public <T> T asDomValue(Class<T> valueType) {
-		return this.onStream(input -> DomMapper.readValue(input, valueType));
-	}
-
-	@Override
-	public <T> List<T> asDomList(Class<T> valueType) {
-		return this.onStream(input -> DomMapper.readList(input, valueType));
-	}
-
-	@Override
-	public void toFile(File file) {
-		toFile(file.toPath());
-	}
-
-	@Override
-	public void toFile(Path path) {
-		this.onStream(input -> Files.copy(input, path));
-	}
-
-	@Override
-	public MediaType contentType() {
-		return body.contentType();
-	}
-
-	@Override
-	public long contentLength() {
-		return body.contentLength();
-	}
-
-	@Override
-	public String toString() {
-		return response.toString();
-	}
-
-	private static ResponseBody ifNullBodyToEmpty(@Nullable ResponseBody body) {
-		return body == null ? Util.EMPTY_RESPONSE : body;
-	}
 }

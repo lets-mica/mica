@@ -23,6 +23,7 @@ import net.dreamlu.mica.core.utils.Holder;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.core.utils.StringPool;
 import okhttp3.*;
+import okhttp3.internal.Util;
 import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -132,10 +133,6 @@ public class HttpRequest {
 
 	public static HttpRequest delete(final URI uri) {
 		return delete(uri.toString());
-	}
-
-	private static RequestBody emptyBody() {
-		return RequestBody.create(null, new byte[0]);
 	}
 
 	public HttpRequest query(String query) {
@@ -270,19 +267,19 @@ public class HttpRequest {
 		String method = httpMethod;
 		Request request;
 		if (HttpMethod.requiresRequestBody(method) && requestBody == null) {
-			request = requestBuilder.method(method, emptyBody()).build();
+			request = requestBuilder.method(method, Util.EMPTY_REQUEST).build();
 		} else {
 			request = requestBuilder.method(method, requestBody).build();
 		}
 		return builder.build().newCall(request);
 	}
 
-	public HttpResponse execute() {
+	public ResponseSpec execute() {
 		Call call = internalCall(httpClient);
 		try {
 			return new HttpResponse(call.execute());
 		} catch (IOException e) {
-			return new HttpResponse(call.request(), e);
+			return new ErrorResponse(call.request(), e);
 		}
 	}
 

@@ -67,10 +67,9 @@ public class JsonUtil {
 	 * @param object javaBean
 	 * @return jsonString json字符串
 	 */
-	@Nullable
 	public static byte[] toJsonAsBytes(@Nullable Object object) {
 		if (object == null) {
-			return null;
+			return new byte[0];
 		}
 		try {
 			return getInstance().writeValueAsBytes(object);
@@ -288,7 +287,6 @@ public class JsonUtil {
 	 * @param <T>          泛型
 	 * @return 集合
 	 */
-	@Nullable
 	public static <T> List<T> readList(@Nullable byte[] content, Class<T> elementClass) {
 		if (ObjectUtil.isEmpty(content)) {
 			return Collections.emptyList();
@@ -308,7 +306,6 @@ public class JsonUtil {
 	 * @param <T>          泛型
 	 * @return 集合
 	 */
-	@Nullable
 	public static <T> List<T> readList(@Nullable InputStream content, Class<T> elementClass) {
 		if (content == null) {
 			return Collections.emptyList();
@@ -328,7 +325,6 @@ public class JsonUtil {
 	 * @param <T>          泛型
 	 * @return 集合
 	 */
-	@Nullable
 	public static <T> List<T> readList(@Nullable String content, Class<T> elementClass) {
 		if (ObjectUtil.isEmpty(content)) {
 			return Collections.emptyList();
@@ -350,7 +346,6 @@ public class JsonUtil {
 	 * @param <V>        泛型
 	 * @return 集合
 	 */
-	@Nullable
 	public static <K, V> Map<K, V> readMap(@Nullable byte[] content, Class<?> keyClass, Class<?> valueClass) {
 		if (ObjectUtil.isEmpty(content)) {
 			return Collections.emptyMap();
@@ -372,7 +367,6 @@ public class JsonUtil {
 	 * @param <V>        泛型
 	 * @return 集合
 	 */
-	@Nullable
 	public static <K, V> Map<K, V> readMap(@Nullable InputStream content, Class<?> keyClass, Class<?> valueClass) {
 		if (ObjectUtil.isEmpty(content)) {
 			return Collections.emptyMap();
@@ -394,7 +388,6 @@ public class JsonUtil {
 	 * @param <V>        泛型
 	 * @return 集合
 	 */
-	@Nullable
 	public static <K, V> Map<K, V> readMap(@Nullable String content, Class<?> keyClass, Class<?> valueClass) {
 		if (ObjectUtil.isEmpty(content)) {
 			return Collections.emptyMap();
