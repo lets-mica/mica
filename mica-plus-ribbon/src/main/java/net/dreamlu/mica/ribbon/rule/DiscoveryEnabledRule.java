@@ -69,10 +69,8 @@ public abstract class DiscoveryEnabledRule extends PredicateBasedRule {
 	public abstract List<Server> filterServers(List<Server> serverList);
 
 	private CompositePredicate createCompositePredicate(DiscoveryEnabledPredicate discoveryEnabledPredicate, AvailabilityPredicate availabilityPredicate) {
-		RoundRobinRule roundRobinRule =new RoundRobinRule();
-		roundRobinRule.setLoadBalancer(getLoadBalancer());
 		return CompositePredicate.withPredicates(discoveryEnabledPredicate, availabilityPredicate)
-			.addFallbackPredicate(new AvailabilityPredicate(roundRobinRule,null))
+			.addFallbackPredicate(new AvailabilityPredicate(new RoundRobinRule(getLoadBalancer()), null))
 			.build();
 	}
 }
