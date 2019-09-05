@@ -47,7 +47,7 @@ public class MicaRibbonRuleAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public DiscoveryEnabledRule metadataAwareRule() {
-		return new MetadataAwareRule();
+	public DiscoveryEnabledRule metadataAwareRule(MicaRibbonRuleProperties properties) {
+		return new MetadataAwareRule(properties.isEnableFallback());
 	}
 }

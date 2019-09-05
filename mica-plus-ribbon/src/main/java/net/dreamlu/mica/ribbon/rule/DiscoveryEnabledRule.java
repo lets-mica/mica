@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.ribbon.rule;
 
-import com.google.common.base.Optional;
 import com.netflix.loadbalancer.*;
 import net.dreamlu.mica.ribbon.predicate.DiscoveryEnabledPredicate;
 import org.springframework.util.Assert;
@@ -30,10 +29,12 @@ import java.util.List;
  */
 public abstract class DiscoveryEnabledRule extends PredicateBasedRule {
 	private final CompositePredicate predicate;
+	private final boolean enableFallbackPredicate;
 
-	public DiscoveryEnabledRule(DiscoveryEnabledPredicate discoveryEnabledPredicate) {
+	public DiscoveryEnabledRule(DiscoveryEnabledPredicate discoveryEnabledPredicate, boolean enableFallbackPredicate) {
 		Assert.notNull(discoveryEnabledPredicate, "Parameter 'discoveryEnabledPredicate' can't be null");
 		this.predicate = createCompositePredicate(discoveryEnabledPredicate, new AvailabilityPredicate(this, null));
+		this.enableFallbackPredicate = enableFallbackPredicate;
 	}
 
 	/**
@@ -52,12 +53,7 @@ public abstract class DiscoveryEnabledRule extends PredicateBasedRule {
 		// 过滤服务列表
 		List<Server> serverList = filterServers(allServers);
 
-		Optional<Server> server = getPredicate().chooseRoundRobinAfterFiltering(serverList, key);
-		if (server.isPresent()) {
-			return server.get();
-		} else {
-			return null;
-		}
+		return getPredicate().chooseRoundRobinAfterFiltering(serverList, key).orNull();
 	}
 
 	/**
@@ -69,8 +65,11 @@ public abstract class DiscoveryEnabledRule extends PredicateBasedRule {
 	public abstract List<Server> filterServers(List<Server> serverList);
 
 	private CompositePredicate createCompositePredicate(DiscoveryEnabledPredicate discoveryEnabledPredicate, AvailabilityPredicate availabilityPredicate) {
-		return CompositePredicate.withPredicates(discoveryEnabledPredicate, availabilityPredicate)
-			.addFallbackPredicate(new AvailabilityPredicate(new RoundRobinRule(getLoadBalancer()), null))
-			.build();
+		CompositePredicate.Builder builder = CompositePredicate.withPredicates(discoveryEnabledPredicate, availabilityPredicate);
+		if (enableFallbackPredicate) {
+			builder.addFallbackPredicate(new AvailabilityPredicate(new RoundRobinRule(getLoadBalancer()), null));
+		}
+		return builder.build();
 	}
+
 }

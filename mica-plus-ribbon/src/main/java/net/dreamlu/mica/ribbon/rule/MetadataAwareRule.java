@@ -20,7 +20,6 @@ import com.netflix.loadbalancer.Server;
 import net.dreamlu.mica.config.SpringUtils;
 import net.dreamlu.mica.core.utils.INetUtil;
 import net.dreamlu.mica.core.utils.ObjectUtil;
-import net.dreamlu.mica.ribbon.predicate.DiscoveryEnabledPredicate;
 import net.dreamlu.mica.ribbon.predicate.MetadataAwarePredicate;
 import net.dreamlu.mica.ribbon.support.MicaRibbonRuleProperties;
 import org.springframework.util.PatternMatchUtils;
@@ -36,12 +35,8 @@ import java.util.List;
  */
 public class MetadataAwareRule extends DiscoveryEnabledRule {
 
-	public MetadataAwareRule() {
-		this(MetadataAwarePredicate.INSTANCE);
-	}
-
-	public MetadataAwareRule(DiscoveryEnabledPredicate predicate) {
-		super(predicate);
+	public MetadataAwareRule(boolean enableFallbackPredicate) {
+		super(MetadataAwarePredicate.INSTANCE, enableFallbackPredicate);
 	}
 
 	@Override

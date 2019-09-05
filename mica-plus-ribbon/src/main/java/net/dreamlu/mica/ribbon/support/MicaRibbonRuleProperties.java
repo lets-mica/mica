@@ -39,7 +39,11 @@ public class MicaRibbonRuleProperties {
 	/**
 	 * 是否开启，默认：true
 	 */
-	private Boolean enabled = Boolean.TRUE;
+	private boolean enabled = true;
+	/**
+	 * 是否开启降级，如果没有可用服务时降级
+	 */
+	private boolean enableFallback = true;
 	/**
 	 * 服务的tag，用于灰度，匹配：nacos.discovery.metadata.tag
 	 */
