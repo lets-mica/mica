@@ -170,6 +170,8 @@ LGPL是GPL的一个为主要为类库使用设计的开源协议。和GPL要求�
 - `pig` 宇宙最强微服务（架构师必备）：[https://gitee.com/log4j/pig](https://gitee.com/log4j/pig)
 - `SpringBlade` 完整的线上解决方案（企业开发必备）：[https://gitee.com/smallc/SpringBlade](https://gitee.com/smallc/SpringBlade)
 - `IJPay` 支付 SDK 让支付触手可及：[https://gitee.com/javen205/IJPay](https://gitee.com/javen205/IJPay)
+- `JustAuth` 史上最全的整合第三方登录的开源库: [https://github.com/zhangyd-c/JustAuth](https://github.com/zhangyd-c/JustAuth)
+- `spring-boot-demo` 深度学习并实战 spring boot 的项目: [https://github.com/xkcoding/spring-boot-demo](https://github.com/xkcoding/spring-boot-demo)
 
 ## 鸣谢
 `mica-social` 参考了 `JustAuth` 并已经加入 [JustAuth](https://github.com/zhangyd-c/JustAuth) 开发者群，想了解更多请求访问：[https://github.com/zhangyd-c/JustAuth](https://github.com/zhangyd-c/JustAuth)
