@@ -17,6 +17,7 @@
 package net.dreamlu.mica.laytpl;
 
 import net.dreamlu.mica.core.utils.IoUtil;
+import net.dreamlu.mica.core.utils.StringPool;
 import net.dreamlu.mica.core.utils.Unchecked;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -61,7 +62,7 @@ public class MicaTemplate implements ApplicationContextAware, InitializingBean {
 	 * @return 渲染后的html
 	 */
 	public String renderTpl(String tplName, Object data) {
-		if (tplName.startsWith("/")) {
+		if (tplName.startsWith(StringPool.SLASH)) {
 			tplName = tplName.substring(1);
 		}
 		final String tplPath = tplProperties.getPrefix() + tplName;

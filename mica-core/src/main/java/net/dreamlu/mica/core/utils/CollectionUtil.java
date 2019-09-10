@@ -151,11 +151,12 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 	 * @return map 集合
 	 */
 	public static <K, V> Map<K, V> toMap(Object... keysValues) {
-		if (keysValues.length % 2 != 0) {
+		int kvLength = keysValues.length;
+		if (kvLength % 2 != 0) {
 			throw new IllegalArgumentException("wrong number of arguments for met, keysValues length can not be odd");
 		}
-		Map<K, V> keyValueMap = new HashMap<>();
-		for (int i = keysValues.length - 2; i >= 0; i -= 2) {
+		Map<K, V> keyValueMap = new HashMap<>(kvLength);
+		for (int i = kvLength - 2; i >= 0; i -= 2) {
 			Object key = keysValues[i];
 			Object value = keysValues[i + 1];
 			keyValueMap.put((K) key, (V) value);

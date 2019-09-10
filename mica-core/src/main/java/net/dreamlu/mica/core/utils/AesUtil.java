@@ -55,7 +55,7 @@ public class AesUtil {
 			SecretKeySpec keySpec = new SecretKeySpec(aesKey, "AES");
 			IvParameterSpec iv = new IvParameterSpec(aesKey, 0, 16);
 			cipher.init(Cipher.ENCRYPT_MODE, keySpec, iv);
-			return cipher.doFinal(PKCS7Encoder.encode(content));
+			return cipher.doFinal(Pkcs7Encoder.encode(content));
 		} catch (Exception e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -68,7 +68,7 @@ public class AesUtil {
 			SecretKeySpec keySpec = new SecretKeySpec(aesKey, "AES");
 			IvParameterSpec iv = new IvParameterSpec(Arrays.copyOfRange(aesKey, 0, 16));
 			cipher.init(Cipher.DECRYPT_MODE, keySpec, iv);
-			return PKCS7Encoder.decode(cipher.doFinal(encrypted));
+			return Pkcs7Encoder.decode(cipher.doFinal(encrypted));
 		} catch (Exception e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -77,7 +77,7 @@ public class AesUtil {
 	/**
 	 * 提供基于PKCS7算法的加解密接口.
 	 */
-	private static class PKCS7Encoder {
+	private static class Pkcs7Encoder {
 		private static int BLOCK_SIZE = 32;
 
 		private static byte[] encode(byte[] src) {
