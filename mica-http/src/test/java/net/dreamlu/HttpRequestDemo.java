@@ -18,10 +18,12 @@ package net.dreamlu;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import net.dreamlu.mica.core.utils.Base64Util;
+import net.dreamlu.mica.http.DomMapper;
 import net.dreamlu.mica.http.HttpRequest;
 import net.dreamlu.mica.http.LogLevel;
 import net.dreamlu.mica.http.ResponseSpec;
 import okhttp3.Cookie;
+import org.jsoup.nodes.Document;
 
 import java.net.URI;
 import java.time.Duration;
@@ -71,6 +73,11 @@ public class HttpRequestDemo {
 			.execute()
 			.onSuccess(ResponseSpec::asString);
 		// onSuccess http code in [200..300) 处理响应，有网络异常等直接返回 null
+
+		// 基于 CompletableFuture 的异步
+		Document document = HttpRequest.patch("https://www.baidu.com")
+			.executeAsync()
+			.onSuccess(DomMapper::asDocument);
 
 		// 发送异步请求
 		HttpRequest.delete("https://www.baidu.com")

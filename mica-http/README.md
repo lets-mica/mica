@@ -70,6 +70,11 @@ Document document = HttpRequest.patch("https://www.baidu.com")
     .onSuccess(DomMapper::asDocument);
 // onSuccess http code in [200..300) 处理响应，有网络异常等直接返回 null
 
+// 基于 CompletableFuture 的异步
+Document document = HttpRequest.patch("https://www.baidu.com")
+    .executeAsync()
+    .onSuccess(DomMapper::asDocument);
+
 // 发送异步请求
 HttpRequest.delete("https://www.baidu.com")
     .async() // 开启异步
