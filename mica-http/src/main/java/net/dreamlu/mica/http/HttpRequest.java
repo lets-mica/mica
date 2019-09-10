@@ -40,6 +40,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
@@ -281,6 +283,14 @@ public class HttpRequest {
 		} catch (IOException e) {
 			return new ErrorResponse(call.request(), e);
 		}
+	}
+
+	public ResponseSpec executeAsync() {
+		return CompletableFuture.supplyAsync(this::execute).join();
+	}
+
+	public ResponseSpec executeAsync(Executor executor) {
+		return CompletableFuture.supplyAsync(this::execute, executor).join();
 	}
 
 	public AsyncCall async() {
