@@ -29,7 +29,7 @@ import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.lang.Nullable;
 
 import java.lang.reflect.Method;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * mica fullBack 代理处理
@@ -49,6 +49,16 @@ public class MicaFeignFallback<T> implements MethodInterceptor {
 		String errorMessage = cause.getMessage();
 		log.error("MicaFeignFallback:[{}.{}] serviceId:[{}] message:[{}]", targetType.getName(), method.getName(), targetName, errorMessage);
 		Class<?> returnType = method.getReturnType();
+		// 集合类型反馈空集合
+		if (List.class.isAssignableFrom(returnType)) {
+			return Collections.emptyList();
+		}
+		if (Set.class.isAssignableFrom(returnType)) {
+			return Collections.emptySet();
+		}
+		if (Map.class.isAssignableFrom(returnType)) {
+			return Collections.emptyMap();
+		}
 		// 暂时不支持 flux，rx，异步等，返回值不是 R，直接返回 null。
 		if (R.class != returnType) {
 			return null;
