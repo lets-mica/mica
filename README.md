@@ -86,11 +86,6 @@
 
 `文档地址`：[mica-captcha](https://www.dreamlu.net/docs/captcha.html)
 
-### mica-social
-- 第三方登录组件
-
-`文档地址`：[mica-social](mica-social/README.md)
-
 ### mica-cloud
 - Feign 自动降级、header 透传、版本处理，结合 `mica-auto` 自动化配置。
 - RestTemplate 自动配置，基于 okhttp 增强，添加请求日志和 Header 传递。
@@ -119,11 +114,6 @@
 - 可设定 `tag`，用于灰度，匹配：`nacos.discovery.metadata.tag`。
 
 `文档地址`：[mica-plus-ribbon](mica-plus-ribbon/README.md)
-
-### mica-plus-social
-- `mica-social` 自动化配置。
-
-`文档地址`：[mica-plus-social](mica-plus-social/README.md)
 
 ## 已知问题
 lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861
@@ -174,8 +164,6 @@ LGPL是GPL的一个为主要为类库使用设计的开源协议。和GPL要求�
 - `spring-boot-demo` 深度学习并实战 spring boot 的项目: [https://github.com/xkcoding/spring-boot-demo](https://github.com/xkcoding/spring-boot-demo)
 
 ## 鸣谢
-`mica-social` 参考了 `JustAuth` 并已经加入 [JustAuth](https://github.com/zhangyd-c/JustAuth) 开发者群，想了解更多请求访问：[https://github.com/zhangyd-c/JustAuth](https://github.com/zhangyd-c/JustAuth)
-
 感谢 JetBrains 提供的免费开源 License：
 
 [![JetBrains](docs/img/jetbrains.png)](https://www.jetbrains.com/?from=mica)
