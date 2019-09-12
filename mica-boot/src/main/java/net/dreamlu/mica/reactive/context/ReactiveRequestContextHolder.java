@@ -17,6 +17,7 @@
 package net.dreamlu.mica.reactive.context;
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
 
@@ -26,23 +27,36 @@ import reactor.util.context.Context;
  * @author L.cm
  */
 public class ReactiveRequestContextHolder {
-	private static final Class<ServerHttpRequest> CONTEXT_KEY = ServerHttpRequest.class;
+	private static final Class<ServerWebExchange> CONTEXT_KEY = ServerWebExchange.class;
 
 	/**
-	 * Gets the {@code Mono<ServerHttpRequest>} from Reactor {@link Context}
-	 * @return the {@code Mono<ServerHttpRequest>}
+	 * Gets the {@code Mono<ServerWebExchange>} from Reactor {@link Context}
+	 *
+	 * @return the {@code Mono<ServerWebExchange>}
 	 */
-	public static Mono<ServerHttpRequest> getRequest() {
+	public static Mono<ServerWebExchange> getExchange() {
 		return Mono.subscriberContext()
 			.map(ctx -> ctx.get(CONTEXT_KEY));
 	}
 
 	/**
-	 * Put the {@code Mono<ServerHttpRequest>} to Reactor {@link Context}
+	 * Gets the {@code Mono<ServerHttpRequest>} from Reactor {@link Context}
 	 *
+	 * @return the {@code Mono<ServerHttpRequest>}
+	 */
+	public static Mono<ServerHttpRequest> getRequest() {
+		return ReactiveRequestContextHolder.getExchange()
+			.map(ServerWebExchange::getRequest);
+	}
+
+	/**
+	 * Put the {@code ServerWebExchange} to Reactor {@link Context}
+	 *
+	 * @param context  Context
+	 * @param exchange ServerWebExchange
 	 * @return the Reactor {@link Context}
 	 */
-	public static Context put(Context context, ServerHttpRequest request) {
-		return context.put(CONTEXT_KEY, request);
+	public static Context put(Context context, ServerWebExchange exchange) {
+		return context.put(CONTEXT_KEY, exchange);
 	}
 }
