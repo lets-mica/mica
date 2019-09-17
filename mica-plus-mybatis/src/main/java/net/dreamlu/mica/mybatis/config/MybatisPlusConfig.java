@@ -25,8 +25,10 @@ import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.injector.ISqlInjector;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import net.dreamlu.mica.mybatis.injector.MicaSqlInjector;
+import net.dreamlu.mica.mybatis.plugins.SqlLogInterceptor;
 import org.apache.ibatis.type.EnumTypeHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -53,6 +55,15 @@ public class MybatisPlusConfig {
 	@Bean
 	public ISqlInjector sqlInjector() {
 		return new MicaSqlInjector();
+	}
+
+	/**
+	 * sql 日志
+	 */
+	@Bean
+	@ConditionalOnProperty(value = "mica.mybatis-plus.sql-log.enable", matchIfMissing = true)
+	public SqlLogInterceptor sqlLogInterceptor() {
+		return new SqlLogInterceptor();
 	}
 
 	/**

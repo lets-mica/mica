@@ -1,0 +1,11 @@
+{
+  "properties": [
+    {
+      "name": "mica.mybatis-plus.sql-log.enable",
+      "type": "java.lang.Boolean",
+      "description": "是否开启 mybatis plus sql 日志.",
+      "defaultValue": "true"
+    }
+  ]
+}
+
