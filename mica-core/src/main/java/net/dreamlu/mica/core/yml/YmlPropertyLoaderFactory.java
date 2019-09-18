@@ -16,8 +16,9 @@
 
 package net.dreamlu.mica.core.yml;
 
-import org.springframework.boot.env.OriginTrackedMapPropertySource;
+import net.dreamlu.mica.core.utils.StringUtil;
 import org.springframework.boot.env.YamlPropertySourceLoader;
+import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.DefaultPropertySourceFactory;
@@ -25,8 +26,8 @@ import org.springframework.core.io.support.EncodedResource;
 import org.springframework.lang.Nullable;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * YmlPropertyLoaderFactory
@@ -43,10 +44,25 @@ public class YmlPropertyLoaderFactory extends DefaultPropertySourceFactory {
 		Resource resource = encodedResource.getResource();
 		String fileName = resource.getFilename();
 		List<PropertySource<?>> sources = new YamlPropertySourceLoader().load(fileName, resource);
-		return sources.isEmpty() ? emptyPropertySource(fileName) : sources.get(0);
+		if (sources.isEmpty()) {
+			return emptyPropertySource(fileName);
+		}
+		// yml 数据存储，合成一个 PropertySource
+		Map<String, Object> ymlDataMap = new HashMap<>(32);
+		for (PropertySource<?> source : sources) {
+			ymlDataMap.putAll(((MapPropertySource) source).getSource());
+		}
+		return new MapPropertySource(getSourceName(fileName, name), ymlDataMap);
 	}
 
 	private static PropertySource<?> emptyPropertySource(@Nullable String name) {
-		return new OriginTrackedMapPropertySource(name, Collections.emptyMap());
+		return new MapPropertySource(getSourceName(name), Collections.emptyMap());
+	}
+
+	private static String getSourceName(String... names) {
+		return Stream.of(names)
+			.filter(StringUtil::isBlank)
+			.findFirst()
+			.orElse("MicaYmlPropertySource");
 	}
 }
