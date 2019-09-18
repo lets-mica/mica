@@ -21,6 +21,7 @@ import lombok.experimental.UtilityClass;
 import net.dreamlu.mica.core.beans.MicaBeanCopier;
 import net.dreamlu.mica.core.beans.MicaBeanMap;
 import net.dreamlu.mica.core.convert.MicaConverter;
+import net.dreamlu.mica.core.exception.ServiceException;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyAccessorFactory;
@@ -61,7 +62,7 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 			Class<?> clazz = ClassUtil.forName(clazzStr, null);
 			return newInstance(clazz);
 		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
+			throw new ServiceException(e);
 		}
 	}
 

@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.captcha;
 
+import net.dreamlu.mica.core.exception.ServiceException;
 import org.springframework.util.FastByteArrayOutputStream;
 
 import javax.imageio.ImageIO;
@@ -62,7 +63,7 @@ public class CaptchaUtils {
 			ImageIO.write(image, "JPEG", baos);
 			return baos.toByteArray();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new ServiceException(e);
 		}
 	}
 

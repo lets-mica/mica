@@ -85,7 +85,7 @@ public class MicaApplication {
 			profile = presetProfiles.get(0);
 		} else {
 			// 同时存在dev、test、ontest、prod环境时
-			throw new RuntimeException("同时存在环境变量:[" + joinFun.apply(activeProfiles) + "]");
+			throw new IllegalArgumentException("同时存在环境变量:[" + joinFun.apply(activeProfiles) + "]");
 		}
 		// 添加启动目录打印
 		String startJarPath = MicaApplication.class.getResource("/").getPath().split("!")[0];
