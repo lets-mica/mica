@@ -61,8 +61,9 @@ public class YmlPropertyLoaderFactory extends DefaultPropertySourceFactory {
 
 	private static String getSourceName(String... names) {
 		return Stream.of(names)
-			.filter(StringUtil::isBlank)
+			.filter(StringUtil::isNotBlank)
 			.findFirst()
 			.orElse("MicaYmlPropertySource");
 	}
+
 }
