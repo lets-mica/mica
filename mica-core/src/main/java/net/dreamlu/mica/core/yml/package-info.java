@@ -16,7 +16,7 @@
 
 @NonNullApi
 @NonNullFields
-package net.dreamlu.mica.core.utils;
+package net.dreamlu.mica.core.yml;
 
 import org.springframework.lang.NonNullApi;
 import org.springframework.lang.NonNullFields;
