@@ -28,13 +28,29 @@ import java.util.concurrent.TimeUnit;
  */
 public interface RedisLockClient {
 
-
+	/**
+	 * 尝试获取锁
+	 *
+	 * @param lockName  锁名
+	 * @param lockType  锁类型
+	 * @param waitTime  等待时间
+	 * @param leaseTime 自动解锁时间，自动解锁时间一定得大于方法执行时间
+	 * @param timeUnit  时间参数
+	 * @return 是否成功
+	 * @throws InterruptedException InterruptedException
+	 */
 	boolean tryLock(String lockName, LockType lockType, long waitTime, long leaseTime, TimeUnit timeUnit) throws InterruptedException;
 
+	/**
+	 * 解锁
+	 *
+	 * @param lockName 锁名
+	 * @param lockType 锁类型
+	 */
 	void unLock(String lockName, LockType lockType);
 
 	/**
-	 * 获取锁
+	 * 自定获取锁后执行方法
 	 *
 	 * @param lockName  锁名
 	 * @param lockType  锁类型
