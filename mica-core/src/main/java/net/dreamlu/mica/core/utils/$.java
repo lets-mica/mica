@@ -30,7 +30,6 @@ import org.springframework.util.PatternMatchUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 
-import javax.xml.bind.DatatypeConverter;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -1316,7 +1315,7 @@ public class $ {
 	 * @return MD5 digest as a hex string
 	 */
 	public static String encodeHex(byte[] bytes) {
-		return DatatypeConverter.printHexBinary(bytes);
+		return DigestUtil.encodeHex(bytes);
 	}
 
 	/**
@@ -1326,7 +1325,7 @@ public class $ {
 	 * @return MD5 digest as a hex string
 	 */
 	public static byte[] decodeHex(final String hexString) {
-		return DatatypeConverter.parseHexBinary(hexString);
+		return DigestUtil.decodeHex(hexString);
 	}
 
 	/**
