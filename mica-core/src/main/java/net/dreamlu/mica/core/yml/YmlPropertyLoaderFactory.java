@@ -17,6 +17,7 @@
 package net.dreamlu.mica.core.yml;
 
 import net.dreamlu.mica.core.utils.StringUtil;
+import org.springframework.boot.env.OriginTrackedMapPropertySource;
 import org.springframework.boot.env.YamlPropertySourceLoader;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
@@ -52,7 +53,7 @@ public class YmlPropertyLoaderFactory extends DefaultPropertySourceFactory {
 		for (PropertySource<?> source : sources) {
 			ymlDataMap.putAll(((MapPropertySource) source).getSource());
 		}
-		return new MapPropertySource(getSourceName(fileName, name), ymlDataMap);
+		return new OriginTrackedMapPropertySource(getSourceName(fileName, name), ymlDataMap);
 	}
 
 	private static PropertySource<?> emptyPropertySource(@Nullable String name) {
