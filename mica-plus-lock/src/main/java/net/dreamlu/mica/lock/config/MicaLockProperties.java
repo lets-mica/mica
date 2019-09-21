@@ -27,8 +27,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Getter
 @Setter
-@ConfigurationProperties("mica.lock")
+@ConfigurationProperties(MicaLockProperties.PREFIX)
 public class MicaLockProperties {
+	public static final String PREFIX = "mica.lock";
 
 	/**
 	 * 是否开启：默认为：true，便于生成配置提示。
@@ -37,7 +38,7 @@ public class MicaLockProperties {
 	/**
 	 * 单机配置：redis 服务地址
 	 */
-	private String address;
+	private String address = "redis://127.0.0.1:6379";
 	/**
 	 * 密码配置
 	 */

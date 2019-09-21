@@ -49,7 +49,7 @@ public class RedisLockAspect implements ApplicationContextAware {
 	/**
 	 * 表达式处理
 	 */
-	private final MicaExpressionEvaluator evaluator = new MicaExpressionEvaluator();
+	private static final MicaExpressionEvaluator EVALUATOR = new MicaExpressionEvaluator();
 	/**
 	 * redis 限流服务
 	 */
@@ -93,9 +93,9 @@ public class RedisLockAspect implements ApplicationContextAware {
 		Object[] args = point.getArgs();
 		Object target = point.getTarget();
 		Class<?> targetClass = target.getClass();
-		EvaluationContext context = evaluator.createContext(method, args, target, targetClass, applicationContext);
+		EvaluationContext context = EVALUATOR.createContext(method, args, target, targetClass, applicationContext);
 		AnnotatedElementKey elementKey = new AnnotatedElementKey(method, targetClass);
-		return evaluator.evalAsText(lockParam, elementKey, context);
+		return EVALUATOR.evalAsText(lockParam, elementKey, context);
 	}
 
 	@Override

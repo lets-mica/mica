@@ -1,6 +1,31 @@
 # 变更记录
 
 ## 发行版本
+### v1.1.9 - 2019-09-22
+- :zap: 添加 mybatis plus 的扩展 mica-plus-mybatis 组件。
+- :zap: mica-plus-mybatis 扩展 insert ignore 和 replace 添加老版本的日志记录扩展.
+- :zap: 添加分布式锁组件 mica-plus-lock。
+- :zap: mica-cloud  ReactiveRequestContextHolder 改为缓存 ServerWebExchange.
+- :zap: mica-cloud fallback 优化对空集合的支持.
+- :zap: mica-plus-ribbon @世言 同学 pr 的 ribbon 路由 fallback。添加扩展开关，默认关闭.
+- :zap: mica-plus-redis protostuff 调成可选依赖.
+- :zap: mica-core 添加 Pair.
+- :zap: mica-core 添加 MicaExpressionEvaluator.
+- :zap: mica-core 添加 YmlPropertyLoaderFactory。
+- :zap: mica-core 优化 FileUtil Nio 文件读取.
+- :zap: mica-core 提升 FastStringWriter 一倍的性能.
+- :zap: mica-http retry 添加对结果集校验.
+- :zap: 删除第三方登录推荐直接使用 JustAuth.
+- :zap: 减少 codacy 代码检测问题。
+- :zap: 优化部分 阿里巴巴 P3C 问题.
+- :bug: 修复 mica-core decodeHex java 11 的兼容。
+- :bug: mica-http 将 asStream 改成 onStream 避免流未关闭.
+- :arrow_up: gradle 升级到 5.6.2。
+- :arrow_up: 依赖升级 Spring boot 2.1.8.RELEASE。
+- :arrow_up: Spring cloud Greenwich SR3。
+- :arrow_up: mybatis-plus 升级到 3.2.0。
+- :arrow_up: 依赖升级 swagger-bootstrap-ui 到 1.9.6。
+
 ### v1.1.8 - 2019-08-12
 - :zap: mica-plus-redis 添加 redis 限流组件.
 - :zap: mica-http Response asDocument 方法迁移到 DomMapper，不强制依赖 jsoup.

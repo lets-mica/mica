@@ -17,9 +17,12 @@
 package net.dreamlu.mica.lock.config;
 
 import net.dreamlu.mica.core.utils.StringUtil;
+import net.dreamlu.mica.lock.client.RedisLockClient;
+import net.dreamlu.mica.lock.client.RedisLockClientImpl;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -36,34 +39,10 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(MicaLockProperties.class)
 public class MicaLockAutoConfiguration {
 
-	@Bean
-	@ConditionalOnMissingBean
-	public RedissonClient redissonClient(MicaLockProperties properties) {
-		MicaLockProperties.Mode mode = properties.getMode();
-		Config config;
-		switch (mode) {
-			case single:
-				config = singleConfig(properties);
-				break;
-			case master:
-				config = masterSlaveConfig(properties);
-				break;
-			case cluster:
-				config = clusterConfig(properties);
-				break;
-			case sentinel:
-				config = sentinelConfig(properties);
-				break;
-			default:
-				config = new Config();
-		}
-		return Redisson.create(config);
-	}
-
 	private static Config singleConfig(MicaLockProperties properties) {
 		Config config = new Config();
 		SingleServerConfig serversConfig = config.useSingleServer();
-		serversConfig.setAddress("redis://" + properties.getAddress());
+		serversConfig.setAddress(properties.getAddress());
 		String password = properties.getPassword();
 		if (StringUtil.isNotBlank(password)) {
 			serversConfig.setPassword(password);
@@ -133,6 +112,45 @@ public class MicaLockAutoConfiguration {
 		serversConfig.setConnectTimeout(properties.getConnectionTimeout());
 		serversConfig.setTimeout(properties.getTimeout());
 		return config;
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	@ConditionalOnBean(RedissonClient.class)
+	public RedisLockClient redisLockClient(RedissonClient redissonClient) {
+		return new RedisLockClientImpl(redissonClient);
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	@ConditionalOnBean(RedisLockClient.class)
+	public RedisLockAspect redisLockAspect(RedisLockClient redisLockClient) {
+		return new RedisLockAspect(redisLockClient);
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	public RedissonClient redissonClient(MicaLockProperties properties) {
+		MicaLockProperties.Mode mode = properties.getMode();
+		Config config;
+		switch (mode) {
+			case sentinel:
+				config = sentinelConfig(properties);
+				break;
+			case cluster:
+				config = clusterConfig(properties);
+				break;
+			case master:
+				config = masterSlaveConfig(properties);
+				break;
+			case single:
+				config = singleConfig(properties);
+				break;
+			default:
+				config = new Config();
+				break;
+		}
+		return Redisson.create(config);
 	}
 
 }

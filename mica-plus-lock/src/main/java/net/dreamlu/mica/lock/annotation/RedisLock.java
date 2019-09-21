@@ -66,7 +66,7 @@ public @interface RedisLock {
 	long leaseTime() default 100;
 
 	/**
-	 * 时间单温，默认为 分
+	 * 时间单温，默认为秒
 	 *
 	 * @return 时间单位
 	 */
@@ -78,5 +78,4 @@ public @interface RedisLock {
 	 * @return LockType
 	 */
 	LockType type() default LockType.FAIR;
-
 }
