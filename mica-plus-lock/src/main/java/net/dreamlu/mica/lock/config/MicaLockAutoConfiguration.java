@@ -22,7 +22,6 @@ import net.dreamlu.mica.lock.client.RedisLockClientImpl;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.*;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -116,21 +115,17 @@ public class MicaLockAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	@ConditionalOnBean(RedissonClient.class)
-	public RedisLockClient redisLockClient(RedissonClient redissonClient) {
-		return new RedisLockClientImpl(redissonClient);
+	public RedisLockClient redisLockClient(MicaLockProperties properties) {
+		return new RedisLockClientImpl(redissonClient(properties));
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
-	@ConditionalOnBean(RedisLockClient.class)
 	public RedisLockAspect redisLockAspect(RedisLockClient redisLockClient) {
 		return new RedisLockAspect(redisLockClient);
 	}
 
-	@Bean
-	@ConditionalOnMissingBean
-	public RedissonClient redissonClient(MicaLockProperties properties) {
+	private static RedissonClient redissonClient(MicaLockProperties properties) {
 		MicaLockProperties.Mode mode = properties.getMode();
 		Config config;
 		switch (mode) {
