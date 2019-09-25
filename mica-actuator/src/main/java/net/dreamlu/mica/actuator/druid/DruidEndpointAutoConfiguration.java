@@ -22,7 +22,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 
 /**
  * Druid 端点配置
@@ -36,7 +35,7 @@ public class DruidEndpointAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public DruidWebEndpoint environmentEndpoint(Environment environment) {
+	public DruidWebEndpoint druidWebEndpoint() {
 		return new DruidWebEndpoint();
 	}
 
