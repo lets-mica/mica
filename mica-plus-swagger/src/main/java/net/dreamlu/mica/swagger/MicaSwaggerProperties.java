@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.props;
+package net.dreamlu.mica.swagger;
 
 import lombok.Getter;
 import lombok.Setter;

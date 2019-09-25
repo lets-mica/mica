@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.reactive.config;
+package net.dreamlu.mica.swagger.servlet;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.config.ResourceHandlerRegistry;
-import org.springframework.web.reactive.config.WebFluxConfigurer;
-import springfox.documentation.spring.web.plugins.Docket;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration;
 
 /**
  * Swagger 页面静态文件配置
@@ -31,11 +31,11 @@ import springfox.documentation.spring.web.plugins.Docket;
  * @author L.cm
  */
 @Configuration
-@ConditionalOnClass(Docket.class)
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+@EnableSwagger2
+@ConditionalOnClass(Swagger2DocumentationConfiguration.class)
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(value = "mica.swagger.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnMissingClass("org.springframework.cloud.gateway.config.GatewayAutoConfiguration")
-public class SwaggerAutoConfiguration implements WebFluxConfigurer {
+public class SwaggerAutoConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {

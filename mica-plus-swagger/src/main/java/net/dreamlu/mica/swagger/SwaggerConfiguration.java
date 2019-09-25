@@ -18,14 +18,13 @@ package net.dreamlu.mica.swagger;
 
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import net.dreamlu.mica.props.MicaProperties;
-import net.dreamlu.mica.props.MicaSwaggerProperties;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -37,10 +36,10 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.ApiKeyVehicle;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Swagger2配置
@@ -49,29 +48,28 @@ import java.util.Optional;
  */
 @Configuration
 @RequiredArgsConstructor
-@AutoConfigureAfter(MicaSwaggerProperties.class)
 @ConditionalOnClass(Docket.class)
+@EnableConfigurationProperties(MicaSwaggerProperties.class)
 @ConditionalOnProperty(value = "mica.swagger.enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnMissingClass("org.springframework.cloud.gateway.config.GatewayAutoConfiguration")
 public class SwaggerConfiguration {
-	private final MicaProperties micaProperties;
-	private final MicaSwaggerProperties swaggerProperties;
+	private final Environment environment;
 
 	@Bean
-	public Docket createRestApi() {
+	public Docket createRestApi(MicaSwaggerProperties properties) {
 		// 组名为应用名
-		String appName = micaProperties.getName();
+		String appName = environment.getProperty("spring.application.name");
 		Docket docket = new Docket(DocumentationType.SWAGGER_2)
 			.useDefaultResponseMessages(false)
-			.globalOperationParameters(globalHeaders())
-			.apiInfo(apiInfo(appName)).select()
+			.globalOperationParameters(globalHeaders(properties))
+			.apiInfo(apiInfo(appName, properties)).select()
 			.apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
 			.paths(PathSelectors.any())
 			.build();
 		// 如果开启认证
-		if (swaggerProperties.getAuthorization().getEnabled()) {
-			docket.securitySchemes(Collections.singletonList(apiKey()));
-			docket.securityContexts(Collections.singletonList(securityContext()));
+		if (properties.getAuthorization().getEnabled()) {
+			docket.securitySchemes(Collections.singletonList(apiKey(properties)));
+			docket.securityContexts(Collections.singletonList(securityContext(properties)));
 		}
 		return docket;
 	}
@@ -81,9 +79,9 @@ public class SwaggerConfiguration {
 	 *
 	 * @return {ApiKey}
 	 */
-	private ApiKey apiKey() {
-		return new ApiKey(swaggerProperties.getAuthorization().getName(),
-			swaggerProperties.getAuthorization().getKeyName(),
+	private ApiKey apiKey(MicaSwaggerProperties properties) {
+		return new ApiKey(properties.getAuthorization().getName(),
+			properties.getAuthorization().getKeyName(),
 			ApiKeyVehicle.HEADER.getValue());
 	}
 
@@ -93,10 +91,10 @@ public class SwaggerConfiguration {
 	 *
 	 * @return {SecurityContext}
 	 */
-	private SecurityContext securityContext() {
+	private SecurityContext securityContext(MicaSwaggerProperties properties) {
 		return SecurityContext.builder()
-			.securityReferences(defaultAuth())
-			.forPaths(PathSelectors.regex(swaggerProperties.getAuthorization().getAuthRegex()))
+			.securityReferences(defaultAuth(properties))
+			.forPaths(PathSelectors.regex(properties.getAuthorization().getAuthRegex()))
 			.build();
 	}
 
@@ -105,41 +103,39 @@ public class SwaggerConfiguration {
 	 *
 	 * @return {List<SecurityReference>}
 	 */
-	private List<SecurityReference> defaultAuth() {
+	private List<SecurityReference> defaultAuth(MicaSwaggerProperties properties) {
 		AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
 		AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
 		authorizationScopes[0] = authorizationScope;
 		return Collections.singletonList(SecurityReference.builder()
-			.reference(swaggerProperties.getAuthorization().getName())
+			.reference(properties.getAuthorization().getName())
 			.scopes(authorizationScopes).build());
 	}
 
-	private ApiInfo apiInfo(String appName) {
+	private ApiInfo apiInfo(String appName, MicaSwaggerProperties properties) {
 		String defaultName = appName + " 服务";
-		String title = Optional.ofNullable(swaggerProperties.getTitle())
+		String title = Optional.ofNullable(properties.getTitle())
 			.orElse(defaultName);
-		String description = Optional.ofNullable(swaggerProperties.getDescription())
+		String description = Optional.ofNullable(properties.getDescription())
 			.orElse(defaultName);
 		return new ApiInfoBuilder()
 			.title(title)
 			.description(description)
-			.version(swaggerProperties.getVersion())
-			.contact(new Contact(swaggerProperties.getContactUser(), swaggerProperties.getContactUrl(), swaggerProperties.getContactEmail()))
+			.version(properties.getVersion())
+			.contact(new Contact(properties.getContactUser(), properties.getContactUrl(), properties.getContactEmail()))
 			.build();
 	}
 
-	private List<Parameter> globalHeaders() {
-		List<Parameter> pars = new ArrayList<>();
-		swaggerProperties.getHeaders().forEach(header -> {
-			Parameter parameter = new ParameterBuilder()
-				.name(header.getName())
-				.description(header.getDescription())
-				.modelRef(new ModelRef("string")).parameterType("header")
-				.required(header.isRequired())
-				.build();
-			pars.add(parameter);
-		});
-		return pars;
+	private List<Parameter> globalHeaders(MicaSwaggerProperties properties) {
+		return properties.getHeaders().stream()
+			.map(header ->
+				new ParameterBuilder()
+					.name(header.getName())
+					.description(header.getDescription())
+					.modelRef(new ModelRef("string")).parameterType("header")
+					.required(header.isRequired())
+					.build())
+			.collect(Collectors.toList());
 	}
 
 }
