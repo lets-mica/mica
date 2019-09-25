@@ -50,13 +50,13 @@ public class MicaFeignFallback<T> implements MethodInterceptor {
 		log.error("MicaFeignFallback:[{}.{}] serviceId:[{}] message:[{}]", targetType.getName(), method.getName(), targetName, errorMessage);
 		Class<?> returnType = method.getReturnType();
 		// 集合类型反馈空集合
-		if (List.class.isAssignableFrom(returnType)) {
+		if (List.class == returnType || Collection.class == returnType) {
 			return Collections.emptyList();
 		}
-		if (Set.class.isAssignableFrom(returnType)) {
+		if (Set.class == returnType) {
 			return Collections.emptySet();
 		}
-		if (Map.class.isAssignableFrom(returnType)) {
+		if (Map.class == returnType) {
 			return Collections.emptyMap();
 		}
 		// 暂时不支持 flux，rx，异步等，返回值不是 R，直接返回 null。
@@ -98,4 +98,5 @@ public class MicaFeignFallback<T> implements MethodInterceptor {
 	public int hashCode() {
 		return Objects.hash(targetType);
 	}
+
 }
