@@ -1,0 +1,10 @@
+ext {
+    druidVersion = "1.1.20";
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-actuator-autoconfigure"
+    compileOnly "com.alibaba:druid:${druidVersion}"
+    compileOnly "org.springframework.cloud:spring-cloud-context"
+    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+}
