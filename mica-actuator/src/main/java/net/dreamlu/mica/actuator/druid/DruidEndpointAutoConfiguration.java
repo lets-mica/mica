@@ -30,13 +30,13 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass(JdbcStatManager.class)
-@ConditionalOnEnabledEndpoint(endpoint = DruidWebEndpoint.class)
+@ConditionalOnEnabledEndpoint(endpoint = DruidEndpoint.class)
 public class DruidEndpointAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public DruidWebEndpoint druidWebEndpoint() {
-		return new DruidWebEndpoint();
+	public DruidEndpoint druidWebEndpoint() {
+		return new DruidEndpoint();
 	}
 
 }

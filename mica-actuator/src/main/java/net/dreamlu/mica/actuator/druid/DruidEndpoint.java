@@ -17,8 +17,8 @@
 package net.dreamlu.mica.actuator.druid;
 
 import com.alibaba.druid.stat.JdbcStatManager;
+import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
-import org.springframework.boot.actuate.endpoint.web.annotation.WebEndpoint;
 
 import javax.management.JMException;
 import javax.management.openmbean.TabularData;
@@ -28,8 +28,8 @@ import javax.management.openmbean.TabularData;
  *
  * @author L.cm
  */
-@WebEndpoint(id = "druid")
-public class DruidWebEndpoint {
+@Endpoint(id = "druid")
+public class DruidEndpoint {
 
 	@ReadOperation
 	public TabularData jdbcStat() throws JMException {
