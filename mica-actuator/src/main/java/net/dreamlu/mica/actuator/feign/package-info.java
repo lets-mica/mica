@@ -14,27 +14,9 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.actuator.druid;
+@NonNullApi
+@NonNullFields
+package net.dreamlu.mica.core.yml;
 
-import com.alibaba.druid.stat.JdbcStatManager;
-import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
-import org.springframework.boot.actuate.endpoint.web.annotation.WebEndpoint;
-
-import javax.management.JMException;
-import javax.management.openmbean.TabularData;
-
-/**
- * druid stat 端点
- *
- * @author L.cm
- */
-@WebEndpoint(id = "druid")
-public class DruidWebEndpoint {
-
-	@ReadOperation
-	public TabularData jdbcStat() throws JMException {
-		JdbcStatManager instance = JdbcStatManager.getInstance();
-		return instance.getSqlList();
-	}
-
-}
+import org.springframework.lang.NonNullApi;
+import org.springframework.lang.NonNullFields;

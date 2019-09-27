@@ -14,27 +14,30 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.actuator.druid;
+package net.dreamlu.mica.actuator.feign;
 
-import com.alibaba.druid.stat.JdbcStatManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.web.annotation.WebEndpoint;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.context.ApplicationContext;
 
-import javax.management.JMException;
-import javax.management.openmbean.TabularData;
+import java.util.Map;
 
 /**
- * druid stat 端点
+ * Feign client 端点
  *
  * @author L.cm
  */
-@WebEndpoint(id = "druid")
-public class DruidWebEndpoint {
+@RequiredArgsConstructor
+@WebEndpoint(id = "feign")
+public class FeignClientWebEndpoint {
+	private final ApplicationContext context;
 
 	@ReadOperation
-	public TabularData jdbcStat() throws JMException {
-		JdbcStatManager instance = JdbcStatManager.getInstance();
-		return instance.getSqlList();
+	public Map<String, Object> feignClients() {
+		Map<String, Object> feignClientMap = context.getBeansWithAnnotation(FeignClient.class);
+		return feignClientMap;
 	}
 
 }
