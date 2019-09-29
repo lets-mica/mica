@@ -24,6 +24,7 @@ import net.dreamlu.mica.core.utils.JsonUtil;
 import okhttp3.*;
 import okhttp3.internal.Util;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
@@ -41,12 +42,10 @@ import java.util.Map;
 public class HttpResponse implements ResponseSpec {
 	private final Request request;
 	private final Response response;
-	private final ResponseBody body;
 
 	HttpResponse(final Response response) {
 		this.request = response.request();
 		this.response = response;
-		this.body = ifNullBodyToEmpty(response.body());
 	}
 
 	@Override
@@ -90,14 +89,15 @@ public class HttpResponse implements ResponseSpec {
 		return this.response;
 	}
 
+	@Nonnull
 	@Override
 	public ResponseBody rawBody() {
-		return this.body;
+		return ifNullBodyToEmpty(this.response.body());
 	}
 
 	@Override
 	public String asString() {
-		try {
+		try (ResponseBody body = rawBody()) {
 			return body.string();
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
@@ -106,7 +106,7 @@ public class HttpResponse implements ResponseSpec {
 
 	@Override
 	public byte[] asBytes() {
-		try {
+		try (ResponseBody body = rawBody()) {
 			return body.bytes();
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
@@ -115,7 +115,10 @@ public class HttpResponse implements ResponseSpec {
 
 	@Override
 	public <T> T onStream(CheckedFunction<InputStream, T> function) {
-		try (InputStream input = body.byteStream()) {
+		try (
+			ResponseBody body = rawBody();
+			InputStream input = body.byteStream()
+		) {
 			return function.apply(input);
 		} catch (Throwable e) {
 			throw Exceptions.unchecked(e);
@@ -174,12 +177,12 @@ public class HttpResponse implements ResponseSpec {
 
 	@Override
 	public MediaType contentType() {
-		return body.contentType();
+		return this.rawBody().contentType();
 	}
 
 	@Override
 	public long contentLength() {
-		return body.contentLength();
+		return this.rawBody().contentLength();
 	}
 
 	@Override
@@ -189,5 +192,10 @@ public class HttpResponse implements ResponseSpec {
 
 	private static ResponseBody ifNullBodyToEmpty(@Nullable ResponseBody body) {
 		return body == null ? Util.EMPTY_RESPONSE : body;
+	}
+
+	@Override
+	public void close() {
+		Util.closeQuietly(this.rawBody());
 	}
 }

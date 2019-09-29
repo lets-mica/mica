@@ -343,4 +343,12 @@ public interface ResponseSpec {
 		consumer.accept(this.rawBody());
 		return this;
 	}
+
+	/**
+	 * 关闭 ResponseBody
+	 * @since 1.2.0
+	 */
+	default void close() {
+		// close ResponseBody
+	}
 }

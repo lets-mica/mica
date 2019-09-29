@@ -50,9 +50,13 @@ public class RetryInterceptor implements Interceptor {
 			}
 			// copy 一份 body
 			ResponseBody body = response.peekBody(Long.MAX_VALUE);
-			boolean tested = respPredicate.test(new HttpResponse(response));
-			if (tested) {
-				throw new IOException("Http Retry ResponsePredicate test Failure.");
+			HttpResponse httpResponse = new HttpResponse(response);
+			try {
+				if (respPredicate.test(httpResponse)) {
+					throw new IOException("Http Retry ResponsePredicate test Failure.");
+				}
+			} finally {
+				httpResponse.close();
 			}
 			return response.newBuilder().body(body).build();
 		});
