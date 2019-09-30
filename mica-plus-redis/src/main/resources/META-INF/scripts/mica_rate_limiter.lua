@@ -8,8 +8,7 @@ local ttl = tonumber(ARGV[2])
 -- 考虑主从策略和脚本回放机制，这个time由客户端获取传入
 local now = tonumber(ARGV[3])
 -- 已经过期的时间点
-local expired = now - (ttl * 1000)
-
+local expired = now - ttl
 -- 清除过期的数据,移除指定分数（score）区间内的所有成员
 redis.call('zremrangebyscore', key, 0, expired)
 -- 获取当前流量大小
