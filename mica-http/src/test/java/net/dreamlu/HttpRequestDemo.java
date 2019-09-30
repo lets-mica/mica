@@ -73,15 +73,10 @@ public class HttpRequestDemo {
 			.onFailed((request, e) -> {    // 异常时的处理
 				e.printStackTrace();
 			})
-			.onResponse(responseSpec -> {  // 消费响应， 注意：响应的流只能读一次
-				int httpCode = responseSpec.code();
-
-			})
 			.onSuccessful(responseSpec -> { // 消费响应成功 http code in [200..300)
 				// 注意：响应结果流只能读一次
 				JsonNode jsonNode = responseSpec.asJsonNode();
-			})
-			.execute(); // 异步最后发起请求
+			});
 	}
 
 	public static void main(String[] args) {
@@ -96,7 +91,6 @@ public class HttpRequestDemo {
 			.query("x", 1)
 			.query("abd", Base64Util.encode("123&$#%"))
 			.queryEncoded("abc", Base64Util.encode("123&$#%"))
-			.execute()
 			.onFailed(((request, e) -> {
 				e.printStackTrace();
 			}))
@@ -108,29 +102,23 @@ public class HttpRequestDemo {
 			.bodyString("Important stuff")
 			.formBuilder()
 			.add("a", "b")
-			.execute()
 			.onSuccessOpt(ResponseSpec::asString);
 
 		// 同步，成功时消费（处理） response
 		HttpRequest.post("https://www.baidu.com/some-form")
 			.addHeader("X-Custom-header", "stuff")
-			.execute()
-			.onSuccessful(responseSpec -> {
-				String text = responseSpec.asString();
-				System.out.println(text);
-			})
 			.onFailed((request, e) -> {
 				e.printStackTrace();
-			});
+			})
+			.onSuccessful(ResponseSpec::asString);
 
 		// async，异步执行结果，失败时打印堆栈
 		HttpRequest.get("https://www.baidu.com/some-form")
 			.async()
-			.onSuccess(System.out::println)
 			.onFailed((request, e) -> {
 				e.printStackTrace();
 			})
-			.execute();
+			.onSuccessful(System.out::println);
 	}
 
 }

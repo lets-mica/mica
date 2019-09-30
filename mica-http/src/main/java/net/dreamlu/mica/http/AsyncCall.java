@@ -43,14 +43,14 @@ public class AsyncCall {
 		this.failedBiConsumer = DEFAULT_FAIL_CONSUMER;
 	}
 
-	public AsyncCall onSuccess(Consumer<ResponseSpec> consumer) {
+	public void onSuccessful(Consumer<ResponseSpec> consumer) {
 		this.successConsumer = consumer;
-		return this;
+		this.execute();
 	}
 
-	public AsyncCall onResponse(Consumer<ResponseSpec> consumer) {
+	public void onResponse(Consumer<ResponseSpec> consumer) {
 		this.responseConsumer = consumer;
-		return this;
+		this.execute();
 	}
 
 	public AsyncCall onFailed(BiConsumer<Request, IOException> biConsumer) {
@@ -58,7 +58,7 @@ public class AsyncCall {
 		return this;
 	}
 
-	public void execute() {
+	private void execute() {
 		call.enqueue(new AsyncCallback(this));
 	}
 
@@ -66,7 +66,7 @@ public class AsyncCall {
 		responseConsumer.accept(httpResponse);
 	}
 
-	void onSuccess(HttpResponse httpResponse) {
+	void onSuccessful(HttpResponse httpResponse) {
 		successConsumer.accept(httpResponse);
 	}
 

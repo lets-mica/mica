@@ -46,7 +46,7 @@ public class AsyncCallback implements Callback {
 		try (HttpResponse httpResponse = new HttpResponse(response)) {
 			asyncCall.onResponse(httpResponse);
 			if (response.isSuccessful()) {
-				asyncCall.onSuccess(httpResponse);
+				asyncCall.onSuccessful(httpResponse);
 			} else {
 				asyncCall.onFailure(call.request(), new IOException(httpResponse.message()));
 			}

@@ -18,11 +18,15 @@ package net.dreamlu.mica.http;
 
 import okhttp3.Headers;
 import okhttp3.MultipartBody;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 
 import javax.annotation.Nullable;
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 /**
@@ -95,6 +99,23 @@ public class MultipartFormBuilder {
 	@Nullable
 	public <R> R onSuccess(Function<ResponseSpec, R> func) {
 		return this.build().onSuccess(func);
+	}
+
+	@Nullable
+	public <R> R onSuccessful(Function<ResponseSpec, R> func) {
+		return this.build().onSuccessful(func);
+	}
+
+	public <R> Optional<R> onSuccessOpt(Function<ResponseSpec, R> func) {
+		return this.build().onSuccessOpt(func);
+	}
+
+	public <R> Optional<R> onSuccessfulOpt(Function<ResponseSpec, R> func) {
+		return this.build().onSuccessfulOpt(func);
+	}
+
+	public HttpRequest onFailed(BiConsumer<Request, IOException> failConsumer) {
+		return this.build().onFailed(failConsumer);
 	}
 
 	public AsyncCall async() {

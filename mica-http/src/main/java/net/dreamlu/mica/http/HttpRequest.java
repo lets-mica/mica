@@ -40,6 +40,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -97,6 +98,7 @@ public class HttpRequest {
 	private SSLSocketFactory sslSocketFactory;
 	@Nullable
 	private X509TrustManager trustManager;
+	private BiConsumer<Request, IOException> failedBiConsumer = (r, e) -> {};
 
 	public static HttpRequest get(final String url) {
 		return new HttpRequest(new Request.Builder(), url, Method.GET);
@@ -291,9 +293,38 @@ public class HttpRequest {
 		Call call = internalCall(httpClient);
 		try (HttpResponse response = new HttpResponse(call.execute())) {
 			return func.apply(response);
-		} catch (IOException ignore) {
+		} catch (IOException e) {
+			failedBiConsumer.accept(call.request(), e);
 			return null;
 		}
+	}
+
+	@Nullable
+	public <R> R onSuccessful(Function<ResponseSpec, R> func) {
+		Call call = internalCall(httpClient);
+		try (HttpResponse response = new HttpResponse(call.execute())) {
+			if (response.isOk()) {
+				return func.apply(response);
+			} else {
+				failedBiConsumer.accept(call.request(), new IOException(response.toString()));
+			}
+		} catch (IOException e) {
+			failedBiConsumer.accept(call.request(), e);
+		}
+		return null;
+	}
+
+	public <R> Optional<R> onSuccessOpt(Function<ResponseSpec, R> func) {
+		return Optional.ofNullable(this.onSuccess(func));
+	}
+
+	public <R> Optional<R> onSuccessfulOpt(Function<ResponseSpec, R> func) {
+		return Optional.ofNullable(this.onSuccessful(func));
+	}
+
+	public HttpRequest onFailed(BiConsumer<Request, IOException> failConsumer) {
+		this.failedBiConsumer = failConsumer;
+		return this;
 	}
 
 	public AsyncCall async() {
