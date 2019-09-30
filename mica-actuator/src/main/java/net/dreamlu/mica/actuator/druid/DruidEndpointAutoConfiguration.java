@@ -35,7 +35,7 @@ public class DruidEndpointAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public DruidEndpoint druidWebEndpoint() {
+	public DruidEndpoint druidEndpoint() {
 		return new DruidEndpoint();
 	}
 
