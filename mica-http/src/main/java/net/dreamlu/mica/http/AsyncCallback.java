@@ -43,10 +43,13 @@ public class AsyncCallback implements Callback {
 
 	@Override
 	public void onResponse(Call call, Response response) throws IOException {
-		HttpResponse httpResponse = new HttpResponse(response);
-		asyncCall.onResponse(httpResponse);
-		if (response.isSuccessful()) {
-			asyncCall.onSuccess(httpResponse);
+		try (HttpResponse httpResponse = new HttpResponse(response)) {
+			asyncCall.onResponse(httpResponse);
+			if (response.isSuccessful()) {
+				asyncCall.onSuccess(httpResponse);
+			} else {
+				asyncCall.onFailure(call.request(), new IOException(httpResponse.message()));
+			}
 		}
 	}
 

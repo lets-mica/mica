@@ -51,8 +51,8 @@ public class HttpRequestDemo {
 			.queryEncoded("name", "encodedValue")
 			.formBuilder()    // 表单构造器，同类 multipartFormBuilder 文件上传表单
 			.add("id", 123123) // 表单参数
-			.execute()                      // 发起请求
-			.asJsonNode();                  // 结果集转换，注：如果网络异常等会直接抛出异常。
+			.onResponse(ResponseSpec::asJsonNode);// 发起请求
+		// 结果集转换，注：如果网络异常等会直接抛出异常。
 		// 同类的方法有 asString、asBytes、asStream
 		// json 类响应：asJsonNode、asObject、asList、asMap，采用 jackson 处理
 		// xml、html响应：asDocument，采用的 jsoup 处理
@@ -60,15 +60,10 @@ public class HttpRequestDemo {
 
 		// 同步
 		String html = HttpRequest.post("https://www.baidu.com")
-			.execute()
-			.onFailed((request, e) -> {// 网络等异常情况的消费处理，可无
-				e.printStackTrace();
-			})
-			.onResponse(ResponseSpec::asString);// 处理响应，有网络异常等直接返回 null
+			.onSuccess(ResponseSpec::asString);// 处理响应，有网络异常等直接返回 null
 
 		// 同步
 		String text = HttpRequest.patch("https://www.baidu.com")
-			.execute()
 			.onSuccess(ResponseSpec::asString);
 		// onSuccess http code in [200..300) 处理响应，有网络异常等直接返回 null
 
@@ -128,15 +123,10 @@ public class HttpRequestDemo {
 				e.printStackTrace();
 			});
 
-		// 同步，异常时直接抛出
-		HttpRequest.get("https://www.baidu.com/some-form")
-			.execute()
-			.asString();
-
 		// async，异步执行结果，失败时打印堆栈
 		HttpRequest.get("https://www.baidu.com/some-form")
 			.async()
-			.onSuccessful(System.out::println)
+			.onSuccess(System.out::println)
 			.onFailed((request, e) -> {
 				e.printStackTrace();
 			})

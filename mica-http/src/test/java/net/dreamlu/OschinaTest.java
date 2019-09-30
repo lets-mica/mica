@@ -9,7 +9,6 @@ public class OschinaTest {
 	public static void main(String[] args) {
 		// 同步，异常返回 null
 		Oschina oschina = HttpRequest.get("https://www.oschina.net")
-			.execute()
 			.onSuccess(responseSpec -> responseSpec.asDomValue(Oschina.class));
 		if (oschina == null) {
 			return;

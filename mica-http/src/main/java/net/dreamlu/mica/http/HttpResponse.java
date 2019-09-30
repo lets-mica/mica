@@ -18,14 +18,13 @@ package net.dreamlu.mica.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import net.dreamlu.mica.core.function.CheckedFunction;
 import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import okhttp3.*;
 import okhttp3.internal.Util;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,13 +38,15 @@ import java.util.Map;
  *
  * @author L.cm
  */
-public class HttpResponse implements ResponseSpec {
+public class HttpResponse implements ResponseSpec, Closeable {
 	private final Request request;
 	private final Response response;
+	private final ResponseBody body;
 
 	HttpResponse(final Response response) {
 		this.request = response.request();
 		this.response = response;
+		this.body = ifNullBodyToEmpty(response.body());
 	}
 
 	@Override
@@ -75,8 +76,7 @@ public class HttpResponse implements ResponseSpec {
 
 	@Override
 	public List<Cookie> cookies() {
-		HttpUrl httpUrl = response.request().url();
-		return Cookie.parseAll(httpUrl, this.headers());
+		return Cookie.parseAll(request.url(), this.headers());
 	}
 
 	@Override
@@ -89,15 +89,14 @@ public class HttpResponse implements ResponseSpec {
 		return this.response;
 	}
 
-	@Nonnull
 	@Override
 	public ResponseBody rawBody() {
-		return ifNullBodyToEmpty(this.response.body());
+		return this.body;
 	}
 
 	@Override
 	public String asString() {
-		try (ResponseBody body = rawBody()) {
+		try {
 			return body.string();
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
@@ -106,7 +105,7 @@ public class HttpResponse implements ResponseSpec {
 
 	@Override
 	public byte[] asBytes() {
-		try (ResponseBody body = rawBody()) {
+		try {
 			return body.bytes();
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
@@ -114,15 +113,8 @@ public class HttpResponse implements ResponseSpec {
 	}
 
 	@Override
-	public <T> T onStream(CheckedFunction<InputStream, T> function) {
-		try (
-			ResponseBody body = rawBody();
-			InputStream input = body.byteStream()
-		) {
-			return function.apply(input);
-		} catch (Throwable e) {
-			throw Exceptions.unchecked(e);
-		}
+	public InputStream asStream() {
+		return body.byteStream();
 	}
 
 	@Override
@@ -157,12 +149,12 @@ public class HttpResponse implements ResponseSpec {
 
 	@Override
 	public <T> T asDomValue(Class<T> valueType) {
-		return this.onStream(input -> DomMapper.readValue(input, valueType));
+		return DomMapper.readValue(this.asStream(), valueType);
 	}
 
 	@Override
 	public <T> List<T> asDomList(Class<T> valueType) {
-		return this.onStream(input -> DomMapper.readList(input, valueType));
+		return DomMapper.readList(this.asStream(), valueType);
 	}
 
 	@Override
@@ -172,17 +164,21 @@ public class HttpResponse implements ResponseSpec {
 
 	@Override
 	public void toFile(Path path) {
-		this.onStream(input -> Files.copy(input, path));
+		try {
+			Files.copy(this.asStream(), path);
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
 	}
 
 	@Override
 	public MediaType contentType() {
-		return this.rawBody().contentType();
+		return body.contentType();
 	}
 
 	@Override
 	public long contentLength() {
-		return this.rawBody().contentLength();
+		return body.contentLength();
 	}
 
 	@Override
@@ -195,7 +191,7 @@ public class HttpResponse implements ResponseSpec {
 	}
 
 	@Override
-	public void close() {
-		Util.closeQuietly(this.rawBody());
+	public void close() throws IOException {
+		Util.closeQuietly(this.body);
 	}
 }

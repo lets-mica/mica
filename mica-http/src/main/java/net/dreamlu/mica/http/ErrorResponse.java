@@ -19,7 +19,6 @@ package net.dreamlu.mica.http;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
-import net.dreamlu.mica.core.function.CheckedFunction;
 import net.dreamlu.mica.core.utils.Exceptions;
 import okhttp3.*;
 
@@ -29,7 +28,6 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 /**
  * 异常时的 Response 响应体
@@ -57,12 +55,6 @@ public class ErrorResponse implements ResponseSpec {
 	}
 
 	@Override
-	public ResponseSpec onFailed(BiConsumer<Request, IOException> consumer) {
-		consumer.accept(request, exception);
-		return this;
-	}
-
-	@Override
 	public Headers headers() {
 		throw Exceptions.unchecked(exception);
 	}
@@ -83,7 +75,7 @@ public class ErrorResponse implements ResponseSpec {
 	}
 
 	@Override
-	public <T> T onStream(CheckedFunction<InputStream, T> function) {
+	public InputStream asStream() {
 		throw Exceptions.unchecked(exception);
 	}
 

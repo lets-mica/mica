@@ -20,6 +20,7 @@ import okhttp3.FormBody;
 
 import javax.annotation.Nullable;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * 表单构造器
@@ -58,8 +59,13 @@ public class FormBuilder {
 		return this.request;
 	}
 
-	public ResponseSpec execute() {
-		return this.build().execute();
+	public <R> R onResponse(Function<ResponseSpec, R> func) {
+		return this.build().onResponse(func);
+	}
+
+	@Nullable
+	public <R> R onSuccess(Function<ResponseSpec, R> func) {
+		return this.build().onSuccess(func);
 	}
 
 	public AsyncCall async() {

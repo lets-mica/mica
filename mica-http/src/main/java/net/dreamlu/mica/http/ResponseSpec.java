@@ -18,20 +18,15 @@ package net.dreamlu.mica.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import net.dreamlu.mica.core.function.CheckedFunction;
 import okhttp3.*;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * 相应接口
@@ -69,68 +64,6 @@ public interface ResponseSpec {
 	 * @return is Redirect
 	 */
 	boolean isRedirect();
-
-	/**
-	 * 有相应时的处理
-	 *
-	 * @param function Function
-	 * @param <T>      泛型
-	 * @return 对象
-	 */
-	default <T> T onResponse(Function<ResponseSpec, T> function) {
-		return function.apply(this);
-	}
-
-	/**
-	 * http code [200,300) 的处理
-	 *
-	 * @param consumer Consumer
-	 * @return ResponseSpec
-	 */
-	default ResponseSpec onSuccessful(Consumer<ResponseSpec> consumer) {
-		if (this.isOk()) {
-			consumer.accept(this);
-		}
-		return this;
-	}
-
-	/**
-	 * http code [200,300) 的处理
-	 *
-	 * @param function Function
-	 * @param <T>      泛型
-	 * @return 对象
-	 */
-	@Nullable
-	default <T> T onSuccess(Function<ResponseSpec, T> function) {
-		if (this.isOk()) {
-			return function.apply(this);
-		}
-		return null;
-	}
-
-	/**
-	 * http code [200,300) 的处理
-	 *
-	 * @param function Function
-	 * @return Optional
-	 */
-	default <T> Optional<T> onSuccessOpt(Function<ResponseSpec, T> function) {
-		if (this.isOk()) {
-			return Optional.ofNullable(function.apply(this));
-		}
-		return Optional.empty();
-	}
-
-	/**
-	 * 失败时的处理
-	 *
-	 * @param consumer BiConsumer
-	 * @return ResponseSpec
-	 */
-	default ResponseSpec onFailed(BiConsumer<Request, IOException> consumer) {
-		return this;
-	}
 
 	/**
 	 * Returns the Headers.
@@ -185,10 +118,9 @@ public interface ResponseSpec {
 	/**
 	 * Returns body to InputStream.
 	 *
-	 * @param function CheckedFunction
 	 * @return InputStream
 	 */
-	<T> T onStream(CheckedFunction<InputStream, T> function);
+	InputStream asStream();
 
 	/**
 	 * Returns body to JsonNode.
@@ -344,11 +276,4 @@ public interface ResponseSpec {
 		return this;
 	}
 
-	/**
-	 * 关闭 ResponseBody
-	 * @since 1.2.0
-	 */
-	default void close() {
-		// close ResponseBody
-	}
 }

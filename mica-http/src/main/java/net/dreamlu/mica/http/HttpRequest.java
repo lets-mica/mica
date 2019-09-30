@@ -41,6 +41,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -274,12 +277,22 @@ public class HttpRequest {
 		return builder.build().newCall(request);
 	}
 
-	public ResponseSpec execute() {
+	public <R> R onResponse(Function<ResponseSpec, R> func) {
 		Call call = internalCall(httpClient);
-		try {
-			return new HttpResponse(call.execute());
+		try (HttpResponse response = new HttpResponse(call.execute())) {
+			return func.apply(response);
 		} catch (IOException e) {
-			return new ErrorResponse(call.request(), e);
+			return func.apply(new ErrorResponse(call.request(), e));
+		}
+	}
+
+	@Nullable
+	public <R> R onSuccess(Function<ResponseSpec, R> func) {
+		Call call = internalCall(httpClient);
+		try (HttpResponse response = new HttpResponse(call.execute())) {
+			return func.apply(response);
+		} catch (IOException ignore) {
+			return null;
 		}
 	}
 

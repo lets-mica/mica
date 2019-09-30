@@ -43,7 +43,7 @@ public class AsyncCall {
 		this.failedBiConsumer = DEFAULT_FAIL_CONSUMER;
 	}
 
-	public AsyncCall onSuccessful(Consumer<ResponseSpec> consumer) {
+	public AsyncCall onSuccess(Consumer<ResponseSpec> consumer) {
 		this.successConsumer = consumer;
 		return this;
 	}
