@@ -31,6 +31,7 @@ public class HttpRequestProxyTest {
 			.log()
 			.retry()
 			.proxySelector(new MicaProxySelector())
+			.execute()
 			.onResponse(ResponseSpec::asString);
 	}
 }

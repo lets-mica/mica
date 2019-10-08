@@ -51,7 +51,8 @@ public class HttpRequestDemo {
 			.queryEncoded("name", "encodedValue")
 			.formBuilder()    // 表单构造器，同类 multipartFormBuilder 文件上传表单
 			.add("id", 123123) // 表单参数
-			.onResponse(ResponseSpec::asJsonNode);// 发起请求
+			.execute()// 发起请求
+			.onResponse(ResponseSpec::asJsonNode);
 		// 结果集转换，注：如果网络异常等会直接抛出异常。
 		// 同类的方法有 asString、asBytes、asStream
 		// json 类响应：asJsonNode、asObject、asList、asMap，采用 jackson 处理
@@ -60,10 +61,12 @@ public class HttpRequestDemo {
 
 		// 同步
 		String html = HttpRequest.post("https://www.baidu.com")
+			.execute()
 			.onSuccess(ResponseSpec::asString);// 处理响应，有网络异常等直接返回 null
 
 		// 同步
 		String text = HttpRequest.patch("https://www.baidu.com")
+			.execute()
 			.onSuccess(ResponseSpec::asString);
 		// onSuccess http code in [200..300) 处理响应，有网络异常等直接返回 null
 
@@ -91,6 +94,7 @@ public class HttpRequestDemo {
 			.query("x", 1)
 			.query("abd", Base64Util.encode("123&$#%"))
 			.queryEncoded("abc", Base64Util.encode("123&$#%"))
+			.execute()
 			.onFailed(((request, e) -> {
 				e.printStackTrace();
 			}))
@@ -102,11 +106,13 @@ public class HttpRequestDemo {
 			.bodyString("Important stuff")
 			.formBuilder()
 			.add("a", "b")
+			.execute()
 			.onSuccessOpt(ResponseSpec::asString);
 
 		// 同步，成功时消费（处理） response
 		HttpRequest.post("https://www.baidu.com/some-form")
 			.addHeader("X-Custom-header", "stuff")
+			.execute()
 			.onFailed((request, e) -> {
 				e.printStackTrace();
 			})

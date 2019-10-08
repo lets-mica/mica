@@ -17,14 +17,9 @@
 package net.dreamlu.mica.http;
 
 import okhttp3.FormBody;
-import okhttp3.Request;
 
 import javax.annotation.Nullable;
-import java.io.IOException;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 /**
  * 表单构造器
@@ -63,30 +58,8 @@ public class FormBuilder {
 		return this.request;
 	}
 
-	public <R> R onResponse(Function<ResponseSpec, R> func) {
-		return this.build().onResponse(func);
-	}
-
-	@Nullable
-	public <R> R onSuccess(Function<ResponseSpec, R> func) {
-		return this.build().onSuccess(func);
-	}
-
-	@Nullable
-	public <R> R onSuccessful(Function<ResponseSpec, R> func) {
-		return this.build().onSuccessful(func);
-	}
-
-	public <R> Optional<R> onSuccessOpt(Function<ResponseSpec, R> func) {
-		return this.build().onSuccessOpt(func);
-	}
-
-	public <R> Optional<R> onSuccessfulOpt(Function<ResponseSpec, R> func) {
-		return this.build().onSuccessfulOpt(func);
-	}
-
-	public HttpRequest onFailed(BiConsumer<Request, IOException> failConsumer) {
-		return this.build().onFailed(failConsumer);
+	public Exchange execute() {
+		return this.build().execute();
 	}
 
 	public AsyncCall async() {

@@ -29,7 +29,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 
 import javax.annotation.Nullable;
 import javax.net.ssl.*;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
@@ -40,11 +39,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -98,7 +93,6 @@ public class HttpRequest {
 	private SSLSocketFactory sslSocketFactory;
 	@Nullable
 	private X509TrustManager trustManager;
-	private BiConsumer<Request, IOException> failedBiConsumer = (r, e) -> {};
 
 	public static HttpRequest get(final String url) {
 		return new HttpRequest(new Request.Builder(), url, Method.GET);
@@ -279,57 +273,12 @@ public class HttpRequest {
 		return builder.build().newCall(request);
 	}
 
-	public <R> R onResponse(Function<ResponseSpec, R> func) {
-		Call call = internalCall(httpClient);
-		try (HttpResponse response = new HttpResponse(call.execute())) {
-			return func.apply(response);
-		} catch (IOException e) {
-			return func.apply(new ErrorResponse(call.request(), e));
-		}
-	}
-
-	@Nullable
-	public <R> R onSuccess(Function<ResponseSpec, R> func) {
-		Call call = internalCall(httpClient);
-		try (HttpResponse response = new HttpResponse(call.execute())) {
-			return func.apply(response);
-		} catch (IOException e) {
-			failedBiConsumer.accept(call.request(), e);
-			return null;
-		}
-	}
-
-	@Nullable
-	public <R> R onSuccessful(Function<ResponseSpec, R> func) {
-		Call call = internalCall(httpClient);
-		try (HttpResponse response = new HttpResponse(call.execute())) {
-			if (response.isOk()) {
-				return func.apply(response);
-			} else {
-				failedBiConsumer.accept(call.request(), new IOException(response.toString()));
-			}
-		} catch (IOException e) {
-			failedBiConsumer.accept(call.request(), e);
-		}
-		return null;
-	}
-
-	public <R> Optional<R> onSuccessOpt(Function<ResponseSpec, R> func) {
-		return Optional.ofNullable(this.onSuccess(func));
-	}
-
-	public <R> Optional<R> onSuccessfulOpt(Function<ResponseSpec, R> func) {
-		return Optional.ofNullable(this.onSuccessful(func));
-	}
-
-	public HttpRequest onFailed(BiConsumer<Request, IOException> failConsumer) {
-		this.failedBiConsumer = failConsumer;
-		return this;
+	public Exchange execute() {
+		return new Exchange(internalCall(httpClient));
 	}
 
 	public AsyncCall async() {
-		Call call = internalCall(httpClient);
-		return new AsyncCall(call);
+		return new AsyncCall(internalCall(httpClient));
 	}
 
 	public HttpRequest baseAuth(String userName, String password) {
