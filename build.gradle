@@ -1,6 +1,6 @@
 ext {
     javaVersion = JavaVersion.VERSION_1_8
-    springBootVersion = "2.1.8.RELEASE"
+    springBootVersion = "2.1.9.RELEASE"
     springCloudVersion = "Greenwich.SR3"
     springCloudAlibabaVersion = "2.1.0.RELEASE"
     micaAutoVersion = "1.1.0"
