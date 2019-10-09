@@ -158,14 +158,16 @@ public class HttpResponse implements ResponseSpec, Closeable {
 	}
 
 	@Override
-	public void toFile(File file) {
+	public File toFile(File file) {
 		toFile(file.toPath());
+		return file;
 	}
 
 	@Override
-	public void toFile(Path path) {
+	public Path toFile(Path path) {
 		try {
 			Files.copy(this.asStream(), path);
+			return path;
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}

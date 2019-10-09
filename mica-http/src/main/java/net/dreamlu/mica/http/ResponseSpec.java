@@ -195,14 +195,14 @@ public interface ResponseSpec {
 	 *
 	 * @param file File
 	 */
-	void toFile(File file);
+	File toFile(File file);
 
 	/**
 	 * toFile.
 	 *
 	 * @param path Path
 	 */
-	void toFile(Path path);
+	Path toFile(Path path);
 
 	/**
 	 * Returns contentType.

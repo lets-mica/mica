@@ -49,12 +49,11 @@ HttpRequest.get("https://www.baidu.com")
     .queryEncoded("name", "encodedValue")
     .formBuilder()    // 表单构造器，同类 multipartFormBuilder 文件上传表单
     .add("id", 123123) // 表单参数
-    .execute()// 发起请求
-    .onResponse(ResponseSpec::asJsonNode);
-// 结果集转换，注：如果网络异常等会直接抛出异常。
-// 同类的方法有 asString、asBytes、asStream
-// json 类响应：asJsonNode、asObject、asList、asMap，采用 jackson 处理
-// xml、html响应：asDocument，采用的 jsoup 处理
+    .execute()                      // 发起请求
+    .asJsonNode();                  // 结果集转换，注：如果网络异常等会直接抛出异常。
+// 同类的方法有 asString、asBytes
+// json 类响应：asJsonNode、asValue、asList、asMap，采用 jackson 处理
+// xml、html响应：asDomValue、asDomList 采用的 jsoup 处理，需要添加 Jsoup 依赖。
 // file 文件：toFile
 
 // 同步
@@ -70,11 +69,6 @@ Document document = HttpRequest.patch("https://www.baidu.com")
     .execute()
     .onSuccess(DomMapper::asDocument);
 // onSuccess http code in [200..300) 处理响应，有网络异常等直接返回 null
-
-// 基于 CompletableFuture 的异步
-Document document = HttpRequest.patch("https://www.baidu.com")
-    .executeAsync()
-    .onSuccess(DomMapper::asDocument);
 
 // 发送异步请求
 HttpRequest.delete("https://www.baidu.com")
@@ -168,7 +162,7 @@ private String getUserEmail(String accessToken) {
             .addHeader("Connection", "Keep-Alive")
             .addHeader("Authorization", "Bearer " + accessToken)
             .execute()
-            .onResponse(ResponseSpec::asJsonNode)
+            .asJsonNode()
             .at("/elements/0/handle~0/emailAddress")
             .asText();
 }
@@ -227,7 +221,7 @@ HttpRequest.post("https://www.baidu.com/some-form")
 // 同步，异常时直接抛出
 HttpRequest.get("https://www.baidu.com/some-form")
     .execute()
-    .onSuccess(ResponseSpec::asString);
+    .asString();
 
 // async，异步执行结果，失败时打印堆栈
 HttpRequest.get("https://www.baidu.com/some-form")

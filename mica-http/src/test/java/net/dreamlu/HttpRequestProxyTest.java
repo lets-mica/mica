@@ -17,7 +17,6 @@
 package net.dreamlu;
 
 import net.dreamlu.mica.http.HttpRequest;
-import net.dreamlu.mica.http.ResponseSpec;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -32,6 +31,6 @@ public class HttpRequestProxyTest {
 			.retry()
 			.proxySelector(new MicaProxySelector())
 			.execute()
-			.onResponse(ResponseSpec::asString);
+			.asString();
 	}
 }

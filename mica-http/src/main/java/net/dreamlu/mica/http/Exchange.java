@@ -16,13 +16,19 @@
 
 package net.dreamlu.mica.http;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.Exceptions;
 import okhttp3.Call;
 import okhttp3.Request;
 
 import javax.annotation.Nullable;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -34,8 +40,7 @@ import java.util.function.Function;
  */
 @RequiredArgsConstructor
 public class Exchange {
-	private BiConsumer<Request, IOException> failedBiConsumer = (r, e) -> {
-	};
+	private BiConsumer<Request, IOException> failedBiConsumer = (r, e) -> {};
 	private final Call call;
 
 	public Exchange onFailed(BiConsumer<Request, IOException> failConsumer) {
@@ -81,6 +86,124 @@ public class Exchange {
 
 	public <R> Optional<R> onSuccessfulOpt(Function<ResponseSpec, R> func) {
 		return Optional.ofNullable(this.onSuccessful(func));
+	}
+
+	/**
+	 * Returns body String.
+	 *
+	 * @return body String
+	 */
+	public String asString() {
+		return onResponse(ResponseSpec::asString);
+	}
+
+	/**
+	 * Returns body to byte arrays.
+	 *
+	 * @return byte arrays
+	 */
+	public byte[] asBytes() {
+		return onResponse(ResponseSpec::asBytes);
+	}
+
+	/**
+	 * Returns body to JsonNode.
+	 *
+	 * @return JsonNode
+	 */
+	public JsonNode asJsonNode() {
+		return onResponse(ResponseSpec::asJsonNode);
+	}
+
+	/**
+	 * Returns body to Object.
+	 *
+	 * @param valueType value value type
+	 * @return Object
+	 */
+	public <T> T asValue(Class<T> valueType) {
+		return onResponse(responseSpec -> responseSpec.asValue(valueType));
+	}
+
+	/**
+	 * Returns body to Object.
+	 *
+	 * @param typeReference value Type Reference
+	 * @return Object
+	 */
+	public <T> T asValue(TypeReference<?> typeReference) {
+		return onResponse(responseSpec -> responseSpec.asValue(typeReference));
+	}
+
+	/**
+	 * Returns body to List.
+	 *
+	 * @param valueType value type
+	 * @return List
+	 */
+	public <T> List<T> asList(Class<T> valueType) {
+		return onResponse(responseSpec -> responseSpec.asList(valueType));
+	}
+
+	/**
+	 * Returns body to Map.
+	 *
+	 * @param keyClass  key type
+	 * @param valueType value type
+	 * @return Map
+	 */
+	public <K, V> Map<K, V> asMap(Class<?> keyClass, Class<?> valueType) {
+		return onResponse(responseSpec -> responseSpec.asMap(keyClass, valueType));
+	}
+
+	/**
+	 * Returns body to Map.
+	 *
+	 * @param valueType value 类型
+	 * @return Map
+	 */
+	public <V> Map<String, V> asMap(Class<?> valueType) {
+		return onResponse(responseSpec -> responseSpec.asMap(valueType));
+	}
+
+	/**
+	 * 将 xml、heml 转成对象
+	 *
+	 * @param valueType 对象类
+	 * @param <T>       泛型
+	 * @return 对象
+	 */
+	public <T> T asDomValue(Class<T> valueType) {
+		return onResponse(responseSpec -> responseSpec.asDomValue(valueType));
+	}
+
+	/**
+	 * 将 xml、heml 转成对象
+	 *
+	 * @param valueType 对象类
+	 * @param <T>       泛型
+	 * @return 对象集合
+	 */
+	public <T> List<T> asDomList(Class<T> valueType) {
+		return onResponse(responseSpec -> responseSpec.asDomList(valueType));
+	}
+
+	/**
+	 * toFile.
+	 *
+	 * @param file File
+	 */
+	public File toFile(File file) {
+		return onResponse(responseSpec -> responseSpec.toFile(file));
+	}
+
+	/**
+	 * toFile.
+	 *
+	 * @param path Path
+	 */
+	public Path toFile(Path path) {
+		return onResponse(responseSpec -> responseSpec.toFile(path));
 	}
 
 }

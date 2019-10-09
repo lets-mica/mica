@@ -52,9 +52,9 @@ public class HttpRequestDemo {
 			.formBuilder()    // 表单构造器，同类 multipartFormBuilder 文件上传表单
 			.add("id", 123123) // 表单参数
 			.execute()// 发起请求
-			.onResponse(ResponseSpec::asJsonNode);
+			.asJsonNode();
 		// 结果集转换，注：如果网络异常等会直接抛出异常。
-		// 同类的方法有 asString、asBytes、asStream
+		// 同类的方法有 asString、asBytes
 		// json 类响应：asJsonNode、asObject、asList、asMap，采用 jackson 处理
 		// xml、html响应：asDocument，采用的 jsoup 处理
 		// file 文件：toFile
