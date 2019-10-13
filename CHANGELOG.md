@@ -1,6 +1,14 @@
 # 变更记录
 
 ## 发行版本
+### v1.2.0 - 2019-10-13
+- :zap: lettuce linux use epoll
+- :sparkles: mica-http close ResponseBody。
+- :sparkles: mica-actuator Feign client 信息端点。
+- :zap: swagger 配置全部移到 swagger 扩展中。
+- :zap: 优化 feign auto fallback 集合类型反馈空集合。
+- :tada: 添加 mica-actuator 模块，为 mica-admin 做铺垫。
+
 ### v1.1.9 - 2019-09-22
 - :zap: 添加 mybatis plus 的扩展 mica-plus-mybatis 组件。
 - :zap: mica-plus-mybatis 扩展 insert ignore 和 replace 添加老版本的日志记录扩展.
