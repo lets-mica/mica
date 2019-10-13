@@ -18,8 +18,8 @@ package net.dreamlu.mica.actuator.feign;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -40,19 +40,32 @@ import java.util.Set;
  *
  * @author L.cm
  */
-@RequiredArgsConstructor
 @Endpoint(id = "feign")
-public class FeignClientEndpoint {
+public class FeignClientEndpoint implements SmartInitializingSingleton {
 	private final ApplicationContext context;
+	private final List<FeignClientInfo> clientList;
+
+	public FeignClientEndpoint(ApplicationContext context) {
+		this.context = context;
+		this.clientList = new ArrayList<>();
+	}
 
 	@ReadOperation
 	public List<FeignClientInfo> feignClients() {
+		return clientList;
+	}
+
+	@Override
+	public void afterSingletonsInstantiated() {
+		clientList.addAll(getClientList(context));
+	}
+
+	private static List<FeignClientInfo> getClientList(ApplicationContext context) {
 		Map<String, Object> feignClientMap = context.getBeansWithAnnotation(FeignClient.class);
 		// 1. 解析注解
 		List<FeignClientInfo> feignClientInfoList = new ArrayList<>();
 		Set<Map.Entry<String, Object>> feignClientEntrySet = feignClientMap.entrySet();
 		for (Map.Entry<String, Object> feignClientEntry : feignClientEntrySet) {
-			// com.sunvalley.mws.feign.FeignMarketAttributeService
 			String beanName = feignClientEntry.getKey();
 			Object feignClientBean = feignClientEntry.getValue();
 			if (feignClientBean == null) {
