@@ -4,6 +4,7 @@ import net.dreamlu.mica.core.utils.DateUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -112,4 +113,9 @@ public class DateUtilTest {
 		Assert.assertEquals(c.get(Calendar.DAY_OF_YEAR) - 1, c1.get(Calendar.DAY_OF_YEAR));
 	}
 
+	@Test
+	public void testDate() throws Exception {
+		Date date = new Date();
+		System.out.println(DateUtil.formatDateTime(date));
+	}
 }

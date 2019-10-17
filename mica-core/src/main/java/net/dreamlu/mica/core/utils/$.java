@@ -1869,11 +1869,11 @@ public class $ {
 	 * 将字符串转换为时间
 	 *
 	 * @param dateStr 时间字符串
-	 * @param format  ConcurrentDateFormat
+	 * @param formatter DateTimeFormatter
 	 * @return 时间
 	 */
-	public static Date parse(String dateStr, ConcurrentDateFormat format) {
-		return DateUtil.parse(dateStr, format);
+	public static Date parse(String dateStr, DateTimeFormatter formatter) {
+		return DateUtil.parse(dateStr, formatter);
 	}
 
 	/**

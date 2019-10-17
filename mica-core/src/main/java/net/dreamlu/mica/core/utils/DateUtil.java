@@ -17,9 +17,9 @@
 package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
-import java.text.ParseException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
@@ -42,17 +42,11 @@ public class DateUtil {
 	public static final String PATTERN_DATE = "yyyy-MM-dd";
 	public static final String PATTERN_TIME = "HH:mm:ss";
 	/**
-	 * 老 date 格式化
-	 */
-	public static final ConcurrentDateFormat DATETIME_FORMAT = ConcurrentDateFormat.of(PATTERN_DATETIME);
-	public static final ConcurrentDateFormat DATE_FORMAT = ConcurrentDateFormat.of(PATTERN_DATE);
-	public static final ConcurrentDateFormat TIME_FORMAT = ConcurrentDateFormat.of(PATTERN_TIME);
-	/**
 	 * java 8 时间格式化
 	 */
-	public static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern(DateUtil.PATTERN_DATETIME);
-	public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DateUtil.PATTERN_DATE);
-	public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(DateUtil.PATTERN_TIME);
+	public static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern(DateUtil.PATTERN_DATETIME).withZone(ZoneId.systemDefault());
+	public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DateUtil.PATTERN_DATE).withZone(ZoneId.systemDefault());
+	public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(DateUtil.PATTERN_TIME).withZone(ZoneId.systemDefault());
 
 	/**
 	 * 添加年
@@ -299,8 +293,12 @@ public class DateUtil {
 	 * @param date 时间
 	 * @return 格式化后的时间
 	 */
-	public static String formatDateTime(Date date) {
-		return DATETIME_FORMAT.format(date);
+	@Nullable
+	public static String formatDateTime(@Nullable Date date) {
+		if (date == null) {
+			return null;
+		}
+		return DATETIME_FORMATTER.format(date.toInstant());
 	}
 
 	/**
@@ -309,8 +307,12 @@ public class DateUtil {
 	 * @param date 时间
 	 * @return 格式化后的时间
 	 */
-	public static String formatDate(Date date) {
-		return DATE_FORMAT.format(date);
+	@Nullable
+	public static String formatDate(@Nullable Date date) {
+		if (date == null) {
+			return null;
+		}
+		return DATE_FORMATTER.format(date.toInstant());
 	}
 
 	/**
@@ -319,8 +321,12 @@ public class DateUtil {
 	 * @param date 时间
 	 * @return 格式化后的时间
 	 */
-	public static String formatTime(Date date) {
-		return TIME_FORMAT.format(date);
+	@Nullable
+	public static String formatTime(@Nullable Date date) {
+		if (date == null) {
+			return null;
+		}
+		return TIME_FORMATTER.format(date.toInstant());
 	}
 
 	/**
@@ -330,8 +336,12 @@ public class DateUtil {
 	 * @param pattern 表达式
 	 * @return 格式化后的时间
 	 */
-	public static String format(Date date, String pattern) {
-		return ConcurrentDateFormat.of(pattern).format(date);
+	@Nullable
+	public static String format(@Nullable Date date, String pattern) {
+		if (date == null) {
+			return null;
+		}
+		return DateTimeFormatter.ofPattern(pattern).withZone(ZoneId.systemDefault()).format(date.toInstant());
 	}
 
 	/**
@@ -372,7 +382,7 @@ public class DateUtil {
 	 * @return 格式化后的时间
 	 */
 	public static String format(TemporalAccessor temporal, String pattern) {
-		return DateTimeFormatter.ofPattern(pattern).format(temporal);
+		return DateTimeFormatter.ofPattern(pattern).withZone(ZoneId.systemDefault()).format(temporal);
 	}
 
 	/**
@@ -383,27 +393,22 @@ public class DateUtil {
 	 * @return 时间
 	 */
 	public static Date parse(String dateStr, String pattern) {
-		ConcurrentDateFormat format = ConcurrentDateFormat.of(pattern);
-		try {
-			return format.parse(dateStr);
-		} catch (ParseException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return DateUtil.parse(dateStr, DateTimeFormatter.ofPattern(pattern));
 	}
 
 	/**
 	 * 将字符串转换为时间
 	 *
 	 * @param dateStr 时间字符串
-	 * @param format  ConcurrentDateFormat
+	 * @param format DateTimeFormatter
 	 * @return 时间
 	 */
-	public static Date parse(String dateStr, ConcurrentDateFormat format) {
-		try {
-			return format.parse(dateStr);
-		} catch (ParseException e) {
-			throw Exceptions.unchecked(e);
+	public static Date parse(String dateStr, DateTimeFormatter format) {
+		if (format.getZone() == null) {
+			format = format.withZone(ZoneId.systemDefault());
 		}
+		Instant instant = format.parse(dateStr, Instant::from);
+		return Date.from(instant);
 	}
 
 	/**
@@ -414,7 +419,7 @@ public class DateUtil {
 	 * @return 时间
 	 */
 	public static <T> T parse(String dateStr, String pattern, TemporalQuery<T> query) {
-		return DateTimeFormatter.ofPattern(pattern).parse(dateStr, query);
+		return DateTimeFormatter.ofPattern(pattern).withZone(ZoneId.systemDefault()).parse(dateStr, query);
 	}
 
 	/**
