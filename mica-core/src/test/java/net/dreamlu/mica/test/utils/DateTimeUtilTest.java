@@ -14,7 +14,7 @@ public class DateTimeUtilTest {
 
 	@Test
 	public void test() {
-		TemporalAccessor temporalAccessor = DateTimeUtil.parseDateTime("2018-11-11 11:11:11", DateUtil.DATETIME_FORMATTER);
+		TemporalAccessor temporalAccessor = DateUtil.parseDateTime("2018-11-11 11:11:11", DateUtil.DATETIME_FORMATTER);
 		Assert.assertTrue(temporalAccessor instanceof LocalDateTime);
 	}
 }
