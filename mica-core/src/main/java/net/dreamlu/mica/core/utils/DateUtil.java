@@ -400,7 +400,7 @@ public class DateUtil {
 	 * 将字符串转换为时间
 	 *
 	 * @param dateStr 时间字符串
-	 * @param format DateTimeFormatter
+	 * @param format  DateTimeFormatter
 	 * @return 时间
 	 */
 	public static Date parse(String dateStr, DateTimeFormatter format) {
@@ -572,6 +572,105 @@ public class DateUtil {
 	 */
 	public static Duration between(Date startDate, Date endDate) {
 		return Duration.between(startDate.toInstant(), endDate.toInstant());
+	}
+
+	/**
+	 * 将字符串转换为时间
+	 *
+	 * @param dateStr 时间字符串
+	 * @param pattern 表达式
+	 * @return 时间
+	 */
+	public static LocalDateTime parseDateTime(String dateStr, String pattern) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+		return DateUtil.parseDateTime(dateStr, formatter);
+	}
+
+	/**
+	 * 将字符串转换为时间
+	 *
+	 * @param dateStr   时间字符串
+	 * @param formatter DateTimeFormatter
+	 * @return 时间
+	 */
+	public static LocalDateTime parseDateTime(String dateStr, DateTimeFormatter formatter) {
+		return LocalDateTime.parse(dateStr, formatter);
+	}
+
+	/**
+	 * 将字符串转换为时间
+	 *
+	 * @param dateStr 时间字符串
+	 * @return 时间
+	 */
+	public static LocalDateTime parseDateTime(String dateStr) {
+		return DateUtil.parseDateTime(dateStr, DateUtil.DATETIME_FORMATTER);
+	}
+
+	/**
+	 * 将字符串转换为时间
+	 *
+	 * @param dateStr 时间字符串
+	 * @param pattern 表达式
+	 * @return 时间
+	 */
+	public static LocalDate parseDate(String dateStr, String pattern) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+		return DateUtil.parseDate(dateStr, formatter);
+	}
+
+	/**
+	 * 将字符串转换为时间
+	 *
+	 * @param dateStr   时间字符串
+	 * @param formatter DateTimeFormatter
+	 * @return 时间
+	 */
+	public static LocalDate parseDate(String dateStr, DateTimeFormatter formatter) {
+		return LocalDate.parse(dateStr, formatter);
+	}
+
+	/**
+	 * 将字符串转换为日期
+	 *
+	 * @param dateStr 时间字符串
+	 * @return 时间
+	 */
+	public static LocalDate parseDate(String dateStr) {
+		return DateUtil.parseDate(dateStr, DateUtil.DATE_FORMATTER);
+	}
+
+	/**
+	 * 将字符串转换为时间
+	 *
+	 * @param dateStr 时间字符串
+	 * @param pattern 时间正则
+	 * @return 时间
+	 */
+	public static LocalTime parseTime(String dateStr, String pattern) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+		return DateUtil.parseTime(dateStr, formatter);
+	}
+
+	/**
+	 * 将字符串转换为时间
+	 *
+	 * @param dateStr   时间字符串
+	 * @param formatter DateTimeFormatter
+	 * @return 时间
+	 */
+	public static LocalTime parseTime(String dateStr, DateTimeFormatter formatter) {
+		return LocalTime.parse(dateStr, formatter);
+	}
+
+	/**
+	 * 将字符串转换为时间
+	 *
+	 * @param dateStr 时间字符串
+	 * @return 时间
+	 */
+	public static LocalTime parseTime(String dateStr) {
+		return DateUtil.parseTime(dateStr, DateUtil.TIME_FORMATTER);
 	}
 
 }

@@ -1,6 +1,5 @@
 package net.dreamlu.mica.test.utils;
 
-import net.dreamlu.mica.core.utils.DateTimeUtil;
 import net.dreamlu.mica.core.utils.DateUtil;
 import org.junit.Assert;
 import org.junit.Test;

@@ -1868,7 +1868,7 @@ public class $ {
 	/**
 	 * 将字符串转换为时间
 	 *
-	 * @param dateStr 时间字符串
+	 * @param dateStr   时间字符串
 	 * @param formatter DateTimeFormatter
 	 * @return 时间
 	 */
@@ -1914,7 +1914,7 @@ public class $ {
 	 * @return 时间
 	 */
 	public static LocalDateTime parseDateTime(String dateStr, DateTimeFormatter formatter) {
-		return DateTimeUtil.parseDateTime(dateStr, formatter);
+		return DateUtil.parseDateTime(dateStr, formatter);
 	}
 
 	/**
@@ -1924,7 +1924,7 @@ public class $ {
 	 * @return 时间
 	 */
 	public static LocalDateTime parseDateTime(String dateStr) {
-		return DateTimeUtil.parseDateTime(dateStr);
+		return DateUtil.parseDateTime(dateStr);
 	}
 
 	/**
@@ -1935,7 +1935,7 @@ public class $ {
 	 * @return 时间
 	 */
 	public static LocalDate parseDate(String dateStr, DateTimeFormatter formatter) {
-		return DateTimeUtil.parseDate(dateStr, formatter);
+		return DateUtil.parseDate(dateStr, formatter);
 	}
 
 	/**
@@ -1945,7 +1945,7 @@ public class $ {
 	 * @return 时间
 	 */
 	public static LocalDate parseDate(String dateStr) {
-		return DateTimeUtil.parseDate(dateStr, DateUtil.DATE_FORMATTER);
+		return DateUtil.parseDate(dateStr, DateUtil.DATE_FORMATTER);
 	}
 
 	/**
@@ -1956,7 +1956,7 @@ public class $ {
 	 * @return 时间
 	 */
 	public static LocalTime parseTime(String dateStr, DateTimeFormatter formatter) {
-		return DateTimeUtil.parseTime(dateStr, formatter);
+		return DateUtil.parseTime(dateStr, formatter);
 	}
 
 	/**
@@ -1966,7 +1966,7 @@ public class $ {
 	 * @return 时间
 	 */
 	public static LocalTime parseTime(String dateStr) {
-		return DateTimeUtil.parseTime(dateStr);
+		return DateUtil.parseTime(dateStr);
 	}
 
 	/**
