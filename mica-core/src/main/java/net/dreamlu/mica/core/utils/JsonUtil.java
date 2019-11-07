@@ -19,10 +19,7 @@ package net.dreamlu.mica.core.utils;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import com.fasterxml.jackson.databind.type.MapType;
 import lombok.experimental.UtilityClass;
@@ -397,6 +394,30 @@ public class JsonUtil {
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
+	}
+
+	/**
+	 * jackson 的类型转换
+	 *
+	 * @param fromValue   来源对象
+	 * @param toValueType 转换的类型
+	 * @param <T>         泛型标记
+	 * @return 转换结果
+	 */
+	public static <T> T convertValue(Object fromValue, JavaType toValueType) {
+		return getInstance().convertValue(fromValue, toValueType);
+	}
+
+	/**
+	 * jackson 的类型转换
+	 *
+	 * @param fromValue      来源对象
+	 * @param toValueTypeRef 泛型类型
+	 * @param <T>            泛型标记
+	 * @return 转换结果
+	 */
+	public static <T> T convertValue(Object fromValue, TypeReference<T> toValueTypeRef) {
+		return getInstance().convertValue(fromValue, toValueTypeRef);
 	}
 
 	public static ObjectMapper getInstance() {
