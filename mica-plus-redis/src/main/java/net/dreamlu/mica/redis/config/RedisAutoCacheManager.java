@@ -16,9 +16,9 @@
 
 package net.dreamlu.mica.redis.config;
 
-import net.dreamlu.mica.core.utils.NumberUtil;
 import net.dreamlu.mica.core.utils.StringPool;
 import net.dreamlu.mica.core.utils.StringUtil;
+import org.springframework.boot.convert.DurationStyle;
 import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
@@ -26,6 +26,7 @@ import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.lang.Nullable;
 
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
 /**
@@ -51,8 +52,9 @@ public class RedisAutoCacheManager extends RedisCacheManager {
 		}
 		String cacheName = cacheArray[0];
 		if (cacheConfig != null) {
-			long cacheAge = NumberUtil.toLong(cacheArray[1], -1);
-			cacheConfig = cacheConfig.entryTtl(Duration.ofSeconds(cacheAge));
+			// 转换时间，支持时间单位例如：300ms，第二个参数是默认单位
+			Duration duration = DurationStyle.detectAndParse(cacheArray[1], ChronoUnit.SECONDS);
+			cacheConfig = cacheConfig.entryTtl(duration);
 		}
 		return super.createRedisCache(cacheName, cacheConfig);
 	}
