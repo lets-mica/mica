@@ -1,6 +1,12 @@
 # 变更记录
 
 ## 发行版本
+### v1.2.1 - 2019-11-20
+- :sparkles: 增强 ThreadLocal 工具类。
+- :sparkles: 增强 redis cache 使用。
+- :sparkles: 添加 jackson 的类型转换方法。
+- :heavy_minus_sign: 移除 springfox-swagger-ui 依赖。
+
 ### v1.2.0 - 2019-10-13
 - :zap: lettuce linux use epoll
 - :sparkles: mica-http close ResponseBody。

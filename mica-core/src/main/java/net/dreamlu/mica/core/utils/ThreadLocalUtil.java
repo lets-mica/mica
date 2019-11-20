@@ -41,13 +41,13 @@ import java.util.function.Supplier;
 @UtilityClass
 @SuppressWarnings("unchecked")
 public class ThreadLocalUtil {
-	private static final ThreadLocal<Map<String, Object>> local = ThreadLocal.withInitial(HashMap::new);
+	private static final ThreadLocal<Map<String, Object>> LOCAL = ThreadLocal.withInitial(HashMap::new);
 
 	/**
 	 * @return threadLocal中的全部值
 	 */
 	public static Map<String, Object> getAll() {
-		return new HashMap<>(local.get());
+		return new HashMap<>(LOCAL.get());
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class ThreadLocalUtil {
 	 * @see Map#put(Object, Object)
 	 */
 	public static <T> T put(String key, T value) {
-		local.get().put(key, value);
+		LOCAL.get().put(key, value);
 		return value;
 	}
 
@@ -71,7 +71,7 @@ public class ThreadLocalUtil {
 	 * @see Map#remove(Object)
 	 */
 	public static void remove(String key) {
-		local.get().remove(key);
+		LOCAL.get().remove(key);
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class ThreadLocalUtil {
 	 * @see Map#clear()
 	 */
 	public static void clear() {
-		local.remove();
+		LOCAL.remove();
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class ThreadLocalUtil {
 	 * @see ClassCastException
 	 */
 	public static <T> T get(String key) {
-		return ((T) local.get().get(key));
+		return ((T) LOCAL.get().get(key));
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class ThreadLocalUtil {
 	 * @see Supplier
 	 */
 	public static <T> T getIfAbsent(String key, Supplier<T> supplierOnNull) {
-		return ((T) local.get().computeIfAbsent(key, k -> supplierOnNull.get()));
+		return ((T) LOCAL.get().computeIfAbsent(key, k -> supplierOnNull.get()));
 	}
 
 	/**
