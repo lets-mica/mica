@@ -190,7 +190,9 @@ public class HttpRequest {
 	}
 
 	public HttpRequest bodyJson(Object body) {
-		return bodyString(JsonUtil.toJson(body));
+		addHeader("Content-Type", "application/json;charset=UTF-8");
+		this.requestBody = RequestBody.create(MediaType.get("application/json;charset=UTF-8"), JsonUtil.toJson(body));
+		return this;
 	}
 
 	private HttpRequest(final Request.Builder requestBuilder, String url, String httpMethod) {
