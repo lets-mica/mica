@@ -27,6 +27,7 @@ import okhttp3.internal.Util;
 import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.net.ssl.*;
 import java.net.InetSocketAddress;
@@ -49,6 +50,7 @@ import java.util.function.Predicate;
  */
 public class HttpRequest {
 	private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36";
+	private static final MediaType APPLICATION_JSON = MediaType.get("application/json;charset=UTF-8");
 	private static volatile OkHttpClient httpClient = new OkHttpClient();
 	@Nullable
 	private static HttpLoggingInterceptor globalLoggingInterceptor = null;
@@ -185,11 +187,16 @@ public class HttpRequest {
 	}
 
 	public HttpRequest bodyString(String body) {
-		this.requestBody = RequestBody.create(null, body);
+		this.requestBody = RequestBody.create(APPLICATION_JSON, body);
 		return this;
 	}
 
-	public HttpRequest bodyJson(Object body) {
+	public HttpRequest bodyString(MediaType contentType, String body) {
+		this.requestBody = RequestBody.create(APPLICATION_JSON, body);
+		return this;
+	}
+
+	public HttpRequest bodyJson(@Nonnull Object body) {
 		return bodyString(JsonUtil.toJson(body));
 	}
 
