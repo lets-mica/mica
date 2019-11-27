@@ -192,7 +192,7 @@ public class HttpRequest {
 	}
 
 	public HttpRequest bodyString(MediaType contentType, String body) {
-		this.requestBody = RequestBody.create(APPLICATION_JSON, body);
+		this.requestBody = RequestBody.create(contentType, body);
 		return this;
 	}
 
