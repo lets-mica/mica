@@ -1,10 +1,12 @@
 # 变更记录
 
 ## 发行版本
-### v1.2.1 - 2019-11-20
+### v1.2.1 - 2019-11-30
 - :sparkles: 增强 ThreadLocal 工具类。
 - :sparkles: 增强 redis cache 使用。
 - :sparkles: 添加 jackson 的类型转换方法。
+- :bug: Fixing github #10 mica-http bodyJson 添加 Content-Type.
+- :heavy_minus_sign: 移除 YmlPropertyLoaderFactory，隐藏风险，mica 2.0 已研发新的 @MicaPropertySource。
 - :heavy_minus_sign: 移除 springfox-swagger-ui 依赖。
 
 ### v1.2.0 - 2019-10-13
