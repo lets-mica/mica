@@ -1642,7 +1642,7 @@ public class $ {
 	 * @return Bean
 	 */
 	@Nullable
-	public static <T> T readJson(byte[] bytes, TypeReference<?> typeReference) {
+	public static <T> T readJson(byte[] bytes, TypeReference<T> typeReference) {
 		return JsonUtil.readValue(bytes, typeReference);
 	}
 
@@ -1655,7 +1655,7 @@ public class $ {
 	 * @return Bean
 	 */
 	@Nullable
-	public static <T> T readJson(@Nullable String jsonString, TypeReference<?> typeReference) {
+	public static <T> T readJson(@Nullable String jsonString, TypeReference<T> typeReference) {
 		return JsonUtil.readValue(jsonString, typeReference);
 	}
 
@@ -1668,7 +1668,7 @@ public class $ {
 	 * @return Bean
 	 */
 	@Nullable
-	public static <T> T readJsonAsJson(@Nullable InputStream in, TypeReference<?> typeReference) {
+	public static <T> T readJsonAsJson(@Nullable InputStream in, TypeReference<T> typeReference) {
 		return JsonUtil.readValue(in, typeReference);
 	}
 
