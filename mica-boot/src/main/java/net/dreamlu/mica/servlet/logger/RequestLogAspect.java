@@ -16,10 +16,15 @@
 
 package net.dreamlu.mica.servlet.logger;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.dreamlu.mica.core.utils.*;
+import net.dreamlu.mica.core.utils.ClassUtil;
+import net.dreamlu.mica.core.utils.JsonUtil;
+import net.dreamlu.mica.core.utils.StringUtil;
+import net.dreamlu.mica.core.utils.WebUtil;
 import net.dreamlu.mica.launcher.MicaLogLevel;
 import net.dreamlu.mica.props.MicaRequestLogProperties;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -39,7 +44,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -58,7 +62,6 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnProperty(value = MicaLogLevel.REQ_LOG_PROPS_PREFIX + ".enabled", havingValue = "true", matchIfMissing = true)
 public class RequestLogAspect {
 	private final MicaRequestLogProperties properties;
-	private final ObjectMapper objectMapper;
 
 	/**
 	 * AOP 环切 控制器 R 返回值
@@ -95,13 +98,13 @@ public class RequestLogAspect {
 			String parameterName = methodParam.getParameterName();
 			Object value = args[i];
 			// 如果是body的json则是对象
-			if (requestBody != null) {
-				if (value == null) {
-					paraMap.put(parameterName, null);
-				} else if (ClassUtil.isPrimitiveOrWrapper(value.getClass())) {
-					paraMap.put(parameterName, value);
+			if (requestBody != null && value != null) {
+				JsonNode jsonNode = JsonUtil.valueToTree(value);
+				if (JsonUtil.valueToTree(value) instanceof ObjectNode) {
+					paraMap.putAll(JsonUtil.convertValue(jsonNode, new TypeReference<Map<? extends String, ?>>() {
+					}));
 				} else {
-					paraMap.putAll(BeanUtil.toMap(value));
+					paraMap.put(parameterName, value);
 				}
 				continue;
 			}
@@ -135,7 +138,7 @@ public class RequestLogAspect {
 				paraMap.put(paraName, "InputStream");
 			} else if (value instanceof InputStreamSource) {
 				paraMap.put(paraName, "InputStreamSource");
-			} else if (canJsonSerialize(value)) {
+			} else if (JsonUtil.canSerialize(value)) {
 				// 判断模型能被 json 序列化，则添加
 				paraMap.put(paraName, value);
 			} else {
@@ -201,12 +204,4 @@ public class RequestLogAspect {
 		}
 	}
 
-	private boolean canJsonSerialize(Object value) {
-		try {
-			objectMapper.writeValueAsBytes(value);
-			return true;
-		} catch (IOException e) {
-			return false;
-		}
-	}
 }

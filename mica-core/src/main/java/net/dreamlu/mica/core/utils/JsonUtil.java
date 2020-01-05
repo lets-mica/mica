@@ -18,6 +18,7 @@ package net.dreamlu.mica.core.utils;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
@@ -204,7 +205,7 @@ public class JsonUtil {
 	 * @return Bean
 	 */
 	@Nullable
-	public static <T> T readValue(@Nullable byte[] content, TypeReference<?> typeReference) {
+	public static <T> T readValue(@Nullable byte[] content, TypeReference<T> typeReference) {
 		if (ObjectUtil.isEmpty(content)) {
 			return null;
 		}
@@ -224,7 +225,7 @@ public class JsonUtil {
 	 * @return Bean
 	 */
 	@Nullable
-	public static <T> T readValue(@Nullable String jsonString, TypeReference<?> typeReference) {
+	public static <T> T readValue(@Nullable String jsonString, TypeReference<T> typeReference) {
 		if (StringUtil.isBlank(jsonString)) {
 			return null;
 		}
@@ -244,7 +245,7 @@ public class JsonUtil {
 	 * @return Bean
 	 */
 	@Nullable
-	public static <T> T readValue(@Nullable InputStream in, TypeReference<?> typeReference) {
+	public static <T> T readValue(@Nullable InputStream in, TypeReference<T> typeReference) {
 		if (in == null) {
 			return null;
 		}
@@ -404,6 +405,18 @@ public class JsonUtil {
 	 * @param <T>         泛型标记
 	 * @return 转换结果
 	 */
+	public static <T> T convertValue(Object fromValue, Class<T> toValueType) {
+		return getInstance().convertValue(fromValue, toValueType);
+	}
+
+	/**
+	 * jackson 的类型转换
+	 *
+	 * @param fromValue   来源对象
+	 * @param toValueType 转换的类型
+	 * @param <T>         泛型标记
+	 * @return 转换结果
+	 */
 	public static <T> T convertValue(Object fromValue, JavaType toValueType) {
 		return getInstance().convertValue(fromValue, toValueType);
 	}
@@ -418,6 +431,45 @@ public class JsonUtil {
 	 */
 	public static <T> T convertValue(Object fromValue, TypeReference<T> toValueTypeRef) {
 		return getInstance().convertValue(fromValue, toValueTypeRef);
+	}
+
+	/**
+	 * tree 转对象
+	 *
+	 * @param treeNode  TreeNode
+	 * @param valueType valueType
+	 * @param <T>       泛型标记
+	 * @return 转换结果
+	 */
+	public static <T> T treeToValue(TreeNode treeNode, Class<T> valueType) {
+		try {
+			return getInstance().treeToValue(treeNode, valueType);
+		} catch (JsonProcessingException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 对象转为 json node
+	 *
+	 * @param value 对象
+	 * @return JsonNode
+	 */
+	public static JsonNode valueToTree(@Nullable Object value) {
+		return getInstance().valueToTree(value);
+	}
+
+	/**
+	 * 判断是否可以序列化
+	 *
+	 * @param value 对象
+	 * @return 是否可以序列化
+	 */
+	public static boolean canSerialize(@Nullable Object value) {
+		if (value == null) {
+			return true;
+		}
+		return getInstance().canSerialize(value.getClass());
 	}
 
 	public static ObjectMapper getInstance() {
