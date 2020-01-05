@@ -2,6 +2,7 @@ package net.dreamlu.mica.test.utils;
 
 import net.dreamlu.mica.core.utils.DateUtil;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -37,6 +38,7 @@ public class DateUtilTest {
 	 * Method: plusMonths(Date date, int monthsToAdd)
 	 */
 	@Test
+	@Ignore
 	public void testPlusMonths() throws Exception {
 		Date date = new Date();
 		Date date1 = DateUtil.plusMonths(date, 1);
