@@ -131,7 +131,7 @@ public class Exchange {
 	 * @param typeReference value Type Reference
 	 * @return Object
 	 */
-	public <T> T asValue(TypeReference<?> typeReference) {
+	public <T> T asValue(TypeReference<T> typeReference) {
 		return onResponse(responseSpec -> responseSpec.asValue(typeReference));
 	}
 
