@@ -145,7 +145,7 @@ public interface ResponseSpec {
 	 * @return Object
 	 */
 	@Nullable
-	<T> T asValue(TypeReference<?> typeReference);
+	<T> T asValue(TypeReference<T> typeReference);
 
 	/**
 	 * Returns body to List.

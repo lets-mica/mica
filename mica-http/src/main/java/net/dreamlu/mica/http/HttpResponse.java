@@ -128,7 +128,7 @@ public class HttpResponse implements ResponseSpec, Closeable {
 	}
 
 	@Override
-	public <T> T asValue(TypeReference<?> typeReference) {
+	public <T> T asValue(TypeReference<T> typeReference) {
 		return JsonUtil.readValue(asBytes(), typeReference);
 	}
 
