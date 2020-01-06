@@ -2,10 +2,8 @@ package net.dreamlu.mica.test.utils;
 
 import net.dreamlu.mica.core.utils.DateUtil;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -28,27 +26,28 @@ public class DateUtilTest {
 
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
+		c.add(Calendar.YEAR, 1);
 		Calendar c1 = Calendar.getInstance();
 		c1.setTime(date1);
 
-		Assert.assertEquals(c.get(Calendar.YEAR) + 1, c1.get(Calendar.YEAR));
+		Assert.assertEquals(c.get(Calendar.YEAR), c1.get(Calendar.YEAR));
 	}
 
 	/**
 	 * Method: plusMonths(Date date, int monthsToAdd)
 	 */
 	@Test
-	@Ignore
 	public void testPlusMonths() throws Exception {
 		Date date = new Date();
 		Date date1 = DateUtil.plusMonths(date, 1);
 
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
+		c.add(Calendar.MONTH, 1);
 		Calendar c1 = Calendar.getInstance();
 		c1.setTime(date1);
 
-		Assert.assertEquals(c.get(Calendar.MONTH) + 1, c1.get(Calendar.MONTH));
+		Assert.assertEquals(c.get(Calendar.MONTH), c1.get(Calendar.MONTH));
 	}
 
 	/**
@@ -61,10 +60,11 @@ public class DateUtilTest {
 
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
+		c.add(Calendar.DAY_OF_YEAR, 1);
 		Calendar c1 = Calendar.getInstance();
 		c1.setTime(date1);
 
-		Assert.assertEquals(c.get(Calendar.DAY_OF_YEAR) + 1, c1.get(Calendar.DAY_OF_YEAR));
+		Assert.assertEquals(c.get(Calendar.DAY_OF_YEAR), c1.get(Calendar.DAY_OF_YEAR));
 	}
 
 	/**
@@ -77,27 +77,28 @@ public class DateUtilTest {
 
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
+		c.add(Calendar.YEAR, -1);
 		Calendar c1 = Calendar.getInstance();
 		c1.setTime(date1);
 
-		Assert.assertEquals(c.get(Calendar.YEAR) - 1, c1.get(Calendar.YEAR));
+		Assert.assertEquals(c.get(Calendar.YEAR), c1.get(Calendar.YEAR));
 	}
 
 	/**
 	 * Method: minusMonths(Date date, int months)
 	 */
 	@Test
-	@Ignore
 	public void testMinusMonths() throws Exception {
 		Date date = new Date();
 		Date date1 = DateUtil.minusMonths(date, 1);
 
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
+		c.add(Calendar.MONTH, -1);
 		Calendar c1 = Calendar.getInstance();
 		c1.setTime(date1);
 
-		Assert.assertEquals(c.get(Calendar.MONTH) - 1, c1.get(Calendar.MONTH));
+		Assert.assertEquals(c.get(Calendar.MONTH), c1.get(Calendar.MONTH));
 	}
 
 	/**
@@ -110,10 +111,11 @@ public class DateUtilTest {
 
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
+		c.add(Calendar.DAY_OF_YEAR, -1);
 		Calendar c1 = Calendar.getInstance();
 		c1.setTime(date1);
 
-		Assert.assertEquals(c.get(Calendar.DAY_OF_YEAR) - 1, c1.get(Calendar.DAY_OF_YEAR));
+		Assert.assertEquals(c.get(Calendar.DAY_OF_YEAR), c1.get(Calendar.DAY_OF_YEAR));
 	}
 
 	@Test
