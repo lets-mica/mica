@@ -209,7 +209,7 @@ public abstract class MicaBeanCopier {
 				// nonNull Label
 				Label l0 = e.make_label();
 				// 判断类型是否一致，包括 包装类型
-				if (ClassUtil.isAssignable(getterPropertyType, setterPropertyType)) {
+				if (ClassUtil.isAssignable(setterPropertyType, getterPropertyType)) {
 					// 2018.12.27 by L.cm 支持链式 bean
 					e.load_local(targetLocal);
 					e.load_local(sourceLocal);
