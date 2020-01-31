@@ -16,9 +16,6 @@
 
 package net.dreamlu.mica.servlet.logger;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.utils.ClassUtil;
@@ -81,11 +78,67 @@ public class RequestLogAspect {
 		if (MicaLogLevel.NONE == level) {
 			return point.proceed();
 		}
+		HttpServletRequest request = WebUtil.getRequest();
+		String requestUrl = request.getRequestURI();
+		String requestMethod = request.getMethod();
+
+		// 构建成一条长 日志，避免并发下日志错乱
+		StringBuilder beforeReqLog = new StringBuilder(300);
+		// 日志参数
+		List<Object> beforeReqArgs = new ArrayList<>();
+		beforeReqLog.append("\n\n================  Request Start  ================\n");
+		// 打印路由
+		beforeReqLog.append("===> {}: {}");
+		beforeReqArgs.add(requestMethod);
+		beforeReqArgs.add(requestUrl);
+		// 打印请求参数
+		logIngArgs(point, beforeReqLog, beforeReqArgs);
+		// 打印请求 headers
+		logIngHeaders(request, level, beforeReqLog, beforeReqArgs);
+		beforeReqLog.append("================   Request End   ================\n");
+
+		// 打印执行时间
+		long startNs = System.nanoTime();
+		log.info(beforeReqLog.toString(), beforeReqArgs.toArray());
+		// aop 执行后的日志
+		StringBuilder afterReqLog = new StringBuilder(200);
+		// 日志参数
+		List<Object> afterReqArgs = new ArrayList<>();
+		afterReqLog.append("\n\n================  Response Start  ================\n");
+		try {
+			Object result = point.proceed();
+			// 打印返回结构体
+			if (MicaLogLevel.BODY.lte(level)) {
+				afterReqLog.append("===Result===  {}\n");
+				afterReqArgs.add(JsonUtil.toJson(result));
+			}
+			return result;
+		} finally {
+			long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
+			afterReqLog.append("<=== {}: {} ({} ms)\n");
+			afterReqArgs.add(requestMethod);
+			afterReqArgs.add(requestUrl);
+			afterReqArgs.add(tookMs);
+			afterReqLog.append("================   Response End   ================\n");
+			log.info(afterReqLog.toString(), afterReqArgs.toArray());
+		}
+	}
+
+	/**
+	 * 激励请求参数
+	 *
+	 * @param point         ProceedingJoinPoint
+	 * @param beforeReqLog  StringBuilder
+	 * @param beforeReqArgs beforeReqArgs
+	 */
+	public void logIngArgs(ProceedingJoinPoint point, StringBuilder beforeReqLog, List<Object> beforeReqArgs) {
 		MethodSignature ms = (MethodSignature) point.getSignature();
 		Method method = ms.getMethod();
 		Object[] args = point.getArgs();
 		// 请求参数处理
 		final Map<String, Object> paraMap = new HashMap<>(16);
+		// 一次请求只能有一个 request body
+		Object requestBodyValue = null;
 		for (int i = 0; i < args.length; i++) {
 			// 读取方法参数
 			MethodParameter methodParam = ClassUtil.getMethodParameter(method, i);
@@ -98,14 +151,8 @@ public class RequestLogAspect {
 			String parameterName = methodParam.getParameterName();
 			Object value = args[i];
 			// 如果是body的json则是对象
-			if (requestBody != null && value != null) {
-				JsonNode jsonNode = JsonUtil.valueToTree(value);
-				if (JsonUtil.valueToTree(value) instanceof ObjectNode) {
-					paraMap.putAll(JsonUtil.convertValue(jsonNode, new TypeReference<Map<? extends String, ?>>() {
-					}));
-				} else {
-					paraMap.put(parameterName, value);
-				}
+			if (requestBody != null) {
+				requestBodyValue = value;
 				continue;
 			}
 			// 处理 参数
@@ -145,19 +192,6 @@ public class RequestLogAspect {
 				paraMap.put(paraName, "【注意】不能序列化为json");
 			}
 		}
-		HttpServletRequest request = WebUtil.getRequest();
-		String requestUrl = request.getRequestURI();
-		String requestMethod = request.getMethod();
-
-		// 构建成一条长 日志，避免并发下日志错乱
-		StringBuilder beforeReqLog = new StringBuilder(300);
-		// 日志参数
-		List<Object> beforeReqArgs = new ArrayList<>();
-		beforeReqLog.append("\n\n================  Request Start  ================\n");
-		// 打印路由
-		beforeReqLog.append("===> {}: {}");
-		beforeReqArgs.add(requestMethod);
-		beforeReqArgs.add(requestUrl);
 		// 请求参数
 		if (paraMap.isEmpty()) {
 			beforeReqLog.append("\n");
@@ -165,6 +199,22 @@ public class RequestLogAspect {
 			beforeReqLog.append(" Parameters: {}\n");
 			beforeReqArgs.add(JsonUtil.toJson(paraMap));
 		}
+		if (requestBodyValue != null) {
+			beforeReqLog.append("====Body=====  {}\n");
+			beforeReqArgs.add(JsonUtil.toJson(requestBodyValue));
+		}
+	}
+
+	/**
+	 * 记录请求头
+	 *
+	 * @param request       HttpServletRequest
+	 * @param level         日志级别
+	 * @param beforeReqLog  StringBuilder
+	 * @param beforeReqArgs beforeReqArgs
+	 */
+	public void logIngHeaders(HttpServletRequest request, MicaLogLevel level,
+							  StringBuilder beforeReqLog, List<Object> beforeReqArgs) {
 		// 打印请求头
 		if (MicaLogLevel.HEADERS.lte(level)) {
 			Enumeration<String> headers = request.getHeaderNames();
@@ -175,32 +225,6 @@ public class RequestLogAspect {
 				beforeReqArgs.add(headerName);
 				beforeReqArgs.add(headerValue);
 			}
-		}
-		beforeReqLog.append("================   Request End   ================\n");
-		// 打印执行时间
-		long startNs = System.nanoTime();
-		log.info(beforeReqLog.toString(), beforeReqArgs.toArray());
-		// aop 执行后的日志
-		StringBuilder afterReqLog = new StringBuilder(200);
-		// 日志参数
-		List<Object> afterReqArgs = new ArrayList<>();
-		afterReqLog.append("\n\n================  Response Start  ================\n");
-		try {
-			Object result = point.proceed();
-			// 打印返回结构体
-			if (MicaLogLevel.BODY.lte(level)) {
-				afterReqLog.append("===Result===  {}\n");
-				afterReqArgs.add(JsonUtil.toJson(result));
-			}
-			return result;
-		} finally {
-			long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
-			afterReqLog.append("<=== {}: {} ({} ms)\n");
-			afterReqArgs.add(requestMethod);
-			afterReqArgs.add(requestUrl);
-			afterReqArgs.add(tookMs);
-			afterReqLog.append("================   Response End   ================\n");
-			log.info(afterReqLog.toString(), afterReqArgs.toArray());
 		}
 	}
 
