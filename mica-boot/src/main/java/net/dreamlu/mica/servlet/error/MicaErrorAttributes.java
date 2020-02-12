@@ -48,11 +48,11 @@ public class MicaErrorAttributes extends DefaultErrorAttributes {
 			log.error("URL:{} error status:{}", requestUrl, status);
 			result = R.fail(SystemCode.FAILURE, "系统未知异常[HttpStatus]:" + status);
 		} else if (error instanceof ServiceException) {
-			log.error(String.format("URL:%s error status:%d", requestUrl, status), error);
+			log.error("URL:{} error status:{}", requestUrl, status, error);
 			result = ((ServiceException) error).getResult();
 			result = Optional.ofNullable(result).orElse(R.fail(SystemCode.FAILURE));
 		} else {
-			log.error(String.format("URL:%s error status:%d", requestUrl, status), error);
+			log.error("URL:{} error status:{}", requestUrl, status, error);
 			result = R.fail(SystemCode.FAILURE);
 		}
 		return BeanUtil.toMap(result);

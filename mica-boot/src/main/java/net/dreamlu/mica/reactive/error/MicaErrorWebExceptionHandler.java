@@ -68,7 +68,12 @@ public class MicaErrorWebExceptionHandler extends DefaultErrorWebExceptionHandle
 		// 拼接地址
 		MultiValueMap<String, String> queryParams = request.queryParams();
 		String requestUrl = UriComponentsBuilder.fromPath(request.path()).queryParams(queryParams).build().toUriString();
-		log.error(String.format("URL:%s error status:%d", requestUrl, status.value()), error);
+		// 404 不打印堆栈，减少内存消耗
+		if (HttpStatus.NOT_FOUND == status) {
+			log.error("URL:{} error status:{}", requestUrl, status.value());
+		} else {
+			log.error("URL:{} error status:{}", requestUrl, status.value(), error);
+		}
 		// 返回消息
 		String message = status.value() + ":" + status.getReasonPhrase();
 		R<Object> result;
