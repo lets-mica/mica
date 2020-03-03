@@ -20,8 +20,6 @@
 
 [**更新记录**](CHANGELOG.md)
 
-想要了解更多可加入【如梦技术】QQ 群：`479710041`。
-
 ## 模块划分
 ### mica-auto
 1. 编译期生成 `spring.factories`。
