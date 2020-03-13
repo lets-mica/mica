@@ -15,6 +15,7 @@ dependencyManagement {
     dependencies {
         // mica
         dependency "net.dreamlu:mica-auto:${micaAutoVersion}"
+        dependency "net.dreamlu:mica-actuator:${VERSION}"
         dependency "net.dreamlu:mica-core:${VERSION}"
         dependency "net.dreamlu:mica-http:${VERSION}"
         dependency "net.dreamlu:mica-laytpl:${VERSION}"
