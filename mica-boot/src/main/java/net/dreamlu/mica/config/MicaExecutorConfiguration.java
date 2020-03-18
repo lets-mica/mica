@@ -17,16 +17,22 @@
 package net.dreamlu.mica.config;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.common.error.MicaErrorEvent;
+import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.props.MicaAsyncProperties;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.util.ObjectUtils;
 
+import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -35,12 +41,14 @@ import java.util.concurrent.ThreadPoolExecutor;
  *
  * @author L.cm
  */
+@Slf4j
 @Configuration
 @EnableAsync
 @EnableScheduling
 @AllArgsConstructor
 public class MicaExecutorConfiguration extends AsyncConfigurerSupport {
 	private final MicaAsyncProperties properties;
+	private final ApplicationEventPublisher publisher;
 
 	@Override
 	@Bean(name = "taskExecutor")
@@ -57,7 +65,27 @@ public class MicaExecutorConfiguration extends AsyncConfigurerSupport {
 
 	@Override
 	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-		return new SimpleAsyncUncaughtExceptionHandler();
+		return new MicaAsyncExceptionHandler();
+	}
+
+	class MicaAsyncExceptionHandler implements AsyncUncaughtExceptionHandler {
+		@Override
+		public void handleUncaughtException(Throwable error, Method method, Object... params) {
+
+			MicaErrorEvent event = new MicaErrorEvent();
+			event.setStackTrace(Exceptions.getStackTraceAsString(error));
+			event.setExceptionName(error.getClass().getName());
+			event.setMessage(error.getMessage());
+			StackTraceElement[] elements = error.getStackTrace();
+			if (!ObjectUtils.isEmpty(elements)) {
+				StackTraceElement element = elements[0];
+				event.setClassName(element.getClassName());
+				event.setFileName(element.getFileName());
+				event.setMethodName(element.getMethodName());
+				event.setLineNumber(element.getLineNumber());
+			}s
+			publisher.publishEvent(event);
+		}
 	}
 
 }
