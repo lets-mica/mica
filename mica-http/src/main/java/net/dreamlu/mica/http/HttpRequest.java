@@ -397,10 +397,19 @@ public class HttpRequest {
 		return this;
 	}
 
-	public HttpRequest proxy(final InetSocketAddress address) {
-		this.proxy = new Proxy(Proxy.Type.HTTP, address);
+	public HttpRequest proxy(Proxy proxy) {
+		this.proxy = proxy;
 		return this;
 	}
+
+	public HttpRequest proxy(final Proxy.Type type, final InetSocketAddress address) {
+		return proxy(new Proxy(type, address));
+	}
+
+	public HttpRequest proxy(final InetSocketAddress address) {
+		return proxy(Proxy.Type.HTTP, address);
+	}
+
 
 	public HttpRequest proxySelector(final ProxySelector proxySelector) {
 		this.proxySelector = proxySelector;
