@@ -2,6 +2,20 @@
 
 ## 发行版本
 ### v1.2.1 - 2019-11-30
+- :memo: update docs.
+- :bulb: 调整微信公众号
+- :zap: 优化 mica-http 使 proxy 更好用 Github #18。
+- :zap: 优化 mica-boot 异步异常时抛出事件监听 github @xiaopang0117
+- :zap: 优化 异常日志打印。
+- :zap: 优化 RequestLogAspect，区分 body 和 param。
+- :bug: 修复 mica-bom 缺少 mica-actuator.
+- :bug: Fixing mica-core bean copy github #14.
+- :bug: Fixing mica-core JsonUtil 泛型问题.
+- :bug: Fixing List Json log.
+- :arrow_up: Upgrading spring boot to 2.1.13.RELEASE.
+- :arrow_up: Upgrading spring cloud to Greenwich.SR5.
+
+### v1.2.1 - 2019-11-30
 - :sparkles: 增强 ThreadLocal 工具类。
 - :sparkles: 增强 redis cache 使用。
 - :sparkles: 添加 jackson 的类型转换方法。
