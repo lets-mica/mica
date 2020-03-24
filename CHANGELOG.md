@@ -1,7 +1,7 @@
 # 变更记录
 
 ## 发行版本
-### v1.2.1 - 2019-11-30
+### v1.2.2 - 2020-03-24
 - :memo: update docs.
 - :bulb: 调整微信公众号
 - :zap: 优化 mica-http 使 proxy 更好用 Github #18。
