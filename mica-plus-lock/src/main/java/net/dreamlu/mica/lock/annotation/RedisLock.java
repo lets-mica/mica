@@ -66,7 +66,7 @@ public @interface RedisLock {
 	long leaseTime() default 100;
 
 	/**
-	 * 时间单温，默认为秒
+	 * 时间单位，默认为秒
 	 *
 	 * @return 时间单位
 	 */
