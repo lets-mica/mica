@@ -1,8 +1,0 @@
-dependencies {
-    api project(":mica-core")
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
-    compileOnly "org.springframework.cloud:spring-cloud-context"
-    compileOnly "io.springfox:springfox-swagger2:${swaggerVersion}"
-    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
-    testImplementation project(":mica-boot-test")
-}

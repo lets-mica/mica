@@ -28,7 +28,7 @@ import java.util.function.Supplier;
  */
 public class Lazy<T> implements Supplier<T>, Serializable {
 	@Nullable
-	private transient volatile Supplier<? extends T> supplier;
+	private transient Supplier<? extends T> supplier;
 	@Nullable
 	private T value;
 

@@ -1,7 +1,0 @@
-dependencies {
-    api project(":mica-cloud")
-    api "org.springframework.cloud:spring-cloud-stream"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
-    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
-    testImplementation project(":mica-boot-test")
-}

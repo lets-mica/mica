@@ -16,26 +16,21 @@
 
 package net.dreamlu.mica.core.convert;
 
-import org.springframework.boot.convert.ApplicationConversionService;
 import org.springframework.core.convert.support.GenericConversionService;
+import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.lang.Nullable;
-import org.springframework.util.StringValueResolver;
 
 /**
  * 类型 转换 服务，添加了 IEnum 转换
  *
  * @author L.cm
  */
-public class MicaConversionService extends ApplicationConversionService {
+public class MicaConversionService extends DefaultFormattingConversionService {
 	@Nullable
 	private static volatile MicaConversionService SHARED_INSTANCE;
 
 	public MicaConversionService() {
-		this(null);
-	}
-
-	public MicaConversionService(@Nullable StringValueResolver embeddedValueResolver) {
-		super(embeddedValueResolver);
+		super();
 		super.addConverter(new EnumToStringConverter());
 		super.addConverter(new StringToEnumConverter());
 	}
@@ -47,6 +42,7 @@ public class MicaConversionService extends ApplicationConversionService {
 	 * Note: This method actually returns an {@link MicaConversionService}
 	 * instance. However, the {@code ConversionService} signature has been preserved for
 	 * binary compatibility.
+	 *
 	 * @return the shared {@code MicaConversionService} instance (never{@code null})
 	 */
 	public static GenericConversionService getInstance() {

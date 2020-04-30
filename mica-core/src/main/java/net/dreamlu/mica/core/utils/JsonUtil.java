@@ -16,15 +16,16 @@
 
 package net.dreamlu.mica.core.utils;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.TreeNode;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import com.fasterxml.jackson.databind.type.MapType;
 import lombok.experimental.UtilityClass;
-import net.dreamlu.mica.core.jackson.MicaJavaTimeModule;
 import org.springframework.lang.Nullable;
 
 import java.io.IOException;
@@ -472,6 +473,17 @@ public class JsonUtil {
 		return getInstance().canSerialize(value.getClass());
 	}
 
+	/**
+	 * 对象转 tree
+	 *
+	 * @param fromValue fromValue
+	 * @param <T>       泛型标记
+	 * @return 转换结果
+	 */
+	public static <T extends JsonNode> T treeToValue(Object fromValue) {
+		return getInstance().valueToTree(fromValue);
+	}
+
 	public static ObjectMapper getInstance() {
 		return JacksonHolder.INSTANCE;
 	}
@@ -486,22 +498,26 @@ public class JsonUtil {
 		private static final Locale CHINA = Locale.CHINA;
 
 		JacksonObjectMapper() {
-			super();
+			super(jsonFactory());
 			super.setLocale(CHINA);
 			super.setDateFormat(new SimpleDateFormat(DateUtil.PATTERN_DATETIME, CHINA));
 			// 单引号
 			super.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-			super.configure(JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);
-			// 允许JSON字符串包含非引号控制字符（值小于32的ASCII字符，包含制表符和换行符）
-			super.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
 			// 忽略json字符串中不识别的属性
 			super.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			// 忽略无法转换的对象
 			super.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 			super.setTimeZone(TimeZone.getTimeZone(ZoneId.systemDefault()));
 			super.findAndRegisterModules();
-			super.registerModule(new MicaJavaTimeModule());
 		}
 
+		private static JsonFactory jsonFactory() {
+			return JsonFactory.builder()
+				// 可解析反斜杠引用的所有字符
+				.configure(JsonReadFeature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true)
+				// 允许JSON字符串包含非引号控制字符（值小于32的ASCII字符，包含制表符和换行符）
+				.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS, true)
+				.build();
+		}
 	}
 }

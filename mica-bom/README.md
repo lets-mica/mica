@@ -27,29 +27,6 @@ dependencyManagement {
 }
 ```
 
-### 组件坐标
-`groupId`：
-```text
-net.dreamlu
-```
-
-`artifactId`：
-```text
-mica-core
-mica-http
-mica-launcher
-mica-log4j2
-mica-boot
-mica-boot-test
-mica-captcha
-mica-cloud
-mica-plus-error-catch
-mica-plus-redis
-mica-plus-mongo
-mica-plus-swagger
-mica-plus-ribbon
-```
-
 ## 使用 snapshots
 
 `注意`：`snapshots` 版本会及时响应，修复最新的 `bug` 或者必要的需求。

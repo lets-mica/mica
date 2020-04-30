@@ -1,4 +1,0 @@
-dependencies {
-    api project(":mica-launcher")
-    api "org.springframework.boot:spring-boot-starter-test"
-}

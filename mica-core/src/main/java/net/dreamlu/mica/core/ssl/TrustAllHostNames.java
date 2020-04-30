@@ -24,8 +24,11 @@ import javax.net.ssl.SSLSession;
  *
  * @author L.cm
  */
-public class TrustAllHostNames implements HostnameVerifier {
-	public static final TrustAllHostNames INSTANCE = new TrustAllHostNames();
+public enum TrustAllHostNames implements HostnameVerifier {
+	/**
+	 * 实例
+	 */
+	INSTANCE;
 
 	@Override
 	public boolean verify(String s, SSLSession sslSession) {

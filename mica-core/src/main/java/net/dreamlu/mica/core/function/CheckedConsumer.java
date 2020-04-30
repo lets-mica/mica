@@ -18,13 +18,15 @@ package net.dreamlu.mica.core.function;
 
 import org.springframework.lang.Nullable;
 
+import java.io.Serializable;
+
 /**
  * 受检的 Consumer
  *
  * @author L.cm
  */
 @FunctionalInterface
-public interface CheckedConsumer<T> {
+public interface CheckedConsumer<T> extends Serializable {
 
 	/**
 	 * Run the Consumer

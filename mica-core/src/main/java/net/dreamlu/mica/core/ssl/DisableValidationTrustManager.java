@@ -25,9 +25,12 @@ import java.security.cert.X509Certificate;
  *
  * @author L.cm
  */
-public class DisableValidationTrustManager implements X509TrustManager {
+public enum DisableValidationTrustManager implements X509TrustManager {
 
-	public static final X509TrustManager INSTANCE = new DisableValidationTrustManager();
+	/**
+	 * 实例
+	 */
+	INSTANCE;
 
 	@Override
 	public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {

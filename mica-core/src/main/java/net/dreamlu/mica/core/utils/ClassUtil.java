@@ -41,7 +41,8 @@ public class ClassUtil extends org.springframework.util.ClassUtils {
 
 	/**
 	 * 获取方法参数信息
-	 * @param constructor 构造器
+	 *
+	 * @param constructor    构造器
 	 * @param parameterIndex 参数序号
 	 * @return {MethodParameter}
 	 */
@@ -53,7 +54,8 @@ public class ClassUtil extends org.springframework.util.ClassUtils {
 
 	/**
 	 * 获取方法参数信息
-	 * @param method 方法
+	 *
+	 * @param method         方法
 	 * @param parameterIndex 参数序号
 	 * @return {MethodParameter}
 	 */
@@ -65,9 +67,10 @@ public class ClassUtil extends org.springframework.util.ClassUtils {
 
 	/**
 	 * 获取Annotation
-	 * @param method Method
+	 *
+	 * @param method         Method
 	 * @param annotationType 注解类
-	 * @param <A> 泛型标记
+	 * @param <A>            泛型标记
 	 * @return {Annotation}
 	 */
 	@Nullable
@@ -89,9 +92,10 @@ public class ClassUtil extends org.springframework.util.ClassUtils {
 
 	/**
 	 * 获取Annotation
-	 * @param handlerMethod HandlerMethod
+	 *
+	 * @param handlerMethod  HandlerMethod
 	 * @param annotationType 注解类
-	 * @param <A> 泛型标记
+	 * @param <A>            泛型标记
 	 * @return {Annotation}
 	 */
 	@Nullable
@@ -104,6 +108,25 @@ public class ClassUtil extends org.springframework.util.ClassUtils {
 		// 获取类上面的Annotation，可能包含组合注解，故采用spring的工具类
 		Class<?> beanType = handlerMethod.getBeanType();
 		return AnnotatedElementUtils.findMergedAnnotation(beanType, annotationType);
+	}
+
+	/**
+	 * 判断是否有注解 Annotation
+	 *
+	 * @param method         Method
+	 * @param annotationType 注解类
+	 * @param <A>            泛型标记
+	 * @return {boolean}
+	 */
+	public static <A extends Annotation> boolean isAnnotated(Method method, Class<A> annotationType) {
+		// 先找方法，再找方法上的类
+		boolean isMethodAnnotated = AnnotatedElementUtils.isAnnotated(method, annotationType);
+		if (isMethodAnnotated) {
+			return true;
+		}
+		// 获取类上面的Annotation，可能包含组合注解，故采用spring的工具类
+		Class<?> targetClass = method.getDeclaringClass();
+		return AnnotatedElementUtils.isAnnotated(targetClass, annotationType);
 	}
 
 }

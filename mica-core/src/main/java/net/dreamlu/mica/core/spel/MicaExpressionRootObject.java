@@ -16,8 +16,8 @@
 
 package net.dreamlu.mica.core.spel;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.Method;
 
@@ -27,7 +27,7 @@ import java.lang.reflect.Method;
  * @author L.cm
  */
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MicaExpressionRootObject {
 	private final Method method;
 

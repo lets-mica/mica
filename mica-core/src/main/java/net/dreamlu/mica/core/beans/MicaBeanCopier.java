@@ -48,7 +48,7 @@ import java.util.concurrent.ConcurrentMap;
  * @author L.cm
  */
 public abstract class MicaBeanCopier {
-	private static final Type CONVERTER = TypeUtils.parseType("org.springframework.cglib.core.Converter");
+	private static final Type CONVERTER = TypeUtils.parseType(Converter.class.getName());
 	private static final Type BEAN_COPIER = TypeUtils.parseType(MicaBeanCopier.class.getName());
 	private static final Type BEAN_MAP = TypeUtils.parseType(Map.class.getName());
 	private static final Signature COPY = new Signature("copy", Type.VOID_TYPE, new Type[]{Constants.TYPE_OBJECT, Constants.TYPE_OBJECT, CONVERTER});
@@ -359,7 +359,7 @@ public abstract class MicaBeanCopier {
 				EmitUtils.load_class(e, setterType);
 				e.load_local(var);
 				// ClassUtils.isAssignableValue(Integer.class, id)
-				e.invoke_static(CLASS_UTILS, IS_ASSIGNABLE_VALUE);
+				e.invoke_static(CLASS_UTILS, IS_ASSIGNABLE_VALUE, false);
 				Label l1 = new Label();
 				// 返回值，判断 链式 bean
 				Class<?> returnType = writeMethod.getReturnType();
@@ -380,15 +380,13 @@ public abstract class MicaBeanCopier {
 					EmitUtils.load_class(e, setterType);
 					e.push(propName);
 					e.invoke_interface(CONVERTER, CONVERT);
-					e.unbox_or_zero(setterType);
-					e.invoke(write);
 				} else {
 					e.if_jump(Opcodes.IFEQ, l0);
 					e.load_local(targetLocal);
 					e.load_local(var);
-					e.unbox_or_zero(setterType);
-					e.invoke(write);
 				}
+				e.unbox_or_zero(setterType);
+				e.invoke(write);
 				// 返回值，判断 链式 bean
 				if (!returnType.equals(Void.TYPE)) {
 					e.pop();

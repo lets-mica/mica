@@ -19,6 +19,7 @@
 package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.lang.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,6 +66,17 @@ public class ThreadLocalUtil {
 	}
 
 	/**
+	 * 设置一个值到ThreadLocal
+	 *
+	 * @param map map
+	 * @return 被放入的值
+	 * @see Map#putAll(Map)
+	 */
+	public static void put(Map<String, Object> map) {
+		LOCAL.get().putAll(map);
+	}
+
+	/**
 	 * 删除参数对应的值
 	 *
 	 * @param key
@@ -92,6 +104,7 @@ public class ThreadLocalUtil {
 	 * @see Map#get(Object)
 	 * @see ClassCastException
 	 */
+	@Nullable
 	public static <T> T get(String key) {
 		return ((T) LOCAL.get().get(key));
 	}
@@ -101,6 +114,7 @@ public class ThreadLocalUtil {
 	 *
 	 * @see Supplier
 	 */
+	@Nullable
 	public static <T> T getIfAbsent(String key, Supplier<T> supplierOnNull) {
 		return ((T) LOCAL.get().computeIfAbsent(key, k -> supplierOnNull.get()));
 	}

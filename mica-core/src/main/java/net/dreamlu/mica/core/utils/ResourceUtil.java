@@ -64,4 +64,20 @@ public class ResourceUtil extends org.springframework.util.ResourceUtils {
 		}
 		return new FileSystemResource(resourceLocation);
 	}
+
+	/**
+	 * 读取资源文件为字符串
+	 *
+	 * @param resourceLocation 资源文件地址
+	 * @return 字符串
+	 */
+	public static String getAsString(String resourceLocation) {
+		try {
+			Resource resource = getResource(resourceLocation);
+			return IoUtil.readToString(resource.getInputStream());
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
 }

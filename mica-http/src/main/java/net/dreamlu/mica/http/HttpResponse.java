@@ -148,16 +148,6 @@ public class HttpResponse implements ResponseSpec, Closeable {
 	}
 
 	@Override
-	public <T> T asDomValue(Class<T> valueType) {
-		return DomMapper.readValue(this.asStream(), valueType);
-	}
-
-	@Override
-	public <T> List<T> asDomList(Class<T> valueType) {
-		return DomMapper.readList(this.asStream(), valueType);
-	}
-
-	@Override
 	public File toFile(File file) {
 		toFile(file.toPath());
 		return file;

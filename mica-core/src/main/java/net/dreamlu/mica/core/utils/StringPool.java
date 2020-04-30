@@ -76,6 +76,8 @@ public interface StringPool {
 	String ONE              = "1";
 	String ZERO             = "0";
 	String DOLLAR_LEFT_BRACE= "${";
+	String GET              = "get";
+	String IS               = "is";
 	String UNKNOWN          = "unknown";
 	// @formatter:on
 }

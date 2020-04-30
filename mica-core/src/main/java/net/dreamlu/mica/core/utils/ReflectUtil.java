@@ -46,7 +46,7 @@ public class ReflectUtil extends ReflectionUtils {
 	 * @return PropertyDescriptor数组
 	 */
 	public static PropertyDescriptor[] getBeanGetters(Class type) {
-		return getPropertiesHelper(type, true, false);
+		return getPropertyDescriptors(type, true, false);
 	}
 
 	/**
@@ -56,18 +56,18 @@ public class ReflectUtil extends ReflectionUtils {
 	 * @return PropertyDescriptor数组
 	 */
 	public static PropertyDescriptor[] getBeanSetters(Class type) {
-		return getPropertiesHelper(type, false, true);
+		return getPropertyDescriptors(type, false, true);
 	}
 
 	/**
 	 * 获取 Bean 的所有 PropertyDescriptor
 	 *
-	 * @param type 类
-	 * @param read 读取方法
+	 * @param type  类
+	 * @param read  读取方法
 	 * @param write 写方法
 	 * @return PropertyDescriptor数组
 	 */
-	public static PropertyDescriptor[] getPropertiesHelper(Class type, boolean read, boolean write) {
+	public static PropertyDescriptor[] getPropertyDescriptors(Class type, boolean read, boolean write) {
 		try {
 			PropertyDescriptor[] all = BeanUtil.getPropertyDescriptors(type);
 			if (read && write) {
@@ -75,8 +75,9 @@ public class ReflectUtil extends ReflectionUtils {
 			} else {
 				List<PropertyDescriptor> properties = new ArrayList<>(all.length);
 				for (PropertyDescriptor pd : all) {
-					if ((read && pd.getReadMethod() != null)
-						|| (write && pd.getWriteMethod() != null)) {
+					if (read && pd.getReadMethod() != null) {
+						properties.add(pd);
+					} else if (write && pd.getWriteMethod() != null) {
 						properties.add(pd);
 					}
 				}
@@ -89,6 +90,7 @@ public class ReflectUtil extends ReflectionUtils {
 
 	/**
 	 * 获取 bean 的属性信息
+	 *
 	 * @param propertyType 类型
 	 * @param propertyName 属性名
 	 * @return {Property}
@@ -104,9 +106,10 @@ public class ReflectUtil extends ReflectionUtils {
 
 	/**
 	 * 获取 bean 的属性信息
-	 * @param propertyType 类型
+	 *
+	 * @param propertyType       类型
 	 * @param propertyDescriptor PropertyDescriptor
-	 * @param propertyName 属性名
+	 * @param propertyName       属性名
 	 * @return {Property}
 	 */
 	public static Property getProperty(Class<?> propertyType, PropertyDescriptor propertyDescriptor, String propertyName) {
@@ -117,6 +120,7 @@ public class ReflectUtil extends ReflectionUtils {
 
 	/**
 	 * 获取 bean 的属性信息
+	 *
 	 * @param propertyType 类型
 	 * @param propertyName 属性名
 	 * @return {Property}
@@ -132,9 +136,10 @@ public class ReflectUtil extends ReflectionUtils {
 
 	/**
 	 * 获取 类属性信息
-	 * @param propertyType 类型
+	 *
+	 * @param propertyType       类型
 	 * @param propertyDescriptor PropertyDescriptor
-	 * @param propertyName 属性名
+	 * @param propertyName       属性名
 	 * @return {Property}
 	 */
 	public static TypeDescriptor getTypeDescriptor(Class<?> propertyType, PropertyDescriptor propertyDescriptor, String propertyName) {
@@ -146,7 +151,8 @@ public class ReflectUtil extends ReflectionUtils {
 
 	/**
 	 * 获取 类属性
-	 * @param clazz 类信息
+	 *
+	 * @param clazz     类信息
 	 * @param fieldName 属性名
 	 * @return Field
 	 */
@@ -164,10 +170,11 @@ public class ReflectUtil extends ReflectionUtils {
 
 	/**
 	 * 获取 所有 field 属性上的注解
-	 * @param clazz 类
-	 * @param fieldName 属性名
+	 *
+	 * @param clazz           类
+	 * @param fieldName       属性名
 	 * @param annotationClass 注解
-	 * @param <T> 注解泛型
+	 * @param <T>             注解泛型
 	 * @return 注解
 	 */
 	@Nullable
@@ -178,4 +185,57 @@ public class ReflectUtil extends ReflectionUtils {
 		}
 		return field.getAnnotation(annotationClass);
 	}
+
+
+	/**
+	 * 重写 setField 的方法，用于处理 setAccessible 的问题
+	 *
+	 * @param field  Field
+	 * @param target Object
+	 * @param value  value
+	 */
+	public static void setField(Field field, @Nullable Object target, @Nullable Object value) {
+		makeAccessible(field);
+		ReflectionUtils.setField(field, target, value);
+	}
+
+	/**
+	 * 重写 setField 的方法，用于处理 setAccessible 的问题
+	 *
+	 * @param field  Field
+	 * @param target Object
+	 * @return value
+	 */
+	@Nullable
+	public static Object getField(Field field, @Nullable Object target) {
+		makeAccessible(field);
+		return ReflectionUtils.getField(field, target);
+	}
+
+	/**
+	 * 重写 invokeMethod 的方法，用于处理 setAccessible 的问题
+	 *
+	 * @param method Method
+	 * @param target Object
+	 * @return value
+	 */
+	@Nullable
+	public static Object invokeMethod(Method method, @Nullable Object target) {
+		return ReflectUtil.invokeMethod(method, target, new Object[0]);
+	}
+
+	/**
+	 * 重写 invokeMethod 的方法，用于处理 setAccessible 的问题
+	 *
+	 * @param method Method
+	 * @param target Object
+	 * @param args   args
+	 * @return value
+	 */
+	@Nullable
+	public static Object invokeMethod(Method method, @Nullable Object target, @Nullable Object... args) {
+		makeAccessible(method);
+		return ReflectionUtils.invokeMethod(method, target, args);
+	}
+
 }

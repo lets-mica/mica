@@ -173,24 +173,6 @@ public interface ResponseSpec {
 	<V> Map<String, V> asMap(Class<?> valueType);
 
 	/**
-	 * 将 xml、heml 转成对象
-	 *
-	 * @param valueType 对象类
-	 * @param <T>       泛型
-	 * @return 对象
-	 */
-	<T> T asDomValue(Class<T> valueType);
-
-	/**
-	 * 将 xml、heml 转成对象
-	 *
-	 * @param valueType 对象类
-	 * @param <T>       泛型
-	 * @return 对象集合
-	 */
-	<T> List<T> asDomList(Class<T> valueType);
-
-	/**
 	 * toFile.
 	 *
 	 * @param file File

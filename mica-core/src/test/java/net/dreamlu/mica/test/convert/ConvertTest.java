@@ -1,21 +1,18 @@
 package net.dreamlu.mica.test.convert;
 
-import net.dreamlu.mica.core.convert.EnumToStringConverter;
 import net.dreamlu.mica.core.convert.MicaConversionService;
-import net.dreamlu.mica.core.convert.StringToEnumConverter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.convert.support.GenericConversionService;
 
 public class ConvertTest {
 
-	private MicaConversionService conversionService;
+	private GenericConversionService conversionService;
 
 	@Before
 	public void setUp() {
-		conversionService = new MicaConversionService();
-		conversionService.addConverter(new EnumToStringConverter());
-		conversionService.addConverter(new StringToEnumConverter());
+		conversionService = MicaConversionService.getInstance();
 	}
 
 	@Test

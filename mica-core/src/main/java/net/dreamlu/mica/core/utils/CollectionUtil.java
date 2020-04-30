@@ -19,6 +19,7 @@ package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -105,8 +106,7 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 	 */
 	@SafeVarargs
 	public static <E> Set<E> ofImmutableSet(E... es) {
-		Objects.requireNonNull(es, "args es is null.");
-		return Arrays.stream(es).collect(Collectors.toSet());
+		return Arrays.stream(Objects.requireNonNull(es, "args es is null.")).collect(Collectors.toSet());
 	}
 
 	/**
@@ -118,8 +118,7 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 	 */
 	@SafeVarargs
 	public static <E> List<E> ofImmutableList(E... es) {
-		Objects.requireNonNull(es, "args es is null.");
-		return Arrays.stream(es).collect(Collectors.toList());
+		return Arrays.stream(Objects.requireNonNull(es, "args es is null.")).collect(Collectors.toList());
 	}
 
 	/**
@@ -162,6 +161,66 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 			keyValueMap.put((K) key, (V) value);
 		}
 		return keyValueMap;
+	}
+
+	/**
+	 * list 分片
+	 *
+	 * @param list List
+	 * @param size 分片大小
+	 * @param <T>  泛型
+	 * @return List 分片
+	 */
+	public static <T> List<List<T>> partition(List<T> list, int size) {
+		Objects.requireNonNull(list, "List to partition must not null.");
+		Assert.isTrue(size > 0, "List to partition size must more then zero.");
+		return (list instanceof RandomAccess)
+			? new RandomAccessPartition<>(list, size)
+			: new Partition<>(list, size);
+	}
+
+	private static class RandomAccessPartition<T> extends Partition<T> implements RandomAccess {
+		RandomAccessPartition(List<T> list, int size) {
+			super(list, size);
+		}
+	}
+
+	private static class Partition<T> extends AbstractList<List<T>> {
+		final List<T> list;
+		final int size;
+
+		Partition(List<T> list, int size) {
+			this.list = list;
+			this.size = size;
+		}
+
+		@Override
+		public List<T> get(int index) {
+			if (index >= 0 && index < this.size()) {
+				int start = index * this.size;
+				int end = Math.min(start + this.size, this.list.size());
+				return this.list.subList(start, end);
+			}
+			throw new IndexOutOfBoundsException(String.format("index (%s) must be less than size (%s)", index, this.size()));
+		}
+
+		@Override
+		public int size() {
+			return ceilDiv(this.list.size(), this.size);
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return this.list.isEmpty();
+		}
+
+		private static int ceilDiv(int x, int y) {
+			int r = x / y;
+			if (r * y < x) {
+				r++;
+			}
+			return r;
+		}
 	}
 
 }

@@ -16,13 +16,15 @@
 
 package net.dreamlu.mica.core.function;
 
+import java.io.Serializable;
+
 /**
  * 受检的 Comparator
  *
  * @author L.cm
  */
 @FunctionalInterface
-public interface CheckedComparator<T> {
+public interface CheckedComparator<T> extends Serializable {
 
 	/**
 	 * Compares its two arguments for order.

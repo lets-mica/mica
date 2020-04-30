@@ -27,7 +27,6 @@ import okhttp3.internal.Util;
 import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.net.ssl.*;
 import java.net.InetSocketAddress;
@@ -79,6 +78,8 @@ public class HttpRequest {
 	private Duration readTimeout;
 	@Nullable
 	private Duration writeTimeout;
+	@Nullable
+	private List<Protocol> protocols;
 	@Nullable
 	private Proxy proxy;
 	@Nullable
@@ -196,7 +197,7 @@ public class HttpRequest {
 		return this;
 	}
 
-	public HttpRequest bodyJson(@Nonnull Object body) {
+	public HttpRequest bodyJson(Object body) {
 		return bodyString(JsonUtil.toJson(body));
 	}
 
@@ -221,6 +222,9 @@ public class HttpRequest {
 		}
 		if (writeTimeout != null) {
 			builder.writeTimeout(writeTimeout.toMillis(), TimeUnit.MILLISECONDS);
+		}
+		if (protocols != null && !protocols.isEmpty()) {
+			builder.protocols(protocols);
 		}
 		if (proxy != null) {
 			builder.proxy(proxy);
@@ -397,6 +401,11 @@ public class HttpRequest {
 		return this;
 	}
 
+	public HttpRequest protocols(List<Protocol> protocols) {
+		this.protocols = protocols;
+		return this;
+	}
+
 	public HttpRequest proxy(Proxy proxy) {
 		this.proxy = proxy;
 		return this;
@@ -410,6 +419,9 @@ public class HttpRequest {
 		return proxy(Proxy.Type.HTTP, address);
 	}
 
+	public HttpRequest proxy(final String hostname, final int port) {
+		return proxy(InetSocketAddress.createUnresolved(hostname, port));
+	}
 
 	public HttpRequest proxySelector(final ProxySelector proxySelector) {
 		this.proxySelector = proxySelector;

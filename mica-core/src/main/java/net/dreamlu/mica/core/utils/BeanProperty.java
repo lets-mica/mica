@@ -16,8 +16,8 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Bean属性
@@ -25,7 +25,7 @@ import lombok.Getter;
  * @author L.cm
  */
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BeanProperty {
 	private final String name;
 	private final Class<?> type;

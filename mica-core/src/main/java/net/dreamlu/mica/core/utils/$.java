@@ -235,6 +235,16 @@ public class $ {
 	}
 
 	/**
+	 * 有 任意 一个 Blank
+	 *
+	 * @param css CharSequence
+	 * @return boolean
+	 */
+	public static boolean isAnyBlank(Collection<CharSequence> css) {
+		return StringUtil.isAnyBlank(css);
+	}
+
+	/**
 	 * 判断是否全为非空字符串
 	 *
 	 * @param css CharSequence
@@ -242,6 +252,36 @@ public class $ {
 	 */
 	public static boolean isNoneBlank(final CharSequence... css) {
 		return StringUtil.isNoneBlank(css);
+	}
+
+	/**
+	 * 是否全非 Blank
+	 *
+	 * @param css CharSequence
+	 * @return boolean
+	 */
+	public static boolean isNoneBlank(Collection<CharSequence> css) {
+		return StringUtil.isNoneBlank(css);
+	}
+
+	/**
+	 * 有 任意 一个 Blank
+	 *
+	 * @param css CharSequence
+	 * @return boolean
+	 */
+	public static boolean isAnyNotBlank(CharSequence... css) {
+		return StringUtil.isAnyNotBlank(css);
+	}
+
+	/**
+	 * 有 任意 一个 Blank
+	 *
+	 * @param css CharSequence
+	 * @return boolean
+	 */
+	public static boolean isAnyNotBlank(Collection<CharSequence> css) {
+		return StringUtil.isAnyNotBlank(css);
 	}
 
 	/**
@@ -477,6 +517,41 @@ public class $ {
 	@SafeVarargs
 	public static <E> List<E> ofImmutableList(E... es) {
 		return CollectionUtil.ofImmutableList(es);
+	}
+
+	/**
+	 * Iterable 转换为List集合
+	 *
+	 * @param elements Iterable
+	 * @param <E>      泛型
+	 * @return 集合
+	 */
+	public static <E> List<E> toList(Iterable<E> elements) {
+		return CollectionUtil.toList(elements);
+	}
+
+	/**
+	 * 将key value 数组转为 map
+	 *
+	 * @param keysValues key value 数组
+	 * @param <K>        key
+	 * @param <V>        value
+	 * @return map 集合
+	 */
+	public static <K, V> Map<K, V> toMap(Object... keysValues) {
+		return CollectionUtil.toMap(keysValues);
+	}
+
+	/**
+	 * list 分片
+	 *
+	 * @param list List
+	 * @param size 分片大小
+	 * @param <T>  泛型
+	 * @return List 分片
+	 */
+	public static <T> List<List<T>> partition(List<T> list, int size) {
+		return CollectionUtil.partition(list, size);
 	}
 
 	/**
@@ -1315,7 +1390,7 @@ public class $ {
 	 * @return MD5 digest as a hex string
 	 */
 	public static String encodeHex(byte[] bytes) {
-		return DigestUtil.encodeHex(bytes);
+		return HexUtil.encodeToString(bytes);
 	}
 
 	/**
@@ -1325,7 +1400,7 @@ public class $ {
 	 * @return MD5 digest as a hex string
 	 */
 	public static byte[] decodeHex(final String hexString) {
-		return DigestUtil.decodeHex(hexString);
+		return HexUtil.decode(hexString);
 	}
 
 	/**

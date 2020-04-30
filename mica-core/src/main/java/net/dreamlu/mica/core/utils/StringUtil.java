@@ -24,6 +24,7 @@ import org.springframework.web.util.HtmlUtils;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -39,12 +40,6 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * 特殊字符正则，sql特殊字符和空白符
 	 */
 	private final static Pattern SPECIAL_CHARS_REGEX = Pattern.compile("[`'\"|/,;()-+*%#·•�　\\s]");
-	/**
-	 * 随机字符串因子
-	 */
-	private static final String INT_STR = "0123456789";
-	private static final String STR_STR = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	private static final String ALL_STR = INT_STR + STR_STR;
 
 	/**
 	 * 首字母变小写
@@ -133,6 +128,19 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
+	 * 有 任意 一个 Blank
+	 *
+	 * @param css CharSequence
+	 * @return boolean
+	 */
+	public static boolean isAnyBlank(Collection<CharSequence> css) {
+		if (CollectionUtil.isEmpty(css)) {
+			return true;
+		}
+		return css.stream().anyMatch(StringUtil::isBlank);
+	}
+
+	/**
 	 * 是否全非 Blank
 	 *
 	 * @param css CharSequence
@@ -143,6 +151,45 @@ public class StringUtil extends org.springframework.util.StringUtils {
 			return false;
 		}
 		return Stream.of(css).allMatch(StringUtil::isNotBlank);
+	}
+
+	/**
+	 * 是否全非 Blank
+	 *
+	 * @param css CharSequence
+	 * @return boolean
+	 */
+	public static boolean isNoneBlank(Collection<CharSequence> css) {
+		if (CollectionUtil.isEmpty(css)) {
+			return false;
+		}
+		return css.stream().allMatch(StringUtil::isNotBlank);
+	}
+
+	/**
+	 * 有 任意 一个 Blank
+	 *
+	 * @param css CharSequence
+	 * @return boolean
+	 */
+	public static boolean isAnyNotBlank(CharSequence... css) {
+		if (ObjectUtil.isEmpty(css)) {
+			return false;
+		}
+		return Stream.of(css).anyMatch(StringUtil::isNoneBlank);
+	}
+
+	/**
+	 * 有 任意 一个 Blank
+	 *
+	 * @param css CharSequence
+	 * @return boolean
+	 */
+	public static boolean isAnyNotBlank(Collection<CharSequence> css) {
+		if (CollectionUtil.isEmpty(css)) {
+			return false;
+		}
+		return css.stream().anyMatch(StringUtil::isNoneBlank);
 	}
 
 	/**
@@ -419,19 +466,14 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 */
 	public static String random(int count, RandomType randomType) {
 		if (count == 0) {
-			return "";
+			return StringPool.EMPTY;
 		}
 		Assert.isTrue(count > 0, "Requested random string length " + count + " is less than 0.");
-		final ThreadLocalRandom random = ThreadLocalRandom.current();
+		final Random random = Holder.SECURE_RANDOM;
 		char[] buffer = new char[count];
 		for (int i = 0; i < count; i++) {
-			if (RandomType.INT == randomType) {
-				buffer[i] = INT_STR.charAt(random.nextInt(INT_STR.length()));
-			} else if (RandomType.STRING == randomType) {
-				buffer[i] = STR_STR.charAt(random.nextInt(STR_STR.length()));
-			} else {
-				buffer[i] = ALL_STR.charAt(random.nextInt(ALL_STR.length()));
-			}
+			String factor = randomType.getFactor();
+			buffer[i] = factor.charAt(random.nextInt(factor.length()));
 		}
 		return new String(buffer);
 	}

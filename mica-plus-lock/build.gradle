@@ -1,8 +1,0 @@
-dependencies {
-    api project(":mica-core")
-    api "org.redisson:redisson:${redissonVersion}"
-    api "org.springframework.boot:spring-boot-starter-aop"
-    compileOnly "org.springframework.cloud:spring-cloud-context"
-    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
-    testImplementation "org.springframework.boot:spring-boot-starter-test"
-}

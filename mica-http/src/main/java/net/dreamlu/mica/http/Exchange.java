@@ -40,7 +40,8 @@ import java.util.function.Function;
  */
 @RequiredArgsConstructor
 public class Exchange {
-	private BiConsumer<Request, IOException> failedBiConsumer = (r, e) -> {};
+	private BiConsumer<Request, IOException> failedBiConsumer = (r, e) -> {
+	};
 	private final Call call;
 
 	public Exchange onFailed(BiConsumer<Request, IOException> failConsumer) {
@@ -164,28 +165,6 @@ public class Exchange {
 	 */
 	public <V> Map<String, V> asMap(Class<?> valueType) {
 		return onResponse(responseSpec -> responseSpec.asMap(valueType));
-	}
-
-	/**
-	 * 将 xml、heml 转成对象
-	 *
-	 * @param valueType 对象类
-	 * @param <T>       泛型
-	 * @return 对象
-	 */
-	public <T> T asDomValue(Class<T> valueType) {
-		return onResponse(responseSpec -> responseSpec.asDomValue(valueType));
-	}
-
-	/**
-	 * 将 xml、heml 转成对象
-	 *
-	 * @param valueType 对象类
-	 * @param <T>       泛型
-	 * @return 对象集合
-	 */
-	public <T> List<T> asDomList(Class<T> valueType) {
-		return onResponse(responseSpec -> responseSpec.asDomList(valueType));
 	}
 
 	/**

@@ -21,6 +21,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.PatternMatchUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -108,7 +109,7 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	 * 扫描目录下的文件
 	 *
 	 * @param file            文件
-	 * @param fileNamePattern Spring AntPathMatcher 规则
+	 * @param fileNamePattern "xxx*", "*xxx", "*xxx*" and "xxx*yyy"
 	 * @return 文件集合
 	 */
 	public static List<File> list(File file, final String fileNamePattern) {
@@ -116,6 +117,21 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 		return list(file, fileList, pathname -> {
 			String fileName = pathname.getName();
 			return PatternMatchUtils.simpleMatch(fileNamePattern, fileName);
+		});
+	}
+
+	/**
+	 * 扫描目录下的文件
+	 *
+	 * @param file             文件
+	 * @param fileNamePatterns "xxx*", "*xxx", "*xxx*" and "xxx*yyy"
+	 * @return 文件集合
+	 */
+	public static List<File> list(File file, final String... fileNamePatterns) {
+		List<File> fileList = new ArrayList<>();
+		return list(file, fileList, pathname -> {
+			String fileName = pathname.getName();
+			return PatternMatchUtils.simpleMatch(fileNamePatterns, fileName);
 		});
 	}
 
@@ -159,27 +175,37 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	/**
 	 * 获取文件后缀名
 	 *
+	 * @param path 文件路径
+	 * @return {String}
+	 */
+	@Nullable
+	public static String getFilename(@Nullable String path) {
+		return StringUtils.getFilename(path);
+	}
+
+	/**
+	 * 获取文件后缀名
+	 *
 	 * @param fullName 文件全名
 	 * @return {String}
 	 */
-	public static String getFileExtension(String fullName) {
-		Assert.notNull(fullName, "file fullName is null.");
-		String fileName = new File(fullName).getName();
-		int dotIndex = fileName.lastIndexOf(CharPool.DOT);
-		return (dotIndex == -1) ? StringPool.EMPTY : fileName.substring(dotIndex + 1);
+	@Nullable
+	public static String getFileExtension(@Nullable String fullName) {
+		return StringUtils.getFilenameExtension(fullName);
 	}
 
 	/**
 	 * 获取文件名，去除后缀名
 	 *
-	 * @param file 文件
+	 * @param path 文件
 	 * @return {String}
 	 */
-	public static String getNameWithoutExtension(String file) {
-		Assert.notNull(file, "file is null.");
-		String fileName = new File(file).getName();
-		int dotIndex = fileName.lastIndexOf(CharPool.DOT);
-		return (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);
+	@Nullable
+	public static String getPathWithoutExtension(@Nullable String path) {
+		if (path == null) {
+			return null;
+		}
+		return StringUtils.stripFilenameExtension(path);
 	}
 
 	/**

@@ -10,110 +10,12 @@
 
 `注意`：`snapshots` 版本会及时响应，修复最新的 `bug` 或者必要的需求。
 
-| 依赖         | 版本              |
-| ------------ | ----------------- |
-| Spring | 5.x |
-| Spring Boot  | 2.1.x             |
-| Spring Cloud | Greenwich 版 |
-
 ![犬夜叉-云母](docs/img/mica-001.jpeg)
 
 [**更新记录**](CHANGELOG.md)
 
-## 模块划分
-### mica-auto
-1. 编译期生成 `spring.factories`。
-2. 编译期生成 `spring-devtools.properties`。
-3. 编译期生成 `FeignClient` 信息到 `spring.factories` 中，供 `mica-cloud` 中完成 `Feign` 自动化配置。
-
-`文档地址`：[https://gitee.com/596392912/mica-auto](https://gitee.com/596392912/mica-auto)
-
-### mica-core
-- 常用工具包，基于 `Spring-core` 扩展增强，无其他依赖。
-- 增强 cglib Bean copy，高性能（接近直接 get set），支持链式 bean，支持自动类型转换 。
-- `$` 工具类快捷方法，不用再记忆到底有哪些工具类。
-- 统一消息返回体，封装得更加好用。
-- Jaskson Read Write HttpMessageConverter，分读写的消息转换器。
-- Spring 枚举转换器，规则同 Jackson。
-
-`文档地址`：[mica-core](https://www.dreamlu.net/docs/utils-common.html)
-
-### mica-http
-- `mica-http` 是 `okhttp` 的封装，Fluent 语法的 http 工具包，语法参考 HttpClient Fluent API。
-
-`文档地址`：[mica-http](mica-http/README.md)
-
-### mica-laytpl 
-- laytpl 模板（将其引入到 java 中）
-
-`文档地址`：[mica-laytpl](mica-laytpl/README.md)
-
-### mica-launcher
-- 项目启动器
-- 启动信息打印
-- 系统环境处理
-- spi 扩展
-
-`文档地址`：[mica-launcher](https://www.dreamlu.net/docs/launcher-profile.html)
-
-### mica-boot
-- 支持 `Spring boot web` 和 `Spring boot webflux`。
-- 异步配置。
-- 异常处理，未知异常发送 Event 事件，方便监听收集。
-- swagger 自动化配置，加入 jar 包即可。
-- jackson 配置。
-- 文件上传配置。
-- 文件下载，支持断点续传，浏览器兼容好。
-- 请求日志打印，方便开发。
-- url 版本号和 header 版本处理。
-
-`文档地址`：[mica-boot](https://www.dreamlu.net/docs/boot-version.html)
-
-### mica-boot-test
-- 方便 mica-boot 测试，注入 mica-launcher 中注入的参数。
-
-`文档地址`：[mica-boot-test](https://www.dreamlu.net/docs/boot-test.html)
-
-### mica-log4j2
-- mica log4j 配置。
-- 基于 disruptor 异步日志，高性能。
-- 非开发环境将 System.out 和 err 写入 log。
-
-`文档地址`：[mica-log4j2](https://www.dreamlu.net/docs/log4j2.html)
-
-### mica-captcha
-- 验证码，支持 `webflux` 和 `serlvet`。
-
-`文档地址`：[mica-captcha](https://www.dreamlu.net/docs/captcha.html)
-
-### mica-cloud
-- Feign 自动降级、header 透传、版本处理，结合 `mica-auto` 自动化配置。
-- RestTemplate 自动配置，基于 okhttp 增强，添加请求日志和 Header 传递。
-- hystrix 熔断器增强，支持 header 透传、当前用户获取和透传。
-- Apollo Properties 配置刷新。
-
-### mica-plus-error-catch
-- 未知异常收集到 spring-cloud-stream 中，方便统一处理。
-
-### mica-plus-redis
-- redis cache name # 自动配置超时时间。
-- 通用 MicaRedisCache Spring Bean。
-- 分布式限流。
-
-`文档地址`：[mica-plus-redis](mica-plus-redis/README.md)
-
-### mica-plus-mongo
-- mongo 复杂 tree 和 jsonNode 转换处理。
-
-### mica-plus-swagger
-- swagger 和 swagger-bootstrap-ui 依赖。
-
-### mica-plus-ribbon
-- 【优先级最高】ip 相同的服务（方便本地多服务联调）。
-- 可设置选择的 ip 或者 ip 段，例如：`172.21.0.*`、`172.21.0.8*`。
-- 可设定 `tag`，用于灰度，匹配：`nacos.discovery.metadata.tag`。
-
-`文档地址`：[mica-plus-ribbon](mica-plus-ribbon/README.md)
+## 使用文档
+使用文档详见：https://www.dreamlu.net/mica2/docs/
 
 ## 已知问题
 lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861

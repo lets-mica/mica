@@ -6,4 +6,18 @@
 3. 服务异常。
 4. 统一返回模型。
 5. 常用工具包。
-6. 分读写的 jackson 转换处理。
+
+## 添加依赖
+### maven
+```xml
+<dependency>
+  <groupId>net.dreamlu</groupId>
+  <artifactId>mica-core</artifactId>
+  <version>${version}</version>
+</dependency>
+```
+
+### gradle
+```groovy
+compile("net.dreamlu:mica-core:${version}")
+```

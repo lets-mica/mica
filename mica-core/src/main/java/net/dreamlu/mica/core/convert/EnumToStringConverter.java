@@ -79,6 +79,7 @@ public class EnumToStringConverter implements ConditionalGenericConverter {
 		return Collections.unmodifiableSet(pairSet);
 	}
 
+	@Nullable
 	@Override
 	public Object convert(@Nullable Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (source == null) {

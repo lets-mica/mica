@@ -17,9 +17,8 @@
 package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
-import net.dreamlu.mica.core.io.FastStringWriter;
+import net.dreamlu.mica.core.io.FastStringPrintWriter;
 
-import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 
@@ -93,8 +92,8 @@ public class Exceptions {
 	 * @return {String}
 	 */
 	public static String getStackTraceAsString(Throwable ex) {
-		FastStringWriter stringWriter = new FastStringWriter(512);
-		ex.printStackTrace(new PrintWriter(stringWriter));
-		return stringWriter.toString();
+		FastStringPrintWriter printWriter = new FastStringPrintWriter(512);
+		ex.printStackTrace(printWriter);
+		return printWriter.toString();
 	}
 }

@@ -16,13 +16,15 @@
 
 package net.dreamlu.mica.core.function;
 
+import java.io.Serializable;
+
 /**
  * 受检的 runnable
  *
  * @author L.cm
  */
 @FunctionalInterface
-public interface CheckedRunnable {
+public interface CheckedRunnable extends Serializable {
 
 	/**
 	 * Run this runnable.

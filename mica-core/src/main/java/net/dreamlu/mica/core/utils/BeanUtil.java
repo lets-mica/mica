@@ -90,8 +90,7 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	 * @param value        属性值
 	 */
 	public static void setProperty(Object bean, String propertyName, Object value) {
-		Objects.requireNonNull(bean, "bean Could not null");
-		BeanWrapper beanWrapper = PropertyAccessorFactory.forBeanPropertyAccess(bean);
+		BeanWrapper beanWrapper = PropertyAccessorFactory.forBeanPropertyAccess(Objects.requireNonNull(bean, "bean Could not null"));
 		beanWrapper.setPropertyValue(propertyName, value);
 	}
 
