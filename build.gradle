@@ -7,6 +7,7 @@ ext {
     swaggerAnnotationsVersion = "1.5.22"
     okhttpVersion = "3.14.4"
     jsoupVersion = "1.13.1"
+    xxlJobVersion = "2.2.0"
     lombokVersion = "1.18.12"
     findbugsVersion = "3.0.2"
 }
