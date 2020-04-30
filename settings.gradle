@@ -5,4 +5,5 @@ include "mica-http"
 include "mica-spider"
 include "mica-laytpl"
 include "mica-swagger"
+include "mica-captcha"
 

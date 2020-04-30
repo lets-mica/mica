@@ -20,6 +20,7 @@ dependencyManagement {
         dependency "net.dreamlu:mica-spider:${VERSION}"
         dependency "net.dreamlu:mica-laytpl:${VERSION}"
         dependency "net.dreamlu:mica-swagger:${VERSION}"
+        dependency "net.dreamlu:mica-captcha:${VERSION}"
         // commons
         dependency "com.google.code.findbugs:jsr305:${findbugsVersion}"
         dependency "io.swagger:swagger-annotations:${swaggerAnnotationsVersion}"
