@@ -12,10 +12,10 @@
 
 ![犬夜叉-云母](docs/img/mica-001.jpeg)
 
-[**更新记录**](CHANGELOG.md)
-
 ## 使用文档
-使用文档详见：https://www.dreamlu.net/mica2/docs/
+**使用文档**详见：https://www.dreamlu.net/mica2x/index.html
+
+[**更新记录**](CHANGELOG.md)
 
 ## 已知问题
 lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861
