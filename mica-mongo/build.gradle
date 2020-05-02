@@ -1,0 +1,6 @@
+dependencies {
+    api project(":mica-core")
+    api "org.springframework.boot:spring-boot-starter-data-mongodb"
+    api "org.springframework.boot:spring-boot-starter-json"
+    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+}
