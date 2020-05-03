@@ -22,14 +22,12 @@ import org.springframework.util.Assert;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalAmount;
 import java.time.temporal.TemporalQuery;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * 日期工具类
@@ -38,15 +36,15 @@ import java.util.TimeZone;
  */
 @UtilityClass
 public class DateUtil {
-	public static final String PATTERN_DATETIME = "yyyy-MM-dd HH:mm:ss";
-	public static final String PATTERN_DATE = "yyyy-MM-dd";
-	public static final String PATTERN_TIME = "HH:mm:ss";
+	public static final String PATTERN_DATETIME = DatePattern.NORM_DATETIME_PATTERN;
+	public static final String PATTERN_DATE = DatePattern.NORM_DATE_PATTERN;
+	public static final String PATTERN_TIME = DatePattern.NORM_TIME_PATTERN;
 	/**
 	 * java 8 时间格式化
 	 */
-	public static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern(DateUtil.PATTERN_DATETIME).withZone(ZoneId.systemDefault());
-	public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DateUtil.PATTERN_DATE).withZone(ZoneId.systemDefault());
-	public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(DateUtil.PATTERN_TIME).withZone(ZoneId.systemDefault());
+	public static final DateTimeFormatter DATETIME_FORMATTER = DatePattern.NORM_DATETIME_FORMAT;
+	public static final DateTimeFormatter DATE_FORMATTER = DatePattern.NORM_DATE_FORMAT;
+	public static final DateTimeFormatter TIME_FORMATTER = DatePattern.NORM_TIME_FORMAT;
 
 	/**
 	 * 添加年
@@ -581,7 +579,7 @@ public class DateUtil {
 	 * @param pattern 表达式
 	 * @return 时间
 	 */
-	public static LocalDateTime parseDateTime(String dateStr, String pattern) {
+	public static LocalDateTime parseDateTime(CharSequence dateStr, String pattern) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 		return DateUtil.parseDateTime(dateStr, formatter);
 	}
@@ -593,7 +591,7 @@ public class DateUtil {
 	 * @param formatter DateTimeFormatter
 	 * @return 时间
 	 */
-	public static LocalDateTime parseDateTime(String dateStr, DateTimeFormatter formatter) {
+	public static LocalDateTime parseDateTime(CharSequence dateStr, DateTimeFormatter formatter) {
 		return LocalDateTime.parse(dateStr, formatter);
 	}
 
@@ -603,8 +601,31 @@ public class DateUtil {
 	 * @param dateStr 时间字符串
 	 * @return 时间
 	 */
-	public static LocalDateTime parseDateTime(String dateStr) {
+	public static LocalDateTime parseDateTime(CharSequence dateStr) {
 		return DateUtil.parseDateTime(dateStr, DateUtil.DATETIME_FORMATTER);
+	}
+
+	/**
+	 * 将字符串转换为时间
+	 *
+	 * @param text          时间字符串
+	 * @param parsePatterns 时间正则数组
+	 * @return 时间
+	 */
+	public static LocalDateTime parseDateTime(@Nullable CharSequence text, @Nullable String[] parsePatterns) {
+		return parseDateTime(text, null, parsePatterns);
+	}
+
+	/**
+	 * 将字符串转换为时间
+	 *
+	 * @param text          时间字符串
+	 * @param locale        Locale
+	 * @param parsePatterns 时间正则数组
+	 * @return 时间
+	 */
+	public static LocalDateTime parseDateTime(@Nullable CharSequence text, @Nullable Locale locale, @Nullable String[] parsePatterns) {
+		return parse(text, locale, parsePatterns, LocalDateTime::from);
 	}
 
 	/**
@@ -614,7 +635,7 @@ public class DateUtil {
 	 * @param pattern 表达式
 	 * @return 时间
 	 */
-	public static LocalDate parseDate(String dateStr, String pattern) {
+	public static LocalDate parseDate(CharSequence dateStr, String pattern) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 		return DateUtil.parseDate(dateStr, formatter);
 	}
@@ -626,7 +647,7 @@ public class DateUtil {
 	 * @param formatter DateTimeFormatter
 	 * @return 时间
 	 */
-	public static LocalDate parseDate(String dateStr, DateTimeFormatter formatter) {
+	public static LocalDate parseDate(CharSequence dateStr, DateTimeFormatter formatter) {
 		return LocalDate.parse(dateStr, formatter);
 	}
 
@@ -636,8 +657,31 @@ public class DateUtil {
 	 * @param dateStr 时间字符串
 	 * @return 时间
 	 */
-	public static LocalDate parseDate(String dateStr) {
+	public static LocalDate parseDate(CharSequence dateStr) {
 		return DateUtil.parseDate(dateStr, DateUtil.DATE_FORMATTER);
+	}
+
+	/**
+	 * 将字符串转换为日期
+	 *
+	 * @param text          时间字符串
+	 * @param parsePatterns 时间正则数组
+	 * @return 时间
+	 */
+	public static LocalDate parseDate(@Nullable CharSequence text, @Nullable String[] parsePatterns) {
+		return parseDate(text, null, parsePatterns);
+	}
+
+	/**
+	 * 将字符串转换为日期
+	 *
+	 * @param text          时间字符串
+	 * @param locale        Locale
+	 * @param parsePatterns 时间正则数组
+	 * @return 时间
+	 */
+	public static LocalDate parseDate(@Nullable CharSequence text, @Nullable Locale locale, @Nullable String[] parsePatterns) {
+		return parse(text, locale, parsePatterns, LocalDate::from);
 	}
 
 	/**
@@ -647,7 +691,7 @@ public class DateUtil {
 	 * @param pattern 时间正则
 	 * @return 时间
 	 */
-	public static LocalTime parseTime(String dateStr, String pattern) {
+	public static LocalTime parseTime(CharSequence dateStr, String pattern) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 		return DateUtil.parseTime(dateStr, formatter);
 	}
@@ -659,7 +703,7 @@ public class DateUtil {
 	 * @param formatter DateTimeFormatter
 	 * @return 时间
 	 */
-	public static LocalTime parseTime(String dateStr, DateTimeFormatter formatter) {
+	public static LocalTime parseTime(CharSequence dateStr, DateTimeFormatter formatter) {
 		return LocalTime.parse(dateStr, formatter);
 	}
 
@@ -669,8 +713,59 @@ public class DateUtil {
 	 * @param dateStr 时间字符串
 	 * @return 时间
 	 */
-	public static LocalTime parseTime(String dateStr) {
+	public static LocalTime parseTime(CharSequence dateStr) {
 		return DateUtil.parseTime(dateStr, DateUtil.TIME_FORMATTER);
+	}
+
+	/**
+	 * 将字符串转换为时间
+	 *
+	 * @param text          时间字符串
+	 * @param parsePatterns 时间正则数组
+	 * @return 时间
+	 */
+	public static LocalTime parseTime(@Nullable CharSequence text, @Nullable String[] parsePatterns) {
+		return parseTime(text, null, parsePatterns);
+	}
+
+	/**
+	 * 将字符串转换为时间
+	 *
+	 * @param text          时间字符串
+	 * @param locale        Locale
+	 * @param parsePatterns 时间正则数组
+	 * @return 时间
+	 */
+	public static LocalTime parseTime(@Nullable CharSequence text, @Nullable Locale locale, @Nullable String[] parsePatterns) {
+		return parse(text, locale, parsePatterns, LocalTime::from);
+	}
+
+	/**
+	 * 将字符串转换为时间
+	 *
+	 * @param text          时间字符串
+	 * @param locale        Locale
+	 * @param parsePatterns 时间正则数组
+	 * @param query         TemporalQuery
+	 * @param <T>           泛型
+	 * @return 时间
+	 */
+	public static <T> T parse(@Nullable CharSequence text, @Nullable Locale locale, @Nullable String[] parsePatterns, TemporalQuery<T> query) {
+		if (text == null || parsePatterns == null) {
+			throw new IllegalArgumentException("Date and Patterns must not be null");
+		}
+		final Locale lcl = locale == null ? Locale.getDefault() : locale;
+		final ZoneId systemZone = ZoneId.systemDefault();
+		DateTimeFormatter formatter = null;
+		for (final String parsePattern : parsePatterns) {
+			formatter = DateTimeFormatter.ofPattern(parsePattern, lcl).withZone(systemZone);
+			try {
+				return formatter.parse(text, query);
+			} catch (final DateTimeParseException ignore) {
+				// leniency is preventing calendar from being set
+			}
+		}
+		throw new DateTimeParseException("Unable to parse the date: " + text, text, -1);
 	}
 
 }
