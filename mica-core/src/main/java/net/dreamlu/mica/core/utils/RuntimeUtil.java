@@ -21,6 +21,7 @@ import lombok.experimental.UtilityClass;
 
 import java.lang.management.ManagementFactory;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public class RuntimeUtil {
 
 	/**
 	 * 获得当前进程的PID
-	 *
+	 * <p>
 	 * 当失败时返回-1
 	 *
 	 * @return pid
@@ -55,13 +56,21 @@ public class RuntimeUtil {
 	}
 
 	/**
+	 * 返回应用启动的时间
+	 *
+	 * @return {Instant}
+	 */
+	public static Instant getStartTime() {
+		return Instant.ofEpochMilli(ManagementFactory.getRuntimeMXBean().getStartTime());
+	}
+
+	/**
 	 * 返回应用启动到现在的时间
 	 *
 	 * @return {Duration}
 	 */
 	public static Duration getUpTime() {
-		long upTime = ManagementFactory.getRuntimeMXBean().getUptime();
-		return Duration.ofMillis(upTime);
+		return Duration.ofMillis(ManagementFactory.getRuntimeMXBean().getUptime());
 	}
 
 	/**
