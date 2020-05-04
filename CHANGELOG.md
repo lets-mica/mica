@@ -2,7 +2,37 @@
 
 ## 发行版本
 ### v2.0.0 - 2020-05-06
-- 占位
+- :sparkles: mica-http 支持指定协议 protocols。
+- :zap: mica-http 扩展 HttpRequest proxy 方法，方便使用。
+- :sparkles: mica-http 拆出 mica-spider 爬虫工具，精简依赖。
+- :sparkles: mica-spider 增强 CssQueryMethodInterceptor。
+- :zap: mica-captcha 验证码抽象,支持数学计算型验证码。
+- :sparkles: mica-captcha 验证码缓存接口，完善验证码生成说明。
+- :sparkles: mica-swagger 升级 swagger 到 knife4j。
+- :sparkles: mica-redis 限流算法改为同 Spring cloud gateway，减少内存占用。
+- :sparkles: mica-jobs 添加 xxl-job starter。
+- :sparkles: mica-core 生成 mica 版本信息到 Mica 类中。
+- :sparkles: mica-core 添加 compiler 工具类。
+- :sparkles: mica-core 添加用于计数的 CountMap。
+- :sparkles: mica-core 添加 Once 对象。
+- :sparkles: mica-core 中的 jackson 包移动到 mica-boot，并做调整用于支持 mica-api-encrypt 组件。
+- :sparkles: mica-core 简化 aes 工具类代码。
+- :zap: mica-core 优化 DateUtil。
+- :zap: mica-core 优化 RuntimeUtil。
+- :sparkles: mica-core 拆解完善 HexUtil。
+- :sparkles: mica-core 添加 DesUtil。
+- :sparkles: mica-core 添加 RsaUtil。
+- :sparkles: mica-core 优化 ResourceUtil 工具类。
+- :sparkles: mica-core jackson 如果响应字符串，直接返回，不做 json 处理。
+- :sparkles: mica-core 微调 Bean copy。
+- :sparkles: mica-core function 添加序列化。
+- :sparkles: mica-core MD5 不再依赖 Spring DigestUtils。
+- :sparkles: mica-core 优化 file 工具对文件名处理。
+- :heavy_minus_sign: mica-core delete YmlPropertyLoaderFactory.
+- :zap: add .gitattributes。
+- :building_construction: @Configuration(proxyBeanMethods = false)
+- :arrow_up: 升级 okhttp 到 3.14.8.
+- :arrow_up: 依赖升级 spring boot 2.2.6，不再支持，spring boot 2.2.x 以下版本。
 
 ### v1.2.2 - 2020-03-24
 - :memo: update docs.
