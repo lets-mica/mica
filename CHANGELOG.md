@@ -1,7 +1,7 @@
 # 变更记录
 
 ## 发行版本
-### v2.0.0 - 2020-05-06
+### v2.0.0 - 2020-05-04
 - :sparkles: mica-http 支持指定协议 protocols。
 - :zap: mica-http 扩展 HttpRequest proxy 方法，方便使用。
 - :sparkles: mica-http 拆出 mica-spider 爬虫工具，精简依赖。
