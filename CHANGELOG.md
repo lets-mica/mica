@@ -23,7 +23,6 @@
 - :sparkles: mica-core 添加 DesUtil。
 - :sparkles: mica-core 添加 RsaUtil。
 - :sparkles: mica-core 优化 ResourceUtil 工具类。
-- :sparkles: mica-core jackson 如果响应字符串，直接返回，不做 json 处理。
 - :sparkles: mica-core 微调 Bean copy。
 - :sparkles: mica-core function 添加序列化。
 - :sparkles: mica-core MD5 不再依赖 Spring DigestUtils。
