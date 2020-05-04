@@ -28,7 +28,7 @@
 - :sparkles: mica-core MD5 不再依赖 Spring DigestUtils。
 - :sparkles: mica-core 优化 file 工具对文件名处理。
 - :zap: add .gitattributes。
-- :building_construction: @Configuration 替换为 @Configuration(proxyBeanMethods = false)。
+- :zap: @Configuration 替换为 @Configuration(proxyBeanMethods = false)。
 - :arrow_up: 升级 okhttp 到 3.14.8。
 - :arrow_up: 升级 jsoup 到 1.13.1。
 - :arrow_up: 升级 mica-auto 到 1.2.2。
