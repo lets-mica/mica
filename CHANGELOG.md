@@ -27,11 +27,13 @@
 - :sparkles: mica-core function 添加序列化。
 - :sparkles: mica-core MD5 不再依赖 Spring DigestUtils。
 - :sparkles: mica-core 优化 file 工具对文件名处理。
-- :heavy_minus_sign: mica-core delete YmlPropertyLoaderFactory.
 - :zap: add .gitattributes。
-- :building_construction: @Configuration(proxyBeanMethods = false)
-- :arrow_up: 升级 okhttp 到 3.14.8.
-- :arrow_up: 依赖升级 spring boot 2.2.6，不再支持，spring boot 2.2.x 以下版本。
+- :building_construction: @Configuration 替换为 @Configuration(proxyBeanMethods = false)。
+- :arrow_up: 升级 okhttp 到 3.14.8。
+- :arrow_up: 升级 jsoup 到 1.13.1。
+- :arrow_up: 升级 mica-auto 到 1.2.2。
+- :arrow_up: 升级 spring boot 到 2.2.6，不再支持，spring boot 2.2.x 以下版本。
+- :arrow_up: 升级 spring cloud 到 Hoxton.SR4。
 
 ### v1.2.2 - 2020-03-24
 - :memo: update docs.
