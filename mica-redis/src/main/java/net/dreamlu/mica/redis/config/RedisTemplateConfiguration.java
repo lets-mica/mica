@@ -16,7 +16,9 @@
 
 package net.dreamlu.mica.redis.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dreamlu.mica.redis.cache.MicaRedisCache;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
@@ -50,12 +52,16 @@ public class RedisTemplateConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean(RedisSerializer.class)
-	public RedisSerializer<Object> redisSerializer(MicaRedisProperties properties) {
+	public RedisSerializer<Object> redisSerializer(MicaRedisProperties properties,
+												   ObjectProvider<ObjectMapper> objectProvider) {
 		MicaRedisProperties.SerializerType serializerType = properties.getSerializerType();
 		if (MicaRedisProperties.SerializerType.JDK == serializerType) {
 			return new JdkSerializationRedisSerializer();
 		}
-		return new GenericJackson2JsonRedisSerializer();
+		// jackson findAndRegisterModules，use copy
+		ObjectMapper objectMapper = objectProvider.getIfAvailable(ObjectMapper::new).copy();
+		objectMapper.findAndRegisterModules();
+		return new GenericJackson2JsonRedisSerializer(objectMapper);
 	}
 
 	@Bean(name = "redisTemplate")
