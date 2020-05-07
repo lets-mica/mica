@@ -89,7 +89,7 @@ public class R<T> implements Serializable {
 	 * @param result Result
 	 * @return 是否成功
 	 */
-	public static boolean isNotSuccess(@Nullable R<?> result) {
+	public static boolean isFail(@Nullable R<?> result) {
 		return !R.isSuccess(result);
 	}
 
@@ -193,7 +193,7 @@ public class R<T> implements Serializable {
 	 * @param result R
 	 */
 	public static void throwOnFail(R<?> result) {
-		if (R.isNotSuccess(result)) {
+		if (R.isFail(result)) {
 			throw new ServiceException(result);
 		}
 	}
@@ -202,10 +202,10 @@ public class R<T> implements Serializable {
 	 * 当 result 不成功时：直接抛出失败异常，返回传入的 rCode
 	 *
 	 * @param result R
-	 * @param rCode 异常枚举
+	 * @param rCode  异常枚举
 	 */
 	public static void throwOnFail(R<?> result, IResultCode rCode) {
-		if (R.isNotSuccess(result)) {
+		if (R.isFail(result)) {
 			throw new ServiceException(rCode);
 		}
 	}
@@ -214,11 +214,11 @@ public class R<T> implements Serializable {
 	 * 当 result 不成功时：直接抛出失败异常，返回传入的 rCode、message
 	 *
 	 * @param result R
-	 * @param rCode 异常枚举
-	 * @param msg 失败信息
+	 * @param rCode  异常枚举
+	 * @param msg    失败信息
 	 */
 	public static void throwOnFail(R<?> result, IResultCode rCode, String msg) {
-		if (R.isNotSuccess(result)) {
+		if (R.isFail(result)) {
 			throw new ServiceException(rCode, msg);
 		}
 	}
@@ -227,7 +227,7 @@ public class R<T> implements Serializable {
 	 * 当 status 不为 true 时：直接抛出失败异常 rCode
 	 *
 	 * @param status status
-	 * @param rCode 异常枚举
+	 * @param rCode  异常枚举
 	 */
 	public static void throwOnFalse(boolean status, IResultCode rCode) {
 		if (!status) {
@@ -239,8 +239,8 @@ public class R<T> implements Serializable {
 	 * 当 status 不为 true 时：直接抛出失败异常 rCode、message
 	 *
 	 * @param status status
-	 * @param rCode 异常枚举
-	 * @param msg 失败信息
+	 * @param rCode  异常枚举
+	 * @param msg    失败信息
 	 */
 	public static void throwOnFalse(boolean status, IResultCode rCode, String msg) {
 		if (!status) {
