@@ -1,5 +1,5 @@
 ## mica（云母）
-[![Build Status](https://www.travis-ci.org/lets-mica/mica.svg?branch=master)](https://www.travis-ci.org/lets-mica/mica)
+[![Java CI](https://github.com/lets-mica/mica/workflows/Java%20CI/badge.svg)](https://github.com/lets-mica/mica/actions)
 ![JAVA 8](https://img.shields.io/badge/JDK-1.8+-brightgreen.svg)
 [![Mica Maven release](https://img.shields.io/nexus/r/https/oss.sonatype.org/net.dreamlu/mica-bom.svg?style=flat-square)](https://mvnrepository.com/artifact/net.dreamlu/mica-bom)
 [![Mica maven snapshots](https://img.shields.io/nexus/s/https/oss.sonatype.org/net.dreamlu/mica-bom.svg?style=flat-square)](https://oss.sonatype.org/content/repositories/snapshots/net/dreamlu/)
