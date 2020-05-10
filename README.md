@@ -17,6 +17,11 @@
 
 [**更新记录**](CHANGELOG.md)
 
+## 版本号说明
+`release` 版本号格式为 `x.x.x.发版当然日期`。
+
+`snapshots` 版本号格式为 `x.x.x-SNAPSHOT`，`snapshots` 版每次提交后会自动构建。
+
 ## 已知问题
 lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861
 

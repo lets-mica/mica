@@ -16,7 +16,9 @@
 
 package net.dreamlu.mica.redis.config;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import net.dreamlu.mica.redis.cache.MicaRedisCache;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -60,7 +62,11 @@ public class RedisTemplateConfiguration {
 		}
 		// jackson findAndRegisterModules，use copy
 		ObjectMapper objectMapper = objectProvider.getIfAvailable(ObjectMapper::new).copy();
+		// findAndRegisterModules
 		objectMapper.findAndRegisterModules();
+		// class type info to json
+		GenericJackson2JsonRedisSerializer.registerNullValueSerializer(objectMapper, null);
+		objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), DefaultTyping.NON_FINAL, As.PROPERTY);
 		return new GenericJackson2JsonRedisSerializer(objectMapper);
 	}
 
