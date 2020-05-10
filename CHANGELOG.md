@@ -1,6 +1,14 @@
 # 变更记录
 
 ## 发行版本
+### v2.0.1.20200510
+- :sparkles: 开源 mica-ip2region 组件。
+- :zap: mica-core 优化 R.isNotSuccess 改为 isFail。
+- :bug: mica-redis jackson class info。
+- :bug: mica-redis jackson findAndRegisterModules。
+- :wrench: travis 替换为 Github actions，用于构建和 Snapshot 版本自动发布。
+- :arrow_up: update spring boot to 2.2.7.RELEASE。
+
 ### v2.0.0 - 2020-05-04
 - :sparkles: mica-http 支持指定协议 protocols。
 - :zap: mica-http 扩展 HttpRequest proxy 方法，方便使用。
