@@ -17,7 +17,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        run: ./gradlew clean publish
+        run: ./gradlew publishSnapshot
         env:
           NEXUS_OSS_USER_NAME: ${{ secrets.OSS_NAME }}
           NEXUS_OSS_PASS_WORD: ${{ secrets.OSS_PWD }}
