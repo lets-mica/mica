@@ -17,6 +17,12 @@ configure(subprojects) {
     version = VERSION
     apply plugin: 'signing'
     apply plugin: 'maven-publish'
+    // ci 自动发布 SNAPSHOT 版本
+    task publishSnapshot(type: GradleBuild) {
+        if (VERSION.endsWith('SNAPSHOT')) {
+            tasks = ['clean', 'build', 'publish']
+        }
+    }
 }
 
 configure(subprojects - project(":mica-bom")) {
