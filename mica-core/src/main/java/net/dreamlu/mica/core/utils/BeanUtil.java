@@ -171,10 +171,29 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	 * @return T
 	 */
 	public static <T> List<T> copy(@Nullable Collection<?> sourceList, Class<T> targetClazz) {
+		return copyColl(sourceList, null, targetClazz);
+	}
+
+	/**
+	 * copy 列表对象，默认不使用Convert
+	 *
+	 * <p>
+	 * 支持 map bean copy
+	 * </p>
+	 *
+	 * @param sourceList  源列表
+	 * @param targetList  目标列表
+	 * @param targetClazz 转换成的类型
+	 * @param <T>         泛型标记
+	 * @return T
+	 */
+	public static <T> List<T> copyColl(@Nullable Collection<?> sourceList, @Nullable List<T> targetList, Class<T> targetClazz) {
 		if (sourceList == null || sourceList.isEmpty()) {
 			return Collections.emptyList();
 		}
-		List<T> outList = new ArrayList<>(sourceList.size());
+		if (targetList == null) {
+			targetList = new ArrayList<>(sourceList.size());
+		}
 		Class<?> sourceClazz = null;
 		for (Object source : sourceList) {
 			if (source == null) {
@@ -184,9 +203,9 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 				sourceClazz = source.getClass();
 			}
 			T bean = BeanUtil.copy(source, sourceClazz, targetClazz);
-			outList.add(bean);
+			targetList.add(bean);
 		}
-		return outList;
+		return targetList;
 	}
 
 	/**
@@ -236,9 +255,9 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	 * 支持 map bean copy
 	 * </p>
 	 *
-	 * @param source 源对象
+	 * @param source      源对象
 	 * @param targetClazz 转换成的类
-	 * @param <T>    泛型标记
+	 * @param <T>         泛型标记
 	 * @return T
 	 */
 	@Nullable
@@ -256,10 +275,10 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	 * 支持 map bean copy
 	 * </p>
 	 *
-	 * @param source 源对象
+	 * @param source      源对象
 	 * @param sourceClazz 源类
 	 * @param targetClazz 转换成的类
-	 * @param <T>    泛型标记
+	 * @param <T>         泛型标记
 	 * @return T
 	 */
 	@Nullable
@@ -280,9 +299,9 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	 * 支持 map bean copy
 	 * </p>
 	 *
-	 * @param sourceList 源对象列表
+	 * @param sourceList  源对象列表
 	 * @param targetClazz 转换成的类
-	 * @param <T>    泛型标记
+	 * @param <T>         泛型标记
 	 * @return List
 	 */
 	public static <T> List<T> copyWithConvert(@Nullable Collection<?> sourceList, Class<T> targetClazz) {
@@ -311,9 +330,9 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	 * source bean exposes but the target bean does not will silently be ignored.
 	 * <p>This is just a convenience method. For more complex transfer needs,
 	 *
-	 * @param source the source bean
+	 * @param source      the source bean
 	 * @param targetClazz the target bean class
-	 * @param <T>    泛型标记
+	 * @param <T>         泛型标记
 	 * @return T
 	 * @throws BeansException if the copying failed
 	 */
@@ -334,9 +353,9 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	 * source bean exposes but the target bean does not will silently be ignored.
 	 * <p>This is just a convenience method. For more complex transfer needs,
 	 *
-	 * @param sourceList the source list bean
+	 * @param sourceList  the source list bean
 	 * @param targetClazz the target bean class
-	 * @param <T>    泛型标记
+	 * @param <T>         泛型标记
 	 * @return List
 	 * @throws BeansException if the copying failed
 	 */

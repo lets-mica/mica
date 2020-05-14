@@ -32,7 +32,9 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.security.ProtectionDomain;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -239,7 +241,10 @@ public abstract class MicaBeanCopier {
 							e.unbox_or_zero(setterType);
 						}
 					}
-
+					// TODO L.cm 支持 list，另外优化这块代码，目前太乱
+//					if (List.class.isAssignableFrom(setterPropertyType)) {
+//
+//					}
 					// 构造 set 方法
 					invokeWrite(e, write, writeMethod, nonNull, l0);
 				} else if (useConverter) {
