@@ -52,18 +52,18 @@ public interface IMicaContext {
 	String getAccountId();
 
 	/**
-	 * 获取上线文中的数据
+	 * 获取上下文中的数据
 	 *
-	 * @param ctxKey 上线文中的key
+	 * @param ctxKey 上下文中的key
 	 * @return 返回对象
 	 */
 	@Nullable
 	String get(String ctxKey);
 
 	/**
-	 * 获取上线文中的数据
+	 * 获取上下文中的数据
 	 *
-	 * @param ctxKey   上线文中的key
+	 * @param ctxKey   上下文中的key
 	 * @param function 函数式
 	 * @param <T>      泛型对象
 	 * @return 返回对象
