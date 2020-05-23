@@ -489,7 +489,7 @@ public class JsonUtil {
 	}
 
 	private static class JacksonHolder {
-		private static ObjectMapper INSTANCE = new JacksonObjectMapper();
+		private static final ObjectMapper INSTANCE = new JacksonObjectMapper();
 	}
 
 	private static class JacksonObjectMapper extends ObjectMapper {
