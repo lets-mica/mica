@@ -25,12 +25,16 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * @author L.cm
  */
 @Slf4j
-public class Slf4jLogger implements HttpLoggingInterceptor.Logger {
+public enum Slf4jLogger implements HttpLoggingInterceptor.Logger {
 
-	public static final HttpLoggingInterceptor.Logger INSTANCE = new Slf4jLogger();
+	/**
+	 * 实例
+	 */
+	INSTANCE;
 
 	@Override
 	public void log(String message) {
 		log.info(message);
 	}
+
 }
