@@ -29,19 +29,13 @@ import java.math.RoundingMode;
 public class DecimalNum extends Number {
 	@Getter
 	private BigDecimal value;
-	private final RoundingMode mode;
 
 	public DecimalNum() {
 		this(new BigDecimal(0));
 	}
 
 	public DecimalNum(BigDecimal decimal) {
-		this(decimal, RoundingMode.UNNECESSARY);
-	}
-
-	public DecimalNum(BigDecimal decimal, RoundingMode roundingMode) {
 		this.value = decimal;
-		this.mode = roundingMode;
 	}
 
 	public static DecimalNum of(String decimal) {
@@ -54,28 +48,6 @@ public class DecimalNum extends Number {
 
 	public static DecimalNum of(long decimal) {
 		return new DecimalNum(BigDecimal.valueOf(decimal));
-	}
-
-	/**
-	 * 设置小数位数
-	 *
-	 * @param newScale     小数位数
-	 * @param roundingMode 模式
-	 * @return DecimalNum
-	 */
-	public DecimalNum scale(int newScale, RoundingMode roundingMode) {
-		this.value = value.setScale(newScale, roundingMode);
-		return this;
-	}
-
-	/**
-	 * 设置小数位数
-	 *
-	 * @param newScale 小数位数
-	 * @return DecimalNum
-	 */
-	public DecimalNum scale(int newScale) {
-		return scale(newScale, RoundingMode.HALF_EVEN);
 	}
 
 	/**
@@ -214,11 +186,33 @@ public class DecimalNum extends Number {
 	/**
 	 * 除
 	 *
+	 * @param decimal      小数
+	 * @param roundingMode 随机模型
+	 * @return DecimalNum
+	 */
+	public DecimalNum divide(String decimal, RoundingMode roundingMode) {
+		return divide(new BigDecimal(decimal), roundingMode);
+	}
+
+	/**
+	 * 除
+	 *
 	 * @param decimal 小数
 	 * @return DecimalNum
 	 */
 	public DecimalNum divide(long decimal) {
 		return divide(BigDecimal.valueOf(decimal));
+	}
+
+	/**
+	 * 除
+	 *
+	 * @param decimal      小数
+	 * @param roundingMode 随机模型
+	 * @return DecimalNum
+	 */
+	public DecimalNum divide(long decimal, RoundingMode roundingMode) {
+		return divide(BigDecimal.valueOf(decimal), roundingMode);
 	}
 
 	/**
@@ -234,11 +228,56 @@ public class DecimalNum extends Number {
 	/**
 	 * 除
 	 *
+	 * @param decimal      小数
+	 * @param roundingMode 随机模型
+	 * @return DecimalNum
+	 */
+	public DecimalNum divide(double decimal, RoundingMode roundingMode) {
+		return divide(BigDecimal.valueOf(decimal), roundingMode);
+	}
+
+	/**
+	 * 除
+	 *
 	 * @param decimal 小数
 	 * @return DecimalNum
 	 */
 	public DecimalNum divide(BigDecimal decimal) {
 		this.value = value.divide(decimal);
+		return this;
+	}
+
+	/**
+	 * 除
+	 *
+	 * @param decimal      小数
+	 * @param roundingMode 随机模型
+	 * @return DecimalNum
+	 */
+	public DecimalNum divide(BigDecimal decimal, RoundingMode roundingMode) {
+		this.value = value.divide(decimal, roundingMode);
+		return this;
+	}
+
+	/**
+	 * 设置小数位数
+	 *
+	 * @param scale 小数位数
+	 * @return DecimalNum
+	 */
+	public DecimalNum scale(int scale) {
+		return scale(scale, RoundingMode.HALF_EVEN);
+	}
+
+	/**
+	 * 设置小数位数
+	 *
+	 * @param scale        小数位数
+	 * @param roundingMode 模式
+	 * @return DecimalNum
+	 */
+	public DecimalNum scale(int scale, RoundingMode roundingMode) {
+		this.value = value.setScale(scale, roundingMode);
 		return this;
 	}
 
