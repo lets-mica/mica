@@ -38,16 +38,20 @@ public class DecimalNum extends Number {
 		this.value = decimal;
 	}
 
+	public static DecimalNum of(BigDecimal decimal) {
+		return new DecimalNum(decimal);
+	}
+
 	public static DecimalNum of(String decimal) {
-		return new DecimalNum(new BigDecimal(decimal));
+		return of(new BigDecimal(decimal));
 	}
 
 	public static DecimalNum of(double decimal) {
-		return new DecimalNum(BigDecimal.valueOf(decimal));
+		return of(BigDecimal.valueOf(decimal));
 	}
 
 	public static DecimalNum of(long decimal) {
-		return new DecimalNum(BigDecimal.valueOf(decimal));
+		return of(BigDecimal.valueOf(decimal));
 	}
 
 	/**
