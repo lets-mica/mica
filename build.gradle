@@ -5,7 +5,7 @@ ext {
     micaAutoVersion = "1.2.2"
     knife4jVersion = "2.0.3"
     swaggerAnnotationsVersion = "1.5.22"
-    okhttpVersion = "3.14.8"
+    okhttpVersion = "3.14.9"
     jsoupVersion = "1.13.1"
     xxlJobVersion = "2.2.0"
     lombokVersion = "1.18.12"
