@@ -154,7 +154,7 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 		"HTTP_X_FORWARDED_FOR"
 	};
 
-	private static final Predicate<String> IP_PREDICATE = (ip) -> StringUtil.isBlank(ip) || StringPool.UNKNOWN.equalsIgnoreCase(ip);
+	private static final Predicate<String> IS_BLANK_IP = (ip) -> StringUtil.isBlank(ip) || StringPool.UNKNOWN.equalsIgnoreCase(ip);
 
 	/**
 	 * 获取ip
@@ -170,39 +170,53 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 		String ip = null;
 		for (String ipHeader : IP_HEADER_NAMES) {
 			ip = request.getHeader(ipHeader);
-			if (!IP_PREDICATE.test(ip)) {
+			if (!IS_BLANK_IP.test(ip)) {
 				break;
 			}
 		}
-		if (IP_PREDICATE.test(ip)) {
+		if (IS_BLANK_IP.test(ip)) {
 			ip = request.getRemoteAddr();
 		}
 		return StringUtil.isBlank(ip) ? null : StringUtil.splitTrim(ip, StringPool.COMMA)[0];
 	}
 
-
 	/**
 	 * 返回json
 	 *
 	 * @param response HttpServletResponse
 	 * @param result   结果对象
 	 */
-	public static void renderJson(HttpServletResponse response, Object result) {
-		renderJson(response, result, MediaType.APPLICATION_JSON_VALUE);
+	public static void renderJson(HttpServletResponse response, @Nullable Object result) {
+		String jsonText = JsonUtil.toJson(result);
+		if (jsonText != null) {
+			renderText(response, jsonText, MediaType.APPLICATION_JSON_VALUE);
+		}
 	}
 
 	/**
 	 * 返回json
 	 *
 	 * @param response HttpServletResponse
-	 * @param result   结果对象
-	 * @param contentType   contentType
+	 * @param jsonText json 文本
 	 */
-	public static void renderJson(HttpServletResponse response, Object result, String contentType) {
+	public static void renderJson(HttpServletResponse response, @Nullable String jsonText) {
+		if (jsonText != null) {
+			renderText(response, jsonText, MediaType.APPLICATION_JSON_VALUE);
+		}
+	}
+
+	/**
+	 * 返回json
+	 *
+	 * @param response    HttpServletResponse
+	 * @param text        文本
+	 * @param contentType contentType
+	 */
+	public static void renderText(HttpServletResponse response, String text, String contentType) {
 		response.setCharacterEncoding(Charsets.UTF_8_NAME);
 		response.setContentType(contentType);
 		try (PrintWriter out = response.getWriter()) {
-			out.append(JsonUtil.toJson(result));
+			out.append(text);
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
 		}
