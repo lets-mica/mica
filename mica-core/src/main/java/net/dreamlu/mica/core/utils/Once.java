@@ -16,7 +16,11 @@
 
 package net.dreamlu.mica.core.utils;
 
+import org.springframework.lang.Nullable;
+
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * 加载一次
@@ -31,12 +35,42 @@ public class Once {
 	}
 
 	/**
-	 * 执行
+	 * 是否可以执行
 	 *
-	 * @return 执行
+	 * @return 是否可以执行
 	 */
-	public boolean run() {
+	public boolean canRun() {
 		return value.compareAndSet(false, true);
+	}
+
+	/**
+	 * 执行函数
+	 *
+	 * @param consumer Consumer
+	 * @param argument 参数
+	 * @param <T>      泛型
+	 */
+	public <T> void run(Consumer<T> consumer, T argument) {
+		if (canRun()) {
+			consumer.accept(argument);
+		}
+	}
+
+	/**
+	 * 执行函数
+	 *
+	 * @param function Function
+	 * @param argument 参数
+	 * @param <T>      泛型
+	 * @param <R>      泛型
+	 * @return 返回值，不可执行返回 null
+	 */
+	@Nullable
+	public <T, R> R run(Function<T, R> function, T argument) {
+		if (canRun()) {
+			return function.apply(argument);
+		}
+		return null;
 	}
 
 }
