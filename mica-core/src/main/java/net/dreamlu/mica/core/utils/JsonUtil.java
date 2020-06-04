@@ -484,6 +484,11 @@ public class JsonUtil {
 		return getInstance().valueToTree(fromValue);
 	}
 
+	/**
+	 * 获取 ObjectMapper 实例
+	 *
+	 * @return ObjectMapper
+	 */
 	public static ObjectMapper getInstance() {
 		return JacksonHolder.INSTANCE;
 	}

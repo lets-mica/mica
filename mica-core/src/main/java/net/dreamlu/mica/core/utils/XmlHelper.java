@@ -73,11 +73,23 @@ public class XmlHelper {
 		}
 	}
 
+	/**
+	 * 构造 XmlHelper，安全模式
+	 *
+	 * @param is InputStream
+	 * @return XmlHelper
+	 */
 	public static XmlHelper safe(InputStream is) {
 		InputSource inputSource = new InputSource(is);
 		return createSafe(inputSource);
 	}
 
+	/**
+	 * 构造 XmlHelper，安全模式
+	 *
+	 * @param xmlStr xml字符串
+	 * @return XmlHelper
+	 */
 	public static XmlHelper safe(String xmlStr) {
 		StringReader sr = new StringReader(xmlStr.trim());
 		InputSource inputSource = new InputSource(sr);
@@ -86,11 +98,23 @@ public class XmlHelper {
 		return xmlHelper;
 	}
 
+	/**
+	 * 构造 XmlHelper，非安全模式
+	 *
+	 * @param is InputStream
+	 * @return XmlHelper
+	 */
 	public static XmlHelper unsafe(InputStream is) {
 		InputSource inputSource = new InputSource(is);
 		return createUnsafe(inputSource);
 	}
 
+	/**
+	 * 构造 XmlHelper，非安全模式
+	 *
+	 * @param xmlStr xml字符串
+	 * @return XmlHelper
+	 */
 	public static XmlHelper unsafe(String xmlStr) {
 		StringReader sr = new StringReader(xmlStr.trim());
 		InputSource inputSource = new InputSource(sr);

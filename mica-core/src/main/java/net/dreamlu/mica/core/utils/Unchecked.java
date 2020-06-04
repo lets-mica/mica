@@ -39,39 +39,66 @@ import java.util.function.Supplier;
 @UtilityClass
 public class Unchecked {
 
-	public static <T, R> Function<T, R> function(CheckedFunction<T, R> mapper) {
-		Objects.requireNonNull(mapper);
+	/**
+	 * 构造受检的 function
+	 *
+	 * @param function CheckedFunction
+	 * @param <T>      泛型
+	 * @return Function
+	 */
+	public static <T, R> Function<T, R> function(CheckedFunction<T, R> function) {
+		Objects.requireNonNull(function);
 		return t -> {
 			try {
-				return mapper.apply(t);
+				return function.apply(t);
 			} catch (Throwable e) {
 				throw Exceptions.unchecked(e);
 			}
 		};
 	}
 
-	public static <T> Consumer<T> consumer(CheckedConsumer<T> mapper) {
-		Objects.requireNonNull(mapper);
+	/**
+	 * 构造受检的 supplier
+	 *
+	 * @param consumer CheckedConsumer
+	 * @param <T>      泛型
+	 * @return Consumer
+	 */
+	public static <T> Consumer<T> consumer(CheckedConsumer<T> consumer) {
+		Objects.requireNonNull(consumer);
 		return t -> {
 			try {
-				mapper.accept(t);
+				consumer.accept(t);
 			} catch (Throwable e) {
 				throw Exceptions.unchecked(e);
 			}
 		};
 	}
 
-	public static <T> Supplier<T> supplier(CheckedSupplier<T> mapper) {
-		Objects.requireNonNull(mapper);
+	/**
+	 * 构造受检的 supplier
+	 *
+	 * @param supplier CheckedSupplier
+	 * @param <T>      泛型
+	 * @return Supplier
+	 */
+	public static <T> Supplier<T> supplier(CheckedSupplier<T> supplier) {
+		Objects.requireNonNull(supplier);
 		return () -> {
 			try {
-				return mapper.get();
+				return supplier.get();
 			} catch (Throwable e) {
 				throw Exceptions.unchecked(e);
 			}
 		};
 	}
 
+	/**
+	 * 构造受检的 runnable
+	 *
+	 * @param runnable CheckedRunnable
+	 * @return Runnable
+	 */
 	public static Runnable runnable(CheckedRunnable runnable) {
 		Objects.requireNonNull(runnable);
 		return () -> {
@@ -83,6 +110,13 @@ public class Unchecked {
 		};
 	}
 
+	/**
+	 * 构造受检的 callable
+	 *
+	 * @param callable CheckedCallable
+	 * @param <T>      泛型
+	 * @return Callable
+	 */
 	public static <T> Callable<T> callable(CheckedCallable<T> callable) {
 		Objects.requireNonNull(callable);
 		return () -> {
@@ -94,6 +128,13 @@ public class Unchecked {
 		};
 	}
 
+	/**
+	 * 构造受检的 comparator
+	 *
+	 * @param comparator CheckedComparator
+	 * @param <T>        泛型
+	 * @return Comparator
+	 */
 	public static <T> Comparator<T> comparator(CheckedComparator<T> comparator) {
 		Objects.requireNonNull(comparator);
 		return (T o1, T o2) -> {

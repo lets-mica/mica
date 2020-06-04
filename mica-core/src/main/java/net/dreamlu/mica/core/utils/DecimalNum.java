@@ -38,18 +38,42 @@ public class DecimalNum extends Number {
 		this.value = decimal;
 	}
 
+	/**
+	 * 构造 DecimalNum
+	 *
+	 * @param decimal decimal
+	 * @return DecimalNum
+	 */
 	public static DecimalNum of(BigDecimal decimal) {
 		return new DecimalNum(decimal);
 	}
 
+	/**
+	 * 构造 DecimalNum
+	 *
+	 * @param decimal decimal
+	 * @return DecimalNum
+	 */
 	public static DecimalNum of(String decimal) {
 		return of(new BigDecimal(decimal));
 	}
 
+	/**
+	 * 构造 DecimalNum
+	 *
+	 * @param decimal decimal
+	 * @return DecimalNum
+	 */
 	public static DecimalNum of(double decimal) {
 		return of(BigDecimal.valueOf(decimal));
 	}
 
+	/**
+	 * 构造 DecimalNum
+	 *
+	 * @param decimal decimal
+	 * @return DecimalNum
+	 */
 	public static DecimalNum of(long decimal) {
 		return of(BigDecimal.valueOf(decimal));
 	}
@@ -285,26 +309,51 @@ public class DecimalNum extends Number {
 		return this;
 	}
 
+	/**
+	 * intValue
+	 *
+	 * @return 转为 int 值
+	 */
 	@Override
 	public int intValue() {
 		return value.intValue();
 	}
 
+	/**
+	 * longValue
+	 *
+	 * @return 转为 long 值
+	 */
 	@Override
 	public long longValue() {
 		return value.longValue();
 	}
 
+	/**
+	 * floatValue
+	 *
+	 * @return 转为 float 值
+	 */
 	@Override
 	public float floatValue() {
 		return value.floatValue();
 	}
 
+	/**
+	 * doubleValue
+	 *
+	 * @return 转为 double 值
+	 */
 	@Override
 	public double doubleValue() {
 		return value.doubleValue();
 	}
 
+	/**
+	 * toString
+	 *
+	 * @return 转为字符串
+	 */
 	@Override
 	public String toString() {
 		return value.toString();

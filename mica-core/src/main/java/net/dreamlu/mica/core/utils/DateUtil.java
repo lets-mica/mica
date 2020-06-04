@@ -421,7 +421,7 @@ public class DateUtil {
 	}
 
 	/**
-	 * 时间转 Instant
+	 * LocalDateTime 转 Instant
 	 *
 	 * @param dateTime 时间
 	 * @return Instant
@@ -431,7 +431,7 @@ public class DateUtil {
 	}
 
 	/**
-	 * Instant 转 时间
+	 * Instant 转 LocalDateTime
 	 *
 	 * @param instant Instant
 	 * @return Instant
@@ -451,7 +451,7 @@ public class DateUtil {
 	}
 
 	/**
-	 * 转换成 date
+	 * LocalDateTime 转换成 date
 	 *
 	 * @param dateTime LocalDateTime
 	 * @return Date
@@ -461,7 +461,7 @@ public class DateUtil {
 	}
 
 	/**
-	 * 转换成 date
+	 * LocalDate 转换成 date
 	 *
 	 * @param localDate LocalDate
 	 * @return Date
@@ -471,7 +471,7 @@ public class DateUtil {
 	}
 
 	/**
-	 * Converts local date time to Calendar.
+	 * LocalDateTime 转换成 Calendar.
 	 */
 	public static Calendar toCalendar(final LocalDateTime localDateTime) {
 		return GregorianCalendar.from(ZonedDateTime.of(localDateTime, ZoneId.systemDefault()));
