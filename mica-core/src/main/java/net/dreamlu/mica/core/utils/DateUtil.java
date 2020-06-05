@@ -23,11 +23,10 @@ import org.springframework.util.Assert;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalAmount;
-import java.time.temporal.TemporalQuery;
+import java.time.temporal.*;
 import java.util.*;
+
+import static java.time.temporal.ChronoField.*;
 
 /**
  * 日期工具类
@@ -405,7 +404,7 @@ public class DateUtil {
 		if (format.getZone() == null) {
 			format = format.withZone(ZoneId.systemDefault());
 		}
-		Instant instant = format.parse(dateStr, Instant::from);
+		Instant instant = format.parse(dateStr, instantQuery());
 		return Date.from(instant);
 	}
 
@@ -766,6 +765,52 @@ public class DateUtil {
 			}
 		}
 		throw new DateTimeParseException("Unable to parse the date: " + text, text, -1);
+	}
+
+	/**
+	 * 支持日期、时间、时间日期格式转换成 Instant
+	 */
+	private static final TemporalQuery<Instant> INSTANT_QUERY = new TemporalQuery<Instant>() {
+
+		@Nullable
+		@Override
+		public Instant queryFrom(TemporalAccessor temporal) {
+			// 获取时区
+			ZoneId zoneId = temporal.query(TemporalQueries.zoneId());
+			Objects.requireNonNull(zoneId, "Unable to obtain Instant from TemporalAccessor: zoneId is null.");
+			if (temporal.isSupported(INSTANT_SECONDS) && temporal.isSupported(NANO_OF_SECOND)) {
+				long instantSecs = temporal.getLong(INSTANT_SECONDS);
+				int nanoOfSecond = temporal.get(NANO_OF_SECOND);
+				return Instant.ofEpochSecond(instantSecs, nanoOfSecond);
+			} else if (temporal.isSupported(NANO_OF_DAY)) {
+				return LocalTime.ofNanoOfDay(temporal.getLong(NANO_OF_DAY))
+					.atDate(DateUtil.EPOCH)
+					.atZone(zoneId)
+					.toInstant();
+			} else if (temporal.isSupported(EPOCH_DAY)) {
+				return LocalDate.ofEpochDay(temporal.getLong(EPOCH_DAY))
+					.atStartOfDay()
+					.atZone(zoneId)
+					.toInstant();
+			}
+			return null;
+		}
+
+		@Override
+		public String toString() {
+			return "Instant";
+		}
+	};
+
+	/**
+	 * 兼容 java 8
+	 *
+	 * The epoch year {@code LocalDate}, '1970-01-01'.
+	 */
+	public static final LocalDate EPOCH = LocalDate.of(1970, 1, 1);
+
+	public static TemporalQuery<Instant> instantQuery() {
+		return INSTANT_QUERY;
 	}
 
 }
