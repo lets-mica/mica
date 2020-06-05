@@ -775,14 +775,15 @@ public class DateUtil {
 		@Nullable
 		@Override
 		public Instant queryFrom(TemporalAccessor temporal) {
-			// 获取时区
-			ZoneId zoneId = temporal.query(TemporalQueries.zoneId());
-			Objects.requireNonNull(zoneId, "Unable to obtain Instant from TemporalAccessor: zoneId is null.");
 			if (temporal.isSupported(INSTANT_SECONDS) && temporal.isSupported(NANO_OF_SECOND)) {
 				long instantSecs = temporal.getLong(INSTANT_SECONDS);
 				int nanoOfSecond = temporal.get(NANO_OF_SECOND);
 				return Instant.ofEpochSecond(instantSecs, nanoOfSecond);
-			} else if (temporal.isSupported(NANO_OF_DAY)) {
+			}
+			// 获取时区
+			ZoneId zoneId = temporal.query(TemporalQueries.zoneId());
+			Objects.requireNonNull(zoneId, "Unable to obtain Instant from TemporalAccessor: zoneId is null.");
+			if (temporal.isSupported(NANO_OF_DAY)) {
 				return LocalTime.ofNanoOfDay(temporal.getLong(NANO_OF_DAY))
 					.atDate(DateUtil.EPOCH)
 					.atZone(zoneId)
