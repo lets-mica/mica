@@ -18,7 +18,7 @@
 [**更新记录**](CHANGELOG.md)
 
 ## 版本号说明
-`release` 版本号格式为 `x.x.x.发版当然日期`。
+`release` 版本号格式为 `x.x.x-GA`，响应 `冷神` 的吐槽，改短了一点。
 
 `snapshots` 版本号格式为 `x.x.x-SNAPSHOT`，`snapshots` 版每次提交后会自动构建。
 
