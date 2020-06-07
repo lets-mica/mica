@@ -129,18 +129,24 @@ public class DateUtilTest {
 	public void testDateParse() {
 		Date date = DateUtil.parse("2020-04-23", DatePattern.NORM_DATE_PATTERN);
 		System.out.println(date);
+		String format = DateUtil.format(date, DatePattern.NORM_DATE_PATTERN);
+		System.out.println(format);
 	}
 
 	@Test
 	public void testTimeParse() {
 		Date date = DateUtil.parse("16:12:12", DatePattern.NORM_TIME_FORMAT);
 		System.out.println(date);
+		String format = DateUtil.format(date, DatePattern.NORM_TIME_PATTERN);
+		System.out.println(format);
 	}
 
 	@Test
 	public void testDateTimeParse() {
 		Date date = DateUtil.parse("2020-04-23 16:12:12", DatePattern.NORM_DATETIME_FORMAT);
 		System.out.println(date);
+		String format = DateUtil.format(date, DatePattern.NORM_DATETIME_PATTERN);
+		System.out.println(format);
 	}
 
 }
