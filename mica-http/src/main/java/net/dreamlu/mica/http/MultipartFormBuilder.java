@@ -91,7 +91,7 @@ public class MultipartFormBuilder {
 		return this.build().execute();
 	}
 
-	public AsyncCall async() {
+	public AsyncExchange async() {
 		return this.build().async();
 	}
 }

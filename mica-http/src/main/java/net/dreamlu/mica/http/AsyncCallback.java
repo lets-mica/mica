@@ -30,25 +30,25 @@ import java.io.IOException;
  */
 @ParametersAreNonnullByDefault
 public class AsyncCallback implements Callback {
-	private final AsyncCall asyncCall;
+	private final AsyncExchange exchange;
 
-	AsyncCallback(AsyncCall asyncCall) {
-		this.asyncCall = asyncCall;
+	AsyncCallback(AsyncExchange exchange) {
+		this.exchange = exchange;
 	}
 
 	@Override
 	public void onFailure(Call call, IOException e) {
-		asyncCall.onFailure(call.request(), e);
+		exchange.onFailure(call.request(), e);
 	}
 
 	@Override
 	public void onResponse(Call call, Response response) throws IOException {
 		try (HttpResponse httpResponse = new HttpResponse(response)) {
-			asyncCall.onResponse(httpResponse);
+			exchange.onResponse(httpResponse);
 			if (response.isSuccessful()) {
-				asyncCall.onSuccessful(httpResponse);
+				exchange.onSuccessful(httpResponse);
 			} else {
-				asyncCall.onFailure(call.request(), new IOException(httpResponse.message()));
+				exchange.onFailure(call.request(), new IOException(httpResponse.message()));
 			}
 		}
 	}

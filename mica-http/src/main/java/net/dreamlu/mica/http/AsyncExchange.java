@@ -28,7 +28,7 @@ import java.util.function.Consumer;
  *
  * @author L.cm
  */
-public class AsyncCall {
+public class AsyncExchange {
 	private final static Consumer<ResponseSpec> DEFAULT_CONSUMER = (r) -> {};
 	private final static BiConsumer<Request, IOException> DEFAULT_FAIL_CONSUMER = (r, e) -> {};
 	private final Call call;
@@ -36,7 +36,7 @@ public class AsyncCall {
 	private Consumer<ResponseSpec> responseConsumer;
 	private BiConsumer<Request, IOException> failedBiConsumer;
 
-	AsyncCall(Call call) {
+	AsyncExchange(Call call) {
 		this.call = call;
 		this.successConsumer = DEFAULT_CONSUMER;
 		this.responseConsumer = DEFAULT_CONSUMER;
@@ -53,7 +53,7 @@ public class AsyncCall {
 		this.execute();
 	}
 
-	public AsyncCall onFailed(BiConsumer<Request, IOException> biConsumer) {
+	public AsyncExchange onFailed(BiConsumer<Request, IOException> biConsumer) {
 		this.failedBiConsumer = biConsumer;
 		return this;
 	}

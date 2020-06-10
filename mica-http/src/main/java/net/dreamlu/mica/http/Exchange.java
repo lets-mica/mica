@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.Exceptions;
 import okhttp3.Call;
 import okhttp3.Request;
+import okhttp3.Response;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -87,6 +88,15 @@ public class Exchange {
 
 	public <R> Optional<R> onSuccessfulOpt(Function<ResponseSpec, R> func) {
 		return Optional.ofNullable(this.onSuccessful(func));
+	}
+
+	/**
+	 * Returns ok http response.
+	 *
+	 * @return Response
+	 */
+	public Response response() {
+		return onResponse(ResponseSpec::rawResponse);
 	}
 
 	/**
@@ -171,6 +181,7 @@ public class Exchange {
 	 * toFile.
 	 *
 	 * @param file File
+	 * @return File
 	 */
 	public File toFile(File file) {
 		return onResponse(responseSpec -> responseSpec.toFile(file));
@@ -180,6 +191,7 @@ public class Exchange {
 	 * toFile.
 	 *
 	 * @param path Path
+	 * @return Path
 	 */
 	public Path toFile(Path path) {
 		return onResponse(responseSpec -> responseSpec.toFile(path));

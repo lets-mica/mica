@@ -288,8 +288,8 @@ public class HttpRequest {
 		return new Exchange(internalCall(httpClient));
 	}
 
-	public AsyncCall async() {
-		return new AsyncCall(internalCall(httpClient));
+	public AsyncExchange async() {
+		return new AsyncExchange(internalCall(httpClient));
 	}
 
 	public HttpRequest baseAuth(String userName, String password) {

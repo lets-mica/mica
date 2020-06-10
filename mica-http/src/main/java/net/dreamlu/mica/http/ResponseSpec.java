@@ -176,6 +176,7 @@ public interface ResponseSpec {
 	 * toFile.
 	 *
 	 * @param file File
+	 * @return File
 	 */
 	File toFile(File file);
 
@@ -183,6 +184,7 @@ public interface ResponseSpec {
 	 * toFile.
 	 *
 	 * @param path Path
+	 * @return Path
 	 */
 	Path toFile(Path path);
 
