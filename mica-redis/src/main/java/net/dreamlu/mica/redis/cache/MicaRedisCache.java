@@ -17,12 +17,9 @@
 package net.dreamlu.mica.redis.cache;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.CollectionUtil;
-import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.data.redis.core.*;
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 
 import java.time.Duration;
 import java.util.*;
@@ -35,15 +32,23 @@ import java.util.function.Supplier;
  * @author L.cm
  */
 @Getter
-@RequiredArgsConstructor
 @SuppressWarnings("unchecked")
-public class MicaRedisCache implements SmartInitializingSingleton {
+public class MicaRedisCache {
 	private final RedisTemplate<String, Object> redisTemplate;
-	private ValueOperations<String, Object> valueOps;
-	private HashOperations<String, Object, Object> hashOps;
-	private ListOperations<String, Object> listOps;
-	private SetOperations<String, Object> setOps;
-	private ZSetOperations<String, Object> zSetOps;
+	private final ValueOperations<String, Object> valueOps;
+	private final HashOperations<String, Object, Object> hashOps;
+	private final ListOperations<String, Object> listOps;
+	private final SetOperations<String, Object> setOps;
+	private final ZSetOperations<String, Object> zSetOps;
+
+	public MicaRedisCache(RedisTemplate<String, Object> redisTemplate) {
+		this.redisTemplate = redisTemplate;
+		this.valueOps = redisTemplate.opsForValue();
+		this.hashOps = redisTemplate.opsForHash();
+		this.listOps = redisTemplate.opsForList();
+		this.setOps = redisTemplate.opsForSet();
+		this.zSetOps = redisTemplate.opsForZSet();
+	}
 
 	/**
 	 * 设置缓存
@@ -95,9 +100,10 @@ public class MicaRedisCache implements SmartInitializingSingleton {
 
 	/**
 	 * 获取cache 为 null 时使用加载器，然后设置缓存
-	 * @param key cacheKey
+	 *
+	 * @param key    cacheKey
 	 * @param loader cache loader
-	 * @param <T> 泛型
+	 * @param <T>    泛型
 	 * @return 结果
 	 */
 	@Nullable
@@ -125,9 +131,10 @@ public class MicaRedisCache implements SmartInitializingSingleton {
 
 	/**
 	 * 获取cache 为 null 时使用加载器，然后设置缓存
+	 *
 	 * @param cacheKey cacheKey
-	 * @param loader cache loader
-	 * @param <T> 泛型
+	 * @param loader   cache loader
+	 * @param <T>      泛型
 	 * @return 结果
 	 */
 	@Nullable
@@ -809,13 +816,4 @@ public class MicaRedisCache implements SmartInitializingSingleton {
 		return zSetOps.score(key, member);
 	}
 
-	@Override
-	public void afterSingletonsInstantiated() {
-		Assert.notNull(redisTemplate, "redisTemplate is null");
-		valueOps = redisTemplate.opsForValue();
-		hashOps = redisTemplate.opsForHash();
-		listOps = redisTemplate.opsForList();
-		setOps = redisTemplate.opsForSet();
-		zSetOps = redisTemplate.opsForZSet();
-	}
 }
