@@ -18,7 +18,6 @@ package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -53,7 +52,7 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date plusYears(Date date, int yearsToAdd) {
-		return DateUtil.set(date, Calendar.YEAR, yearsToAdd);
+		return DateUtil.plus(date, Period.ofYears(yearsToAdd));
 	}
 
 	/**
@@ -64,7 +63,7 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date plusMonths(Date date, int monthsToAdd) {
-		return DateUtil.set(date, Calendar.MONTH, monthsToAdd);
+		return DateUtil.plus(date, Period.ofMonths(monthsToAdd));
 	}
 
 	/**
@@ -152,8 +151,12 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date plus(Date date, TemporalAmount amount) {
-		Instant instant = date.toInstant();
-		return Date.from(instant.plus(amount));
+		Objects.requireNonNull(date, "The date must not be null");
+		Instant instant = date.toInstant()
+			.atZone(ZoneOffset.UTC)
+			.plus(amount)
+			.toInstant();
+		return Date.from(instant);
 	}
 
 	/**
@@ -164,7 +167,7 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date minusYears(Date date, int years) {
-		return DateUtil.set(date, Calendar.YEAR, -years);
+		return DateUtil.minus(date, Period.ofYears(years));
 	}
 
 	/**
@@ -175,7 +178,7 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date minusMonths(Date date, int months) {
-		return DateUtil.set(date, Calendar.MONTH, -months);
+		return DateUtil.minus(date, Period.ofMonths(months));
 	}
 
 	/**
@@ -263,25 +266,12 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date minus(Date date, TemporalAmount amount) {
-		Instant instant = date.toInstant();
-		return Date.from(instant.minus(amount));
-	}
-
-	/**
-	 * 设置日期属性
-	 *
-	 * @param date          时间
-	 * @param calendarField 更改的属性
-	 * @param amount        更改数，-1表示减少
-	 * @return 设置后的时间
-	 */
-	private static Date set(Date date, int calendarField, int amount) {
-		Assert.notNull(date, "The date must not be null");
-		Calendar c = Calendar.getInstance();
-		c.setLenient(false);
-		c.setTime(date);
-		c.add(calendarField, amount);
-		return c.getTime();
+		Objects.requireNonNull(date, "The date must not be null");
+		Instant instant = date.toInstant()
+			.atZone(ZoneOffset.UTC)
+			.minus(amount)
+			.toInstant();
+		return Date.from(instant);
 	}
 
 	/**
@@ -805,7 +795,7 @@ public class DateUtil {
 
 	/**
 	 * 兼容 java 8
-	 *
+	 * <p>
 	 * The epoch year {@code LocalDate}, '1970-01-01'.
 	 */
 	public static final LocalDate EPOCH = LocalDate.of(1970, 1, 1);
