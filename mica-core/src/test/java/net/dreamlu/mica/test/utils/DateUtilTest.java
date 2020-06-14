@@ -41,6 +41,7 @@ public class DateUtilTest {
 	public void testPlusMonths() {
 		Date date = new Date();
 		Date date1 = DateUtil.plusMonths(date, 1);
+		DateUtil.plusWeeks(date, 1);
 
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
@@ -92,6 +93,7 @@ public class DateUtilTest {
 	public void testMinusMonths() {
 		Date date = new Date();
 		Date date1 = DateUtil.minusMonths(date, 1);
+		DateUtil.minusWeeks(date, 1);
 
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);

@@ -52,7 +52,7 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date plusYears(Date date, int yearsToAdd) {
-		return DateUtil.plus(date, Period.ofYears(yearsToAdd));
+		return DateUtil.plusAtUtc(date, Period.ofYears(yearsToAdd));
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date plusMonths(Date date, int monthsToAdd) {
-		return DateUtil.plus(date, Period.ofMonths(monthsToAdd));
+		return DateUtil.plusAtUtc(date, Period.ofMonths(monthsToAdd));
 	}
 
 	/**
@@ -150,12 +150,26 @@ public class DateUtil {
 	 * @param amount 时间量
 	 * @return 设置后的时间
 	 */
-	public static Date plus(Date date, TemporalAmount amount) {
+	public static Date plusAtUtc(Date date, TemporalAmount amount) {
 		Objects.requireNonNull(date, "The date must not be null");
 		Instant instant = date.toInstant()
 			.atZone(ZoneOffset.UTC)
 			.plus(amount)
 			.toInstant();
+		return Date.from(instant);
+	}
+
+	/**
+	 * 日期添加时间量
+	 *
+	 * @param date   时间
+	 * @param amount 时间量
+	 * @return 设置后的时间
+	 */
+	public static Date plus(Date date, TemporalAmount amount) {
+		Objects.requireNonNull(date, "The date must not be null");
+		Instant instant = date.toInstant()
+			.plus(amount);
 		return Date.from(instant);
 	}
 
@@ -167,7 +181,7 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date minusYears(Date date, int years) {
-		return DateUtil.minus(date, Period.ofYears(years));
+		return DateUtil.minusAtUtc(date, Period.ofYears(years));
 	}
 
 	/**
@@ -178,7 +192,7 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date minusMonths(Date date, int months) {
-		return DateUtil.minus(date, Period.ofMonths(months));
+		return DateUtil.minusAtUtc(date, Period.ofMonths(months));
 	}
 
 	/**
@@ -265,12 +279,26 @@ public class DateUtil {
 	 * @param amount 时间量
 	 * @return 设置后的时间
 	 */
-	public static Date minus(Date date, TemporalAmount amount) {
+	public static Date minusAtUtc(Date date, TemporalAmount amount) {
 		Objects.requireNonNull(date, "The date must not be null");
 		Instant instant = date.toInstant()
 			.atZone(ZoneOffset.UTC)
 			.minus(amount)
 			.toInstant();
+		return Date.from(instant);
+	}
+
+	/**
+	 * 日期减少时间量
+	 *
+	 * @param date   时间
+	 * @param amount 时间量
+	 * @return 设置后的时间
+	 */
+	public static Date minus(Date date, TemporalAmount amount) {
+		Objects.requireNonNull(date, "The date must not be null");
+		Instant instant = date.toInstant()
+			.minus(amount);
 		return Date.from(instant);
 	}
 

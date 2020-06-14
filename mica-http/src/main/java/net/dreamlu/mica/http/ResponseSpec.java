@@ -18,6 +18,8 @@ package net.dreamlu.mica.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.type.CollectionLikeType;
+import net.dreamlu.mica.core.utils.JsonUtil;
 import okhttp3.*;
 
 import javax.annotation.Nullable;
@@ -128,6 +130,50 @@ public interface ResponseSpec {
 	 * @return JsonNode
 	 */
 	JsonNode asJsonNode();
+
+	/**
+	 * jackson json path 语法读取节点
+	 *
+	 * @param jsonPtrExpr json path 表达式
+	 * @return JsonNode
+	 */
+	default JsonNode atJsonPath(String jsonPtrExpr) {
+		return this.asJsonNode().at(jsonPtrExpr);
+	}
+
+	/**
+	 * jackson json path 语法读取节点
+	 *
+	 * @param jsonPtrExpr json path 表达式
+	 * @param valueType   value value type
+	 * @return JsonNode
+	 */
+	default <T> T atJsonPathValue(String jsonPtrExpr, Class<T> valueType) {
+		return JsonUtil.convertValue(atJsonPath(jsonPtrExpr), valueType);
+	}
+
+	/**
+	 * jackson json path 语法读取节点
+	 *
+	 * @param jsonPtrExpr   json path 表达式
+	 * @param typeReference value Type Reference
+	 * @return JsonNode
+	 */
+	default <T> T atJsonPathValue(String jsonPtrExpr, TypeReference<T> typeReference) {
+		return JsonUtil.convertValue(atJsonPath(jsonPtrExpr), typeReference);
+	}
+
+	/**
+	 * jackson json path 语法读取节点
+	 *
+	 * @param jsonPtrExpr json path 表达式
+	 * @param valueType   value value type
+	 * @return List
+	 */
+	default <T> List<T> atJsonPathList(String jsonPtrExpr, Class<T> valueType) {
+		CollectionLikeType collectionLikeType = JsonUtil.getListType(valueType);
+		return JsonUtil.convertValue(atJsonPath(jsonPtrExpr), collectionLikeType);
+	}
 
 	/**
 	 * Returns body to Object.
