@@ -27,6 +27,7 @@ import okhttp3.Response;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -93,6 +94,10 @@ public class Exchange {
 	/**
 	 * Returns ok http response.
 	 *
+	 * <p>
+	 *     注意：body 不能读取，因为已经关闭掉了，建议还是直接用 onResponse 函数处理。
+	 * </p>
+	 *
 	 * @return Response
 	 */
 	public Response response() {
@@ -106,6 +111,16 @@ public class Exchange {
 	 */
 	public String asString() {
 		return onResponse(ResponseSpec::asString);
+	}
+
+	/**
+	 * Returns body String.
+	 *
+	 * @param charset Charset
+	 * @return body String
+	 */
+	public String asString(Charset charset) {
+		return onResponse(responseSpec -> responseSpec.asString(charset));
 	}
 
 	/**

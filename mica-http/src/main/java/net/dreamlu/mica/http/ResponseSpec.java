@@ -25,6 +25,7 @@ import okhttp3.*;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +110,14 @@ public interface ResponseSpec {
 	 * @return body String
 	 */
 	String asString();
+
+	/**
+	 * Returns body String.
+	 *
+	 * @param charset Charset
+	 * @return body String
+	 */
+	String asString(Charset charset);
 
 	/**
 	 * Returns body to byte arrays.

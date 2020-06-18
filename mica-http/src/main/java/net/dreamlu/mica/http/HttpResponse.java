@@ -28,6 +28,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -101,6 +102,11 @@ public class HttpResponse implements ResponseSpec, Closeable {
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
+	}
+
+	@Override
+	public String asString(Charset charset) {
+		return new String(asBytes(), charset);
 	}
 
 	@Override
