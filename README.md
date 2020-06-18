@@ -32,6 +32,8 @@ lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1
 ## 开源协议
 ![LGPL v3](docs/img/lgplv3-147x51.png) 
 
+**软著编号**：`2020SR0411603`
+
 ## 协议解释
 LGPL（[GNU Lesser General Public License](http://www.gnu.org/licenses/lgpl.html)）
 
