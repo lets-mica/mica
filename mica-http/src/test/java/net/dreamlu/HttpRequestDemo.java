@@ -18,6 +18,7 @@ package net.dreamlu;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import net.dreamlu.mica.core.utils.Base64Util;
+import net.dreamlu.mica.http.HttpLogger;
 import net.dreamlu.mica.http.HttpRequest;
 import net.dreamlu.mica.http.LogLevel;
 import net.dreamlu.mica.http.ResponseSpec;
@@ -35,12 +36,14 @@ import java.util.Optional;
 public class HttpRequestDemo {
 
 	public void doc() {
-		// 设定全局日志级别 NONE，BASIC，HEADERS，BODY， 默认：NONE
+		// 设定全局日志级别 NONE，BASIC，HEADERS，BODY， 默认：NONE 和 self4
 		HttpRequest.setGlobalLog(LogLevel.BODY);
+		// 设置控制台日志，用于没有日志依赖的 sdk 开发时使用
+		HttpRequest.setGlobalLog(HttpLogger.Console, LogLevel.BODY);
 
 		// 同步请求 url，方法支持 get、post、patch、put、delete
 		HttpRequest.get("https://www.baidu.com")
-			.log(LogLevel.BASIC)             //设定本次的日志级别，优先于全局
+			.useSlf4jLog()                   //使用 Slf4j 日志，同类的有 .useConsoleLog(),日志级别为 BODY
 			.addHeader("x-account-id", "mica001") // 添加 header
 			.addCookie(new Cookie.Builder()  // 添加 cookie
 				.name("sid")

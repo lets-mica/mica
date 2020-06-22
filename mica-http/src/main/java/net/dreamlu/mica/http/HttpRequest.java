@@ -64,7 +64,9 @@ public class HttpRequest {
 	@Nullable
 	private Boolean followSslRedirects;
 	@Nullable
-	private HttpLoggingInterceptor.Level level;
+	private HttpLogger httpLogger;
+	@Nullable
+	private HttpLoggingInterceptor.Level logLevel;
 	@Nullable
 	private CookieJar cookieJar;
 	@Nullable
@@ -265,8 +267,8 @@ public class HttpRequest {
 		if (retryPolicy != null) {
 			builder.addInterceptor(new RetryInterceptor(retryPolicy));
 		}
-		if (level != null && HttpLoggingInterceptor.Level.NONE != level) {
-			builder.addInterceptor(getLoggingInterceptor(level));
+		if (httpLogger != null && logLevel != null && HttpLoggingInterceptor.Level.NONE != logLevel) {
+			builder.addInterceptor(getLoggingInterceptor(httpLogger, logLevel));
 		} else if (globalLoggingInterceptor != null) {
 			builder.addInterceptor(globalLoggingInterceptor);
 		}
@@ -349,19 +351,53 @@ public class HttpRequest {
 		return this;
 	}
 
-	private static HttpLoggingInterceptor getLoggingInterceptor(HttpLoggingInterceptor.Level level) {
-		HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(Slf4jLogger.INSTANCE);
+	private static HttpLoggingInterceptor getLoggingInterceptor(HttpLogger httpLogger, HttpLoggingInterceptor.Level level) {
+		HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(httpLogger.getLogger());
 		loggingInterceptor.setLevel(level);
 		return loggingInterceptor;
 	}
 
+	/**
+	 * 建议使用 useSlf4jLog 或者 useConsoleLog 方法
+	 *
+	 * @return HttpRequest
+	 */
+	@Deprecated
 	public HttpRequest log() {
-		this.level = HttpLoggingInterceptor.Level.BODY;
+		this.logLevel = HttpLoggingInterceptor.Level.BODY;
 		return this;
 	}
 
+	/**
+	 * 建议使用 logLevel 方法
+	 *
+	 * @return HttpRequest
+	 */
+	@Deprecated
 	public HttpRequest log(LogLevel logLevel) {
-		this.level = logLevel.getLevel();
+		this.logLevel = logLevel.getLevel();
+		return this;
+	}
+
+	public HttpRequest useSlf4jLog() {
+		return useSlf4jLog(LogLevel.BODY);
+	}
+
+	public HttpRequest useSlf4jLog(LogLevel logLevel) {
+		return useLog(HttpLogger.Slf4j, logLevel);
+	}
+
+	public HttpRequest useConsoleLog() {
+		return useConsoleLog(LogLevel.BODY);
+	}
+
+	public HttpRequest useConsoleLog(LogLevel logLevel) {
+		return useLog(HttpLogger.Console, logLevel);
+	}
+
+	public HttpRequest useLog(HttpLogger logger, LogLevel logLevel) {
+		this.httpLogger = logger;
+		this.logLevel = logLevel.getLevel();
 		return this;
 	}
 
@@ -483,8 +519,17 @@ public class HttpRequest {
 		HttpRequest.httpClient = httpClient;
 	}
 
+	/**
+	 * 设置全局日志，默认：Slf4j
+	 *
+	 * @param logLevel LogLevel
+	 */
 	public static void setGlobalLog(LogLevel logLevel) {
-		HttpRequest.globalLoggingInterceptor = getLoggingInterceptor(logLevel.getLevel());
+		setGlobalLog(HttpLogger.Slf4j, logLevel);
+	}
+
+	public static void setGlobalLog(HttpLogger logger, LogLevel logLevel) {
+		HttpRequest.globalLoggingInterceptor = getLoggingInterceptor(logger, logLevel.getLevel());
 	}
 
 	static String handleValue(@Nullable Object value) {

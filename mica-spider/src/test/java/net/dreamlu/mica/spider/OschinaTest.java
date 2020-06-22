@@ -1,6 +1,7 @@
 package net.dreamlu.mica.spider;
 
 import net.dreamlu.mica.http.HttpRequest;
+import net.dreamlu.mica.http.LogLevel;
 import net.dreamlu.mica.spider.mapper.DomMapper;
 
 import java.util.List;
@@ -10,6 +11,7 @@ public class OschinaTest {
 	public static void main(String[] args) {
 		// 同步，异常返回 null
 		Oschina oschina = HttpRequest.get("https://www.oschina.net")
+			.useConsoleLog(LogLevel.HEADERS)
 			.execute()
 			.onSuccess(responseSpec -> DomMapper.readValue(responseSpec.asStream(), Oschina.class));
 		if (oschina == null) {

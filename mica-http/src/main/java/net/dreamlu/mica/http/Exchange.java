@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.Exceptions;
+import net.dreamlu.mica.core.utils.JsonUtil;
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -139,6 +140,27 @@ public class Exchange {
 	 */
 	public JsonNode asJsonNode() {
 		return onResponse(ResponseSpec::asJsonNode);
+	}
+
+	/**
+	 * jackson json path 语法读取节点
+	 *
+	 * @param jsonPtrExpr json path 表达式
+	 * @return JsonNode
+	 */
+	public JsonNode atJsonPath(String jsonPtrExpr) {
+		return this.asJsonNode().at(jsonPtrExpr);
+	}
+
+	/**
+	 * jackson json path 语法读取节点
+	 *
+	 * @param jsonPtrExpr json path 表达式
+	 * @param valueType   value value type
+	 * @return JsonNode
+	 */
+	public <T> T atJsonPathValue(String jsonPtrExpr, Class<T> valueType) {
+		return JsonUtil.convertValue(atJsonPath(jsonPtrExpr), valueType);
 	}
 
 	/**
