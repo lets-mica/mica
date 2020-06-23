@@ -112,7 +112,7 @@ private String getUserEmail(String accessToken) {
 // 异步
 public static void test() {
     HttpRequest.post("https://www.baidu.com/do-stuff")
-        .log(LogLevel.BASIC)                // 日志级别
+        .useConsoleLog(LogLevel.HEADERS)    // 日志级别
         .formBuilder()                      // 表单构造器
         .add("a", "b")
         .async()                            // 使用异步
