@@ -15,7 +15,7 @@
 ## 使用文档
 **使用文档**详见：[mica2.x 使用文档](MODULE.md)
 
-[**更新记录**](CHANGELOG.md)
+**更新记录**详见：[Mica 更新记录](CHANGELOG.md)
 
 ## 版本号说明
 `release` 版本号格式为 `x.x.x-GA`，响应 `冷神` 的吐槽，改短了一点。
