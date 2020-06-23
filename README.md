@@ -13,7 +13,7 @@
 ![犬夜叉-云母](docs/img/mica-001.jpeg)
 
 ## 使用文档
-**使用文档**详见：https://www.dreamlu.net/mica2x/index.html
+**使用文档**详见：[mica2.x 使用文档](MODULE.md)
 
 [**更新记录**](CHANGELOG.md)
 
