@@ -212,6 +212,28 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
+	 * startWith char
+	 *
+	 * @param cs CharSequence
+	 * @param c  char
+	 * @return {boolean}
+	 */
+	public static boolean startWith(CharSequence cs, char c) {
+		return cs.charAt(0) == c;
+	}
+
+	/**
+	 * endWith char
+	 *
+	 * @param cs CharSequence
+	 * @param c  char
+	 * @return {boolean}
+	 */
+	public static boolean endWith(CharSequence cs, char c) {
+		return cs.charAt(cs.length() - 1) == c;
+	}
+
+	/**
 	 * 将字符串中特定模式的字符转换成map中对应的值
 	 * <p>
 	 * use: format("my name is ${name}, and i like ${like}!", {"name":"L.cm", "like": "Java"})

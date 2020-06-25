@@ -8,8 +8,9 @@
 - :sparkles: mica-http ResponseSpec 添加 json path 系列方法。
 - :sparkles: mica-http 优化 github #26 .
 - :sparkles: mica-ip2region 更新 ip2region.db 文件。
-- :sparkles: mica-core 优化 DateUtil 优化 minus、plus months、years 提升5倍性能 gitee #IW2IM .
-- :sparkles: mica-redis 优化 MicaRedisCache 构造器 github #27 .
+- :sparkles: mica-core 优化 StringUtil，添加 startWith、endWith 方法.
+- :sparkles: mica-core 优化 DateUtil 优化 minus、plus months、years 提升5倍性能 gitee #IW2IM.
+- :sparkles: mica-redis 优化 MicaRedisCache 构造器 github #27.
 - :arrow_up: 升级 spring boot 到 2.3.1.RELEASE。
 
 ### v2.0.2-GA - 2020-06-06

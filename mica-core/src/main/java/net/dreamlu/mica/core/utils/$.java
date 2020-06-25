@@ -335,6 +335,28 @@ public class $ {
 	}
 
 	/**
+	 * startWith char
+	 *
+	 * @param cs CharSequence
+	 * @param c  char
+	 * @return {boolean}
+	 */
+	public static boolean startWith(CharSequence cs, char c) {
+		return StringUtil.startWith(cs, c);
+	}
+
+	/**
+	 * endWith char
+	 *
+	 * @param cs CharSequence
+	 * @param c  char
+	 * @return {boolean}
+	 */
+	public static boolean endWith(CharSequence cs, char c) {
+		return StringUtil.endWith(cs, c);
+	}
+
+	/**
 	 * 将字符串中特定模式的字符转换成map中对应的值
 	 * <p>
 	 * use: format("my name is ${name}, and i like ${like}!", {"name":"L.cm", "like": "Java"})
