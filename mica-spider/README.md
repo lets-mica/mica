@@ -89,7 +89,7 @@ public @interface CssQuery {
 // 同步，异常返回 null
 Oschina oschina = HttpRequest.get("https://www.oschina.net")
     .execute()
-    .onSuccess(responseSpec -> responseSpec.asDomValue(Oschina.class));
+	.onSuccess(responseSpec -> DomMapper.readValue(responseSpec.asStream(), Oschina.class));
 if (oschina == null) {
     return;
 }

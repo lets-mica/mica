@@ -6,14 +6,14 @@ import net.dreamlu.mica.spider.mapper.DomMapper;
 
 import java.util.List;
 
-public class OschinaTest {
+public class OsChinaTest {
 
 	public static void main(String[] args) {
 		// 同步，异常返回 null
 		Oschina oschina = HttpRequest.get("https://www.oschina.net")
-			.useConsoleLog(LogLevel.HEADERS)
+			.useConsoleLog(LogLevel.BASIC)
 			.execute()
-			.onSuccess(responseSpec -> DomMapper.readValue(responseSpec.asStream(), Oschina.class));
+			.onSuccess(responseSpec -> DomMapper.readValue(responseSpec, Oschina.class));
 		if (oschina == null) {
 			return;
 		}

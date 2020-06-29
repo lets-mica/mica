@@ -74,6 +74,18 @@ public class DomMapper {
 	/**
 	 * 读取 xml 信息为 java Bean
 	 *
+	 * @param response ResponseSpec
+	 * @param clazz    bean Class
+	 * @param <T>      泛型
+	 * @return 对象
+	 */
+	public static <T> T readValue(ResponseSpec response, final Class<T> clazz) {
+		return readValue(response.asStream(), clazz);
+	}
+
+	/**
+	 * 读取 xml 信息为 java Bean
+	 *
 	 * @param inputStream InputStream
 	 * @param clazz       bean Class
 	 * @param <T>         泛型
@@ -110,6 +122,18 @@ public class DomMapper {
 		enhancer.setUseCache(true);
 		enhancer.setCallback(new CssQueryMethodInterceptor(clazz, doc));
 		return (T) enhancer.create();
+	}
+
+	/**
+	 * 读取 xml 信息为 java Bean
+	 *
+	 * @param <T>      泛型
+	 * @param response ResponseSpec
+	 * @param clazz    bean Class
+	 * @return 对象
+	 */
+	public static <T> List<T> readList(ResponseSpec response, final Class<T> clazz) {
+		return readList(response.asStream(), clazz);
 	}
 
 	/**
