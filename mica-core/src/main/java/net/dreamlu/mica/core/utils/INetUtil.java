@@ -99,13 +99,12 @@ public class INetUtil {
 		try {
 			InetAddress candidateAddress = null;
 			// Iterate all NICs (network interface cards)...
-			for (Enumeration ifaces = NetworkInterface.getNetworkInterfaces(); ifaces.hasMoreElements(); ) {
-				NetworkInterface iface = (NetworkInterface) ifaces.nextElement();
+			for (Enumeration<NetworkInterface> iFaces = NetworkInterface.getNetworkInterfaces(); iFaces.hasMoreElements(); ) {
+				NetworkInterface iFace = iFaces.nextElement();
 				// Iterate all IP addresses assigned to each card...
-				for (Enumeration inetAddrs = iface.getInetAddresses(); inetAddrs.hasMoreElements(); ) {
-					InetAddress inetAddr = (InetAddress) inetAddrs.nextElement();
+				for (Enumeration<InetAddress> inetAdders = iFace.getInetAddresses(); inetAdders.hasMoreElements(); ) {
+					InetAddress inetAddr = inetAdders.nextElement();
 					if (!inetAddr.isLoopbackAddress()) {
-
 						if (inetAddr.isSiteLocalAddress()) {
 							// Found non-loopback site-local address. Return it immediately...
 							return inetAddr;
@@ -153,4 +152,88 @@ public class INetUtil {
 			return false;
 		}
 	}
+
+	/**
+	 * 将 ip 转成 InetAddress
+	 *
+	 * @param ip ip
+	 * @return InetAddress
+	 */
+	public static InetAddress getInetAddress(String ip) {
+		try {
+			return InetAddress.getByName(ip);
+		} catch (UnknownHostException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 判断是否内网 ip
+	 *
+	 * @param ip ip
+	 * @return boolean
+	 */
+	public static boolean isInternalIp(String ip) {
+		return isInternalIp(getInetAddress(ip));
+	}
+
+	/**
+	 * 判断是否内网 ip
+	 *
+	 * @param address InetAddress
+	 * @return boolean
+	 */
+	public static boolean isInternalIp(InetAddress address) {
+		if (isLocalIp(address)) {
+			return true;
+		}
+		return isInternalIp(address.getAddress());
+	}
+
+	/**
+	 * 判断是否本地 ip
+	 *
+	 * @param address InetAddress
+	 * @return boolean
+	 */
+	public static boolean isLocalIp(InetAddress address) {
+		return address.isAnyLocalAddress()
+			|| address.isLoopbackAddress()
+			|| address.isSiteLocalAddress();
+	}
+
+	/**
+	 * 判断是否内网 ip
+	 *
+	 * @param addr ip
+	 * @return boolean
+	 */
+	public static boolean isInternalIp(byte[] addr) {
+		final byte b0 = addr[0];
+		final byte b1 = addr[1];
+		//10.x.x.x/8
+		final byte section1 = 0x0A;
+		//172.16.x.x/12
+		final byte section2 = (byte) 0xAC;
+		final byte section3 = (byte) 0x10;
+		final byte section4 = (byte) 0x1F;
+		//192.168.x.x/16
+		final byte section5 = (byte) 0xC0;
+		final byte section6 = (byte) 0xA8;
+		switch (b0) {
+			case section1:
+				return true;
+			case section2:
+				if (b1 >= section3 && b1 <= section4) {
+					return true;
+				}
+			case section5:
+				if (b1 == section6) {
+					return true;
+				}
+			default:
+				return false;
+		}
+	}
+
 }
