@@ -184,7 +184,7 @@ public class HttpResponse implements ResponseSpec, Closeable {
 		return response.toString();
 	}
 
-	private static ResponseBody ifNullBodyToEmpty(@Nullable ResponseBody body) {
+	static ResponseBody ifNullBodyToEmpty(@Nullable ResponseBody body) {
 		return body == null ? Util.EMPTY_RESPONSE : body;
 	}
 

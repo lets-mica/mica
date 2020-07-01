@@ -17,21 +17,15 @@
 package net.dreamlu;
 
 import net.dreamlu.mica.http.HttpRequest;
-import net.dreamlu.mica.http.LogLevel;
-import org.junit.Test;
 
-import java.io.IOException;
+public class HttpRequestTest {
 
-public class HttpRequestProxyTest {
-
-	@Test(expected = IOException.class)
-	public void test1() {
-		// 代理都不可用
-		HttpRequest.get("https://www.baidu.com")
-			.useConsoleLog(LogLevel.BASIC)
-			.retry()
-			.proxySelector(new MicaProxySelector())
-			.execute()
+	public static void main(String[] args) {
+		String json = HttpRequest.get("https://www.baidu.com/home/xman/data/tipspluslist")
+			.useConsoleLog()
+			.executeAsync()
+			.join()
 			.asString();
+		System.out.println(json);
 	}
 }
