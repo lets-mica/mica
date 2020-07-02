@@ -5,10 +5,11 @@ import net.dreamlu.mica.core.beans.CopyProperty;
 import net.dreamlu.mica.core.utils.DateUtil;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class User {
+public class User implements Serializable {
 	private Integer id;
 	private int id1;
 	private int[] ids;

@@ -108,6 +108,16 @@ public class BeanUtilTest {
 		System.out.println(user1);
 	}
 
+	@Test
+	public void test7() {
+		User user = new User();
+		user.setXx("123123");
+		user.setPhoto("www.dreamlu.net/img/1");
+		user.setBirthday(LocalDateTime.now());
+		User user1 = BeanUtil.deepClone(user);
+		System.out.println(user1);
+	}
+
 	public static void main(String[] args) {
 		// 设置 cglib 源码生成目录
 		String sourcePath = BeanUtilTest.class.getResource("/").getPath().split("mica-core")[0];

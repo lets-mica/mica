@@ -27,7 +27,11 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.cglib.beans.BeanGenerator;
 import org.springframework.lang.Nullable;
+import org.springframework.util.FastByteArrayOutputStream;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.*;
 
 /**
@@ -95,7 +99,7 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	}
 
 	/**
-	 * 深复制
+	 * 浅拷贝
 	 *
 	 * <p>
 	 * 支持 map bean
@@ -105,13 +109,39 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	 * @param <T>    泛型标记
 	 * @return T
 	 */
-	@SuppressWarnings("unchecked")
 	@Nullable
+	@SuppressWarnings("unchecked")
 	public static <T> T clone(@Nullable T source) {
 		if (source == null) {
 			return null;
 		}
 		return (T) BeanUtil.copy(source, source.getClass());
+	}
+
+	/**
+	 * 深度拷贝
+	 *
+	 * @param source 待拷贝的对象
+	 * @return 拷贝之后的对象
+	 */
+	@Nullable
+	@SuppressWarnings("unchecked")
+	public static <T> T deepClone(@Nullable T source) {
+		if (source == null) {
+			return null;
+		}
+		FastByteArrayOutputStream fBos = new FastByteArrayOutputStream(1024);
+		try (ObjectOutputStream oos = new ObjectOutputStream(fBos)) {
+			oos.writeObject(source);
+			oos.flush();
+		} catch (IOException ex) {
+			throw new IllegalArgumentException("Failed to serialize object of type: " + source.getClass(), ex);
+		}
+		try (ObjectInputStream ois = new ObjectInputStream(fBos.getInputStream())) {
+			return (T) ois.readObject();
+		} catch (IOException | ClassNotFoundException ex) {
+			throw new IllegalArgumentException("Failed to deserialize object", ex);
+		}
 	}
 
 	/**
