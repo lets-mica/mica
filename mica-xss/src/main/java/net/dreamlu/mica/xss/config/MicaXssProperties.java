@@ -35,9 +35,12 @@ public class MicaXssProperties {
 	 * 开启xss
 	 */
 	private boolean enabled = true;
-
 	/**
-	 * 放行的规则
+	 * 拦截的路由，默认为: /api/**
+	 */
+	private List<String> pathPatterns = new ArrayList<String>(){{ add("/api/**"); }};
+	/**
+	 * 放行的规则，默认为空
 	 */
 	private List<String> excludePatterns = new ArrayList<>();
 

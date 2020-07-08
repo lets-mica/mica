@@ -19,7 +19,6 @@ package net.dreamlu.mica.xss.core;
 import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.ClassUtil;
 import net.dreamlu.mica.xss.config.MicaXssProperties;
-import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -46,12 +45,6 @@ public class XssCleanInterceptor extends HandlerInterceptorAdapter {
 			XssIgnoreHolder.setIgnore();
 			return true;
 		}
-		// 3. 过滤路径
-		String path = request.getServletPath();
-		if (isExcludePath(xssProperties, path)) {
-			XssIgnoreHolder.setIgnore();
-			return true;
-		}
 		// 3. 处理 XssIgnore 注解
 		HandlerMethod handlerMethod = (HandlerMethod) handler;
 		XssIgnore xssIgnore = ClassUtil.getAnnotation(handlerMethod, XssIgnore.class);
@@ -59,11 +52,6 @@ public class XssCleanInterceptor extends HandlerInterceptorAdapter {
 			XssIgnoreHolder.setIgnore();
 		}
 		return true;
-	}
-
-	private static boolean isExcludePath(MicaXssProperties xssProperties, String path) {
-		String[] patterns = xssProperties.getExcludePatterns().toArray(new String[0]);
-		return PatternMatchUtils.simpleMatch(patterns, path);
 	}
 
 	@Override

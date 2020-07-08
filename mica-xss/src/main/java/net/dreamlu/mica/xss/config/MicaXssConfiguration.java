@@ -39,7 +39,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableConfigurationProperties(MicaXssProperties.class)
 @ConditionalOnProperty(value = "mica.xss.enabled", havingValue = "true")
 public class MicaXssConfiguration implements WebMvcConfigurer {
-	private static final String DEFAULT_PATH_PATTERN = "/**";
 	private final MicaXssProperties xssProperties;
 
 	@Bean
@@ -56,7 +55,8 @@ public class MicaXssConfiguration implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		XssCleanInterceptor interceptor = new XssCleanInterceptor(xssProperties);
 		registry.addInterceptor(interceptor)
-			.addPathPatterns(DEFAULT_PATH_PATTERN)
+			.addPathPatterns(xssProperties.getPathPatterns())
+			.excludePathPatterns(xssProperties.getExcludePatterns())
 			.order(Ordered.LOWEST_PRECEDENCE);
 	}
 
