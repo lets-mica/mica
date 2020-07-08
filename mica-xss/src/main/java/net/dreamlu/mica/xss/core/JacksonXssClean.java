@@ -36,10 +36,10 @@ public class JacksonXssClean extends JsonDeserializer<String> {
 		String text = p.getValueAsString();
 		if (text == null) {
 			return null;
-		} else if (XssIgnoreHolder.isIgnore()) {
-			return text;
-		} else {
+		} else if (XssHolder.isEnabled()) {
 			return XssUtil.clean(text);
+		} else {
+			return text;
 		}
 	}
 

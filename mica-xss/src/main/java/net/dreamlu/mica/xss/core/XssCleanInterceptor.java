@@ -42,20 +42,19 @@ public class XssCleanInterceptor extends HandlerInterceptorAdapter {
 		}
 		// 2. 没有开启
 		if (!xssProperties.isEnabled()) {
-			XssIgnoreHolder.setIgnore();
 			return true;
 		}
 		// 3. 处理 XssIgnore 注解
 		HandlerMethod handlerMethod = (HandlerMethod) handler;
 		XssIgnore xssIgnore = ClassUtil.getAnnotation(handlerMethod, XssIgnore.class);
-		if (xssIgnore != null) {
-			XssIgnoreHolder.setIgnore();
+		if (xssIgnore == null) {
+			XssHolder.setEnable();
 		}
 		return true;
 	}
 
 	@Override
 	public void afterConcurrentHandlingStarted(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		XssIgnoreHolder.remove();
+		XssHolder.remove();
 	}
 }

@@ -21,14 +21,14 @@ package net.dreamlu.mica.xss.core;
  *
  * @author L.cm
  */
-class XssIgnoreHolder {
+class XssHolder {
 	private static final ThreadLocal<Boolean> TL = new ThreadLocal<>();
 
-	public static boolean isIgnore() {
+	public static boolean isEnabled() {
 		return Boolean.TRUE.equals(TL.get());
 	}
 
-	public static void setIgnore() {
+	public static void setEnable() {
 		TL.set(Boolean.TRUE);
 	}
 

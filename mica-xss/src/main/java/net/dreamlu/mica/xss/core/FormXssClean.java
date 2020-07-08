@@ -52,10 +52,10 @@ public class FormXssClean {
 		public void setAsText(String text) throws IllegalArgumentException {
 			if (text == null) {
 				setValue(null);
-			} else if (XssIgnoreHolder.isIgnore()) {
-				setValue(text);
-			} else {
+			} else if (XssHolder.isEnabled()) {
 				setValue(XssUtil.clean(text));
+			} else {
+				setValue(text);
 			}
 		}
 	}
