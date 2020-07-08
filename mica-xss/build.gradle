@@ -3,6 +3,7 @@ dependencies {
     api "org.jsoup:jsoup:${jsoupVersion}"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.springframework.boot:spring-boot-starter-web"
+    compileOnly "javax.validation:validation-api"
     compileOnly "org.springframework.cloud:spring-cloud-context"
     compileOnly "net.dreamlu:mica-auto:${micaAutoVersion}"
     annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
