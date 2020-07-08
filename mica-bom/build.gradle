@@ -25,6 +25,7 @@ dependencyManagement {
         dependency "net.dreamlu:mica-mongo:${VERSION}"
         dependency "net.dreamlu:mica-redis:${VERSION}"
         dependency "net.dreamlu:mica-ip2region:${VERSION}"
+        dependency "net.dreamlu:mica-xss:${VERSION}"
         // commons
         dependency "com.google.code.findbugs:jsr305:${findbugsVersion}"
         dependency "io.swagger:swagger-annotations:${swaggerAnnotationsVersion}"
