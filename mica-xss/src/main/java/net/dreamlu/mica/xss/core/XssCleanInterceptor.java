@@ -46,8 +46,8 @@ public class XssCleanInterceptor extends HandlerInterceptorAdapter {
 		}
 		// 3. 处理 XssIgnore 注解
 		HandlerMethod handlerMethod = (HandlerMethod) handler;
-		XssIgnore xssIgnore = ClassUtil.getAnnotation(handlerMethod, XssIgnore.class);
-		if (xssIgnore == null) {
+		XssCleanIgnore xssCleanIgnore = ClassUtil.getAnnotation(handlerMethod, XssCleanIgnore.class);
+		if (xssCleanIgnore == null) {
 			XssHolder.setEnable();
 		}
 		return true;
