@@ -35,7 +35,7 @@ import java.beans.PropertyEditorSupport;
 public class FormXssClean {
 
 	@InitBinder
-	public void InitBinder(WebDataBinder binder) {
+	public void initBinder(WebDataBinder binder) {
 		// 处理前端传来的表单字符串
 		binder.registerCustomEditor(String.class, new StringPropertiesEditor());
 	}
