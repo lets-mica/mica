@@ -61,3 +61,10 @@
 - xxl job stater，方便使用
 
 `文档地址`：[mica-jobs](mica-jobs/README.md)
+
+## mica-xss
+- 对表单绑定的字符串类型进行 xss 处理。
+- 对 json 字符串数据进行 xss 处理。
+- 提供路由和控制器方法级别的放行规则。
+
+`文档地址`：[mica-xss](mica-xss/README.md)
