@@ -17,8 +17,13 @@
 package net.dreamlu.mica.ip2region.core;
 
 import lombok.Data;
+import net.dreamlu.mica.core.utils.StringPool;
+import net.dreamlu.mica.core.utils.StringUtil;
 
 import java.io.Serializable;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * ip 信息详情
@@ -56,4 +61,19 @@ public class IpInfo implements Serializable {
 	 * region ptr in the db file
 	 */
 	private int dataPtr;
+	/**
+	 * 拼接完整的地址
+	 *
+	 * @return address
+	 */
+	public String getAddress() {
+		Set<String> regionSet = new LinkedHashSet<>();
+		regionSet.add(country);
+		regionSet.add(region);
+		regionSet.add(province);
+		regionSet.add(city);
+		regionSet.add(isp);
+		regionSet.removeIf(Objects::isNull);
+		return StringUtil.join(regionSet, StringPool.SPACE);
+	}
 }
