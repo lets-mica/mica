@@ -1,7 +1,7 @@
 # 变更记录
 
 ## 发行版本
-### v2.0.4-GA - 2020-07-21
+### v2.0.4-GA - 2020-07-24
 - :memo: 完善文档.
 - :sparkles: mica-http 添加 pathParam 方法。
 - :sparkles: mica-ip2region IpInfo 添加 getAddress 方法。
