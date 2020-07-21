@@ -39,6 +39,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
@@ -138,6 +139,18 @@ public class HttpRequest {
 
 	public static HttpRequest delete(final URI uri) {
 		return delete(uri.toString());
+	}
+
+	public HttpRequest pathParam(String name, Object value) {
+		Objects.requireNonNull(name, "name == null");
+		List<String> segments = this.uriBuilder.build().pathSegments();
+		String pathParamName = '{' + name.trim() + '}';
+		for (int i = 0; i < segments.size(); i++) {
+			if (pathParamName.equalsIgnoreCase(segments.get(i))) {
+				uriBuilder.setPathSegment(i, handleValue(value));
+			}
+		}
+		return this;
 	}
 
 	public HttpRequest query(String query) {
