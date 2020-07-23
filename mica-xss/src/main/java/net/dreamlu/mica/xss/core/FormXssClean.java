@@ -57,7 +57,7 @@ public class FormXssClean {
 			} else if (XssHolder.isEnabled()) {
 				String value = XssUtil.clean(text);
 				setValue(value);
-				log.warn("Request parameter value:{} cleaned up by xss, current value is:{}.", text, value);
+				log.warn("Request parameter value:{} cleaned up by mica-xss, current value is:{}.", text, value);
 			} else {
 				setValue(text);
 			}
