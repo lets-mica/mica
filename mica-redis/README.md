@@ -147,3 +147,7 @@ boolean isAllowed(String key, long max, long ttl, TimeUnit timeUnit);
  */
 <T> T allow(String key, long max, long ttl, TimeUnit timeUnit, CheckedSupplier<T> supplier);
 ```
+
+## 链接
+- Redis windows 服务端：https://github.com/tporadowski/redis/releases
+- Redis windows 客户端管理工具：https://github.com/lework/RedisDesktopManager-Windows/releases
