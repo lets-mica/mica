@@ -10,9 +10,9 @@
 
 `注意`：`snapshots` 版本会及时响应，修复最新的 `bug` 或者必要的需求。
 
-![犬夜叉-云母](docs/img/mica-001.jpeg)
-
 ## 使用文档
+![mica 2.x 模块图](docs/img/mica2.x-open.png)
+
 **使用文档**详见：[mica2.x 使用文档](MODULE.md)
 
 **更新记录**详见：[Mica 更新记录](CHANGELOG.md)
