@@ -19,6 +19,7 @@ package net.dreamlu.mica.xss.core;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.xss.utils.XssUtil;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ import java.io.IOException;
  *
  * @author L.cm
  */
+@Slf4j
 public class JacksonXssClean extends JsonDeserializer<String> {
 
 	@Override
@@ -37,7 +39,9 @@ public class JacksonXssClean extends JsonDeserializer<String> {
 		if (text == null) {
 			return null;
 		} else if (XssHolder.isEnabled()) {
-			return XssUtil.clean(text);
+			String value = XssUtil.clean(text);
+			log.warn("Json property value:{} cleaned up by xss, current value is:{}.", text, value);
+			return value;
 		} else {
 			return text;
 		}

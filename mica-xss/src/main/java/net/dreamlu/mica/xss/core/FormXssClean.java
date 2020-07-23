@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.xss.core;
 
+import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.auto.annotation.AutoIgnore;
 import net.dreamlu.mica.core.utils.StringPool;
 import net.dreamlu.mica.xss.utils.XssUtil;
@@ -40,6 +41,7 @@ public class FormXssClean {
 		binder.registerCustomEditor(String.class, new StringPropertiesEditor());
 	}
 
+	@Slf4j
 	public static class StringPropertiesEditor extends PropertyEditorSupport {
 
 		@Override
@@ -53,7 +55,9 @@ public class FormXssClean {
 			if (text == null) {
 				setValue(null);
 			} else if (XssHolder.isEnabled()) {
-				setValue(XssUtil.clean(text));
+				String value = XssUtil.clean(text);
+				setValue(value);
+				log.warn("Request parameter value:{} cleaned up by xss, current value is:{}.", text, value);
 			} else {
 				setValue(text);
 			}

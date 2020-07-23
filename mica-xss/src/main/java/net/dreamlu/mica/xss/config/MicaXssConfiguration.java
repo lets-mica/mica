@@ -37,7 +37,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(MicaXssProperties.class)
-@ConditionalOnProperty(value = "mica.xss.enabled", havingValue = "true")
+@ConditionalOnProperty(value = "mica.xss.enabled", havingValue = "true", matchIfMissing = true)
 public class MicaXssConfiguration implements WebMvcConfigurer {
 	private final MicaXssProperties xssProperties;
 
