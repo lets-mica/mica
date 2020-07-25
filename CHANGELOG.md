@@ -13,7 +13,7 @@
 - :arrow_up: 升级 spring cloud 到 Hoxton.SR6。
 - :arrow_up: 升级 spring boot 到 2.3.2.RELEASE。
 - :arrow_up: 升级 knife4j 到 2.0.4。
-- :arrow_up: 升级 mica-auto 到 1.2.4。
+- :arrow_up: 升级 mica-auto 到 1.2.5。
 
 ### v2.0.3-GA - 2020-06-25
 - :memo: 完善 mica 2.x 使用文档.
