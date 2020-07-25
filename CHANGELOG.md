@@ -1,7 +1,7 @@
 # 变更记录
 
 ## 发行版本
-### v2.0.4-GA - 2020-07-24
+### v2.0.4-GA - 2020-07-25
 - :memo: 完善文档.
 - :sparkles: mica-http 添加 pathParam 方法。
 - :sparkles: mica-ip2region IpInfo 添加 getAddress 方法。
@@ -10,7 +10,10 @@
 - :sparkles: mica-http 使用 CompletableFuture 优化异步 github #29 。
 - :sparkles: mica-core INetUtil 添加内网 ip 判断。
 - :sparkles: mica-spider 修复 readme，简化使用。
-- :sparkles: 依赖升级，开始 2.0.4-SNAPSHOT。
+- :arrow_up: 升级 spring cloud 到 Hoxton.SR6。
+- :arrow_up: 升级 spring boot 到 2.3.2.RELEASE。
+- :arrow_up: 升级 knife4j 到 2.0.4。
+- :arrow_up: 升级 mica-auto 到 1.2.4。
 
 ### v2.0.3-GA - 2020-06-25
 - :memo: 完善 mica 2.x 使用文档.
