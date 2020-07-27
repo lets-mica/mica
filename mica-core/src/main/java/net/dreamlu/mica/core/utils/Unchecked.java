@@ -24,6 +24,7 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -87,6 +88,24 @@ public class Unchecked {
 		return () -> {
 			try {
 				return supplier.get();
+			} catch (Throwable e) {
+				throw Exceptions.unchecked(e);
+			}
+		};
+	}
+
+	/**
+	 * 构造受检的 predicate
+	 *
+	 * @param predicate CheckedPredicate
+	 * @param <T>       泛型
+	 * @return Supplier
+	 */
+	public static <T> Predicate<T> predicate(CheckedPredicate<T> predicate) {
+		Objects.requireNonNull(predicate);
+		return (t) -> {
+			try {
+				return predicate.test(t);
 			} catch (Throwable e) {
 				throw Exceptions.unchecked(e);
 			}
