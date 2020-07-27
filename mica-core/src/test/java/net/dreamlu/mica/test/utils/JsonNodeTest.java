@@ -30,4 +30,20 @@ public class JsonNodeTest {
 
 		Assert.assertEquals(r.getCode(), 1);
 	}
+
+	@Test
+	public void test2() {
+		String json1 = "1{\"code\":1}";
+		boolean isJson1 = JsonUtil.isValidJson(json1);
+		Assert.assertFalse(isJson1);
+
+		String json2 = "/**/{\"code\":1}";
+		boolean isJson2 = JsonUtil.isValidJson(json2);
+		Assert.assertFalse(isJson2);
+
+		String json3 = "{\"code\":1}";
+		boolean isJson3 = JsonUtil.isValidJson(json3);
+		Assert.assertTrue(isJson3);
+	}
+
 }

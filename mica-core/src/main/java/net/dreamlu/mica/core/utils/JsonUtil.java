@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import com.fasterxml.jackson.databind.type.MapType;
 import lombok.experimental.UtilityClass;
+import net.dreamlu.mica.core.function.CheckedConsumer;
 import org.springframework.lang.Nullable;
 
 import java.io.IOException;
@@ -485,6 +486,64 @@ public class JsonUtil {
 	}
 
 	/**
+	 * 检验 json 格式
+	 *
+	 * @param jsonString json 字符串
+	 * @return 是否成功
+	 */
+	public static boolean isValidJson(String jsonString) {
+		return isValidJson(mapper -> mapper.readTree(jsonString));
+	}
+
+	/**
+	 * 检验 json 格式
+	 *
+	 * @param content json byte array
+	 * @return 是否成功
+	 */
+	public static boolean isValidJson(byte[] content) {
+		return isValidJson(mapper -> mapper.readTree(content));
+	}
+
+	/**
+	 * 检验 json 格式
+	 *
+	 * @param input json input stream
+	 * @return 是否成功
+	 */
+	public static boolean isValidJson(InputStream input) {
+		return isValidJson(mapper -> mapper.readTree(input));
+	}
+
+	/**
+	 * 检验 json 格式
+	 *
+	 * @param jsonParser json parser
+	 * @return 是否成功
+	 */
+	public static boolean isValidJson(JsonParser jsonParser) {
+		return isValidJson(mapper -> mapper.readTree(jsonParser));
+	}
+
+	/**
+	 * 检验 json 格式
+	 *
+	 * @param consumer ObjectMapper consumer
+	 * @return 是否成功
+	 */
+	public static boolean isValidJson(CheckedConsumer<ObjectMapper> consumer) {
+		ObjectMapper mapper = getInstance().copy();
+		mapper.enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
+		mapper.enable(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY);
+		try {
+			consumer.accept(mapper);
+			return true;
+		} catch (Throwable e) {
+			return false;
+		}
+	}
+
+	/**
 	 * 获取 ObjectMapper 实例
 	 *
 	 * @return ObjectMapper
@@ -516,6 +575,10 @@ public class JsonUtil {
 			super.findAndRegisterModules();
 		}
 
+		JacksonObjectMapper(ObjectMapper src) {
+			super(src);
+		}
+
 		private static JsonFactory jsonFactory() {
 			return JsonFactory.builder()
 				// 可解析反斜杠引用的所有字符
@@ -523,6 +586,11 @@ public class JsonUtil {
 				// 允许JSON字符串包含非引号控制字符（值小于32的ASCII字符，包含制表符和换行符）
 				.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS, true)
 				.build();
+		}
+
+		@Override
+		public ObjectMapper copy() {
+			return new JacksonObjectMapper(this);
 		}
 	}
 }
