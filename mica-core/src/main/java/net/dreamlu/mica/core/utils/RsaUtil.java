@@ -75,7 +75,7 @@ public class RsaUtil {
 	/**
 	 * 生成RSA私钥
 	 *
-	 * @param modulus N特征值
+	 * @param modulus  N特征值
 	 * @param exponent d特征值
 	 * @return {@link PrivateKey}
 	 */
@@ -86,7 +86,7 @@ public class RsaUtil {
 	/**
 	 * 生成RSA私钥
 	 *
-	 * @param modulus N特征值
+	 * @param modulus  N特征值
 	 * @param exponent d特征值
 	 * @return {@link PrivateKey}
 	 */
@@ -103,7 +103,7 @@ public class RsaUtil {
 	/**
 	 * 生成RSA公钥
 	 *
-	 * @param modulus N特征值
+	 * @param modulus  N特征值
 	 * @param exponent e特征值
 	 * @return {@link PublicKey}
 	 */
@@ -114,7 +114,7 @@ public class RsaUtil {
 	/**
 	 * 生成RSA公钥
 	 *
-	 * @param modulus N特征值
+	 * @param modulus  N特征值
 	 * @param exponent e特征值
 	 * @return {@link PublicKey}
 	 */
@@ -254,16 +254,28 @@ public class RsaUtil {
 	/**
 	 * 公钥加密
 	 *
+	 * @param publicKey PublicKey
+	 * @param data      待加密的内容
+	 * @return 加密后的内容
+	 */
+	@Nullable
+	public static String encryptToBase64(PublicKey publicKey, @Nullable String data) {
+		if (StringUtil.isBlank(data)) {
+			return null;
+		}
+		return Base64Utils.encodeToString(encrypt(publicKey, data.getBytes(Charsets.UTF_8)));
+	}
+
+	/**
+	 * 公钥加密
+	 *
 	 * @param base64PublicKey base64 公钥
 	 * @param data            待加密的内容
 	 * @return 加密后的内容
 	 */
 	@Nullable
 	public static String encryptToBase64(String base64PublicKey, @Nullable String data) {
-		if (StringUtil.isBlank(data)) {
-			return null;
-		}
-		return Base64Utils.encodeToString(encrypt(base64PublicKey, data.getBytes(Charsets.UTF_8)));
+		return encryptToBase64(getPublicKey(base64PublicKey), data);
 	}
 
 	/**
@@ -331,12 +343,38 @@ public class RsaUtil {
 	/**
 	 * base64 数据解密
 	 *
+	 * @param publicKey  PublicKey
+	 * @param base64Data base64数据
+	 * @return 解密后的数据
+	 */
+	public static byte[] decryptByPublicKeyFromBase64(PublicKey publicKey, byte[] base64Data) {
+		return decryptByPublicKey(publicKey, Base64Utils.decode(base64Data));
+	}
+
+	/**
+	 * base64 数据解密
+	 *
 	 * @param base64PublicKey base64 公钥
 	 * @param base64Data      base64数据
 	 * @return 解密后的数据
 	 */
 	public static byte[] decryptByPublicKeyFromBase64(String base64PublicKey, byte[] base64Data) {
-		return decryptByPublicKey(getPublicKey(base64PublicKey), base64Data);
+		return decryptByPublicKeyFromBase64(getPublicKey(base64PublicKey), base64Data);
+	}
+
+	/**
+	 * base64 数据解密
+	 *
+	 * @param privateKey PrivateKey
+	 * @param base64Data base64数据
+	 * @return 解密后的数据
+	 */
+	@Nullable
+	public static String decryptFromBase64(PrivateKey privateKey, @Nullable String base64Data) {
+		if (StringUtil.isBlank(base64Data)) {
+			return null;
+		}
+		return new String(decrypt(privateKey, Base64Utils.decodeFromString(base64Data)), Charsets.UTF_8);
 	}
 
 	/**
@@ -348,10 +386,7 @@ public class RsaUtil {
 	 */
 	@Nullable
 	public static String decryptFromBase64(String base64PrivateKey, @Nullable String base64Data) {
-		if (StringUtil.isBlank(base64Data)) {
-			return null;
-		}
-		return new String(decrypt(base64PrivateKey, Base64Utils.decodeFromString(base64Data)), Charsets.UTF_8);
+		return decryptFromBase64(getPrivateKey(base64PrivateKey), base64Data);
 	}
 
 	/**
@@ -368,16 +403,28 @@ public class RsaUtil {
 	/**
 	 * base64 数据解密
 	 *
+	 * @param publicKey  PublicKey
+	 * @param base64Data base64数据
+	 * @return 解密后的数据
+	 */
+	@Nullable
+	public static String decryptByPublicKeyFromBase64(PublicKey publicKey, @Nullable String base64Data) {
+		if (StringUtil.isBlank(base64Data)) {
+			return null;
+		}
+		return new String(decryptByPublicKey(publicKey, Base64Utils.decodeFromString(base64Data)), Charsets.UTF_8);
+	}
+
+	/**
+	 * base64 数据解密
+	 *
 	 * @param base64PublicKey base64 公钥
 	 * @param base64Data      base64数据
 	 * @return 解密后的数据
 	 */
 	@Nullable
 	public static String decryptByPublicKeyFromBase64(String base64PublicKey, @Nullable String base64Data) {
-		if (StringUtil.isBlank(base64Data)) {
-			return null;
-		}
-		return new String(decryptByPublicKeyFromBase64(base64PublicKey, Base64Utils.decodeFromString(base64Data)), Charsets.UTF_8);
+		return decryptByPublicKeyFromBase64(getPublicKey(base64PublicKey), base64Data);
 	}
 
 }

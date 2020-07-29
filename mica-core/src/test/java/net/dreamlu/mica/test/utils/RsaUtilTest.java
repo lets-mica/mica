@@ -12,9 +12,13 @@ public class RsaUtilTest {
 	@Test
 	public void test0() {
 		KeyPair keyPair = RsaUtil.genKeyPair();
-		String encryptToBase64 = RsaUtil.encryptToBase64(keyPair.getPublicBase64(), text);
-		String fromBase64 = RsaUtil.decryptFromBase64(keyPair.getPrivateBase64(), encryptToBase64);
-		Assert.assertEquals(text, fromBase64);
+		String encryptToBase641 = RsaUtil.encryptToBase64(keyPair.getPublic(), text);
+		String fromBase641 = RsaUtil.decryptFromBase64(keyPair.getPrivate(), encryptToBase641);
+		Assert.assertEquals(text, fromBase641);
+
+		String encryptToBase642 = RsaUtil.encryptToBase64(keyPair.getPublicBase64(), text);
+		String fromBase642 = RsaUtil.decryptFromBase64(keyPair.getPrivateBase64(), encryptToBase642);
+		Assert.assertEquals(text, fromBase642);
 	}
 
 	@Test
