@@ -54,7 +54,7 @@ public class MicaConverter implements Converter {
 	 */
 	@Override
 	@Nullable
-	public Object convert(Object value, Class target, final Object fieldName) {
+	public Object convert(@Nullable Object value, Class target, final Object fieldName) {
 		if (value == null) {
 			return null;
 		}

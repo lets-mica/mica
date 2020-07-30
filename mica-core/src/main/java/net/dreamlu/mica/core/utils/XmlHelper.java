@@ -274,20 +274,22 @@ public class XmlHelper {
 		private static final XPathFactory XPATH_FACTORY = XPathFactory.newInstance();
 
 		private static DocumentBuilderFactory newDocumentBuilderFactory() {
-			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilderFactory df = DocumentBuilderFactory.newInstance();
 			// Set parser features to prevent against XXE etc.
 			// Note: setting only the external entity features on DocumentBuilderFactory instance
 			// (ala how safeTransform does it for SAXTransformerFactory) does seem to work (was still
 			// processing the entities - tried Oracle JDK 7 and 8 on OSX). Setting seems a bit extreme,
 			// but looks like there's no other choice.
-			documentBuilderFactory.setXIncludeAware(false);
-			documentBuilderFactory.setExpandEntityReferences(false);
-			setDocumentBuilderFactoryFeature(documentBuilderFactory, XMLConstants.FEATURE_SECURE_PROCESSING, true);
-			setDocumentBuilderFactoryFeature(documentBuilderFactory, FEATURE_HTTP_XML_ORG_SAX_FEATURES_EXTERNAL_GENERAL_ENTITIES, false);
-			setDocumentBuilderFactoryFeature(documentBuilderFactory, FEATURE_HTTP_XML_ORG_SAX_FEATURES_EXTERNAL_PARAMETER_ENTITIES, false);
-			setDocumentBuilderFactoryFeature(documentBuilderFactory, "http://apache.org/xml/features/disallow-doctype-decl", true);
-			setDocumentBuilderFactoryFeature(documentBuilderFactory, "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-			return documentBuilderFactory;
+			df.setXIncludeAware(false);
+			df.setExpandEntityReferences(false);
+			df.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+			df.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+			setDocumentBuilderFactoryFeature(df, XMLConstants.FEATURE_SECURE_PROCESSING, true);
+			setDocumentBuilderFactoryFeature(df, FEATURE_HTTP_XML_ORG_SAX_FEATURES_EXTERNAL_GENERAL_ENTITIES, false);
+			setDocumentBuilderFactoryFeature(df, FEATURE_HTTP_XML_ORG_SAX_FEATURES_EXTERNAL_PARAMETER_ENTITIES, false);
+			setDocumentBuilderFactoryFeature(df, "http://apache.org/xml/features/disallow-doctype-decl", true);
+			setDocumentBuilderFactoryFeature(df, "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			return df;
 		}
 
 		private static void setDocumentBuilderFactoryFeature(DocumentBuilderFactory documentBuilderFactory, String feature, boolean state) {

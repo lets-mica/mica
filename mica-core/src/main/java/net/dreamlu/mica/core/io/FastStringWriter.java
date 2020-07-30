@@ -16,6 +16,8 @@
 
 package net.dreamlu.mica.core.io;
 
+import org.springframework.lang.Nullable;
+
 import java.io.Writer;
 
 /**
@@ -56,7 +58,8 @@ public class FastStringWriter extends Writer {
 		if (initialSize < 0) {
 			throw new IllegalArgumentException("Negative initial size: " + initialSize);
 		}
-		buf = new char[initialSize];
+		this.buf = new char[initialSize];
+		this.count = 0;
 	}
 
 	@Override
@@ -82,7 +85,7 @@ public class FastStringWriter extends Writer {
 	}
 
 	@Override
-	public void write(String str) {
+	public void write(@Nullable String str) {
 		if (str == null) {
 			return;
 		}
@@ -90,7 +93,7 @@ public class FastStringWriter extends Writer {
 	}
 
 	@Override
-	public void write(String str, int off, int len) {
+	public void write(@Nullable String str, int off, int len) {
 		if (str == null) {
 			return;
 		}
@@ -110,7 +113,7 @@ public class FastStringWriter extends Writer {
 	}
 
 	@Override
-	public FastStringWriter append(CharSequence csq) {
+	public FastStringWriter append(@Nullable CharSequence csq) {
 		if (csq == null) {
 			return this;
 		}
@@ -124,7 +127,7 @@ public class FastStringWriter extends Writer {
 	}
 
 	@Override
-	public FastStringWriter append(CharSequence csq, int start, int end) {
+	public FastStringWriter append(@Nullable CharSequence csq, int start, int end) {
 		if (csq == null) {
 			return this;
 		}
