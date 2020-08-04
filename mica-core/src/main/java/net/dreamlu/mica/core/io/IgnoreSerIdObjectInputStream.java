@@ -27,7 +27,7 @@ import java.io.*;
  * 参考：https://stackoverflow.com/questions/1816559/make-java-runtime-ignore-serialversionuids
  * </p>
  *
- * @author dream.lu
+ * @author L.cm
  */
 @Slf4j
 public class IgnoreSerIdObjectInputStream extends ObjectInputStream {
