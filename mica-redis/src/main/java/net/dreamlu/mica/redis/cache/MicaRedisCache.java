@@ -17,10 +17,14 @@
 package net.dreamlu.mica.redis.cache;
 
 import lombok.Getter;
+import net.dreamlu.mica.core.tuple.Pair;
 import net.dreamlu.mica.core.utils.CollectionUtil;
+import net.dreamlu.mica.core.utils.Exceptions;
 import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.lang.Nullable;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -194,6 +198,74 @@ public class MicaRedisCache {
 	 */
 	public Set<String> keys(String pattern) {
 		return redisTemplate.keys(pattern);
+	}
+
+	/**
+	 * redis scan
+	 *
+	 * @param pattern 匹配表达式
+	 * @return 扫描结果
+	 */
+	public Set<String> scan(@Nullable String pattern) {
+		return scan(pattern, null).getRight();
+	}
+
+	/**
+	 * redis scan
+	 *
+	 * @param pattern 匹配表达式
+	 * @param count   一次扫描的数量
+	 * @return 扫描结果
+	 */
+	public Pair<Long, Set<String>> scan(@Nullable String pattern, @Nullable Long count) {
+		final Set<String> keySet = new HashSet<>();
+		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
+		return redisTemplate.execute((RedisCallback<Pair<Long, Set<String>>>) action -> {
+			ScanOptions options = ScanOptions.scanOptions()
+				.match(pattern)
+				.count(count)
+				.build();
+			try (Cursor<byte[]> cursor = action.scan(options)) {
+				cursor.forEachRemaining((item) -> keySet.add(keySerializer.deserialize(item)));
+				return Pair.create(cursor.getPosition(), keySet);
+			} catch (IOException e) {
+				throw Exceptions.unchecked(e);
+			}
+		});
+	}
+
+	/**
+	 * redis sscan
+	 *
+	 * @param pattern 匹配表达式
+	 * @return 扫描结果
+	 */
+	public Set<String> sScan(String key, @Nullable String pattern) {
+		return sScan(key, pattern, null).getRight();
+	}
+
+	/**
+	 * redis sscan
+	 *
+	 * @param pattern 匹配表达式
+	 * @param count   一次扫描的数量
+	 * @return 扫描结果
+	 */
+	public Pair<Long, Set<String>> sScan(String key, @Nullable String pattern, @Nullable Long count) {
+		final Set<String> keySet = new HashSet<>();
+		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
+		return redisTemplate.execute((RedisCallback<Pair<Long, Set<String>>>) action -> {
+			ScanOptions options = ScanOptions.scanOptions()
+				.match(pattern)
+				.count(count)
+				.build();
+			try (Cursor<byte[]> cursor = action.sScan(keySerializer.serialize(key), options)) {
+				cursor.forEachRemaining((item) -> keySet.add(keySerializer.deserialize(item)));
+				return Pair.create(cursor.getPosition(), keySet);
+			} catch (IOException e) {
+				throw Exceptions.unchecked(e);
+			}
+		});
 	}
 
 	/**
