@@ -1,3 +1,7 @@
+plugins {
+    id "org.sonarqube" version "3.0"
+}
+
 ext {
     javaVersion = JavaVersion.VERSION_1_8
     springBootVersion = "2.3.2.RELEASE"
@@ -67,6 +71,10 @@ configure(subprojects - project(":mica-bom")) {
     }
 
     compileJava.dependsOn(processResources)
+}
+
+def getSonarToken() {
+    return System.getenv('SONAR_TOKEN') ?: SONAR_TOKEN
 }
 
 def getRepositoryUsername() {
