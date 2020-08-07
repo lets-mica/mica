@@ -1,0 +1,8 @@
+dependencies {
+    api "io.micrometer:micrometer-core"
+    implementation "com.alibaba.csp:sentinel-core:1.7.2"
+    implementation "org.springframework.boot:spring-boot-actuator-autoconfigure"
+    implementation "org.springframework.boot:spring-boot-starter-undertow"
+    compileOnly "net.dreamlu:mica-auto:${micaAutoVersion}"
+    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+}
