@@ -1,4 +1,4 @@
-# mica-metric 组件
+# mica-metrics 组件
 
 ## 功能
 - sentinel 指标收集。
@@ -9,12 +9,12 @@
 ```xml
 <dependency>
   <groupId>net.dreamlu</groupId>
-  <artifactId>mica-metric</artifactId>
+  <artifactId>mica-metrics</artifactId>
   <version>${version}</version>
 </dependency>
 ```
 
 ### gradle
 ```groovy
-compile("net.dreamlu:mica-metric:${version}")
+compile("net.dreamlu:mica-metrics:${version}")
 ```
