@@ -103,7 +103,7 @@ public class RsaHelper {
 	 * @param publicKey 必须提供公钥
 	 * @param privateKeyOrNull 私钥可以不提供，导出的PEM就只包含公钥
 	 **/
-	public RsaHelper(RSAPublicKey publicKey, RSAPrivateKey privateKeyOrNull) {
+	public RsaHelper(RSAPublicKey publicKey, @Nullable RSAPrivateKey privateKeyOrNull) {
 		this(
 			bigB(publicKey.getModulus())
 			, bigB(publicKey.getPublicExponent())
@@ -134,7 +134,7 @@ public class RsaHelper {
 	 * @param exponent 必须提供公钥指数
 	 * @param dOrNull 私钥指数可以不提供，导出的PEM就只包含公钥
 	 **/
-	public RsaHelper(byte[] modulus, byte[] exponent, byte[] dOrNull) {
+	public RsaHelper(byte[] modulus, byte[] exponent, @Nullable byte[] dOrNull) {
 		//modulus
 		keyModulus = modulus;
 		//publicExponent
