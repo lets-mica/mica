@@ -74,3 +74,9 @@
 - 提供路由和控制器方法级别的放行规则。
 
 `文档地址`：[mica-xss](mica-xss/README.md)
+
+## mica-metrics
+- sentinel 指标收集。
+- undertow 指标收集。
+
+`文档地址`：[mica-metrics](mica-metrics/README.md)
