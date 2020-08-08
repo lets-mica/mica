@@ -44,10 +44,8 @@ public class UndertowMetricsConfiguration {
 	}
 
 	@Bean
-	public WebServerFactoryCustomizer<UndertowServletWebServerFactory> webServerFactoryCustomizer(UndertowMetrics undertowMetrics) {
-		return factory -> factory.addDeploymentInfoCustomizers(customizers -> {
-			customizers.setMetricsCollector(undertowMetrics);
-		});
+	public WebServerFactoryCustomizer<UndertowServletWebServerFactory> undertowMetricsWebServerFactoryCustomizer(UndertowMetrics undertowMetrics) {
+		return factory -> factory.addDeploymentInfoCustomizers(customizers -> customizers.setMetricsCollector(undertowMetrics));
 	}
 
 }
