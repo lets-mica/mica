@@ -16,8 +16,8 @@
 
 package net.dreamlu.mica.core.beans;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 
 /**
  * bean map key，提高性能
@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
  * @author L.cm
  */
 @EqualsAndHashCode
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MicaBeanMapKey {
 	private final Class type;
 	private final int require;

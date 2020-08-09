@@ -3,7 +3,8 @@
 具体可见 [《震惊，java8 Nashorn和laytpl居然能擦出这样火花！》](https://my.oschina.net/qq596392912/blog/872813)
 
 ## 注意
-jmh 实测性能不是很出色，约为 `Thymeleaf` 的 `1/2` 适合用于对性能不是特别高的场景。例如：代码生成等。
+- jmh 实测性能不是很出色，约为 `Thymeleaf` 的 `1/2` 适合用于对性能不是特别高的场景。例如：代码生成等。
+- java15 中会移除 Nashorn（[JEP 372:Remove the Nashorn JavaScript Engine](https://openjdk.java.net/projects/jdk/15/)）
 
 ## 添加依赖
 ### maven
