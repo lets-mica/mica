@@ -1,6 +1,18 @@
 # 变更记录
 
 ## 发行版本
+### v2.0.5-GA - 2020-08-09
+- :sparkles: 添加 mica-metrics 模块，用于使用 prometheus 进行指标收集，已支持 undertow、sentinel。
+- :sparkles: mica-redis add scan 和 sscan。
+- :memo: mica-redis 修复使用文档。 Gitee pr by @醉酒的蝴蝶zzz/N/A
+- :sparkles: mica-core 添加 RsaHelper RSA PEM格式秘钥对的解析和导出，Gitee pr by @caiqiyuan
+- :sparkles: mica-core RsaUtil 完善加解密方法。
+- :sparkles: mica-core 添加忽略序列化 id 的 jdk 对象序列化。
+- :sparkles: mica-core 添加 CheckedPredicate。
+- :sparkles: mica-core 添加 json 格式校验。
+- :bug: 修复部分 sonarcloud 问题。
+- :arrow_up: 升级 spring cloud 到 Hoxton.SR7。
+
 ### v2.0.4-GA - 2020-07-25
 - :memo: 完善文档.
 - :sparkles: mica-http 添加 pathParam 方法。
