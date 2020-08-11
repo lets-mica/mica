@@ -174,3 +174,37 @@ HttpRequest.get("https://www.baidu.com/some-form")
     })
     .execute();
 ```
+
+### 示例证书配置
+```java
+InputStream isTrustCa = HttpRequestTest.class.getResourceAsStream("/cert/ca.jks");
+InputStream isSelfCert = HttpRequestTest.class.getResourceAsStream("/cert/outgoing.CertwithKey.pkcs12");
+
+KeyStore selfCert = KeyStore.getInstance("pkcs12");
+selfCert.load(isSelfCert, "password".toCharArray());
+KeyManagerFactory kmf = KeyManagerFactory.getInstance("sunx509");
+kmf.init(selfCert, "password".toCharArray());
+KeyStore caCert = KeyStore.getInstance("jks");
+caCert.load(isTrustCa, "caPassword".toCharArray());
+TrustManagerFactory tmf = TrustManagerFactory.getInstance("sunx509");
+tmf.init(caCert);
+SSLContext sc = SSLContext.getInstance("TLS");
+
+TrustManager[] trustManagers = tmf.getTrustManagers();
+X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
+sc.init(kmf.getKeyManagers(), trustManagers, (SecureRandom) null);
+
+// 1. 全局配置证书
+OkHttpClient.Builder builder = new OkHttpClient.Builder()
+	.sslSocketFactory(sc.getSocketFactory(), trustManager)
+	.hostnameVerifier(TrustAllHostNames.INSTANCE);
+HttpRequest.setHttpClient(builder.build());
+
+// 2. 单次请求配置证书
+HttpRequest.get("https://123.xxx")
+	.useConsoleLog(LogLevel.BODY)
+	.sslSocketFactory(sc.getSocketFactory(), trustManager)
+	.disableSslValidation()
+	.execute()
+	.asString();
+```
