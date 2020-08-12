@@ -106,6 +106,8 @@ public class Captcha implements ICaptcha {
 			return captcha;
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
+		} finally {
+			graphics.dispose();
 		}
 	}
 
