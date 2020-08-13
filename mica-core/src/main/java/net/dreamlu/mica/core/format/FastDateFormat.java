@@ -27,6 +27,7 @@ import java.text.ParsePosition;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * 线程安全、高性能的 DateFormat
@@ -41,7 +42,7 @@ import java.util.Locale;
 @Setter
 public class FastDateFormat extends DateFormat {
 	private static final java.lang.reflect.Field FIELD = getToStringCacheField();
-	private final DateTimeFormatter formatter;
+	private DateTimeFormatter formatter;
 
 	public FastDateFormat(DateTimeFormatter formatter) {
 		this.formatter = formatter;
@@ -79,4 +80,18 @@ public class FastDateFormat extends DateFormat {
 		return field;
 	}
 
+	@Override
+	public synchronized void setTimeZone(TimeZone zone) {
+		formatter = formatter.withZone(zone.toZoneId());
+	}
+
+	@Override
+	public TimeZone getTimeZone() {
+		return TimeZone.getTimeZone(formatter.getZone());
+	}
+
+	@Override
+	public Object clone() {
+		return new FastDateFormat(this.formatter);
+	}
 }
