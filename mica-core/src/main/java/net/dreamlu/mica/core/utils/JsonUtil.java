@@ -26,12 +26,12 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import com.fasterxml.jackson.databind.type.MapType;
 import lombok.experimental.UtilityClass;
-import net.dreamlu.mica.core.format.FastDateFormat;
 import net.dreamlu.mica.core.function.CheckedConsumer;
 import org.springframework.lang.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.*;
 
@@ -564,7 +564,7 @@ public class JsonUtil {
 		JacksonObjectMapper() {
 			super(jsonFactory());
 			super.setLocale(CHINA);
-			super.setDateFormat(new FastDateFormat(DateUtil.PATTERN_DATETIME, CHINA));
+			super.setDateFormat(new SimpleDateFormat(DateUtil.PATTERN_DATETIME, CHINA));
 			// 单引号
 			super.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
 			// 忽略json字符串中不识别的属性
