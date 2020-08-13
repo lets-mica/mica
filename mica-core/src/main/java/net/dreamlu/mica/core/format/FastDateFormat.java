@@ -82,12 +82,12 @@ public class FastDateFormat extends DateFormat {
 
 	@Override
 	public synchronized void setTimeZone(TimeZone zone) {
-		formatter = formatter.withZone(zone.toZoneId());
+		this.formatter = this.formatter.withZone(zone.toZoneId());
 	}
 
 	@Override
 	public TimeZone getTimeZone() {
-		return TimeZone.getTimeZone(formatter.getZone());
+		return TimeZone.getTimeZone(this.formatter.getZone());
 	}
 
 	@Override
