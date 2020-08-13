@@ -17,7 +17,6 @@
 package net.dreamlu.mica.core.format;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.SneakyThrows;
 import net.dreamlu.mica.core.utils.DateUtil;
 
@@ -39,7 +38,6 @@ import java.util.TimeZone;
  * @author L.cm
  */
 @Getter
-@Setter
 public class FastDateFormat extends DateFormat {
 	private static final java.lang.reflect.Field FIELD = getToStringCacheField();
 	private DateTimeFormatter formatter;
