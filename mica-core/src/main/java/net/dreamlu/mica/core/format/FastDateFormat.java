@@ -19,6 +19,7 @@ package net.dreamlu.mica.core.format;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.dreamlu.mica.core.utils.DateUtil;
+import net.dreamlu.mica.core.utils.ReflectUtil;
 
 import java.text.DateFormat;
 import java.text.FieldPosition;
@@ -40,6 +41,7 @@ import java.util.TimeZone;
 @Getter
 public class FastDateFormat extends DateFormat {
 	private static final java.lang.reflect.Field FIELD = getToStringCacheField();
+	private static final boolean FIELD_IS_STRING = FIELD != null && FIELD.getType() == String.class;
 	private DateTimeFormatter formatter;
 
 	public FastDateFormat(DateTimeFormatter formatter) {
@@ -57,7 +59,20 @@ public class FastDateFormat extends DateFormat {
 	@SneakyThrows
 	@Override
 	public StringBuffer format(Date date, StringBuffer stringBuffer, FieldPosition fieldPosition) {
-		FIELD.set(stringBuffer, DateUtil.format(date, formatter));
+		String value = DateUtil.format(date, formatter);
+		if (value == null) {
+			return stringBuffer;
+		}
+		// jdk8-b91 之前没有该方法
+		if (FIELD == null) {
+			return stringBuffer.append(value);
+		}
+		// 兼容 java8 和 java8+
+		if (FIELD_IS_STRING) {
+			FIELD.set(stringBuffer, value);
+		} else {
+			FIELD.set(stringBuffer, value.toCharArray());
+		}
 		return stringBuffer;
 	}
 
@@ -73,8 +88,10 @@ public class FastDateFormat extends DateFormat {
 
 	@SneakyThrows
 	private static java.lang.reflect.Field getToStringCacheField() {
-		java.lang.reflect.Field field = StringBuffer.class.getDeclaredField("toStringCache");
-		field.setAccessible(true);
+		java.lang.reflect.Field field = ReflectUtil.getField(StringBuffer.class, "toStringCache");
+		if (field != null) {
+			field.setAccessible(true);
+		}
 		return field;
 	}
 
@@ -90,6 +107,7 @@ public class FastDateFormat extends DateFormat {
 
 	@Override
 	public Object clone() {
-		return new FastDateFormat(this.formatter);
+		// formatter 线程安全，返回 this 性能会更好。
+		return this;
 	}
 }
