@@ -310,10 +310,7 @@ public class DateUtil {
 	 */
 	@Nullable
 	public static String formatDateTime(@Nullable Date date) {
-		if (date == null) {
-			return null;
-		}
-		return DATETIME_FORMATTER.format(date.toInstant());
+		return format(date, DATETIME_FORMATTER);
 	}
 
 	/**
@@ -324,10 +321,7 @@ public class DateUtil {
 	 */
 	@Nullable
 	public static String formatDate(@Nullable Date date) {
-		if (date == null) {
-			return null;
-		}
-		return DATE_FORMATTER.format(date.toInstant());
+		return format(date, DATE_FORMATTER);
 	}
 
 	/**
@@ -338,10 +332,7 @@ public class DateUtil {
 	 */
 	@Nullable
 	public static String formatTime(@Nullable Date date) {
-		if (date == null) {
-			return null;
-		}
-		return TIME_FORMATTER.format(date.toInstant());
+		return format(date, TIME_FORMATTER);
 	}
 
 	/**
@@ -353,10 +344,38 @@ public class DateUtil {
 	 */
 	@Nullable
 	public static String format(@Nullable Date date, String pattern) {
+		return format(date, DateTimeFormatter.ofPattern(pattern));
+	}
+
+	/**
+	 * 日期格式化
+	 *
+	 * @param date      时间
+	 * @param formatter 格式化
+	 * @return 格式化后的时间
+	 */
+	@Nullable
+	public static String format(@Nullable Date date, DateTimeFormatter formatter) {
 		if (date == null) {
 			return null;
 		}
-		return DateTimeFormatter.ofPattern(pattern).withZone(ZoneId.systemDefault()).format(date.toInstant());
+		return format(date.toInstant(), formatter);
+	}
+
+	/**
+	 * 日期格式化
+	 *
+	 * @param instant   时间
+	 * @param formatter 格式化
+	 * @return 格式化后的时间
+	 */
+	@Nullable
+	public static String format(Instant instant, DateTimeFormatter formatter) {
+		ZoneId zone = formatter.getZone();
+		if (zone == null) {
+			return formatter.withZone(ZoneId.systemDefault()).format(instant);
+		}
+		return formatter.format(instant);
 	}
 
 	/**
