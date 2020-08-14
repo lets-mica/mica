@@ -22,12 +22,17 @@ import net.dreamlu.mica.core.beans.MicaBeanCopier;
 import net.dreamlu.mica.core.beans.MicaBeanMap;
 import net.dreamlu.mica.core.convert.MicaConverter;
 import net.dreamlu.mica.core.exception.ServiceException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.cglib.beans.BeanGenerator;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 import org.springframework.util.FastByteArrayOutputStream;
+import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -469,6 +474,74 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 			generator.addProperty(prop.getName(), prop.getType());
 		}
 		return generator.create();
+	}
+
+	/**
+	 * 比较对象
+	 * @param src 源对象
+	 * @param dist 新对象
+	 * @return {BeanDiff}
+	 */
+	public static BeanDiff diff(final Object src, final Object dist) {
+		Assert.notNull(src, "diff Object src is null.");
+		Assert.notNull(src, "diff Object dist is null.");
+		return diff(BeanUtil.toMap(src), BeanUtil.toMap(dist));
+	}
+
+	/**
+	 * 比较Map
+	 * @param src 源Map
+	 * @param dist 新Map
+	 * @return {BeanDiff}
+	 */
+	public static BeanDiff diff(final Map<String, Object> src, final Map<String, Object> dist) {
+		Assert.notNull(src, "diff Map src is null.");
+		Assert.notNull(src, "diff Map dist is null.");
+		// 改变
+		Map<String, Object> difference = new HashMap<>();
+		difference.putAll(src);
+		difference.putAll(dist);
+		difference.entrySet().removeAll(src.entrySet());
+		// 老值
+		Map<String, Object> oldValues = new HashMap<>();
+		difference.keySet().forEach((k) -> {
+			oldValues.put(k, src.get(k));
+		});
+		BeanDiff diff = new BeanDiff();
+		diff.getFields().addAll(difference.keySet());
+		diff.getOldValues().putAll(oldValues);
+		diff.getNewValues().putAll(difference);
+		return diff;
+	}
+
+	/**
+	 * 生成新Bean 需要继承 BeanDiff 类
+	 * @param bean 源bean
+	 * @param <T> 泛型标记
+	 * @return BeanDiff
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends BeanDiff> T ofDiffBean(final T bean) {
+		Enhancer enhancer = new Enhancer();
+		enhancer.setSuperclass(bean.getClass());
+		enhancer.setCallback((MethodInterceptor) (obj, method, args, proxy) -> {
+			BeanDiff beanDiff = (BeanDiff) obj;
+			String methodName = method.getName();
+			if (methodName.startsWith("set")) {
+				String propertyName = StringUtil.firstCharToLower((methodName.substring(3)));
+				Object oldValue = BeanUtil.getProperty(bean, propertyName);
+				Object newValue = args[0];
+				if (!ObjectUtils.nullSafeEquals(oldValue, newValue)) {
+					beanDiff.getFields().add(propertyName);
+					beanDiff.getOldValues().put(propertyName, oldValue);
+					beanDiff.getNewValues().put(propertyName, args[0]);
+				}
+				// 设置老bean
+				method.invoke(bean, args);
+			}
+			return proxy.invokeSuper(obj, args);
+		});
+		return (T) enhancer.create();
 	}
 
 }
