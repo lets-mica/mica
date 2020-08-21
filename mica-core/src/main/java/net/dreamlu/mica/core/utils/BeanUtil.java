@@ -26,12 +26,9 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.cglib.beans.BeanGenerator;
-import org.springframework.cglib.proxy.Enhancer;
-import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.FastByteArrayOutputStream;
-import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -515,45 +512,12 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 		difference.entrySet().removeAll(src.entrySet());
 		// 老值
 		Map<String, Object> oldValues = new HashMap<>();
-		difference.keySet().forEach((k) -> {
-			oldValues.put(k, src.get(k));
-		});
+		difference.keySet().forEach((k) -> oldValues.put(k, src.get(k)));
 		BeanDiff diff = new BeanDiff();
 		diff.getFields().addAll(difference.keySet());
 		diff.getOldValues().putAll(oldValues);
 		diff.getNewValues().putAll(difference);
 		return diff;
-	}
-
-	/**
-	 * 生成新Bean 需要继承 BeanDiff 类
-	 *
-	 * @param bean 源bean
-	 * @param <T>  泛型标记
-	 * @return BeanDiff
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends BeanDiff> T ofDiffBean(final T bean) {
-		Enhancer enhancer = new Enhancer();
-		enhancer.setSuperclass(bean.getClass());
-		enhancer.setCallback((MethodInterceptor) (obj, method, args, proxy) -> {
-			BeanDiff beanDiff = (BeanDiff) obj;
-			String methodName = method.getName();
-			if (methodName.startsWith("set")) {
-				String propertyName = StringUtil.firstCharToLower((methodName.substring(3)));
-				Object oldValue = BeanUtil.getProperty(bean, propertyName);
-				Object newValue = args[0];
-				if (!ObjectUtils.nullSafeEquals(oldValue, newValue)) {
-					beanDiff.getFields().add(propertyName);
-					beanDiff.getOldValues().put(propertyName, oldValue);
-					beanDiff.getNewValues().put(propertyName, args[0]);
-				}
-				// 设置老bean
-				method.invoke(bean, args);
-			}
-			return proxy.invokeSuper(obj, args);
-		});
-		return (T) enhancer.create();
 	}
 
 }
