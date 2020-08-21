@@ -1,6 +1,15 @@
 # 变更记录
 
 ## 发行版本
+### v2.0.6-GA - 2020-08-22
+- :sparkles: mica-core BeanUtil 添加 toNewMap 方法。
+- :sparkles: 优化 mica-core MicaConstant 中添加 mdc accountId。
+- :sparkles: 优化 mica-core 补上 LuTool 中的 Bean diff。
+- :sparkles: 优化 mica-core DateUtil 添加部分方法。
+- :sparkles: mica-captcha graphics dispose.
+- :sparkles: mica-http 文档添加https证书示例。
+- :arrow_up: 升级 spring boot 到 2.3.3.RELEASE。
+
 ### v2.0.5-GA - 2020-08-09
 - :sparkles: 添加 mica-metrics 模块，用于使用 prometheus 进行指标收集，已支持 undertow、sentinel。
 - :sparkles: mica-redis add scan 和 sscan。

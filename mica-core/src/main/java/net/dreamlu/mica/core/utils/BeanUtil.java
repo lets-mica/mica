@@ -406,7 +406,7 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	}
 
 	/**
-	 * 将对象装成map形式
+	 * 将对象装成map形式，map 不可写
 	 *
 	 * @param bean 源对象
 	 * @return {Map}
@@ -420,7 +420,7 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	}
 
 	/**
-	 * 将对象装成map形式
+	 * 将对象装成map形式，map 可写
 	 *
 	 * @param bean 源对象
 	 * @return {Map}

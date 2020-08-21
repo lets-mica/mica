@@ -2363,13 +2363,23 @@ public class $ {
 	}
 
 	/**
-	 * 将对象装成map形式
+	 * 将对象装成map形式，map 不可写
 	 *
 	 * @param bean 源对象
 	 * @return {Map}
 	 */
 	public static Map<String, Object> toMap(@Nullable Object bean) {
 		return BeanUtil.toMap(bean);
+	}
+
+	/**
+	 * 将对象装成map形式，map 可写
+	 *
+	 * @param bean 源对象
+	 * @return {Map}
+	 */
+	public static Map<String, Object> toNewMap(@Nullable Object bean) {
+		return BeanUtil.toNewMap(bean);
 	}
 
 	/**
