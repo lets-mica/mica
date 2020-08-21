@@ -40,9 +40,14 @@ public interface MicaConstant {
 	String MICA_IS_LOCAL_KEY = "mica.is-local";
 
 	/**
-	 * request id mdc key
+	 * mdc request id key
 	 */
-	String REQUEST_ID_MDC_KEY = "mdcReqId";
+	String MDC_REQUEST_ID_KEY = "requestId";
+
+	/**
+	 * mdc account id key
+	 */
+	String MDC_ACCOUNT_ID_KEY = "accountId";
 
 	/**
 	 * request id key
