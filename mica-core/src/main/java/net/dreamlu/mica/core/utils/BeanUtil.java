@@ -22,7 +22,6 @@ import net.dreamlu.mica.core.beans.MicaBeanCopier;
 import net.dreamlu.mica.core.beans.MicaBeanMap;
 import net.dreamlu.mica.core.convert.MicaConverter;
 import net.dreamlu.mica.core.exception.ServiceException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyAccessorFactory;
@@ -424,6 +423,16 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	}
 
 	/**
+	 * 将对象装成map形式
+	 *
+	 * @param bean 源对象
+	 * @return {Map}
+	 */
+	public static Map<String, Object> toNewMap(@Nullable Object bean) {
+		return new HashMap<>(toMap(bean));
+	}
+
+	/**
 	 * 将map 转为 bean
 	 *
 	 * @param beanMap   map
@@ -478,7 +487,8 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 
 	/**
 	 * 比较对象
-	 * @param src 源对象
+	 *
+	 * @param src  源对象
 	 * @param dist 新对象
 	 * @return {BeanDiff}
 	 */
@@ -490,7 +500,8 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 
 	/**
 	 * 比较Map
-	 * @param src 源Map
+	 *
+	 * @param src  源Map
 	 * @param dist 新Map
 	 * @return {BeanDiff}
 	 */
@@ -516,8 +527,9 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 
 	/**
 	 * 生成新Bean 需要继承 BeanDiff 类
+	 *
 	 * @param bean 源bean
-	 * @param <T> 泛型标记
+	 * @param <T>  泛型标记
 	 * @return BeanDiff
 	 */
 	@SuppressWarnings("unchecked")
