@@ -57,7 +57,8 @@ public class RedisTemplateConfiguration {
 												   ObjectProvider<ObjectMapper> objectProvider) {
 		MicaRedisProperties.SerializerType serializerType = properties.getSerializerType();
 		if (MicaRedisProperties.SerializerType.JDK == serializerType) {
-			return new JdkSerializationRedisSerializer();
+			ClassLoader classLoader = this.getClass().getClassLoader();
+			return new JdkSerializationRedisSerializer(classLoader);
 		}
 		// jackson findAndRegisterModules，use copy
 		ObjectMapper objectMapper = objectProvider.getIfAvailable(ObjectMapper::new).copy();
