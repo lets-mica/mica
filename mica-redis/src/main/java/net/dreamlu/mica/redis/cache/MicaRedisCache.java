@@ -322,6 +322,24 @@ public class MicaRedisCache {
 	}
 
 	/**
+	 * 将 key 所储存的值减去减量 decrement 。
+	 * 如果 key 不存在，那么 key 的值会先被初始化为 0 ，然后再执行 DECRBY 操作。
+	 * 如果值包含错误的类型，或字符串类型的值不能表示为数字，那么返回一个错误。
+	 * 本操作的值限制在 64 位(bit)有符号数字表示之内。
+	 * 关于更多递增(increment) / 递减(decrement)操作的更多信息，请参见 INCR 命令。
+	 */
+	public Long decrBy(String key, long longValue, long seconds) {
+		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
+		byte[] serializedKey = keySerializer.serialize(key);
+		List<Object> result = redisTemplate.executePipelined((RedisCallback<Long>) action -> {
+			Long data = action.decrBy(serializedKey, longValue);
+			action.expire(serializedKey, seconds);
+			return data;
+		});
+		return (Long) result.get(0);
+	}
+
+	/**
 	 * 将 key 中储存的数字值增一。
 	 * 如果 key 不存在，那么 key 的值会先被初始化为 0 ，然后再执行 INCR 操作。
 	 * 如果值包含错误的类型，或字符串类型的值不能表示为数字，那么返回一个错误。
@@ -340,6 +358,24 @@ public class MicaRedisCache {
 	 */
 	public Long incrBy(String key, long longValue) {
 		return valueOps.increment(key, longValue);
+	}
+
+	/**
+	 * 将 key 所储存的值加上增量 increment 。
+	 * 如果 key 不存在，那么 key 的值会先被初始化为 0 ，然后再执行 INCRBY 命令。
+	 * 如果值包含错误的类型，或字符串类型的值不能表示为数字，那么返回一个错误。
+	 * 本操作的值限制在 64 位(bit)有符号数字表示之内。
+	 * 关于递增(increment) / 递减(decrement)操作的更多信息，参见 INCR 命令。
+	 */
+	public Long incrBy(String key, long longValue, long seconds) {
+		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
+		byte[] serializedKey = keySerializer.serialize(key);
+		List<Object> result = redisTemplate.executePipelined((RedisCallback<Long>) action -> {
+			Long data = action.incrBy(serializedKey, longValue);
+			action.expire(serializedKey, seconds);
+			return data;
+		});
+		return (Long) result.get(0);
 	}
 
 	/**
@@ -414,7 +450,7 @@ public class MicaRedisCache {
 	/**
 	 * 这个命令和 EXPIRE 命令的作用类似，但是它以毫秒为单位设置 key 的生存时间，而不像 EXPIRE 命令那样，以秒为单位。
 	 */
-	public Boolean pexpire(String key, long milliseconds) {
+	public Boolean pExpire(String key, long milliseconds) {
 		return redisTemplate.expire(key, milliseconds, TimeUnit.MILLISECONDS);
 	}
 
