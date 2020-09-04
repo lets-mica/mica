@@ -379,10 +379,40 @@ public class MicaRedisCache {
 	}
 
 	/**
-	 * 获取记数器的值
+	 * 获取记数器的值，用于获取 incr、incrBy 的值
+	 *
+	 * @param key key
 	 */
 	public Long getCounter(String key) {
-		return Long.valueOf(String.valueOf(valueOps.get(key)));
+		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
+		return redisTemplate.execute((RedisCallback<Long>) action -> {
+			byte[] value = action.get(keySerializer.serialize(key));
+			return Long.valueOf(new String(value));
+		});
+	}
+
+	/**
+	 * 获取记数器的值，用于初始化获取 incr、incrBy 的值
+	 *
+	 * @param key key
+	 * @param seconds 超时时间
+	 * @param loader 加载器
+	 */
+	public Long getCounter(String key, long seconds, Supplier<Long> loader) {
+		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
+		return redisTemplate.execute((RedisCallback<Long>) action -> {
+			byte[] keyBytes = keySerializer.serialize(key);
+			byte[] value = action.get(keyBytes);
+			long longValue;
+			if (value != null) {
+				longValue = Long.valueOf(new String(value));
+			} else {
+				Long loaderValue = loader.get();
+				longValue = loaderValue == null ? 0 : loaderValue;
+				action.setEx(keyBytes, seconds, String.valueOf(longValue).getBytes());
+			}
+			return longValue;
+		});
 	}
 
 	/**
