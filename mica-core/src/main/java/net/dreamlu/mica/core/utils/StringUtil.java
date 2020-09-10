@@ -20,8 +20,10 @@ import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.PatternMatchUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
@@ -40,6 +42,10 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * 特殊字符正则，sql特殊字符和空白符
 	 */
 	private final static Pattern SPECIAL_CHARS_REGEX = Pattern.compile("[`'\"|/,;()-+*%#·•�　\\s]");
+	/**
+	 * <p>The maximum size to which the padding constant(s) can expand.</p>
+	 */
+	private static final int PAD_LIMIT = 8192;
 
 	/**
 	 * 首字母变小写
@@ -499,5 +505,397 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		}
 		return new String(buffer);
 	}
+
+	/**
+	 * 参考自 commons lang 微调
+	 *
+	 * <p>Returns padding using the specified delimiter repeated
+	 * to a given length.</p>
+	 *
+	 * <pre>
+	 * StringUtils.repeat('e', 0)  = ""
+	 * StringUtils.repeat('e', 3)  = "eee"
+	 * StringUtils.repeat('e', -2) = ""
+	 * </pre>
+	 *
+	 * <p>Note: this method does not support padding with
+	 * <a href="http://www.unicode.org/glossary/#supplementary_character">Unicode Supplementary Characters</a>
+	 * as they require a pair of {@code char}s to be represented.
+	 * </p>
+	 *
+	 * @param ch     character to repeat
+	 * @param repeat number of times to repeat char, negative treated as zero
+	 * @return String with repeated character
+	 */
+	public static String repeat(final char ch, final int repeat) {
+		if (repeat <= 0) {
+			return StringPool.EMPTY;
+		}
+		final char[] buf = new char[repeat];
+		Arrays.fill(buf, ch);
+		return new String(buf);
+	}
+
+	/**
+	 * 参考自 commons lang 微调
+	 *
+	 * <p>Gets the leftmost {@code len} characters of a String.</p>
+	 *
+	 * <p>If {@code len} characters are not available, or the
+	 * String is {@code null}, the String will be returned without
+	 * an exception. An empty String is returned if len is negative.</p>
+	 *
+	 * <pre>
+	 * StringUtils.left(null, *)    = null
+	 * StringUtils.left(*, -ve)     = ""
+	 * StringUtils.left("", *)      = ""
+	 * StringUtils.left("abc", 0)   = ""
+	 * StringUtils.left("abc", 2)   = "ab"
+	 * StringUtils.left("abc", 4)   = "abc"
+	 * </pre>
+	 *
+	 * @param str the CharSequence to get the leftmost characters from, may be null
+	 * @param len the length of the required String
+	 * @return the leftmost characters, {@code null} if null String input
+	 */
+	@Nullable
+	public static String left(@Nullable final String str, final int len) {
+		if (str == null) {
+			return null;
+		}
+		if (len < 0) {
+			return StringPool.EMPTY;
+		}
+		if (str.length() <= len) {
+			return str;
+		}
+		return str.substring(0, len);
+	}
+
+	/**
+	 * 参考自 commons lang 微调
+	 *
+	 * <p>Gets the rightmost {@code len} characters of a String.</p>
+	 *
+	 * <p>If {@code len} characters are not available, or the String
+	 * is {@code null}, the String will be returned without an
+	 * an exception. An empty String is returned if len is negative.</p>
+	 *
+	 * <pre>
+	 * StringUtils.right(null, *)    = null
+	 * StringUtils.right(*, -ve)     = ""
+	 * StringUtils.right("", *)      = ""
+	 * StringUtils.right("abc", 0)   = ""
+	 * StringUtils.right("abc", 2)   = "bc"
+	 * StringUtils.right("abc", 4)   = "abc"
+	 * </pre>
+	 *
+	 * @param str the String to get the rightmost characters from, may be null
+	 * @param len the length of the required String
+	 * @return the rightmost characters, {@code null} if null String input
+	 */
+	@Nullable
+	public static String right(@Nullable final String str, final int len) {
+		if (str == null) {
+			return null;
+		}
+		if (len < 0) {
+			return StringPool.EMPTY;
+		}
+		int length = str.length();
+		if (length <= len) {
+			return str;
+		}
+		return str.substring(length - len);
+	}
+
+	/**
+	 * 参考自 commons lang 微调
+	 *
+	 * <p>Right pad a String with spaces (' ').</p>
+	 *
+	 * <p>The String is padded to the size of {@code size}.</p>
+	 *
+	 * <pre>
+	 * StringUtils.rightPad(null, *)   = null
+	 * StringUtils.rightPad("", 3)     = "   "
+	 * StringUtils.rightPad("bat", 3)  = "bat"
+	 * StringUtils.rightPad("bat", 5)  = "bat  "
+	 * StringUtils.rightPad("bat", 1)  = "bat"
+	 * StringUtils.rightPad("bat", -1) = "bat"
+	 * </pre>
+	 *
+	 * @param str  the String to pad out, may be null
+	 * @param size the size to pad to
+	 * @return right padded String or original String if no padding is necessary,
+	 * {@code null} if null String input
+	 */
+	@Nullable
+	public static String rightPad(@Nullable final String str, final int size) {
+		return rightPad(str, size, CharPool.SPACE);
+	}
+
+	/**
+	 * 参考自 commons lang 微调
+	 *
+	 * <p>Right pad a String with a specified character.</p>
+	 *
+	 * <p>The String is padded to the size of {@code size}.</p>
+	 *
+	 * <pre>
+	 * StringUtils.rightPad(null, *, *)     = null
+	 * StringUtils.rightPad("", 3, 'z')     = "zzz"
+	 * StringUtils.rightPad("bat", 3, 'z')  = "bat"
+	 * StringUtils.rightPad("bat", 5, 'z')  = "batzz"
+	 * StringUtils.rightPad("bat", 1, 'z')  = "bat"
+	 * StringUtils.rightPad("bat", -1, 'z') = "bat"
+	 * </pre>
+	 *
+	 * @param str     the String to pad out, may be null
+	 * @param size    the size to pad to
+	 * @param padChar the character to pad with
+	 * @return right padded String or original String if no padding is necessary,
+	 * {@code null} if null String input
+	 */
+	@Nullable
+	public static String rightPad(@Nullable final String str, final int size, final char padChar) {
+		if (str == null) {
+			return null;
+		}
+		final int pads = size - str.length();
+		if (pads <= 0) {
+			// returns original String when possible
+			return str;
+		}
+		if (pads > PAD_LIMIT) {
+			return rightPad(str, size, String.valueOf(padChar));
+		}
+		return str.concat(repeat(padChar, pads));
+	}
+
+	/**
+	 * 参考自 commons lang 微调
+	 *
+	 * <p>Right pad a String with a specified String.</p>
+	 *
+	 * <p>The String is padded to the size of {@code size}.</p>
+	 *
+	 * <pre>
+	 * StringUtils.rightPad(null, *, *)      = null
+	 * StringUtils.rightPad("", 3, "z")      = "zzz"
+	 * StringUtils.rightPad("bat", 3, "yz")  = "bat"
+	 * StringUtils.rightPad("bat", 5, "yz")  = "batyz"
+	 * StringUtils.rightPad("bat", 8, "yz")  = "batyzyzy"
+	 * StringUtils.rightPad("bat", 1, "yz")  = "bat"
+	 * StringUtils.rightPad("bat", -1, "yz") = "bat"
+	 * StringUtils.rightPad("bat", 5, null)  = "bat  "
+	 * StringUtils.rightPad("bat", 5, "")    = "bat  "
+	 * </pre>
+	 *
+	 * @param str    the String to pad out, may be null
+	 * @param size   the size to pad to
+	 * @param padStr the String to pad with, null or empty treated as single space
+	 * @return right padded String or original String if no padding is necessary,
+	 * {@code null} if null String input
+	 */
+	@Nullable
+	public static String rightPad(@Nullable final String str, final int size, String padStr) {
+		if (str == null) {
+			return null;
+		}
+		if (org.springframework.util.StringUtils.isEmpty(padStr)) {
+			padStr = StringPool.SPACE;
+		}
+		final int padLen = padStr.length();
+		final int strLen = str.length();
+		final int pads = size - strLen;
+		if (pads <= 0) {
+			// returns original String when possible
+			return str;
+		}
+		if (padLen == 1 && pads <= PAD_LIMIT) {
+			return rightPad(str, size, padStr.charAt(0));
+		}
+		if (pads == padLen) {
+			return str.concat(padStr);
+		} else if (pads < padLen) {
+			return str.concat(padStr.substring(0, pads));
+		} else {
+			final char[] padding = new char[pads];
+			final char[] padChars = padStr.toCharArray();
+			for (int i = 0; i < pads; i++) {
+				padding[i] = padChars[i % padLen];
+			}
+			return str.concat(new String(padding));
+		}
+	}
+
+	/**
+	 * 参考自 commons lang 微调
+	 *
+	 * <p>Left pad a String with spaces (' ').</p>
+	 *
+	 * <p>The String is padded to the size of {@code size}.</p>
+	 *
+	 * <pre>
+	 * StringUtils.leftPad(null, *)   = null
+	 * StringUtils.leftPad("", 3)     = "   "
+	 * StringUtils.leftPad("bat", 3)  = "bat"
+	 * StringUtils.leftPad("bat", 5)  = "  bat"
+	 * StringUtils.leftPad("bat", 1)  = "bat"
+	 * StringUtils.leftPad("bat", -1) = "bat"
+	 * </pre>
+	 *
+	 * @param str  the String to pad out, may be null
+	 * @param size the size to pad to
+	 * @return left padded String or original String if no padding is necessary,
+	 * {@code null} if null String input
+	 */
+	@Nullable
+	public static String leftPad(@Nullable final String str, final int size) {
+		return leftPad(str, size, CharPool.SPACE);
+	}
+
+	/**
+	 * 参考自 commons lang 微调
+	 *
+	 * <p>Left pad a String with a specified character.</p>
+	 *
+	 * <p>Pad to a size of {@code size}.</p>
+	 *
+	 * <pre>
+	 * StringUtils.leftPad(null, *, *)     = null
+	 * StringUtils.leftPad("", 3, 'z')     = "zzz"
+	 * StringUtils.leftPad("bat", 3, 'z')  = "bat"
+	 * StringUtils.leftPad("bat", 5, 'z')  = "zzbat"
+	 * StringUtils.leftPad("bat", 1, 'z')  = "bat"
+	 * StringUtils.leftPad("bat", -1, 'z') = "bat"
+	 * </pre>
+	 *
+	 * @param str     the String to pad out, may be null
+	 * @param size    the size to pad to
+	 * @param padChar the character to pad with
+	 * @return left padded String or original String if no padding is necessary,
+	 * {@code null} if null String input
+	 * @since 2.0
+	 */
+	@Nullable
+	public static String leftPad(@Nullable final String str, final int size, final char padChar) {
+		if (str == null) {
+			return null;
+		}
+		final int pads = size - str.length();
+		if (pads <= 0) {
+			// returns original String when possible
+			return str;
+		}
+		if (pads > PAD_LIMIT) {
+			return leftPad(str, size, String.valueOf(padChar));
+		}
+		return repeat(padChar, pads).concat(str);
+	}
+
+	/**
+	 * 参考自 commons lang 微调
+	 *
+	 * <p>Left pad a String with a specified String.</p>
+	 *
+	 * <p>Pad to a size of {@code size}.</p>
+	 *
+	 * <pre>
+	 * StringUtils.leftPad(null, *, *)      = null
+	 * StringUtils.leftPad("", 3, "z")      = "zzz"
+	 * StringUtils.leftPad("bat", 3, "yz")  = "bat"
+	 * StringUtils.leftPad("bat", 5, "yz")  = "yzbat"
+	 * StringUtils.leftPad("bat", 8, "yz")  = "yzyzybat"
+	 * StringUtils.leftPad("bat", 1, "yz")  = "bat"
+	 * StringUtils.leftPad("bat", -1, "yz") = "bat"
+	 * StringUtils.leftPad("bat", 5, null)  = "  bat"
+	 * StringUtils.leftPad("bat", 5, "")    = "  bat"
+	 * </pre>
+	 *
+	 * @param str    the String to pad out, may be null
+	 * @param size   the size to pad to
+	 * @param padStr the String to pad with, null or empty treated as single space
+	 * @return left padded String or original String if no padding is necessary,
+	 * {@code null} if null String input
+	 */
+	@Nullable
+	public static String leftPad(@Nullable final String str, final int size, String padStr) {
+		if (str == null) {
+			return null;
+		}
+		if (StringUtils.isEmpty(padStr)) {
+			padStr = StringPool.SPACE;
+		}
+		final int padLen = padStr.length();
+		final int strLen = str.length();
+		final int pads = size - strLen;
+		if (pads <= 0) {
+			// returns original String when possible
+			return str;
+		}
+		if (padLen == 1 && pads <= PAD_LIMIT) {
+			return leftPad(str, size, padStr.charAt(0));
+		}
+		if (pads == padLen) {
+			return padStr.concat(str);
+		} else if (pads < padLen) {
+			return padStr.substring(0, pads).concat(str);
+		} else {
+			final char[] padding = new char[pads];
+			final char[] padChars = padStr.toCharArray();
+			for (int i = 0; i < pads; i++) {
+				padding[i] = padChars[i % padLen];
+			}
+			return new String(padding).concat(str);
+		}
+	}
+
+	/**
+	 * 参考自 commons lang 微调
+	 *
+	 * <p>Gets {@code len} characters from the middle of a String.</p>
+	 *
+	 * <p>If {@code len} characters are not available, the remainder
+	 * of the String will be returned without an exception. If the
+	 * String is {@code null}, {@code null} will be returned.
+	 * An empty String is returned if len is negative or exceeds the
+	 * length of {@code str}.</p>
+	 *
+	 * <pre>
+	 * StringUtils.mid(null, *, *)    = null
+	 * StringUtils.mid(*, *, -ve)     = ""
+	 * StringUtils.mid("", 0, *)      = ""
+	 * StringUtils.mid("abc", 0, 2)   = "ab"
+	 * StringUtils.mid("abc", 0, 4)   = "abc"
+	 * StringUtils.mid("abc", 2, 4)   = "c"
+	 * StringUtils.mid("abc", 4, 2)   = ""
+	 * StringUtils.mid("abc", -2, 2)  = "ab"
+	 * </pre>
+	 *
+	 * @param str the String to get the characters from, may be null
+	 * @param pos the position to start from, negative treated as zero
+	 * @param len the length of the required String
+	 * @return the middle characters, {@code null} if null String input
+	 */
+	@Nullable
+	public static String mid(@Nullable final String str, int pos, final int len) {
+		if (str == null) {
+			return null;
+		}
+		int length = str.length();
+		if (len < 0 || pos > length) {
+			return StringPool.EMPTY;
+		}
+		if (pos < 0) {
+			pos = 0;
+		}
+		if (length <= pos + len) {
+			return str.substring(pos);
+		}
+		return str.substring(pos, pos + len);
+	}
+
 }
 
