@@ -19,6 +19,7 @@ package net.dreamlu.mica.core.utils;
 import org.springframework.lang.Nullable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -53,6 +54,21 @@ public class Once {
 	public <T> void run(Consumer<T> consumer, T argument) {
 		if (canRun()) {
 			consumer.accept(argument);
+		}
+	}
+
+	/**
+	 * 执行函数
+	 *
+	 * @param consumer BiConsumer
+	 * @param arg1     参数1
+	 * @param arg2     参数1
+	 * @param <T>      泛型
+	 * @param <U>      泛型
+	 */
+	public <T, U> void run(BiConsumer<T, U> consumer, T arg1, U arg2) {
+		if (canRun()) {
+			consumer.accept(arg1, arg2);
 		}
 	}
 
