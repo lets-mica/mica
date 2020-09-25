@@ -1,6 +1,18 @@
 # 变更记录
 
 ## 发行版本
+### v2.0.7-GA - 2020-09-25
+- :memo: 文档完善，详见：http://wiki.dreamlu.net
+- :sparkles: mica-core Once 添加方法。
+- :sparkles: 优化 mica-jobs 模块，默认开启。
+- :sparkles: 添加 DesensitizationUtil 脱敏工具类。
+- :sparkles: 添加 commons-lang 中的字符串系列操作方法。
+- :sparkles: 优化 mica-redis getCounter。
+- :sparkles: mica-redis 优化 incrBy、decrBy，添加带超时的方法。
+- :sparkles: mica-redis 优化 jdk 序列化。
+- :arrow_up: Upgrading dependencies. spring boot 2.3.4
+= :arrow_up: 升级到 Spring cloud Hoxton.SR8。
+
 ### v2.0.6-GA - 2020-08-22
 - :sparkles: mica-core BeanUtil 添加 toNewMap 方法。
 - :sparkles: 优化 mica-core MicaConstant 中添加 mdc accountId。
