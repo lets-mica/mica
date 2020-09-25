@@ -11,7 +11,7 @@
 - :sparkles: mica-redis 优化 incrBy、decrBy，添加带超时的方法。
 - :sparkles: mica-redis 优化 jdk 序列化。
 - :arrow_up: Upgrading dependencies. spring boot 2.3.4
-= :arrow_up: 升级到 Spring cloud Hoxton.SR8。
+- :arrow_up: 升级到 Spring cloud Hoxton.SR8。
 
 ### v2.0.6-GA - 2020-08-22
 - :sparkles: mica-core BeanUtil 添加 toNewMap 方法。
