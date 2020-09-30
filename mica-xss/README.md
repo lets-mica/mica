@@ -1,4 +1,4 @@
-# mica-swagger 组件
+# mica-xss 组件
 
 ## 说明
 - 对表单绑定的字符串类型进行 xss 处理。
