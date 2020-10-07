@@ -2,6 +2,7 @@ dependencies {
     api "org.springframework:spring-context"
     api "com.fasterxml.jackson.core:jackson-databind"
     compileOnly "org.springframework:spring-web"
+    compileOnly "jakarta.validation:jakarta.validation-api"
     compileOnly "io.swagger:swagger-annotations:${swaggerAnnotationsVersion}"
     compileOnly "net.dreamlu:mica-auto:${micaAutoVersion}"
     annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
