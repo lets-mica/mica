@@ -477,6 +477,26 @@ public class DateUtil {
 	}
 
 	/**
+	 * 某天开始时间 yyyy-MM-dd 00:00:00
+	 *
+	 * @param localDate LocalDate
+	 * @return Instant
+	 */
+	public static LocalDateTime toStartOfDay(LocalDate localDate) {
+		return localDate.atStartOfDay();
+	}
+
+	/**
+	 * 某天结束时间 yyyy-MM-dd 23:59:59
+	 *
+	 * @param localDate LocalDate
+	 * @return Instant
+	 */
+	public static LocalDateTime toEndOfDay(LocalDate localDate) {
+		return LocalDateTime.of(localDate, LocalTime.MAX);
+	}
+
+	/**
 	 * Date 转 LocalDateTime
 	 *
 	 * @param date Date
