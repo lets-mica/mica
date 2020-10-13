@@ -524,10 +524,10 @@ public class JsonUtil {
 	}
 
 	/**
-	 * 判断是否可以序列化
+	 * 判断是否可以反序列化
 	 *
 	 * @param type JavaType
-	 * @return 是否可以序列化
+	 * @return 是否可以反序列化
 	 */
 	public static boolean canDeserialize(JavaType type) {
 		return getInstance().canDeserialize(type);
