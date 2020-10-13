@@ -259,6 +259,16 @@ public class JsonUtil {
 	}
 
 	/**
+	 * 封装 map type，keyClass String
+	 *
+	 * @param valueClass value 类型
+	 * @return MapType
+	 */
+	public static MapType getMapType(Class<?> valueClass) {
+		return getMapType(String.class, valueClass);
+	}
+
+	/**
 	 * 封装 map type
 	 *
 	 * @param keyClass   key 类型
@@ -334,6 +344,45 @@ public class JsonUtil {
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
+	}
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content    bytes
+	 * @param valueClass 值类型
+	 * @param <K>        泛型
+	 * @param <V>        泛型
+	 * @return 集合
+	 */
+	public static <K, V> Map<K, V> readMap(@Nullable byte[] content, Class<?> valueClass) {
+		return readMap(content, String.class, valueClass);
+	}
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content    InputStream
+	 * @param valueClass 值类型
+	 * @param <K>        泛型
+	 * @param <V>        泛型
+	 * @return 集合
+	 */
+	public static <K, V> Map<K, V> readMap(@Nullable InputStream content, Class<?> valueClass) {
+		return readMap(content, String.class, valueClass);
+	}
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content    bytes
+	 * @param valueClass 值类型
+	 * @param <K>        泛型
+	 * @param <V>        泛型
+	 * @return 集合
+	 */
+	public static <K, V> Map<K, V> readMap(@Nullable String content, Class<?> valueClass) {
+		return readMap(content, String.class, valueClass);
 	}
 
 	/**
@@ -472,6 +521,16 @@ public class JsonUtil {
 			return true;
 		}
 		return getInstance().canSerialize(value.getClass());
+	}
+
+	/**
+	 * 判断是否可以序列化
+	 *
+	 * @param type JavaType
+	 * @return 是否可以序列化
+	 */
+	public static boolean canDeserialize(JavaType type) {
+		return getInstance().canDeserialize(type);
 	}
 
 	/**

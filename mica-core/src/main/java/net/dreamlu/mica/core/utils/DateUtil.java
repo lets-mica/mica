@@ -20,6 +20,7 @@ import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 
 import java.time.*;
+import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.*;
@@ -593,6 +594,39 @@ public class DateUtil {
 	 */
 	public static LocalDateTime fromMilliseconds(final long milliseconds) {
 		return LocalDateTime.ofInstant(Instant.ofEpochMilli(milliseconds), ZoneId.systemDefault());
+	}
+
+	/**
+	 * 判断 A 的时间是否在 B 的时间 "之后"
+	 *
+	 * @param self ChronoLocalDateTime
+	 * @param other ChronoLocalDateTime
+	 * @return {boolean}
+	 */
+	public static boolean isAfter(ChronoLocalDateTime<?> self, ChronoLocalDateTime<?> other) {
+		return self.isAfter(other);
+	}
+
+	/**
+	 * 判断 A 的时间是否在 B 的时间 "之前"
+	 *
+	 * @param self ChronoLocalDateTime
+	 * @param other ChronoLocalDateTime
+	 * @return {boolean}
+	 */
+	public static boolean isBefore(ChronoLocalDateTime<?> self, ChronoLocalDateTime<?> other) {
+		return self.isBefore(other);
+	}
+
+	/**
+	 * 判断 A 的时间是否与 B 的时间 "相同"
+	 *
+	 * @param self ChronoLocalDateTime
+	 * @param other ChronoLocalDateTime
+	 * @return {boolean}
+	 */
+	public static boolean isEqual(ChronoLocalDateTime<?> self, ChronoLocalDateTime<?> other) {
+		return self.isEqual(other);
 	}
 
 	/**
