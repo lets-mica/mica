@@ -259,6 +259,66 @@ public class JsonUtil {
 	}
 
 	/**
+	 * 将json反序列化成对象
+	 *
+	 * @param content  bytes
+	 * @param javaType JavaType
+	 * @param <T>      T 泛型标记
+	 * @return Bean
+	 */
+	@Nullable
+	public static <T> T readValue(@Nullable byte[] content, JavaType javaType) {
+		if (ObjectUtil.isEmpty(content)) {
+			return null;
+		}
+		try {
+			return getInstance().readValue(content, javaType);
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 将json反序列化成对象
+	 *
+	 * @param jsonString jsonString
+	 * @param javaType   JavaType
+	 * @param <T>        T 泛型标记
+	 * @return Bean
+	 */
+	@Nullable
+	public static <T> T readValue(@Nullable String jsonString, JavaType javaType) {
+		if (StringUtil.isBlank(jsonString)) {
+			return null;
+		}
+		try {
+			return getInstance().readValue(jsonString, javaType);
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 将json反序列化成对象
+	 *
+	 * @param in       InputStream
+	 * @param javaType JavaType
+	 * @param <T>      T 泛型标记
+	 * @return Bean
+	 */
+	@Nullable
+	public static <T> T readValue(@Nullable InputStream in, JavaType javaType) {
+		if (in == null) {
+			return null;
+		}
+		try {
+			return getInstance().readValue(in, javaType);
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
 	 * 封装 map type，keyClass String
 	 *
 	 * @param valueClass value 类型
@@ -349,13 +409,42 @@ public class JsonUtil {
 	/**
 	 * 读取集合
 	 *
+	 * @param content bytes
+	 * @return 集合
+	 */
+	public static Map<String, Object> readMap(@Nullable byte[] content) {
+		return readMap(content, Object.class);
+	}
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content InputStream
+	 * @return 集合
+	 */
+	public static Map<String, Object> readMap(@Nullable InputStream content) {
+		return readMap(content, Object.class);
+	}
+
+	/**
+	 * 读取集合
+	 *
+	 * @param content bytes
+	 * @return 集合
+	 */
+	public static Map<String, Object> readMap(@Nullable String content) {
+		return readMap(content, Object.class);
+	}
+
+	/**
+	 * 读取集合
+	 *
 	 * @param content    bytes
 	 * @param valueClass 值类型
-	 * @param <K>        泛型
 	 * @param <V>        泛型
 	 * @return 集合
 	 */
-	public static <K, V> Map<K, V> readMap(@Nullable byte[] content, Class<?> valueClass) {
+	public static <V> Map<String, V> readMap(@Nullable byte[] content, Class<?> valueClass) {
 		return readMap(content, String.class, valueClass);
 	}
 
@@ -364,11 +453,10 @@ public class JsonUtil {
 	 *
 	 * @param content    InputStream
 	 * @param valueClass 值类型
-	 * @param <K>        泛型
 	 * @param <V>        泛型
 	 * @return 集合
 	 */
-	public static <K, V> Map<K, V> readMap(@Nullable InputStream content, Class<?> valueClass) {
+	public static <V> Map<String, V> readMap(@Nullable InputStream content, Class<?> valueClass) {
 		return readMap(content, String.class, valueClass);
 	}
 
@@ -377,11 +465,10 @@ public class JsonUtil {
 	 *
 	 * @param content    bytes
 	 * @param valueClass 值类型
-	 * @param <K>        泛型
 	 * @param <V>        泛型
 	 * @return 集合
 	 */
-	public static <K, V> Map<K, V> readMap(@Nullable String content, Class<?> valueClass) {
+	public static <V> Map<String, V> readMap(@Nullable String content, Class<?> valueClass) {
 		return readMap(content, String.class, valueClass);
 	}
 
@@ -501,13 +588,14 @@ public class JsonUtil {
 	}
 
 	/**
-	 * 对象转为 json node
+	 * 对象转 tree
 	 *
-	 * @param value 对象
-	 * @return JsonNode
+	 * @param fromValue fromValue
+	 * @param <T>       泛型标记
+	 * @return 转换结果
 	 */
-	public static JsonNode valueToTree(@Nullable Object value) {
-		return getInstance().valueToTree(value);
+	public static <T extends JsonNode> T valueToTree(@Nullable Object fromValue) {
+		return getInstance().valueToTree(fromValue);
 	}
 
 	/**
@@ -531,17 +619,6 @@ public class JsonUtil {
 	 */
 	public static boolean canDeserialize(JavaType type) {
 		return getInstance().canDeserialize(type);
-	}
-
-	/**
-	 * 对象转 tree
-	 *
-	 * @param fromValue fromValue
-	 * @param <T>       泛型标记
-	 * @return 转换结果
-	 */
-	public static <T extends JsonNode> T treeToValue(Object fromValue) {
-		return getInstance().valueToTree(fromValue);
 	}
 
 	/**
