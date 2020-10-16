@@ -184,7 +184,7 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	}
 
 	/**
-	 * 获取文件后缀名
+	 * 获取文件后缀名 jpg
 	 *
 	 * @param fullName 文件全名
 	 * @return {String}
@@ -192,6 +192,31 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	@Nullable
 	public static String getFileExtension(@Nullable String fullName) {
 		return StringUtils.getFilenameExtension(fullName);
+	}
+
+	/**
+	 * 获取文件后缀名 .jpg
+	 *
+	 * @param fullName 文件全名
+	 * @return {String}
+	 */
+	@Nullable
+	public static String getFileExtensionWithDot(@Nullable String fullName) {
+		if (fullName == null) {
+			return null;
+		}
+
+		int extIndex = fullName.lastIndexOf(CharPool.DOT);
+		if (extIndex == -1) {
+			return null;
+		}
+
+		int folderIndex = fullName.lastIndexOf(CharPool.SLASH);
+		if (folderIndex > extIndex) {
+			return null;
+		}
+
+		return fullName.substring(extIndex);
 	}
 
 	/**
