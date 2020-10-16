@@ -131,7 +131,7 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 	public static <E> List<E> toList(Iterable<E> elements) {
 		Objects.requireNonNull(elements, "elements es is null.");
 		if (elements instanceof Collection) {
-			return new ArrayList((Collection) elements);
+			return new ArrayList<>((Collection<E>) elements);
 		}
 		Iterator<E> iterator = elements.iterator();
 		List<E> list = new ArrayList<>();
