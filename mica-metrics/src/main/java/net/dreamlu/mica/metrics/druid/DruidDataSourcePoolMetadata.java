@@ -37,7 +37,7 @@ public class DruidDataSourcePoolMetadata extends AbstractDataSourcePoolMetadata<
 
 	@Override
 	public Integer getMax() {
-		return getDataSource().getMaxIdle();
+		return getDataSource().getMaxActive();
 	}
 
 	@Override
