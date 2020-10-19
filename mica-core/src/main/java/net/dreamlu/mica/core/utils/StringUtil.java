@@ -304,6 +304,25 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
+	 * 格式化执行时间，单位为 ms 和 s，保留三位小数
+	 *
+	 * @param nanos 纳秒
+	 * @return 格式化后的时间
+	 */
+	public static String format(long nanos) {
+		if (nanos < 1) {
+			return "0ms";
+		}
+		double millis = (double) nanos / (1000 * 1000);
+		// 不够 1 ms，最小单位为 ms
+		if (millis > 1000) {
+			return String.format("%.3fs", millis / 1000);
+		} else {
+			return String.format("%.3fms", millis);
+		}
+	}
+
+	/**
 	 * Convert a {@code Collection} into a delimited {@code String} (e.g., CSV).
 	 * <p>Useful for {@code toString()} implementations.
 	 *
