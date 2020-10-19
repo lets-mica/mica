@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Configuration;
 public class DruidDataSourceMetadataProviderConfiguration {
 
 	@Bean
-	DataSourcePoolMetadataProvider hikariPoolDataSourceMetadataProvider() {
+	public DataSourcePoolMetadataProvider hikariPoolDataSourceMetadataProvider() {
 		return (dataSource) -> {
 			DruidDataSource druidDataSource = DataSourceUnwrapper.unwrap(dataSource, DruidDataSource.class);
 			if (druidDataSource != null) {
