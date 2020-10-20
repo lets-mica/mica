@@ -1,6 +1,18 @@
 # 变更记录
 
 ## 发行版本
+### v2.0.8-GA - 2020-10-20
+- :sparkles: mica-metrics 添加对 druid 连接池的支持。
+- :sparkles: mica-core StringUtil 添加格式化执行时间方法。
+- :sparkles: mica-core CollectionUtil 优化泛型。
+- :sparkles: mica-core 完善 FileUtil，方便使用
+- :sparkles: mica-core 完善 JsonUtil，方便使用。
+- :sparkles: mica-core 完善 DateUtil，方便使用。
+- :sparkles: mica-core 抽取 Pkcs7Encoder。
+- :sparkles: mica-core Validated group extends Default.
+- :memo: 修复文档错误.
+- :memo: 添加 mica 生态连接。
+
 ### v2.0.7-GA - 2020-09-25
 - :memo: 文档完善，详见：http://wiki.dreamlu.net
 - :sparkles: mica-core Once 添加方法。
