@@ -18,10 +18,10 @@
 **更新记录**详见：[Mica 更新记录](CHANGELOG.md)
 
 ## mica 生态
-- Spring boot starter 利器 mica-auto: https://gitee.com/596392912/mica-auto
-- jfinal weixin 的 spring boot starter mica-weixin：https://gitee.com/596392912/mica-weixin
+- mica-auto (Spring boot starter 利器): https://gitee.com/596392912/mica-auto
+- mica-weixin（jfinal weixin 的 spring boot starter）：https://gitee.com/596392912/mica-weixin
+- mica-mqtt（基于 t-io 实现的 mqtt组件）：https://gitee.com/596392912/mica-mqtt
 - 使用 java11 http client 的 spring cloud 的 http 底层工具（h2c）: https://gitee.com/596392912/spring-cloud-java11
-- 基于 t-io 实现的 mqtt iot组件：https://gitee.com/596392912/mica-mqtt
 
 ## 版本号说明
 `release` 版本号格式为 `x.x.x-GA`，响应 `冷神` 的吐槽，改短了一点。
