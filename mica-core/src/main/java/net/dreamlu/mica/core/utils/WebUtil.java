@@ -165,7 +165,7 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 	@Nullable
 	public static String getIP(@Nullable HttpServletRequest request) {
 		if (request == null) {
-			return StringPool.EMPTY;
+			return null;
 		}
 		String ip = null;
 		for (String ipHeader : IP_HEADER_NAMES) {
