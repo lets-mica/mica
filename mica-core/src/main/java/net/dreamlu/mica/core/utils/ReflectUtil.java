@@ -213,6 +213,26 @@ public class ReflectUtil extends ReflectionUtils {
 	}
 
 	/**
+	 * 重写 setField 的方法，用于处理 setAccessible 的问题
+	 *
+	 * @param fieldName Field name
+	 * @param target    Object
+	 * @return value
+	 */
+	@Nullable
+	public static Object getField(String fieldName, @Nullable Object target) {
+		if (target == null) {
+			return null;
+		}
+		Class<?> targetClass = target.getClass();
+		Field field = getField(targetClass, fieldName);
+		if (field == null) {
+			throw new IllegalArgumentException(fieldName + " not in" + targetClass);
+		}
+		return getField(field, target);
+	}
+
+	/**
 	 * 重写 invokeMethod 的方法，用于处理 setAccessible 的问题
 	 *
 	 * @param method Method
