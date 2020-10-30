@@ -25,8 +25,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration;
+import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
+import springfox.documentation.swagger2.configuration.Swagger2DocumentationWebMvcConfiguration;
 
 /**
  * Swagger 页面静态文件配置
@@ -34,10 +34,10 @@ import springfox.documentation.swagger2.configuration.Swagger2DocumentationConfi
  * @author L.cm
  */
 @EnableKnife4j
-@EnableSwagger2
+@EnableSwagger2WebMvc
 @Import(BeanValidatorPluginsConfiguration.class)
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(Swagger2DocumentationConfiguration.class)
+@ConditionalOnClass(Swagger2DocumentationWebMvcConfiguration.class)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(value = "mica.swagger.enabled", havingValue = "true", matchIfMissing = true)
 public class SwaggerAutoConfiguration implements WebMvcConfigurer {
