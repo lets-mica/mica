@@ -35,5 +35,7 @@ dependencyManagement {
         dependency "com.squareup.okhttp3:logging-interceptor:${okhttpVersion}"
         dependency "org.jsoup:jsoup:${jsoupVersion}"
         dependency "org.projectlombok:lombok:${lombokVersion}"
+        dependency "com.alibaba:druid:${druidVersion}"
+        dependency "com.alibaba:druid-spring-boot-starter:${druidVersion}"
     }
 }

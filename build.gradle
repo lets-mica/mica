@@ -7,12 +7,13 @@ ext {
     springBootVersion = "2.3.5.RELEASE"
     springCloudVersion = "Hoxton.SR8"
     micaAutoVersion = "1.2.5"
-    knife4jVersion = "2.0.6"
+    knife4jVersion = "2.0.7"
     swaggerAnnotationsVersion = "1.5.22"
+    druidVersion = "1.2.1"
     okhttpVersion = "3.14.9"
     jsoupVersion = "1.13.1"
     xxlJobVersion = "2.2.0"
-    lombokVersion = "1.18.12"
+    lombokVersion = "1.18.16"
     findbugsVersion = "3.0.2"
 }
 
