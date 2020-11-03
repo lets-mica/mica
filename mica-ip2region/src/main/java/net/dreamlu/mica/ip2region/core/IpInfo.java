@@ -72,6 +72,20 @@ public class IpInfo implements Serializable {
 		regionSet.add(region);
 		regionSet.add(province);
 		regionSet.add(city);
+		regionSet.removeIf(Objects::isNull);
+		return StringUtil.join(regionSet, StringPool.EMPTY);
+	}
+	/**
+	 * 拼接完整的地址
+	 *
+	 * @return address
+	 */
+	public String getAddressAndIsp() {
+		Set<String> regionSet = new LinkedHashSet<>();
+		regionSet.add(country);
+		regionSet.add(region);
+		regionSet.add(province);
+		regionSet.add(city);
 		regionSet.add(isp);
 		regionSet.removeIf(Objects::isNull);
 		return StringUtil.join(regionSet, StringPool.SPACE);

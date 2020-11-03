@@ -10,7 +10,7 @@ public class DataBlock {
 	/**
 	 * city id
 	 */
-	private int city_id;
+	private int cityId;
 
 	/**
 	 * region address
@@ -25,26 +25,26 @@ public class DataBlock {
 	/**
 	 * construct method
 	 *
-	 * @param city_id
+	 * @param cityId city id
 	 * @param region  region string
 	 * @param dataPtr data ptr
 	 */
-	public DataBlock(int city_id, String region, int dataPtr) {
-		this.city_id = city_id;
+	public DataBlock(int cityId, String region, int dataPtr) {
+		this.cityId = cityId;
 		this.region = region;
 		this.dataPtr = dataPtr;
 	}
 
-	public DataBlock(int city_id, String region) {
-		this(city_id, region, 0);
+	public DataBlock(int cityId, String region) {
+		this(cityId, region, 0);
 	}
 
 	public int getCityId() {
-		return city_id;
+		return cityId;
 	}
 
-	public DataBlock setCityId(int city_id) {
-		this.city_id = city_id;
+	public DataBlock setCityId(int cityId) {
+		this.cityId = cityId;
 		return this;
 	}
 
@@ -68,7 +68,7 @@ public class DataBlock {
 
 	@Override
 	public String toString() {
-		return String.valueOf(city_id) + '|' + region + '|' + dataPtr;
+		return String.valueOf(cityId) + '|' + region + '|' + dataPtr;
 	}
 
 }

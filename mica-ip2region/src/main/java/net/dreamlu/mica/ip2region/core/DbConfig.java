@@ -29,7 +29,8 @@ public class DbConfig {
 			throw new DbMakerConfigException("totalHeaderSize must be times of 8");
 		}
 		this.totalHeaderSize = totalHeaderSize;
-		this.indexBlockSize = 4096; //4 * 1024
+		// 4 * 1024
+		this.indexBlockSize = 4096;
 	}
 
 	public DbConfig() throws DbMakerConfigException {

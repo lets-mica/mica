@@ -103,15 +103,17 @@ public class DbSearcher {
 		}
 
 		//not matched
-		if (dataptr == 0) return null;
+		if (dataptr == 0) {
+			return null;
+		}
 
 		//get the data
 		int dataLen = (int) ((dataptr >> 24) & 0xFF);
 		int dataPtr = (int) ((dataptr & 0x00FFFFFF));
-		int city_id = (int) Ip2regionUtil.getIntLong(dbBinStr, dataPtr);
+		int cityId = (int) Ip2regionUtil.getIntLong(dbBinStr, dataPtr);
 		String region = new String(dbBinStr, dataPtr + 4, dataLen - 4, StandardCharsets.UTF_8);
 
-		return new DataBlock(city_id, region, dataPtr);
+		return new DataBlock(cityId, region, dataPtr);
 	}
 
 	/**
@@ -146,10 +148,10 @@ public class DbSearcher {
 		byte[] data = new byte[dataLen];
 		reader.readFully(dataPtr, data, 0, data.length);
 
-		int city_id = (int) Ip2regionUtil.getIntLong(data, 0);
+		int cityId = (int) Ip2regionUtil.getIntLong(data, 0);
 		String region = new String(data, 4, data.length - 4, StandardCharsets.UTF_8);
 
-		return new DataBlock(city_id, region, dataPtr);
+		return new DataBlock(cityId, region, dataPtr);
 	}
 
 	/**
@@ -164,26 +166,29 @@ public class DbSearcher {
 			//reader.seek(8L);    //pass the super block
 			//byte[] b = new byte[dbConfig.getTotalHeaderSize()];
 			byte[] b = new byte[4096];
-			reader.readFully(8L, b, 0, b.length);//pass the super block
+			//pass the super block
+			reader.readFully(8L, b, 0, b.length);
 
 			//fill the header
 			int len = b.length >> 3, idx = 0;  //b.lenght / 8
-			long[] HeaderSip = new long[len];
-			int[] HeaderPtr = new int[len];
+			long[] headerSip = new long[len];
+			int[] headerPtr = new int[len];
 			long startIp, dataPtr;
 			for (int i = 0; i < b.length; i += 8) {
 				startIp = Ip2regionUtil.getIntLong(b, i);
 				dataPtr = Ip2regionUtil.getIntLong(b, i + 4);
-				if (dataPtr == 0) break;
+				if (dataPtr == 0) {
+					break;
+				}
 
-				HeaderSip[idx] = startIp;
-				HeaderPtr[idx] = (int) dataPtr;
+				headerSip[idx] = startIp;
+				headerPtr[idx] = (int) dataPtr;
 				idx++;
 			}
 
 			headerLength = idx;
-			this.HeaderPtr = HeaderPtr;
-			this.HeaderSip = HeaderSip;
+			this.HeaderPtr = headerPtr;
+			this.HeaderSip = headerSip;
 		}
 
 		//1. define the index block with the binary search
@@ -237,11 +242,14 @@ public class DbSearcher {
 		}
 
 		//match nothing just stop it
-		if (sptr == 0) return null;
+		if (sptr == 0) {
+			return null;
+		}
 
 		//2. search the index blocks to define the data
 		int blockLen = eptr - sptr, blen = IndexBlock.getIndexBlockLength();
-		byte[] iBuffer = new byte[blockLen + blen];    //include the right border block
+		//include the right border block
+		byte[] iBuffer = new byte[blockLen + blen];
 		//reader.seek(sptr);
 		reader.readFully(sptr, iBuffer, 0, iBuffer.length);
 
@@ -276,10 +284,10 @@ public class DbSearcher {
 		byte[] data = new byte[dataLen];
 		reader.readFully(dataPtr, data, 0, data.length);
 
-		int city_id = (int) Ip2regionUtil.getIntLong(data, 0);
+		int cityId = (int) Ip2regionUtil.getIntLong(data, 0);
 		String region = new String(data, 4, data.length - 4, StandardCharsets.UTF_8);
 
-		return new DataBlock(city_id, region, dataPtr);
+		return new DataBlock(cityId, region, dataPtr);
 	}
 
 	/**
@@ -344,10 +352,10 @@ public class DbSearcher {
 		byte[] data = new byte[dataLen];
 		reader.readFully(dataPtr, data, 0, data.length);
 
-		int city_id = (int) Ip2regionUtil.getIntLong(data, 0);
+		int cityId = (int) Ip2regionUtil.getIntLong(data, 0);
 		String region = new String(data, 4, data.length - 4, StandardCharsets.UTF_8);
 
-		return new DataBlock(city_id, region, dataPtr);
+		return new DataBlock(cityId, region, dataPtr);
 	}
 
 	/**
@@ -376,7 +384,8 @@ public class DbSearcher {
 	 * @throws IOException
 	 */
 	public void close() throws IOException {
-		HeaderSip = null;    //let gc do its work
+		//let gc do its work
+		HeaderSip = null;
 		HeaderPtr = null;
 		dbBinStr = null;
 		reader.close();
