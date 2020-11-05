@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -207,7 +209,9 @@ public class MicaRedisCache {
 	 * @return 扫描结果
 	 */
 	public Set<String> scan(@Nullable String pattern) {
-		return scan(pattern, null).getRight();
+		final Set<String> keySet = new HashSet<>();
+		scan(pattern, keySet::add);
+		return keySet;
 	}
 
 	/**
@@ -235,18 +239,60 @@ public class MicaRedisCache {
 	}
 
 	/**
-	 * redis sscan
+	 * redis scan
 	 *
 	 * @param pattern 匹配表达式
+	 * @param consumer 消费者
 	 * @return 扫描结果
 	 */
-	public Set<String> sScan(String key, @Nullable String pattern) {
-		return sScan(key, pattern, null).getRight();
+	public void scan(@Nullable String pattern, Consumer<String> consumer) {
+		scan(pattern, null, consumer);
+	}
+
+	/**
+	 * redis scan
+	 *
+	 * @param pattern 匹配表达式
+	 * @param count   一次扫描的数量
+	 * @param consumer 消费者
+	 * @return 扫描结果
+	 */
+	public void scan(@Nullable String pattern, @Nullable Long count, Consumer<String> consumer) {
+		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
+		redisTemplate.execute((RedisCallback<Object>) action -> {
+			ScanOptions options = ScanOptions.scanOptions()
+				.match(pattern)
+				.count(count)
+				.build();
+			try (Cursor<byte[]> cursor = action.scan(options)) {
+				cursor.forEachRemaining((item) -> {
+					String redisKey = keySerializer.deserialize(item);
+					consumer.accept(redisKey);
+				});
+			} catch (IOException e) {
+				throw Exceptions.unchecked(e);
+			}
+			return null;
+		});
 	}
 
 	/**
 	 * redis sscan
 	 *
+	 * @param key key
+	 * @param pattern 匹配表达式
+	 * @return 扫描结果
+	 */
+	public Set<String> sScan(String key, @Nullable String pattern) {
+		final Set<String> keySet = new HashSet<>();
+		sScan(key, pattern, keySet::add);
+		return keySet;
+	}
+
+	/**
+	 * redis sscan
+	 *
+	 * @param key key
 	 * @param pattern 匹配表达式
 	 * @param count   一次扫描的数量
 	 * @return 扫描结果
@@ -265,6 +311,46 @@ public class MicaRedisCache {
 			} catch (IOException e) {
 				throw Exceptions.unchecked(e);
 			}
+		});
+	}
+
+	/**
+	 * redis sscan
+	 *
+	 * @param key key
+	 * @param pattern 匹配表达式
+	 * @param consumer    consumer
+	 * @return 扫描结果
+	 */
+	public void sScan(String key, @Nullable String pattern, Consumer<String> consumer) {
+		sScan(key, pattern, null, consumer);
+	}
+
+	/**
+	 * redis sscan
+	 *
+	 * @param key key
+	 * @param pattern 匹配表达式
+	 * @param count   一次扫描的数量
+	 * @param consumer    consumer
+	 * @return 扫描结果
+	 */
+	public void sScan(String key, @Nullable String pattern, @Nullable Long count, Consumer<String> consumer) {
+		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
+		redisTemplate.execute((RedisCallback<Object>) action -> {
+			ScanOptions options = ScanOptions.scanOptions()
+				.match(pattern)
+				.count(count)
+				.build();
+			try (Cursor<byte[]> cursor = action.sScan(keySerializer.serialize(key), options)) {
+				cursor.forEachRemaining((item) -> {
+					String redisKey = keySerializer.deserialize(item);
+					consumer.accept(redisKey);
+				});
+			} catch (IOException e) {
+				throw Exceptions.unchecked(e);
+			}
+			return null;
 		});
 	}
 
