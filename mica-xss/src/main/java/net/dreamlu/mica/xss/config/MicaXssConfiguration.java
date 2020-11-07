@@ -29,6 +29,8 @@ import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.List;
+
 /**
  * jackson xss 配置
  *
@@ -53,9 +55,13 @@ public class MicaXssConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
+		List<String> patterns = xssProperties.getPathPatterns();
+		if (patterns.isEmpty()) {
+			patterns.add("/**");
+		}
 		XssCleanInterceptor interceptor = new XssCleanInterceptor(xssProperties);
 		registry.addInterceptor(interceptor)
-			.addPathPatterns(xssProperties.getPathPatterns())
+			.addPathPatterns(patterns)
 			.excludePathPatterns(xssProperties.getExcludePatterns())
 			.order(Ordered.LOWEST_PRECEDENCE);
 	}

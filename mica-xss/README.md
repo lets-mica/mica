@@ -24,7 +24,7 @@ compile("net.dreamlu:mica-xss:${version}")
 | 配置项 | 默认值 | 说明 |
 | ----- | ------ | ------ |
 | mica.xss.enabled | true | 开启xss |
-| mica.xss.path-patterns |  | 拦截的路由，必须配置，例如: /api/order/** |
+| mica.xss.path-patterns | /** | 拦截的路由，必须配置，例如: /api/order/** |
 | mica.xss.exclude-patterns |  | 放行的规则，默认为空 |
 
 ## 注解

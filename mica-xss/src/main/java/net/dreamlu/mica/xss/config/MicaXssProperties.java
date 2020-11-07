@@ -19,9 +19,7 @@ package net.dreamlu.mica.xss.config;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +30,6 @@ import java.util.List;
  */
 @Getter
 @Setter
-@Validated
 @ConfigurationProperties("mica.xss")
 public class MicaXssProperties {
 
@@ -43,7 +40,6 @@ public class MicaXssProperties {
 	/**
 	 * 拦截的路由，默认为空
 	 */
-	@NotEmpty
 	private List<String> pathPatterns = new ArrayList<>();
 	/**
 	 * 放行的规则，默认为空
