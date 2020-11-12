@@ -1,6 +1,15 @@
 # 变更记录
 
 ## 发行版本
+### v2.0.9-GA - 2020-11-15
+- :sparkles: mica-ip2region 更新 db 文件。
+- :sparkles: mica-xss 默认拦截 /** #I24753 。
+- :sparkles: mica-redis 优化 redis scan。
+- :arrow_up: mica-bom 添加 druid 到 bom。
+- :sparkles: mica-core 完善 ReflectUtil。
+- :arrow_up: 升级 spring cloud 到 Hoxton.SR9。
+- :arrow_up: 升级 spring boot 到 2.3.5.RELEASE。
+
 ### v2.0.8-GA - 2020-10-20
 - :sparkles: mica-metrics 添加对 druid 连接池的支持。
 - :sparkles: mica-core StringUtil 添加格式化执行时间方法。
