@@ -1,5 +1,6 @@
 dependencies {
     api project(":mica-core")
+    api "org.apache.commons:commons-pool2"
     api "org.springframework.boot:spring-boot-starter-aop"
     api "org.springframework.boot:spring-boot-starter-data-redis"
     compileOnly "org.springframework.cloud:spring-cloud-context"

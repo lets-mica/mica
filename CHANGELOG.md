@@ -7,6 +7,7 @@
 - :sparkles: mica-xss 默认拦截 /** #I24753 。
 - :sparkles: mica-ip2region 更新 db 文件。
 - :sparkles: mica-redis 优化 redis scan。
+- :sparkles: mica-redis 添加强制依赖 commons-pool2。
 - :arrow_up: mica-bom 添加 druid 到 bom。
 - :sparkles: mica-core 完善 ReflectUtil。
 - :arrow_up: 升级 spring cloud 到 Hoxton.SR9。
