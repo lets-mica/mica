@@ -2,8 +2,10 @@
 
 ## 发行版本
 ### v2.0.9-GA - 2020-11-15
-- :sparkles: mica-ip2region 更新 db 文件。
+- :sparkles: mica-xss 可自定义 XssCleaner 接口。
+- :sparkles: mica-xss 日志统一调整为 debug。
 - :sparkles: mica-xss 默认拦截 /** #I24753 。
+- :sparkles: mica-ip2region 更新 db 文件。
 - :sparkles: mica-redis 优化 redis scan。
 - :arrow_up: mica-bom 添加 druid 到 bom。
 - :sparkles: mica-core 完善 ReflectUtil。
