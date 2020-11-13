@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2016-2020, Michael Yang 杨福海 (fuhai999@gmail.com).
  * <p>
  * Licensed under the GNU Lesser General Public License (LGPL) ,Version 3.0 (the "License");
@@ -32,7 +32,7 @@ import org.springframework.util.StringUtils;
  * @author michael
  */
 public class XssUtil {
-	private static HtmlWhitelist whitelist = new HtmlWhitelist();
+	private static final HtmlWhitelist WHITE_LIST = new HtmlWhitelist();
 
 	/**
 	 * xss 清理
@@ -42,7 +42,7 @@ public class XssUtil {
 	 */
 	public static String clean(String html) {
 		if (StringUtils.hasText(html)) {
-			return Jsoup.clean(html, whitelist);
+			return Jsoup.clean(html, WHITE_LIST);
 		}
 		return html;
 	}

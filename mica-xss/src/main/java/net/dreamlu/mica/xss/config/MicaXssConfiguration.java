@@ -17,9 +17,8 @@
 package net.dreamlu.mica.xss.config;
 
 import lombok.RequiredArgsConstructor;
-import net.dreamlu.mica.xss.core.FormXssClean;
-import net.dreamlu.mica.xss.core.JacksonXssClean;
-import net.dreamlu.mica.xss.core.XssCleanInterceptor;
+import net.dreamlu.mica.xss.core.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -44,13 +43,19 @@ public class MicaXssConfiguration implements WebMvcConfigurer {
 	private final MicaXssProperties xssProperties;
 
 	@Bean
-	public FormXssClean formXssClean() {
-		return new FormXssClean();
+	@ConditionalOnMissingBean
+	public XssCleaner xssCleaner() {
+		return new DefaultXssCleaner();
 	}
 
 	@Bean
-	public Jackson2ObjectMapperBuilderCustomizer xssJacksonCustomizer() {
-		return builder -> builder.deserializerByType(String.class, new JacksonXssClean());
+	public FormXssClean formXssClean(XssCleaner xssCleaner) {
+		return new FormXssClean(xssCleaner);
+	}
+
+	@Bean
+	public Jackson2ObjectMapperBuilderCustomizer xssJacksonCustomizer(XssCleaner xssCleaner) {
+		return builder -> builder.deserializerByType(String.class, new JacksonXssClean(xssCleaner));
 	}
 
 	@Override
