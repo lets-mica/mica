@@ -8,7 +8,7 @@
 - :arrow_up: mica-bom 添加 druid 到 bom。
 - :sparkles: mica-core 完善 ReflectUtil。
 - :arrow_up: 升级 spring cloud 到 Hoxton.SR9。
-- :arrow_up: 升级 spring boot 到 2.3.5.RELEASE。
+- :arrow_up: 升级 spring boot 到 2.3.6.RELEASE。
 
 ### v2.0.8-GA - 2020-10-20
 - :sparkles: mica-metrics 添加对 druid 连接池的支持。

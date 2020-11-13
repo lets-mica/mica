@@ -4,7 +4,7 @@ plugins {
 
 ext {
     javaVersion = JavaVersion.VERSION_1_8
-    springBootVersion = "2.3.5.RELEASE"
+    springBootVersion = "2.3.6.RELEASE"
     springCloudVersion = "Hoxton.SR9"
     micaAutoVersion = "1.2.5"
     knife4jVersion = "2.0.7"
