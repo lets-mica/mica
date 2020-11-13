@@ -6,7 +6,7 @@ ext {
     javaVersion = JavaVersion.VERSION_1_8
     springBootVersion = "2.3.6.RELEASE"
     springCloudVersion = "Hoxton.SR9"
-    micaAutoVersion = "1.2.5"
+    micaAutoVersion = "1.2.6"
     knife4jVersion = "2.0.7"
     swaggerAnnotationsVersion = "1.5.22"
     druidVersion = "1.2.2"
