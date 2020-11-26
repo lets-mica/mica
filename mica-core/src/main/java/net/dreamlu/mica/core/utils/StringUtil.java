@@ -248,7 +248,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @param params  转换所需的键值对集合
 	 * @return 转换后的字符串
 	 */
-	public static String format(@Nullable String message, @Nullable Map<String, Object> params) {
+	public static String format(@Nullable String message, @Nullable Map<String, ?> params) {
 		// message 为 null 返回空字符串
 		if (message == null) {
 			return StringPool.EMPTY;

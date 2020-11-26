@@ -38,6 +38,24 @@ public class StringUtilTest {
 	}
 
 	@Test
+	public void testFormat4() {
+		String str = "my name is L.cm, and i like Java!";
+
+		Map<String, Object> param1 = new HashMap<>();
+		param1.put("name", "L.cm");
+		param1.put("like", "Java");
+		String msg1 = StringUtil.format("my name is ${ name }, and i like ${ like }!", param1);
+
+		Map<String, String> param2 = new HashMap<>();
+		param2.put("name", "L.cm");
+		param2.put("like", "Java");
+		String msg2 = StringUtil.format("my name is ${ name }, and i like ${ like }!", param2);
+
+		Assert.assertEquals(str, msg1);
+		Assert.assertEquals(str, msg2);
+	}
+
+	@Test
 	public void cleanTextTest() {
 		String s = StringUtil.cleanText(null);
 		Assert.assertNull(s);
