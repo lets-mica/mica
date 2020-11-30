@@ -16,12 +16,18 @@
 
 package net.dreamlu.mica.http;
 
+import net.dreamlu.mica.core.utils.Exceptions;
 import okhttp3.Headers;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.internal.Util;
+import okio.Buffer;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -60,6 +66,22 @@ public class MultipartFormBuilder {
 		return add(name, filename, fileBody);
 	}
 
+	public MultipartFormBuilder add(String name, @Nonnull String filename, byte[] bytes) {
+		RequestBody fileBody = RequestBody.create(null, bytes);
+		return add(name, filename, fileBody);
+	}
+
+	public MultipartFormBuilder add(String name, @Nonnull String filename, InputStream stream) {
+		try (Buffer buffer = new Buffer()) {
+			buffer.readFrom(stream);
+			return add(name, filename, buffer.readByteArray());
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		} finally {
+			Util.closeQuietly(stream);
+		}
+	}
+
 	public MultipartFormBuilder add(String name, @Nullable String filename, RequestBody fileBody) {
 		this.formBuilder.addFormDataPart(name, filename, fileBody);
 		return this;
@@ -94,4 +116,5 @@ public class MultipartFormBuilder {
 	public AsyncExchange async() {
 		return this.build().async();
 	}
+
 }
