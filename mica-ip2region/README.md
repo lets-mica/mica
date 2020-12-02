@@ -16,7 +16,7 @@
 compile("net.dreamlu:mica-ip2region:${version}")
 ```
 
-## 配置说明（已经内置，忽略）
+## 配置说明（已经内置，可忽略）
 
 | 配置项                           | 默认值                            | 说明                                |
 | ------------------------------- | -------------------------------- | ---------------------------------- |
@@ -116,4 +116,49 @@ IpInfo binarySearch(long ip);
  */
 @Nullable
 IpInfo binarySearch(String ip);
+```
+
+### IpInfo 上的属性和方法：
+```java
+/**
+ * 城市id
+ */
+private Integer cityId;
+/**
+ * 国家
+ */
+private String country;
+/**
+ * 区域
+ */
+private String region;
+/**
+ * 省
+ */
+private String province;
+/**
+ * 城市
+ */
+private String city;
+/**
+ * 运营商
+ */
+private String isp;
+/**
+ * region ptr in the db file
+ */
+private int dataPtr;
+
+/**
+ * 拼接完整的地址
+ *
+ * @return address
+ */
+public String getAddress();
+/**
+ * 拼接完整的地址
+ *
+ * @return address
+ */
+public String getAddressAndIsp();
 ```

@@ -29,3 +29,13 @@ compile("net.dreamlu:mica-xss:${version}")
 
 ## 注解
 可以使用 `@XssCleanIgnore` 注解对方法和类级别进行忽略。
+
+## 自定义 xss 清理
+如果内置的 xss 清理规则不满足需求，可以自己实现 `XssCleaner`，注册成 Spring bean 即可。
+
+```java
+@Bean
+public XssCleaner xssCleaner() {
+    return new MyXssCleaner();
+}
+```
