@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import springfox.documentation.service.AuthorizationScope;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,9 +69,13 @@ public class MicaSwaggerProperties {
 	 */
 	private final List<Header> headers = new ArrayList<>();
 	/**
-	 * 全局统一鉴权配置
+	 * api key 认证
 	 **/
 	private final Authorization authorization = new Authorization();
+	/**
+	 * oauth2 认证
+	 */
+	private final Oauth2 oauth2 = new Oauth2();
 
 	/**
 	 * securitySchemes 支持方式之一 ApiKey
@@ -91,9 +96,57 @@ public class MicaSwaggerProperties {
 		 */
 		private String keyName = "TOKEN";
 		/**
-		 * 需要开启鉴权URL的正则，默认：^.*$
+		 * 需要开启鉴权URL的正则，默认：/**
 		 */
-		private String authRegex = "^.*$";
+		private List<String> pathPatterns = new ArrayList<>();
+	}
+
+	/**
+	 * oauth2 认证
+	 */
+	@Getter
+	@Setter
+	public static class Oauth2 {
+		/**
+		 * 开启Oauth2，默认：false
+		 */
+		private Boolean enabled = false;
+		/**
+		 * oath2 名称，默认：oauth2
+		 */
+		private String name = "oauth2";
+		/**
+		 * clientId name
+		 */
+		private String clientIdName;
+		/**
+		 * clientSecret name
+		 */
+		private String clientSecretName;
+		/**
+		 * authorize url
+		 */
+		private String authorizeUrl;
+		/**
+		 * token url
+		 */
+		private String tokenUrl;
+		/**
+		 * token name，默认：access_token
+		 */
+		private String tokenName = "access_token";
+		/**
+		 * 授权类型
+		 */
+		private GrantTypes grantType = GrantTypes.AUTHORIZATION_CODE;
+		/**
+		 * oauth2 scope 列表
+		 */
+		private List<AuthorizationScope> scopes = new ArrayList<>();
+		/**
+		 * 需要开启鉴权URL的正则，默认：/**
+		 */
+		private List<String> pathPatterns = new ArrayList<>();
 	}
 
 	/**
@@ -114,5 +167,27 @@ public class MicaSwaggerProperties {
 		 * 是否必须，默认：false
 		 */
 		private boolean required = false;
+	}
+
+	/**
+	 * oauth2 认证类型
+	 */
+	public enum GrantTypes {
+		/**
+		 * authorization_code
+		 */
+		AUTHORIZATION_CODE,
+		/**
+		 * client_credentials
+		 */
+		CLIENT_CREDENTIALS,
+		/**
+		 * implicit
+		 */
+		IMPLICIT,
+		/**
+		 * Password
+		 */
+		PASSWORD;
 	}
 }

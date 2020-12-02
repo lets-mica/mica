@@ -17,24 +17,25 @@
 package net.dreamlu.mica.swagger;
 
 import io.swagger.annotations.Api;
+import net.dreamlu.mica.swagger.MicaSwaggerProperties.Authorization;
+import net.dreamlu.mica.swagger.MicaSwaggerProperties.GrantTypes;
+import net.dreamlu.mica.swagger.MicaSwaggerProperties.Oauth2;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.schema.ModelRef;
+import org.springframework.core.env.Environment;
+import org.springframework.util.AntPathMatcher;
+import springfox.documentation.builders.*;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.ApiKeyVehicle;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -53,21 +54,28 @@ import java.util.stream.Collectors;
 public class SwaggerConfiguration {
 
 	@Bean
-	public Docket createRestApi(ApplicationContext context,
+	public Docket createRestApi(Environment environment,
 								MicaSwaggerProperties properties) {
 		// 组名为应用名
-		String appName = context.getId();
+		String appName = environment.getProperty("spring.application.name", properties.getTitle());
 		Docket docket = new Docket(DocumentationType.SWAGGER_2)
 			.useDefaultResponseMessages(false)
-			.globalOperationParameters(globalHeaders(properties))
+			.globalRequestParameters(globalHeaders(properties))
 			.apiInfo(apiInfo(appName, properties)).select()
 			.apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
 			.paths(PathSelectors.any())
 			.build();
-		// 如果开启认证
+		// 如果开启 apiKey 认证
 		if (properties.getAuthorization().getEnabled()) {
-			docket.securitySchemes(Collections.singletonList(apiKey(properties)));
-			docket.securityContexts(Collections.singletonList(securityContext(properties)));
+			Authorization authorization = properties.getAuthorization();
+			docket.securitySchemes(Collections.singletonList(apiKey(authorization)));
+			docket.securityContexts(Collections.singletonList(apiKeySecurityContext(authorization)));
+		}
+		// 如果开启 oauth2 认证
+		if (properties.getOauth2().getEnabled()) {
+			Oauth2 oauth2 = properties.getOauth2();
+			docket.securitySchemes(Collections.singletonList(oauth2(oauth2)));
+			docket.securityContexts(Collections.singletonList(oauth2SecurityContext(oauth2)));
 		}
 		return docket;
 	}
@@ -77,22 +85,28 @@ public class SwaggerConfiguration {
 	 *
 	 * @return {ApiKey}
 	 */
-	private ApiKey apiKey(MicaSwaggerProperties properties) {
-		return new ApiKey(properties.getAuthorization().getName(),
-			properties.getAuthorization().getKeyName(),
-			ApiKeyVehicle.HEADER.getValue());
+	private ApiKey apiKey(Authorization authorization) {
+		return new ApiKey(authorization.getName(), authorization.getKeyName(), ApiKeyVehicle.HEADER.getValue());
 	}
 
 	/**
-	 * 配置默认的全局鉴权策略的开关，以及通过正则表达式进行匹配；默认 ^.*$ 匹配所有URL
+	 * 配置默认的全局鉴权策略的开关，以及通过正则表达式进行匹配；默认 /** 匹配所有URL
 	 * 其中 securityReferences 为配置启用的鉴权策略
 	 *
 	 * @return {SecurityContext}
 	 */
-	private SecurityContext securityContext(MicaSwaggerProperties properties) {
+	private SecurityContext apiKeySecurityContext(Authorization authorization) {
+		final AntPathMatcher matcher = new AntPathMatcher();
+		final List<String> pathPatterns = new ArrayList<>(authorization.getPathPatterns());
+		if (pathPatterns.isEmpty()) {
+			pathPatterns.add("/**");
+		}
 		return SecurityContext.builder()
-			.securityReferences(defaultAuth(properties))
-			.forPaths(PathSelectors.regex(properties.getAuthorization().getAuthRegex()))
+			.securityReferences(apiKeyAuth(authorization))
+			.operationSelector((context) -> {
+				String mappingPattern = context.requestMappingPattern();
+				return pathPatterns.stream().anyMatch(patterns -> matcher.match(patterns, mappingPattern));
+			})
 			.build();
 	}
 
@@ -101,13 +115,62 @@ public class SwaggerConfiguration {
 	 *
 	 * @return {List<SecurityReference>}
 	 */
-	private List<SecurityReference> defaultAuth(MicaSwaggerProperties properties) {
-		AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+	private List<SecurityReference> apiKeyAuth(Authorization authorization) {
 		AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-		authorizationScopes[0] = authorizationScope;
+		authorizationScopes[0] = new AuthorizationScope("global", "accessEverything");
 		return Collections.singletonList(SecurityReference.builder()
-			.reference(properties.getAuthorization().getName())
+			.reference(authorization.getName())
 			.scopes(authorizationScopes).build());
+	}
+
+	private OAuth oauth2(Oauth2 oauth2) {
+		GrantTypes grantTypes = oauth2.getGrantType();
+		GrantType grantType = null;
+		// 授权码模式
+		if (GrantTypes.AUTHORIZATION_CODE == grantTypes) {
+			TokenRequestEndpoint tokenRequestEndpoint = new TokenRequestEndpointBuilder()
+				.url(oauth2.getAuthorizeUrl())
+				.clientIdName(oauth2.getClientIdName())
+				.clientSecretName(oauth2.getClientSecretName())
+				.build();
+			TokenEndpoint tokenEndpoint = new TokenEndpointBuilder()
+				.url(oauth2.getTokenUrl())
+				.tokenName(oauth2.getTokenName())
+				.build();
+			grantType = new AuthorizationCodeGrant(tokenRequestEndpoint, tokenEndpoint);
+		} else if (GrantTypes.CLIENT_CREDENTIALS == grantTypes) {
+			grantType = new ClientCredentialsGrant(oauth2.getTokenUrl());
+		} else if (GrantTypes.IMPLICIT == grantTypes) {
+			LoginEndpoint loginEndpoint = new LoginEndpoint(oauth2.getAuthorizeUrl());
+			grantType = new ImplicitGrant(loginEndpoint, oauth2.getTokenName());
+		} else if (GrantTypes.PASSWORD == grantTypes) {
+			grantType = new ResourceOwnerPasswordCredentialsGrant(oauth2.getTokenUrl());
+		}
+		return new OAuthBuilder()
+			.name(oauth2.getName())
+			.grantTypes(Collections.singletonList(grantType))
+			.build();
+	}
+
+	private SecurityContext oauth2SecurityContext(Oauth2 oauth2) {
+		List<AuthorizationScope> scopes = new ArrayList<>();
+		List<AuthorizationScope> oauth2Scopes = oauth2.getScopes();
+		for (AuthorizationScope oauth2Scope : oauth2Scopes) {
+			scopes.add(new AuthorizationScope(oauth2Scope.getScope(), oauth2Scope.getDescription()));
+		}
+		SecurityReference securityReference = new SecurityReference(oauth2.getName(), scopes.toArray(new AuthorizationScope[0]));
+		final List<String> pathPatterns = new ArrayList<>(oauth2.getPathPatterns());
+		if (pathPatterns.isEmpty()) {
+			pathPatterns.add("/**");
+		}
+		final AntPathMatcher matcher = new AntPathMatcher();
+		return SecurityContext.builder()
+			.securityReferences(Collections.singletonList(securityReference))
+			.operationSelector((context) -> {
+				String mappingPattern = context.requestMappingPattern();
+				return pathPatterns.stream().anyMatch(patterns -> matcher.match(patterns, mappingPattern));
+			})
+			.build();
 	}
 
 	private ApiInfo apiInfo(String appName, MicaSwaggerProperties properties) {
@@ -124,13 +187,13 @@ public class SwaggerConfiguration {
 			.build();
 	}
 
-	private List<Parameter> globalHeaders(MicaSwaggerProperties properties) {
+	private List<RequestParameter> globalHeaders(MicaSwaggerProperties properties) {
 		return properties.getHeaders().stream()
 			.map(header ->
-				new ParameterBuilder()
+				new RequestParameterBuilder()
+					.in(ParameterType.HEADER)
 					.name(header.getName())
 					.description(header.getDescription())
-					.modelRef(new ModelRef("string")).parameterType("header")
 					.required(header.isRequired())
 					.build())
 			.collect(Collectors.toList());
