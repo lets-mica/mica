@@ -37,22 +37,22 @@ compile("net.dreamlu:mica-swagger:${version}")
 | 配置项 | 默认值 | 说明 |
 | ----- | ------ | ------ |
 | mica.swagger.oauth2.enabled | false | 开启Oauth2，默认：false |
-| mica.swagger.oauth2.name | oauth2 | oath2 名称，默认：oauth2 |
+| mica.swagger.oauth2.name | oauth2 | 鉴权策略ID，对应 SecurityReferences ID，默认：oauth2 |
 | mica.swagger.oauth2.authorize-url |  | authorize url |
 | mica.swagger.oauth2.client-id-name |  | clientId name |
 | mica.swagger.oauth2.client-secret-name |  | clientSecret name |
 | mica.swagger.oauth2.token-name | access_token | token name，默认：access_token |
 | mica.swagger.oauth2.token-url |  | token url |
 | mica.swagger.oauth2.scopes |  | oauth2 scope 列表 |
-| mica.swagger.oauth2.grant-type |  | 授权类型 |
+| mica.swagger.oauth2.grant-type | authorization_code | 授权类型 authorization_code、client_credentials、implicit、password |
 | mica.swagger.oauth2.path-patterns |  | 需要开启鉴权URL的正则，默认：/** |
 
 ### api key 认证配置
 | 配置项 | 默认值 | 说明 |
 | ----- | ------ | ------ |
 | mica.swagger.authorization.enabled | false | 开启Authorization，默认：false |
-| mica.swagger.authorization.key-name | TOKEN | 鉴权传递的Header参数，默认：TOKEN |
 | mica.swagger.authorization.name | Authorization | 鉴权策略ID，对应 SecurityReferences ID，默认：Authorization |
+| mica.swagger.authorization.key-name | TOKEN | 鉴权传递的Header参数，默认：TOKEN |
 | mica.swagger.authorization.path-patterns |  | 需要开启鉴权URL的正则，默认：/** |
 
 ## 使用

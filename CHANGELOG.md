@@ -1,6 +1,14 @@
 # 变更记录
 
 ## 发行版本
+### v2.1.0-GA - 2020-12-13
+- :sparkles: mica-swagger 添加 oauth2 认证配置。
+- :sparkles: mica-http 添加流上传，完善文档。
+- :sparkles: StringUtil 优化 format 方法参数泛型。
+- :sparkles: JsonUtil 添加参数化类型 getParametricType 方法。
+- :arrow_up: 升级 knife4j 到 3.0.2。
+- :arrow_up: 升级 druid 到 1.2.3。
+
 ### v2.0.9-GA - 2020-11-15
 - :sparkles: mica-xss 可自定义 XssCleaner 接口。
 - :sparkles: mica-xss 日志统一调整为 debug。
