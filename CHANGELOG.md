@@ -2,6 +2,7 @@
 
 ## 发行版本
 ### v2.1.0-GA - 2020-12-13
+- :sparkles: mica-core 添加 GeoUtil。
 - :sparkles: mica-swagger 添加 oauth2 认证配置。
 - :sparkles: mica-http 添加流上传，完善文档。
 - :sparkles: StringUtil 优化 format 方法参数泛型。
