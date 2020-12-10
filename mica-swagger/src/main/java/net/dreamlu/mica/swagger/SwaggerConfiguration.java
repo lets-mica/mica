@@ -27,6 +27,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.lang.Nullable;
 import org.springframework.util.AntPathMatcher;
 import springfox.documentation.builders.*;
 import springfox.documentation.service.*;
@@ -54,10 +55,10 @@ import java.util.stream.Collectors;
 public class SwaggerConfiguration {
 
 	@Bean
-	public Docket createRestApi(Environment environment,
-								MicaSwaggerProperties properties) {
+	public Docket docket(Environment environment,
+						 MicaSwaggerProperties properties) {
 		// 组名为应用名
-		String appName = environment.getProperty("spring.application.name", properties.getTitle());
+		String appName = environment.getProperty("spring.application.name");
 		Docket docket = new Docket(DocumentationType.SWAGGER_2)
 			.useDefaultResponseMessages(false)
 			.globalRequestParameters(globalHeaders(properties))
@@ -173,8 +174,8 @@ public class SwaggerConfiguration {
 			.build();
 	}
 
-	private ApiInfo apiInfo(String appName, MicaSwaggerProperties properties) {
-		String defaultName = appName + " 服务";
+	private ApiInfo apiInfo(@Nullable String appName, MicaSwaggerProperties properties) {
+		String defaultName = (appName == null ? "" : appName) + "服务";
 		String title = Optional.ofNullable(properties.getTitle())
 			.orElse(defaultName);
 		String description = Optional.ofNullable(properties.getDescription())
