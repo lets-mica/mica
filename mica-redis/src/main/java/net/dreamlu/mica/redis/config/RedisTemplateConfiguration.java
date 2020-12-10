@@ -41,7 +41,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  * @author L.cm
  */
 @EnableCaching
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @AutoConfigureBefore(RedisAutoConfiguration.class)
 @EnableConfigurationProperties(MicaRedisProperties.class)
 public class RedisTemplateConfiguration {

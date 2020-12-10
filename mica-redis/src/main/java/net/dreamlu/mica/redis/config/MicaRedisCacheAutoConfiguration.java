@@ -44,7 +44,7 @@ import java.util.Map;
  *
  * @author L.cm
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter(RedisAutoConfiguration.class)
 @ConditionalOnBean(RedisConnectionFactory.class)
 @EnableConfigurationProperties(CacheProperties.class)

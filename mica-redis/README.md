@@ -1,6 +1,7 @@
 # mica-redis
 - redis cache 增强，支持 # 号分隔 cachename 和 超时，支持 ms（毫秒），s（秒默认），m（分），h（小时），d（天）等单位。
 - 基于 redis 的分布式限流组件。
+- redis key 失效事件自动配置。
 
 ## 依赖引用
 ### maven
@@ -16,6 +17,14 @@
 ```groovy
 compile("net.dreamlu:mica-redis:${version}")
 ```
+
+## 配置
+
+| 配置项 | 默认值 | 说明 |
+| ----- | ------ | ------ |
+| mica.redis.key-expired-event.enable | false | 是否启用redis key 失效事件，默认：关闭 |
+| mica.redis.rate-limiter.enable | false | 是否开启 redis 分布式限流，默认：关闭 |
+| mica.redis.serializer-type | JSON | 序列化方式，默认：JSON |
 
 ## 使用文档
 
@@ -148,6 +157,17 @@ boolean isAllowed(String key, long max, long ttl, TimeUnit timeUnit);
 <T> T allow(String key, long max, long ttl, TimeUnit timeUnit, CheckedSupplier<T> supplier);
 ```
 
-## 链接
+### 3. 示例 redis key 超时事件（监听）
+
+```java
+@Async
+@EventListener(RedisKeyExpiredEvent.class)
+public void redisKeyExpiredEvent(RedisKeyExpiredEvent<Object> event) {
+    String redisKey = new String(event.getId());
+    System.out.println(redisKey);
+}
+```
+
+## 拓展链接
 - Redis windows 服务端：https://github.com/tporadowski/redis/releases
 - Redis windows 客户端管理工具：https://github.com/lework/RedisDesktopManager-Windows/releases

@@ -36,7 +36,7 @@ import java.util.List;
  *
  * @author L.cm
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "mica.redis.rate-limiter.enable")
 public class RateLimiterAutoConfiguration {
 

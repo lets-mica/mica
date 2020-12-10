@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author L.cm
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingBean(CacheManagerCustomizers.class)
 public class RedisCacheManagerConfig {
 
