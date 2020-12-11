@@ -14,9 +14,23 @@
  * limitations under the License.
  */
 
-@NonNullApi
-@NonNullFields
-package net.dreamlu.mica.swagger;
+package net.dreamlu.mica.swagger.config;
 
-import org.springframework.lang.NonNullApi;
-import org.springframework.lang.NonNullFields;
+import springfox.documentation.spring.web.plugins.Docket;
+
+/**
+ * swagger 自定义配置
+ *
+ * @author L.cm
+ */
+@FunctionalInterface
+public interface SwaggerCustomizer {
+
+	/**
+	 * Customize the Swagger Docket.
+	 *
+	 * @param docket the Docket to customize
+	 */
+	void customize(Docket docket);
+
+}

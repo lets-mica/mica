@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.swagger;
+package net.dreamlu.mica.swagger.config;
 
 import io.swagger.annotations.Api;
-import net.dreamlu.mica.swagger.MicaSwaggerProperties.Authorization;
-import net.dreamlu.mica.swagger.MicaSwaggerProperties.GrantTypes;
-import net.dreamlu.mica.swagger.MicaSwaggerProperties.Oauth2;
+import net.dreamlu.mica.swagger.config.MicaSwaggerProperties.Authorization;
+import net.dreamlu.mica.swagger.config.MicaSwaggerProperties.GrantTypes;
+import net.dreamlu.mica.swagger.config.MicaSwaggerProperties.Oauth2;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -56,8 +57,9 @@ public class SwaggerConfiguration {
 
 	@Bean
 	public Docket docket(Environment environment,
-						 MicaSwaggerProperties properties) {
-		// 组名为应用名
+						 MicaSwaggerProperties properties,
+						 ObjectProvider<List<SwaggerCustomizer>> swaggerCustomizersProvider) {
+		// 1. 组名为应用名
 		String appName = environment.getProperty("spring.application.name");
 		Docket docket = new Docket(DocumentationType.SWAGGER_2)
 			.useDefaultResponseMessages(false)
@@ -66,18 +68,20 @@ public class SwaggerConfiguration {
 			.apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
 			.paths(PathSelectors.any())
 			.build();
-		// 如果开启 apiKey 认证
+		// 2. 如果开启 apiKey 认证
 		if (properties.getAuthorization().getEnabled()) {
 			Authorization authorization = properties.getAuthorization();
 			docket.securitySchemes(Collections.singletonList(apiKey(authorization)));
 			docket.securityContexts(Collections.singletonList(apiKeySecurityContext(authorization)));
 		}
-		// 如果开启 oauth2 认证
+		// 3. 如果开启 oauth2 认证
 		if (properties.getOauth2().getEnabled()) {
 			Oauth2 oauth2 = properties.getOauth2();
 			docket.securitySchemes(Collections.singletonList(oauth2(oauth2)));
 			docket.securityContexts(Collections.singletonList(oauth2SecurityContext(oauth2)));
 		}
+		// 4. 自定义 customizer 配置
+		swaggerCustomizersProvider.ifAvailable(customizers -> customizers.forEach(customizer -> customizer.customize(docket)));
 		return docket;
 	}
 
