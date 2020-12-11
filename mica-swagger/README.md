@@ -55,6 +55,17 @@ compile("net.dreamlu:mica-swagger:${version}")
 | mica.swagger.authorization.key-name | TOKEN | 鉴权传递的Header参数，默认：TOKEN |
 | mica.swagger.authorization.path-patterns |  | 需要开启鉴权URL的正则，默认：/** |
 
+## 自定义配置
+
+```java
+@Bean
+public SwaggerCustomizer swaggerCustomizer() {
+    return (docket) -> {
+        docket.xxxx
+    };
+}
+```
+
 ## 使用
 **注意**: 添加有 `@Api` 注解的控制器才会自动暴露给 `swagger`。
 
