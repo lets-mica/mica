@@ -11,6 +11,7 @@
 - :sparkles: mica-core JsonUtil 添加参数化类型 getParametricType 方法。
 - :arrow_up: 升级 knife4j 到 3.0.2。
 - :arrow_up: 升级 druid 到 1.2.3。
+- :arrow_up: 升级 spring boot 到 2.3.7.RELEASE。
 
 ### v2.0.9-GA - 2020-11-15
 - :sparkles: mica-xss 可自定义 XssCleaner 接口。
