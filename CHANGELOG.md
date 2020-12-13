@@ -2,6 +2,7 @@
 
 ## 发行版本
 ### v2.1.0-GA - 2020-12-13
+- :sparkles: mica-bom 添加 mica-weixin。
 - :sparkles: mica-redis 添加 redis key 失效事件配置。
 - :sparkles: mica-swagger 添加 SwaggerCustomizer，用于自定义配置。
 - :sparkles: mica-swagger 添加 oauth2 认证配置。
