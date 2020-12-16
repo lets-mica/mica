@@ -32,7 +32,7 @@ public class ByteCodeLoader extends SecureClassLoader {
 	/**
 	 * Map which represents class name and its compiled java object
 	 */
-	private static ConcurrentMap<String, Class<?>> javaFileObjectMap = new ConcurrentHashMap<>();
+	private static final ConcurrentMap<String, Class<?>> javaFileObjectMap = new ConcurrentHashMap<>();
 	private final String className;
 	private final byte[] byteCode;
 
