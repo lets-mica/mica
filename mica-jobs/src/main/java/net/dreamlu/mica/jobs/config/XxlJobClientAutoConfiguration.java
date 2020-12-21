@@ -67,7 +67,7 @@ public class XxlJobClientAutoConfiguration {
 		String serviceId = getAppName(environment);
 		xxlJobSpringExecutor.setAppname(getExecutorName(executor, serviceId));
 		String ipAddress = executor.getIp();
-		if (StringUtils.isEmpty(ipAddress)) {
+		if (!StringUtils.hasText(ipAddress)) {
 			ipAddress = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
 		}
 		xxlJobSpringExecutor.setIp(ipAddress);

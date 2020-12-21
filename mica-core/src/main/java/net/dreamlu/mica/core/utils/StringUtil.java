@@ -722,7 +722,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		if (str == null) {
 			return null;
 		}
-		if (StringUtils.isEmpty(padStr)) {
+		if (!StringUtil.hasLength(padStr)) {
 			padStr = StringPool.SPACE;
 		}
 		final int padLen = padStr.length();
@@ -844,7 +844,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		if (str == null) {
 			return null;
 		}
-		if (StringUtils.isEmpty(padStr)) {
+		if (!StringUtils.hasLength(padStr)) {
 			padStr = StringPool.SPACE;
 		}
 		final int padLen = padStr.length();
