@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.ClassUtil;
 import net.dreamlu.mica.xss.config.MicaXssProperties;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.AsyncHandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author L.cm
  */
 @RequiredArgsConstructor
-public class XssCleanInterceptor extends HandlerInterceptorAdapter {
+public class XssCleanInterceptor implements AsyncHandlerInterceptor {
 	private final MicaXssProperties xssProperties;
 
 	@Override
