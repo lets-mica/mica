@@ -6,7 +6,7 @@ ext {
     javaVersion = JavaVersion.VERSION_1_8
     springBootVersion = "2.4.1"
     springCloudVersion = "2020.0.0"
-    micaAutoVersion = "2.0.1"
+    micaAutoVersion = "2.0.2"
     micaWeiXinVersion = "2.0.5"
     knife4jVersion = "3.0.2"
     swaggerAnnotationsVersion = "1.5.22"
