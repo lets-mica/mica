@@ -17,6 +17,12 @@
 
 **更新记录**详见：[Mica 更新记录](CHANGELOG.md)
 
+## 版本说明
+| mica 版本        | spring boot 版本 | spring cloud 版本 |
+| ---------------- | ---------------- | ----------------- |
+| mica 2.4.x       | 2.4.x            | 2020              |
+| mica 2.0.x~2.1.x | 2.2.x ~ 2.3.x    | Hoxton            |
+
 ## mica 生态
 - mica-auto (Spring boot starter 利器): https://gitee.com/596392912/mica-auto
 - mica-weixin（jfinal weixin 的 spring boot starter）：https://gitee.com/596392912/mica-weixin
