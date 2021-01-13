@@ -30,6 +30,11 @@ public interface MicaConstant {
 	String SPRING_APP_NAME_KEY = "spring.application.name";
 
 	/**
+	 * The "active profiles" property name.
+	 */
+	String ACTIVE_PROFILES_PROPERTY = "spring.profiles.active";
+
+	/**
 	 * mica env key
 	 */
 	String MICA_ENV_KEY = "mica.env";
