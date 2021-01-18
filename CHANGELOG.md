@@ -1,6 +1,15 @@
 # 变更记录
 
 ## 发行版本
+### v2.4.0-GA - 2021-01-18
+- :sparkles: mica-xss XssUtil 放开 Whitelist 方便自定义。
+- :sparkles: mica-core 添加 ACTIVE_PROFILES_PROPERTY 常量。
+- :sparkles: 移动 SpringContextUtil 到 mica-core 中。
+- :arrow_up: 升级到 spring boot 2.4.2。
+- :arrow_up: 使用 spring cloud 2020.0.0
+- :arrow_up: 升级 mica auto 到 2.0.3。
+- :arrow_up: 升级到 mica-weixin 2.0.5。
+
 ### v2.1.0-GA - 2020-12-13
 - :sparkles: mica-bom 添加 mica-weixin。
 - :sparkles: mica-redis 添加 redis key 失效事件配置。
