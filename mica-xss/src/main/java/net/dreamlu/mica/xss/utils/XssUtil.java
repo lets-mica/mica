@@ -32,7 +32,7 @@ import org.springframework.util.StringUtils;
  * @author michael
  */
 public class XssUtil {
-	private static final HtmlWhitelist WHITE_LIST = new HtmlWhitelist();
+	public static final HtmlWhitelist WHITE_LIST = new HtmlWhitelist();
 
 	/**
 	 * xss 清理

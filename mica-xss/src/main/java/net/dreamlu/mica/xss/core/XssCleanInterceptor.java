@@ -54,6 +54,11 @@ public class XssCleanInterceptor extends HandlerInterceptorAdapter {
 	}
 
 	@Override
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+		XssHolder.remove();
+	}
+
+	@Override
 	public void afterConcurrentHandlingStarted(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		XssHolder.remove();
 	}
