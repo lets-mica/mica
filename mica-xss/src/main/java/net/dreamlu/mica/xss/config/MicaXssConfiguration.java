@@ -44,18 +44,21 @@ public class MicaXssConfiguration implements WebMvcConfigurer {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public XssCleaner xssCleaner() {
-		return new DefaultXssCleaner();
+	public XssCleaner xssCleaner(MicaXssProperties properties) {
+		return new DefaultXssCleaner(properties);
 	}
 
 	@Bean
-	public FormXssClean formXssClean(XssCleaner xssCleaner) {
-		return new FormXssClean(xssCleaner);
+	public FormXssClean formXssClean(MicaXssProperties properties,
+									 XssCleaner xssCleaner) {
+		return new FormXssClean(properties, xssCleaner);
 	}
 
 	@Bean
-	public Jackson2ObjectMapperBuilderCustomizer xssJacksonCustomizer(XssCleaner xssCleaner) {
-		return builder -> builder.deserializerByType(String.class, new JacksonXssClean(xssCleaner));
+	public Jackson2ObjectMapperBuilderCustomizer xssJacksonCustomizer(MicaXssProperties properties,
+																	  XssCleaner xssCleaner) {
+		JacksonXssClean xssClean = new JacksonXssClean(properties, xssCleaner);
+		return builder -> builder.deserializerByType(String.class, xssClean);
 	}
 
 	@Override
@@ -67,7 +70,7 @@ public class MicaXssConfiguration implements WebMvcConfigurer {
 		XssCleanInterceptor interceptor = new XssCleanInterceptor(xssProperties);
 		registry.addInterceptor(interceptor)
 			.addPathPatterns(patterns)
-			.excludePathPatterns(xssProperties.getExcludePatterns())
+			.excludePathPatterns(xssProperties.getPathExcludePatterns())
 			.order(Ordered.LOWEST_PRECEDENCE);
 	}
 

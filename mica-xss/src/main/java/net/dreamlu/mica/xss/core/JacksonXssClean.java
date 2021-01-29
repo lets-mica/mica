@@ -21,6 +21,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.xss.config.MicaXssProperties;
+import net.dreamlu.mica.xss.utils.XssUtil;
 
 import java.io.IOException;
 
@@ -32,6 +34,7 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class JacksonXssClean extends JsonDeserializer<String> {
+	private final MicaXssProperties properties;
 	private final XssCleaner xssCleaner;
 
 	@Override
@@ -40,12 +43,13 @@ public class JacksonXssClean extends JsonDeserializer<String> {
 		String text = p.getValueAsString();
 		if (text == null) {
 			return null;
-		} else if (XssHolder.isEnabled()) {
-			String value = xssCleaner.clean(text);
+		}
+		if (XssHolder.isEnabled()) {
+			String value = xssCleaner.clean(XssUtil.trim(text, properties.isTrimText()));
 			log.debug("Json property value:{} cleaned up by mica-xss, current value is:{}.", text, value);
 			return value;
 		} else {
-			return text;
+			return XssUtil.trim(text, properties.isTrimText());
 		}
 	}
 

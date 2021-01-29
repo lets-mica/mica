@@ -38,12 +38,24 @@ public class MicaXssProperties {
 	 */
 	private boolean enabled = true;
 	/**
+	 * 对文件进行首尾 trim
+	 */
+	private boolean trimText = true;
+	/**
+	 * prettyPrint，默认关闭： 保留换行
+	 */
+	private boolean prettyPrint = false;
+	/**
+	 * 使用转义，默认关闭
+	 */
+	private boolean enableEscape = false;
+	/**
 	 * 拦截的路由，默认为空
 	 */
 	private List<String> pathPatterns = new ArrayList<>();
 	/**
 	 * 放行的规则，默认为空
 	 */
-	private List<String> excludePatterns = new ArrayList<>();
+	private List<String> pathExcludePatterns = new ArrayList<>();
 
 }

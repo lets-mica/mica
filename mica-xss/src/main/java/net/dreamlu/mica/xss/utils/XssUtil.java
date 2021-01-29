@@ -35,6 +35,16 @@ public class XssUtil {
 	public static final HtmlWhitelist WHITE_LIST = new HtmlWhitelist();
 
 	/**
+	 * trim 字符串
+	 *
+	 * @param text text
+	 * @return 清理后的 text
+	 */
+	public static String trim(String text, boolean trim) {
+		return trim ? StringUtils.trimWhitespace(text) : text;
+	}
+
+	/**
 	 * xss 清理
 	 *
 	 * @param html html

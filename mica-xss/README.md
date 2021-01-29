@@ -4,6 +4,7 @@
 - 对表单绑定的字符串类型进行 xss 处理。
 - 对 json 字符串数据进行 xss 处理。
 - 提供路由和控制器方法级别的放行规则。
+- 对表单和 json 字符串 trim 处理。
 
 ## 使用
 ### maven
@@ -21,11 +22,14 @@ compile("net.dreamlu:mica-xss:${version}")
 ```
 
 ## 配置
-| 配置项 | 默认值 | 说明 |
-| ----- | ------ | ------ |
-| mica.xss.enabled | true | 开启xss |
-| mica.xss.path-patterns | /** | 拦截的路由，必须配置，例如: /api/order/** |
-| mica.xss.exclude-patterns |  | 放行的规则，默认为空 |
+| 配置项                         | 默认值 | 说明                                        |
+| ------------------------------ | ------ | ------------------------------------------- |
+| mica.xss.enabled               | true   | 开启xss                                     |
+| mica.xss.trim-text             | true   | 【全局】是否去除文本首尾空格                |
+| mica.xss.pretty-print          | false  | prettyPrint，默认关闭： 保留换行            |
+| mica.xss.enable-escape         | false  | 使用转义，默认关闭                          |
+| mica.xss.path-patterns         | `/**`  | 拦截的路由，必须配置，例如: `/api/order/**` |
+| mica.xss.path-exclude-patterns |        | 放行的规则，默认为空                        |
 
 ## 注解
 可以使用 `@XssCleanIgnore` 注解对方法和类级别进行忽略。
