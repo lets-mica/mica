@@ -1,0 +1,6 @@
+dependencies {
+    api project(":mica-core")
+    api "com.github.ben-manes.caffeine:caffeine"
+    api "org.springframework.boot:spring-boot-starter-cache"
+    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+}
