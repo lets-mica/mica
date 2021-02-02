@@ -266,4 +266,14 @@ public class R<T> implements Serializable {
 	public static void throwFail(IResultCode rCode, String message) {
 		throw new ServiceException(rCode, message);
 	}
+
+	/**
+	 * 直接抛出失败异常，抛出 code 码
+	 *
+	 * @param message 自定义消息
+	 */
+	public static void throwFail(String message) {
+		throwFail(SystemCode.FAILURE, message);
+	}
+
 }
