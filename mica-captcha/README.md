@@ -31,7 +31,7 @@ compile("net.dreamlu:mica-captcha:${version}")
 | 配置项                     | 默认值               | 说明                                |
 | ------------------------- | ------------------- | ---------------------------------- |
 | mica.captcha.captcha-type | RANDOM（随机）       | RANDOM（随机）MATH（算术）           |
-| mica.captcha.cache-name   | captcha:cache#5m，  | cache 名称，配合 mica-redis、mica-redisson 5分钟缓存 |
+| mica.captcha.cache-name   | captcha:cache#5m，  | cache 名称，配合 mica-caffeine、mica-redis、mica-redisson 使用5分钟缓存 |
 
 注意： 
 1. 单服务可以采用 `guava`、`ehcache`、`caffeine` 等内存缓存。
