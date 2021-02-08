@@ -28,8 +28,8 @@ compile("net.dreamlu:mica-xss:${version}")
 | mica.xss.trim-text             | true   | 【全局】是否去除文本首尾空格                |
 | mica.xss.pretty-print          | false  | prettyPrint，默认关闭： 保留换行            |
 | mica.xss.enable-escape         | false  | 使用转义，默认关闭                          |
-| mica.xss.path-patterns         | `/**`  | 拦截的路由，必须配置，例如: `/api/order/**` |
-| mica.xss.path-exclude-patterns |        | 放行的规则，默认为空                        |
+| mica.xss.path-patterns         | `/**`  | 拦截的路由，例如: `/api/order/**` |
+| mica.xss.path-exclude-patterns |        | 放行的路由，默认为空                        |
 
 ## 注解
 可以使用 `@XssCleanIgnore` 注解对方法和类级别进行忽略。

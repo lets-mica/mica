@@ -54,7 +54,7 @@ public class MicaXssProperties {
 	 */
 	private List<String> pathPatterns = new ArrayList<>();
 	/**
-	 * 放行的规则，默认为空
+	 * 放行的路由，默认为空
 	 */
 	private List<String> pathExcludePatterns = new ArrayList<>();
 
