@@ -1,6 +1,14 @@
 # 变更记录
 
 ## 发行版本
+### v2.4.2-GA - 2021-02-08
+- :sparkles: mica-caffeine、mica-redis 默认 @EnableCaching。
+- :sparkles: mica-bom 添加 mica-caffeine 模块。
+
+### v2.4.1-GA - 2021-01-29
+- :bug: mica-xss ThreadLocal remove。
+- :sparkles: mica-xss 完善，新增字符串全局 trim、换行、转义配置。
+
 ### v2.4.0-GA - 2021-01-18
 - :sparkles: mica-xss XssUtil 放开 Whitelist 方便自定义。
 - :sparkles: mica-core 添加 ACTIVE_PROFILES_PROPERTY 常量。
@@ -8,6 +16,10 @@
 - :arrow_up: 升级到 spring boot 2.4.2。
 - :arrow_up: 使用 spring cloud 2020.0.0
 - :arrow_up: 升级 mica auto 到 2.0.3。
+- :arrow_up: 升级到 mica-weixin 2.0.5。
+
+### v2.1.1-GA - 2021-02-22
+- :bug: mica-xss ThreadLocal remove。
 - :arrow_up: 升级到 mica-weixin 2.0.5。
 
 ### v2.1.0-GA - 2020-12-13
