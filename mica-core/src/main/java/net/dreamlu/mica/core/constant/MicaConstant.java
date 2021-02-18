@@ -59,4 +59,9 @@ public interface MicaConstant {
 	 */
 	String REQUEST_ID_KEY = "mica_request_id";
 
+	/**
+	 * 请求开始时间 key
+	 */
+	String REQUEST_START_TIME = "mica_request_start_time";
+
 }
