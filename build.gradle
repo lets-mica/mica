@@ -10,7 +10,7 @@ ext {
     micaWeiXinVersion = "2.0.5"
     knife4jVersion = "3.0.2"
     swaggerAnnotationsVersion = "1.5.22"
-    druidVersion = "1.2.4"
+    druidVersion = "1.2.5"
     okhttpVersion = "3.14.9"
     jsoupVersion = "1.13.1"
     xxlJobVersion = "2.2.0"
