@@ -35,66 +35,66 @@ import java.util.Objects;
  * @author L.cm
  */
 public class CaffeineAutoCacheManager extends CaffeineCacheManager {
-    private static Field cacheBuilderField;
-    private static Field cacheLoaderField;
+	private static final Field CACHE_BUILDER_FIELD;
+	private static final Field CACHE_LOADER_FIELD;
 
-    static {
-        cacheBuilderField = Objects.requireNonNull(ReflectUtil.getField(CaffeineCacheManager.class, "cacheBuilder"));
-        cacheBuilderField.setAccessible(true);
-        cacheLoaderField = Objects.requireNonNull(ReflectUtil.getField(CaffeineCacheManager.class, "cacheLoader"));
-        cacheLoaderField.setAccessible(true);
-    }
+	static {
+		CACHE_BUILDER_FIELD = Objects.requireNonNull(ReflectUtil.getField(CaffeineCacheManager.class, "cacheBuilder"));
+		CACHE_BUILDER_FIELD.setAccessible(true);
+		CACHE_LOADER_FIELD = Objects.requireNonNull(ReflectUtil.getField(CaffeineCacheManager.class, "cacheLoader"));
+		CACHE_LOADER_FIELD.setAccessible(true);
+	}
 
-    public CaffeineAutoCacheManager() {
-        super();
-    }
+	public CaffeineAutoCacheManager() {
+		super();
+	}
 
-    public CaffeineAutoCacheManager(String... cacheNames) {
-        super(cacheNames);
-    }
+	public CaffeineAutoCacheManager(String... cacheNames) {
+		super(cacheNames);
+	}
 
-    @SuppressWarnings("unchecked")
-    protected Caffeine<Object, Object> getCacheBuilder() {
-        try {
-            return (Caffeine<Object, Object>) cacheBuilderField.get(this);
-        } catch (IllegalAccessException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
+	@SuppressWarnings("unchecked")
+	protected Caffeine<Object, Object> getCacheBuilder() {
+		try {
+			return (Caffeine<Object, Object>) CACHE_BUILDER_FIELD.get(this);
+		} catch (IllegalAccessException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
 
-    @Nullable
-    @SuppressWarnings("unchecked")
-    protected CacheLoader<Object, Object> getCacheLoader() {
-        try {
-            return (CacheLoader<Object, Object>) cacheLoaderField.get(this);
-        } catch (IllegalAccessException e) {
-            return null;
-        }
-    }
+	@Nullable
+	@SuppressWarnings("unchecked")
+	protected CacheLoader<Object, Object> getCacheLoader() {
+		try {
+			return (CacheLoader<Object, Object>) CACHE_LOADER_FIELD.get(this);
+		} catch (IllegalAccessException e) {
+			return null;
+		}
+	}
 
-    /**
-     * Build a common Caffeine Cache instance for the specified cache name,
-     * using the common Caffeine configuration specified on this cache manager.
-     *
-     * @param name the name of the cache
-     * @return the native Caffeine Cache instance
-     * @see #createCaffeineCache
-     */
-    @Override
-    protected com.github.benmanes.caffeine.cache.Cache<Object, Object> createNativeCaffeineCache(String name) {
-        String[] cacheArray = name.split(StringPool.HASH);
-        if (cacheArray.length < 2) {
-            return super.createNativeCaffeineCache(name);
-        }
-        // 转换时间，支持时间单位例如：300ms，第二个参数是默认单位
-        Duration duration = DurationStyle.detectAndParse(cacheArray[1], ChronoUnit.SECONDS);
-        Caffeine<Object, Object> cacheBuilder = getCacheBuilder();
-        CacheLoader<Object, Object> cacheLoader = getCacheLoader();
-        if (cacheLoader == null) {
-            return cacheBuilder.expireAfterAccess(duration).build();
-        } else {
-            return cacheBuilder.expireAfterAccess(duration).build(cacheLoader);
-        }
-    }
+	/**
+	 * Build a common Caffeine Cache instance for the specified cache name,
+	 * using the common Caffeine configuration specified on this cache manager.
+	 *
+	 * @param name the name of the cache
+	 * @return the native Caffeine Cache instance
+	 * @see #createCaffeineCache
+	 */
+	@Override
+	protected com.github.benmanes.caffeine.cache.Cache<Object, Object> createNativeCaffeineCache(String name) {
+		String[] cacheArray = name.split(StringPool.HASH);
+		if (cacheArray.length < 2) {
+			return super.createNativeCaffeineCache(name);
+		}
+		// 转换时间，支持时间单位例如：300ms，第二个参数是默认单位
+		Duration duration = DurationStyle.detectAndParse(cacheArray[1], ChronoUnit.SECONDS);
+		Caffeine<Object, Object> cacheBuilder = getCacheBuilder();
+		CacheLoader<Object, Object> cacheLoader = getCacheLoader();
+		if (cacheLoader == null) {
+			return cacheBuilder.expireAfterAccess(duration).build();
+		} else {
+			return cacheBuilder.expireAfterAccess(duration).build(cacheLoader);
+		}
+	}
 
 }
