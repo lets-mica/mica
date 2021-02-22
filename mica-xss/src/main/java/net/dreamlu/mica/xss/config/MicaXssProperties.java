@@ -38,15 +38,19 @@ public class MicaXssProperties {
 	 */
 	private boolean enabled = true;
 	/**
-	 * 对文件进行首尾 trim
+	 * 全局：对文件进行首尾 trim
 	 */
 	private boolean trimText = true;
 	/**
-	 * prettyPrint，默认关闭： 保留换行
+	 * 模式：clear 清理（默认），escape 转义
+	 */
+	private Mode mode = Mode.clear;
+	/**
+	 * [clear 专用] prettyPrint，默认关闭： 保留换行
 	 */
 	private boolean prettyPrint = false;
 	/**
-	 * 使用转义，默认关闭
+	 * [clear 专用] 使用转义，默认关闭
 	 */
 	private boolean enableEscape = false;
 	/**
@@ -57,5 +61,16 @@ public class MicaXssProperties {
 	 * 放行的路由，默认为空
 	 */
 	private List<String> pathExcludePatterns = new ArrayList<>();
+
+	public enum Mode {
+		/**
+		 * 清理
+		 */
+		clear,
+		/**
+		 * 转义
+		 */
+		escape;
+	}
 
 }
