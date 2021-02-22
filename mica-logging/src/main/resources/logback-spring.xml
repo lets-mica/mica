@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <!-- 服务名 -->
+    <springProperty scope="context" name="appName" source="spring.application.name"/>
+    <springProperty scope="context" name="logDir" source="logging.file.path" defaultValue="logs"/>
+    <!-- 默认 jar 包同级目录 logs/appName/all.log, 外部可配置 LOG_PATH -->
+    <property name="LOG_FILE" value="${logDir:-logs}/${appName}/all.log"/>
+    <property name="LOG_ERROR_FILE" value="${logDir:-logs}/${appName}/error.log"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+    <include resource="org/springframework/boot/logging/logback/file-appender.xml" />
+    <include resource="file-error.xml" />
+
+    <root level="${logging.level.root}">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+        <appender-ref ref="FILE_ERROR"/>
+    </root>
+
+    <!-- 减少部分debug日志 -->
+    <logger name="org.springframework.context" level="WARN"/>
+    <logger name="org.springframework.beans" level="WARN"/>
+    <logger name="springfox.bean.validators" level="ERROR"/>
+    <logger name="springfox.documentation" level="ERROR" />
+    <!-- 关闭 mybatis 默认的 sql 日志 -->
+    <logger name="log.mybatis" level="INFO"/>
+    <!-- 基础组件 -->
+    <logger name="RocketmqClient" level="WARN"/>
+    <logger name="com.alibaba.nacos" level="ERROR"/>
+    <!-- 请求日志打印，全部使用info，方便动态调整 -->
+    <logger name="net.dreamlu.mica.servlet.logger" level="INFO"/>
+    <logger name="net.dreamlu.mica.reactive.logger" level="INFO"/>
+    <logger name="net.dreamlu.mica.http.logger" level="INFO"/>
+
+    <springProfile name="dev | test">
+        <!-- mongo no sql -->
+        <logger name="org.springframework.data.mongodb.core" level="DEBUG"/>
+        <!-- mica日志 -->
+        <logger name="net.dreamlu.mica" level="INFO"/>
+    </springProfile>
+    <springProfile name="ontest">
+        <!-- mica日志 -->
+        <Logger name="net.dreamlu.mica" level="INFO"/>
+    </springProfile>
+    <springProfile name="prod">
+        <!-- mica日志 -->
+        <Logger name="net.dreamlu.mica" level="ERROR"/>
+    </springProfile>
+
+    <!-- https://logback.qos.ch/manual/configuration.html#shutdownHook and https://jira.qos.ch/browse/LOGBACK-1090 -->
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+</configuration>

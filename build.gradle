@@ -4,7 +4,7 @@ plugins {
 
 ext {
     javaVersion = JavaVersion.VERSION_1_8
-    springBootVersion = "2.4.3"
+    springBootVersion = "2.4.2"
     springCloudVersion = "2020.0.1"
     micaAutoVersion = "2.0.3"
     micaWeiXinVersion = "2.0.5"
@@ -16,6 +16,7 @@ ext {
     xxlJobVersion = "2.2.0"
     lombokVersion = "1.18.16"
     findbugsVersion = "3.0.2"
+    logstashVersion = "6.6"
 }
 
 configure(subprojects) {
