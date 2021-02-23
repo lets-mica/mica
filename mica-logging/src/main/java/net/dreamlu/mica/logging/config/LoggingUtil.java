@@ -20,6 +20,7 @@
 package net.dreamlu.mica.logging.config;
 
 import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggerContextListener;
@@ -58,7 +59,7 @@ public class LoggingUtil {
 	 */
 	public static void detachAppender(String name) {
 		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-		context.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME).detachAppender(name);
+		context.getLogger(Logger.ROOT_LOGGER_NAME).detachAppender(name);
 	}
 
 	/**
@@ -75,8 +76,8 @@ public class LoggingUtil {
 		consoleAppender.setEncoder(compositeJsonEncoder(context, customFields));
 		consoleAppender.setName(CONSOLE_APPENDER_NAME);
 		consoleAppender.start();
-		context.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME).detachAppender(CONSOLE_APPENDER_NAME);
-		context.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME).addAppender(consoleAppender);
+		context.getLogger(Logger.ROOT_LOGGER_NAME).detachAppender(CONSOLE_APPENDER_NAME);
+		context.getLogger(Logger.ROOT_LOGGER_NAME).addAppender(consoleAppender);
 	}
 
 	/**
@@ -97,7 +98,7 @@ public class LoggingUtil {
 		logStashAppender.setName(ASYNC_LOG_STASH_APPENDER_NAME);
 		logStashAppender.setQueueSize(logstashProperties.getQueueSize());
 		logStashAppender.start();
-		context.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME).addAppender(logStashAppender);
+		context.getLogger(Logger.ROOT_LOGGER_NAME).addAppender(logStashAppender);
 	}
 
 	/**
@@ -220,7 +221,7 @@ public class LoggingUtil {
 		}
 
 		@Override
-		public void onLevelChange(ch.qos.logback.classic.Logger logger, Level level) {
+		public void onLevelChange(Logger logger, Level level) {
 			// Nothing to do.
 		}
 	}
