@@ -36,9 +36,19 @@ compile("net.logstash.logback:logstash-logback-encoder:${version}")
 ```
 
 ## 配置
+**特别注意：** 需要配置`服务名`和`环境`，例如：
+
+```yaml
+spring:
+  application:
+    name: mica-test
+  profiles:
+    active: dev
+```
+
 | 配置项 | 默认值 | 说明 |
 | ----- | ------ | ------ |
-| mica.logging.console.enabled | false | 是否开启控制台日志，默认关闭，项目启动完成后自动关闭控制台日志 |
+| mica.logging.console.enabled | true | 是否开启控制台日志，默认**开启**。设置为`关闭`时，启动完成后将自动关闭控制台日志 |
 | mica.logging.logstash.enabled | false | 是否开启 logstash 日志收集 |
 | mica.logging.logstash.host | localhost | logstash host |
 | mica.logging.logstash.port | 5000 | logstash port |
