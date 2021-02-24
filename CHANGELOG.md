@@ -1,6 +1,15 @@
 # 变更记录
 
 ## 发行版本
+### v2.4.3-GA - 2021-02-27
+- :sparkles: 开源 mica-logging 组件。
+- :sparkles: mica-core 完善 JsonUtil 和 SystemUtil。
+- :sparkles: mica-core 请求开始时间 key。
+- :sparkles: mica-xss 支持转义和清理2种模式。
+- :memo: 添加观星图。
+- :memo: 更换模块图。
+- :arrow_up: 升级 spring boot 到 2.4.3
+
 ### v2.4.2-GA - 2021-02-08
 - :sparkles: mica-caffeine、mica-redis 默认 @EnableCaching。
 - :sparkles: mica-bom 添加 mica-caffeine 模块。
