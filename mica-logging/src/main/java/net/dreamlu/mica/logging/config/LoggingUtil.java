@@ -27,6 +27,7 @@ import ch.qos.logback.classic.filter.ThresholdFilter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggerContextListener;
 import ch.qos.logback.core.ConsoleAppender;
+import ch.qos.logback.core.FileAppender;
 import ch.qos.logback.core.encoder.Encoder;
 import ch.qos.logback.core.rolling.RollingFileAppender;
 import ch.qos.logback.core.rolling.RollingPolicy;
@@ -117,7 +118,7 @@ public class LoggingUtil {
 		}
 		allFileAppender.setName(FILE_APPENDER_NAME);
 		allFileAppender.setFile(logFile);
-		allFileAppender.setRollingPolicy(rollingPolicy(context, logFile));
+		allFileAppender.setRollingPolicy(rollingPolicy(context, allFileAppender, logFile));
 		allFileAppender.start();
 		context.getLogger(Logger.ROOT_LOGGER_NAME).detachAppender(FILE_APPENDER_NAME);
 		context.getLogger(Logger.ROOT_LOGGER_NAME).addAppender(allFileAppender);
@@ -145,7 +146,7 @@ public class LoggingUtil {
 		}
 		errorFileAppender.setName(FILE_ERROR_APPENDER_NAME);
 		errorFileAppender.setFile(logFile);
-		errorFileAppender.setRollingPolicy(rollingPolicy(context, logFile));
+		errorFileAppender.setRollingPolicy(rollingPolicy(context, errorFileAppender, logFile));
 		errorFileAppender.start();
 		context.getLogger(Logger.ROOT_LOGGER_NAME).detachAppender(FILE_ERROR_APPENDER_NAME);
 		context.getLogger(Logger.ROOT_LOGGER_NAME).addAppender(errorFileAppender);
@@ -191,6 +192,7 @@ public class LoggingUtil {
 	}
 
 	private static RollingPolicy rollingPolicy(LoggerContext context,
+											   FileAppender<?> appender,
 											   String logErrorFile) {
 		SizeAndTimeBasedRollingPolicy<ILoggingEvent> rollingPolicy = new SizeAndTimeBasedRollingPolicy<>();
 		rollingPolicy.setContext(context);
@@ -199,6 +201,7 @@ public class LoggingUtil {
 		rollingPolicy.setMaxFileSize(FileSize.valueOf(SystemUtil.getProp(LogbackLoggingSystemProperties.ROLLINGPOLICY_MAX_FILE_SIZE, "10MB")));
 		rollingPolicy.setMaxHistory(SystemUtil.getPropToInt(LogbackLoggingSystemProperties.ROLLINGPOLICY_MAX_HISTORY, 7));
 		rollingPolicy.setTotalSizeCap(FileSize.valueOf(SystemUtil.getProp(LogbackLoggingSystemProperties.ROLLINGPOLICY_TOTAL_SIZE_CAP, "0")));
+		rollingPolicy.setParent(appender);
 		rollingPolicy.start();
 		return rollingPolicy;
 	}
@@ -282,6 +285,7 @@ public class LoggingUtil {
 	private static LoggingEventFormattedTimestampJsonProvider timestampJsonProvider() {
 		final LoggingEventFormattedTimestampJsonProvider timestampJsonProvider = new LoggingEventFormattedTimestampJsonProvider();
 		timestampJsonProvider.setTimeZone("UTC");
+		timestampJsonProvider.setFieldName("timestamp");
 		return timestampJsonProvider;
 	}
 

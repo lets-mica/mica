@@ -46,8 +46,8 @@ public class MicaLoggingConfiguration {
 		String profile = environment.getRequiredProperty(MicaConstant.ACTIVE_PROFILES_PROPERTY);
 		// 2. 生成日志文件的文件
 		String logDir = environment.getProperty("logging.file.path", LoggingUtil.DEFAULT_LOG_DIR);
-		String logFile = logDir + '/' + appName + "all.log";
-		String logErrorFile = logDir + '/' + appName + "error.log";
+		String logFile = logDir + '/' + appName + "/all.log";
+		String logErrorFile = logDir + '/' + appName + "/error.log";
 		// 3. logStash 配置
 		MicaLoggingProperties.Logstash logStashProperties = loggingProperties.getLogstash();
 		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
@@ -55,7 +55,6 @@ public class MicaLoggingConfiguration {
 		Map<String, Object> customFields = new HashMap<>();
 		customFields.put("appName", appName);
 		customFields.put("profile", profile);
-		customFields.put("timestamp", "%date{\"yyyy-MM-dd'T'HH:mm:ss.SSSZ\"}");
 		String customFieldsJson = JsonUtil.toJson(customFields);
 		// 是否采用 json 格式化
 		boolean useJsonFormat = loggingProperties.isUseJsonFormat();
