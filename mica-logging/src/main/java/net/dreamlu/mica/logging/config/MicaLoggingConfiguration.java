@@ -22,8 +22,11 @@ import net.dreamlu.mica.core.utils.JsonUtil;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.logging.LoggingSystemProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 
 import java.util.HashMap;
@@ -34,6 +37,7 @@ import java.util.Map;
  *
  * @author L.cm
  */
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(MicaLoggingProperties.class)
 public class MicaLoggingConfiguration {
@@ -44,11 +48,14 @@ public class MicaLoggingConfiguration {
 		// 1. 服务名和环境和日志目录
 		String appName = environment.getRequiredProperty(MicaConstant.SPRING_APP_NAME_KEY);
 		String profile = environment.getRequiredProperty(MicaConstant.ACTIVE_PROFILES_PROPERTY);
-		// 2. 生成日志文件的文件
+		// 2. 文件日志格式
+		String fileLogPattern = environment.resolvePlaceholders(LoggingUtil.DEFAULT_FILE_LOG_PATTERN);
+		System.setProperty(LoggingSystemProperties.FILE_LOG_PATTERN, fileLogPattern);
+		// 3. 生成日志文件的文件
 		String logDir = environment.getProperty("logging.file.path", LoggingUtil.DEFAULT_LOG_DIR);
 		String logFile = logDir + '/' + appName + "/all.log";
 		String logErrorFile = logDir + '/' + appName + "/error.log";
-		// 3. logStash 配置
+		// 4. logStash 配置
 		MicaLoggingProperties.Logstash logStashProperties = loggingProperties.getLogstash();
 		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
 		// 4. json 自定义字段
@@ -61,8 +68,7 @@ public class MicaLoggingConfiguration {
 		if (logStashProperties.isEnabled()) {
 			LoggingUtil.addLogStashTcpSocketAppender(context, customFieldsJson, logStashProperties);
 		} else {
-			LoggingUtil.addAllFileAppender(context, logFile, useJsonFormat, customFieldsJson);
-			LoggingUtil.addErrorFileAppender(context, logErrorFile, useJsonFormat, customFieldsJson);
+			LoggingUtil.addFileAppender(context, logFile, logErrorFile, useJsonFormat, customFieldsJson);
 		}
 		if (useJsonFormat || logStashProperties.isEnabled()) {
 			LoggingUtil.addContextListener(context, logFile, logErrorFile, customFieldsJson, loggingProperties);

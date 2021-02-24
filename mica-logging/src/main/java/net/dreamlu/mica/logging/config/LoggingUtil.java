@@ -66,6 +66,7 @@ public class LoggingUtil {
 	public static final String CONSOLE_APPENDER_NAME = "CONSOLE";
 	public static final String FILE_APPENDER_NAME = "FILE";
 	public static final String FILE_ERROR_APPENDER_NAME = "FILE_ERROR";
+	public static final String DEFAULT_FILE_LOG_PATTERN = "${FILE_LOG_PATTERN:%d{${LOG_DATEFORMAT_PATTERN:yyyy-MM-dd HH:mm:ss.SSS}} ${LOG_LEVEL_PATTERN:%5p} ${PID:} --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}}";
 	private static final String ASYNC_LOG_STASH_APPENDER_NAME = "ASYNC_LOG_STASH";
 
 	/**
@@ -98,15 +99,35 @@ public class LoggingUtil {
 	}
 
 	/**
+	 * 添加 FileAppender
+	 *
+	 * @param context       LoggerContext
+	 * @param logFile       logFile
+	 * @param logErrorFile  logErrorFile
+	 * @param useJsonFormat useJsonFormat
+	 * @param customFields  customFields
+	 */
+	public static void addFileAppender(LoggerContext context,
+									   String logFile,
+									   String logErrorFile,
+									   boolean useJsonFormat,
+									   String customFields) {
+		addAllFileAppender(context, logFile, useJsonFormat, customFields);
+		if (!useJsonFormat) {
+			addErrorFileAppender(context, logErrorFile);
+		}
+	}
+
+	/**
 	 * <p>addJsonConsoleAppender.</p>
 	 *
 	 * @param context      a {@link LoggerContext} object.
 	 * @param customFields a {@link String} object.
 	 */
-	public static void addAllFileAppender(LoggerContext context,
-										  String logFile,
-										  boolean useJsonFormat,
-										  String customFields) {
+	private static void addAllFileAppender(LoggerContext context,
+										   String logFile,
+										   boolean useJsonFormat,
+										   String customFields) {
 		log.info("Initializing {} file loggingProperties", logFile);
 		// More documentation is available at: https://github.com/logstash/logstash-logback-encoder
 		RollingFileAppender<ILoggingEvent> allFileAppender = new RollingFileAppender<>();
@@ -128,25 +149,18 @@ public class LoggingUtil {
 	 * <p>addJsonConsoleAppender.</p>
 	 *
 	 * @param context      a {@link LoggerContext} object.
-	 * @param customFields a {@link String} object.
+	 * @param logErrorFile a {@link String} object.
 	 */
-	public static void addErrorFileAppender(LoggerContext context,
-											String logFile,
-											boolean useJsonFormat,
-											String customFields) {
-		log.info("Initializing {} file loggingProperties", logFile);
+	private static void addErrorFileAppender(LoggerContext context, String logErrorFile) {
+		log.info("Initializing {} file loggingProperties", logErrorFile);
 		// More documentation is available at: https://github.com/logstash/logstash-logback-encoder
 		RollingFileAppender<ILoggingEvent> errorFileAppender = new RollingFileAppender<>();
 		errorFileAppender.setContext(context);
 		errorFileAppender.addFilter(errorLevelFilter(context));
-		if (useJsonFormat) {
-			errorFileAppender.setEncoder(compositeJsonEncoder(context, customFields));
-		} else {
-			errorFileAppender.setEncoder(patternLayoutEncoder(context));
-		}
+		errorFileAppender.setEncoder(patternLayoutEncoder(context));
 		errorFileAppender.setName(FILE_ERROR_APPENDER_NAME);
-		errorFileAppender.setFile(logFile);
-		errorFileAppender.setRollingPolicy(rollingPolicy(context, errorFileAppender, logFile));
+		errorFileAppender.setFile(logErrorFile);
+		errorFileAppender.setRollingPolicy(rollingPolicy(context, errorFileAppender, logErrorFile));
 		errorFileAppender.start();
 		context.getLogger(Logger.ROOT_LOGGER_NAME).detachAppender(FILE_ERROR_APPENDER_NAME);
 		context.getLogger(Logger.ROOT_LOGGER_NAME).addAppender(errorFileAppender);
@@ -217,7 +231,7 @@ public class LoggingUtil {
 	private static Encoder<ILoggingEvent> patternLayoutEncoder(LoggerContext context) {
 		PatternLayoutEncoder encoder = new PatternLayoutEncoder();
 		encoder.setContext(context);
-		encoder.setPattern(context.getProperty(LoggingSystemProperties.FILE_LOG_PATTERN));
+		encoder.setPattern(SystemUtil.getProp(LoggingSystemProperties.FILE_LOG_PATTERN));
 		String charsetName = SystemUtil.getProp(LogbackLoggingSystemProperties.FILE_LOG_CHARSET, "default");
 		encoder.setCharset(Charset.forName(charsetName));
 		encoder.start();
@@ -321,8 +335,7 @@ public class LoggingUtil {
 				addLogStashTcpSocketAppender(context, customFields, loggingProperties.getLogstash());
 			} else {
 				boolean useJsonFormat = loggingProperties.isUseJsonFormat();
-				addAllFileAppender(context, logFile, useJsonFormat, customFields);
-				addErrorFileAppender(context, logErrorFile, useJsonFormat, customFields);
+				addFileAppender(context, logFile, logErrorFile, useJsonFormat, customFields);
 			}
 		}
 
@@ -332,8 +345,7 @@ public class LoggingUtil {
 				addLogStashTcpSocketAppender(context, customFields, loggingProperties.getLogstash());
 			} else {
 				boolean useJsonFormat = loggingProperties.isUseJsonFormat();
-				addAllFileAppender(context, logFile, useJsonFormat, customFields);
-				addErrorFileAppender(context, logErrorFile, useJsonFormat, customFields);
+				addFileAppender(context, logFile, logErrorFile, useJsonFormat, customFields);
 			}
 		}
 
