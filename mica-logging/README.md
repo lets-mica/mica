@@ -1,9 +1,9 @@
 # mica-logging（logback 的日志扩展）
 
 ## 规则
-1. 默认情况下，打印控制台日志、`all.log`、`error.log`。
-2. 设置为 json 格式化，打印控制台日志、`all.log`（可用于 `filebeat` 收集）。
-3. 开启 `logstash` 只打印控制台日志，并将日志输出到 `logstash`。
+1. 默认情况下，打印 `console` 日志、`all.log`、`error.log`。
+2. 设置为 `json` 格式化，打印 `console` 日志（非 `json`）、`all.log`（`json` 格式，可用于 `filebeat` 收集）。
+3. 开启 `logstash` 只打印 `console` 日志，并将日志输出到 `logstash`。
 4. 可配置启动完成关闭 `console` 日志。
 
 ## 功能
