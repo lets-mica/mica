@@ -23,6 +23,8 @@ import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import com.fasterxml.jackson.databind.type.MapType;
 import lombok.experimental.UtilityClass;
@@ -692,6 +694,24 @@ public class JsonUtil {
 		} catch (Throwable e) {
 			return false;
 		}
+	}
+
+	/**
+	 * 创建 ObjectNode
+	 *
+	 * @return ObjectNode
+	 */
+	public static ObjectNode createObjectNode() {
+		return getInstance().createObjectNode();
+	}
+
+	/**
+	 * 创建 ArrayNode
+	 *
+	 * @return ArrayNode
+	 */
+	public static ArrayNode createArrayNode() {
+		return getInstance().createArrayNode();
 	}
 
 	/**

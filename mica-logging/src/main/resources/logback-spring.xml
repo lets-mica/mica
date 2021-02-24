@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true">
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
-    <!-- 服务名 -->
-    <springProperty scope="context" name="appName" source="spring.application.name"/>
-    <springProperty scope="context" name="logDir" source="logging.file.path" defaultValue="logs"/>
+    <!-- 日志级别 -->
     <springProperty scope="context" name="loggingLevelRoot" source="logging.level.root" defaultValue="INFO"/>
-    <!-- 默认 jar 包同级目录 logs/appName/all.log, 外部可配置 LOG_PATH -->
-    <property name="LOG_FILE" value="${logDir:-logs}/${appName}/all.log"/>
-    <property name="LOG_ERROR_FILE" value="${logDir:-logs}/${appName}/error.log"/>
+    <!-- 控制台日志 -->
     <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
-    <include resource="org/springframework/boot/logging/logback/file-appender.xml" />
-    <include resource="file-error.xml" />
 
     <root level="${loggingLevelRoot}">
         <appender-ref ref="CONSOLE" />
-        <appender-ref ref="FILE" />
-        <appender-ref ref="FILE_ERROR"/>
     </root>
 
     <!-- 减少部分debug日志 -->

@@ -41,23 +41,32 @@ public class MicaLoggingConfiguration {
 	@Autowired
 	public MicaLoggingConfiguration(Environment environment,
 									MicaLoggingProperties loggingProperties) {
-		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+		// 1. 服务名和环境和日志目录
 		String appName = environment.getRequiredProperty(MicaConstant.SPRING_APP_NAME_KEY);
 		String profile = environment.getRequiredProperty(MicaConstant.ACTIVE_PROFILES_PROPERTY);
-		Map<String, Object> map = new HashMap<>();
-		map.put("appName", appName);
-		map.put("profile", profile);
-		map.put("timestamp", "%date{\"yyyy-MM-dd'T'HH:mm:ss.SSSZ\"}");
-		String customFields = JsonUtil.toJson(map);
+		// 2. 生成日志文件的文件
+		String logDir = environment.getProperty("logging.file.path", LoggingUtil.DEFAULT_LOG_DIR);
+		String logFile = logDir + '/' + appName + "all.log";
+		String logErrorFile = logDir + '/' + appName + "error.log";
+		// 3. logStash 配置
 		MicaLoggingProperties.Logstash logStashProperties = loggingProperties.getLogstash();
-		if (loggingProperties.isUseJsonFormat()) {
-			LoggingUtil.addJsonConsoleAppender(context, customFields);
-		}
+		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+		// 4. json 自定义字段
+		Map<String, Object> customFields = new HashMap<>();
+		customFields.put("appName", appName);
+		customFields.put("profile", profile);
+		customFields.put("timestamp", "%date{\"yyyy-MM-dd'T'HH:mm:ss.SSSZ\"}");
+		String customFieldsJson = JsonUtil.toJson(customFields);
+		// 是否采用 json 格式化
+		boolean useJsonFormat = loggingProperties.isUseJsonFormat();
 		if (logStashProperties.isEnabled()) {
-			LoggingUtil.addLogstashTcpSocketAppender(context, customFields, logStashProperties);
+			LoggingUtil.addLogStashTcpSocketAppender(context, customFieldsJson, logStashProperties);
+		} else {
+			LoggingUtil.addAllFileAppender(context, logFile, useJsonFormat, customFieldsJson);
+			LoggingUtil.addErrorFileAppender(context, logErrorFile, useJsonFormat, customFieldsJson);
 		}
-		if (loggingProperties.isUseJsonFormat() || logStashProperties.isEnabled()) {
-			LoggingUtil.addContextListener(context, customFields, loggingProperties);
+		if (useJsonFormat || logStashProperties.isEnabled()) {
+			LoggingUtil.addContextListener(context, logFile, logErrorFile, customFieldsJson, loggingProperties);
 		}
 	}
 

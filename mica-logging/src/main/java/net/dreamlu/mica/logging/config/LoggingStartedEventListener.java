@@ -17,7 +17,6 @@
 package net.dreamlu.mica.logging.config;
 
 import lombok.RequiredArgsConstructor;
-import net.dreamlu.mica.core.utils.ObjectUtil;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
@@ -36,15 +35,9 @@ public class LoggingStartedEventListener {
 	@Order
 	@EventListener(WebServerInitializedEvent.class)
 	public void afterStart() {
-		// 1. 如果开启 elk，关闭文件日志打印
-		MicaLoggingProperties.Logstash logStash = properties.getLogstash();
-		if (ObjectUtil.isTrue(logStash.isEnabled())) {
-			LoggingUtil.detachAppender(LoggingUtil.FILE_APPENDER_NAME);
-			LoggingUtil.detachAppender(LoggingUtil.FILE_ERROR_APPENDER_NAME);
-		}
-		// 2. 关闭控制台
+		// 1. 关闭控制台
 		MicaLoggingProperties.Console console = properties.getConsole();
-		if (ObjectUtil.isFalse(console.isEnabled())) {
+		if (console.isCloseAfterStart()) {
 			LoggingUtil.detachAppender(LoggingUtil.CONSOLE_APPENDER_NAME);
 		}
 	}

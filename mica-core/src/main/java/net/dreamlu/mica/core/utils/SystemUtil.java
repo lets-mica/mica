@@ -2,6 +2,8 @@ package net.dreamlu.mica.core.utils;
 
 import org.springframework.lang.Nullable;
 
+import java.util.Objects;
+
 /**
  * 系统工具类
  *
@@ -69,9 +71,67 @@ public class SystemUtil {
 
 	/**
 	 * 代码部署于 linux 上，工作默认为 mac 和 Windows
+	 *
 	 * @return boolean
 	 */
 	public static boolean isLocalDev() {
 		return !SystemUtil.isLinux();
 	}
+
+	/**
+	 * 读取 System Property
+	 *
+	 * @param key key
+	 * @return value
+	 */
+	@Nullable
+	public static String getProp(String key) {
+		return System.getProperty(key);
+	}
+
+	/**
+	 * 读取 System Property
+	 *
+	 * @param key      key
+	 * @param defValue 默认值
+	 * @return value
+	 */
+	public static String getProp(String key, String defValue) {
+		return System.getProperty(key, defValue);
+	}
+
+	/**
+	 * 读取 System Property
+	 *
+	 * @param key          key
+	 * @param defaultValue defaultValue
+	 * @return value
+	 */
+	public static int getPropToInt(String key, int defaultValue) {
+		return ObjectUtil.toInt(getProp(key), defaultValue);
+	}
+
+	/**
+	 * 读取 System Property
+	 *
+	 * @param key          key
+	 * @param defaultValue defaultValue
+	 * @return value
+	 */
+	public static boolean getPropToBool(String key, boolean defaultValue) {
+		return Objects.requireNonNull(ObjectUtil.toBoolean(getProp(key), defaultValue));
+	}
+
+	/**
+	 * 读取 System Property 或者 Env
+	 *
+	 * @param key key
+	 * @return value
+	 */
+	@Nullable
+	public static String getPropOrEnv(String key) {
+		String value = System.getProperty(key);
+		return value == null ? System.getenv(key) : value;
+	}
+
 }

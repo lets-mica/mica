@@ -43,9 +43,9 @@ public class MicaLoggingProperties {
 	@Setter
 	public static class Console {
 		/**
-		 * 是否开启控制台日志
+		 * 是否启动完成后关闭控制台日志，适用于，正式环境
 		 */
-		private boolean enabled = true;
+		private boolean closeAfterStart = false;
 	}
 
 	@Getter

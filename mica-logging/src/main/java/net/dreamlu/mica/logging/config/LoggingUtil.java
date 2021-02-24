@@ -22,12 +22,20 @@ package net.dreamlu.mica.logging.config;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
+import ch.qos.logback.classic.filter.ThresholdFilter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggerContextListener;
 import ch.qos.logback.core.ConsoleAppender;
+import ch.qos.logback.core.encoder.Encoder;
+import ch.qos.logback.core.rolling.RollingFileAppender;
+import ch.qos.logback.core.rolling.RollingPolicy;
+import ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy;
 import ch.qos.logback.core.spi.ContextAwareBase;
+import ch.qos.logback.core.util.FileSize;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.core.utils.SystemUtil;
 import net.logstash.logback.appender.LogstashTcpSocketAppender;
 import net.logstash.logback.composite.ContextJsonProvider;
 import net.logstash.logback.composite.GlobalCustomFieldsJsonProvider;
@@ -36,17 +44,24 @@ import net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder;
 import net.logstash.logback.encoder.LogstashEncoder;
 import net.logstash.logback.stacktrace.ShortenedThrowableConverter;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.logging.LoggingSystemProperties;
+import org.springframework.boot.logging.logback.LogbackLoggingSystemProperties;
 
 import java.net.InetSocketAddress;
+import java.nio.charset.Charset;
 
 /**
  * 参考自 jhipster
- *
+ * <p>
  * Utility methods to add appenders to a {@link LoggerContext}.
+ *
+ * @author jhipster
+ * @author L.cm
  */
 @Slf4j
 @UtilityClass
 public class LoggingUtil {
+	public static final String DEFAULT_LOG_DIR = "logs";
 	public static final String CONSOLE_APPENDER_NAME = "CONSOLE";
 	public static final String FILE_APPENDER_NAME = "FILE";
 	public static final String FILE_ERROR_APPENDER_NAME = "FILE_ERROR";
@@ -68,7 +83,8 @@ public class LoggingUtil {
 	 * @param context      a {@link LoggerContext} object.
 	 * @param customFields a {@link String} object.
 	 */
-	public static void addJsonConsoleAppender(LoggerContext context, String customFields) {
+	public static void addJsonConsoleAppender(LoggerContext context,
+											  String customFields) {
 		log.info("Initializing Console loggingProperties");
 		// More documentation is available at: https://github.com/logstash/logstash-logback-encoder
 		ConsoleAppender<ILoggingEvent> consoleAppender = new ConsoleAppender<>();
@@ -81,22 +97,78 @@ public class LoggingUtil {
 	}
 
 	/**
+	 * <p>addJsonConsoleAppender.</p>
+	 *
+	 * @param context      a {@link LoggerContext} object.
+	 * @param customFields a {@link String} object.
+	 */
+	public static void addAllFileAppender(LoggerContext context,
+										  String logFile,
+										  boolean useJsonFormat,
+										  String customFields) {
+		log.info("Initializing {} file loggingProperties", logFile);
+		// More documentation is available at: https://github.com/logstash/logstash-logback-encoder
+		RollingFileAppender<ILoggingEvent> allFileAppender = new RollingFileAppender<>();
+		allFileAppender.setContext(context);
+		if (useJsonFormat) {
+			allFileAppender.setEncoder(compositeJsonEncoder(context, customFields));
+		} else {
+			allFileAppender.setEncoder(patternLayoutEncoder(context));
+		}
+		allFileAppender.setName(FILE_APPENDER_NAME);
+		allFileAppender.setFile(logFile);
+		allFileAppender.setRollingPolicy(rollingPolicy(context, logFile));
+		allFileAppender.start();
+		context.getLogger(Logger.ROOT_LOGGER_NAME).detachAppender(FILE_APPENDER_NAME);
+		context.getLogger(Logger.ROOT_LOGGER_NAME).addAppender(allFileAppender);
+	}
+
+	/**
+	 * <p>addJsonConsoleAppender.</p>
+	 *
+	 * @param context      a {@link LoggerContext} object.
+	 * @param customFields a {@link String} object.
+	 */
+	public static void addErrorFileAppender(LoggerContext context,
+											String logFile,
+											boolean useJsonFormat,
+											String customFields) {
+		log.info("Initializing {} file loggingProperties", logFile);
+		// More documentation is available at: https://github.com/logstash/logstash-logback-encoder
+		RollingFileAppender<ILoggingEvent> errorFileAppender = new RollingFileAppender<>();
+		errorFileAppender.setContext(context);
+		errorFileAppender.addFilter(errorLevelFilter(context));
+		if (useJsonFormat) {
+			errorFileAppender.setEncoder(compositeJsonEncoder(context, customFields));
+		} else {
+			errorFileAppender.setEncoder(patternLayoutEncoder(context));
+		}
+		errorFileAppender.setName(FILE_ERROR_APPENDER_NAME);
+		errorFileAppender.setFile(logFile);
+		errorFileAppender.setRollingPolicy(rollingPolicy(context, logFile));
+		errorFileAppender.start();
+		context.getLogger(Logger.ROOT_LOGGER_NAME).detachAppender(FILE_ERROR_APPENDER_NAME);
+		context.getLogger(Logger.ROOT_LOGGER_NAME).addAppender(errorFileAppender);
+	}
+
+	/**
 	 * <p>addLogstashTcpSocketAppender.</p>
 	 *
 	 * @param context            a {@link LoggerContext} object.
 	 * @param customFields       a {@link String} object.
-	 * @param logstashProperties a {@link net.dreamlu.mica.logging.config.MicaLoggingProperties.Logstash} object.
+	 * @param logStashProperties a {@link net.dreamlu.mica.logging.config.MicaLoggingProperties.Logstash} object.
 	 */
-	public static void addLogstashTcpSocketAppender(LoggerContext context, String customFields,
-													MicaLoggingProperties.Logstash logstashProperties) {
-		log.info("Initializing Logstash loggingProperties");
+	public static void addLogStashTcpSocketAppender(LoggerContext context,
+													String customFields,
+													MicaLoggingProperties.Logstash logStashProperties) {
+		log.info("Initializing LogStash loggingProperties");
 		// More documentation is available at: https://github.com/logstash/logstash-logback-encoder
 		LogstashTcpSocketAppender logStashAppender = new LogstashTcpSocketAppender();
-		logStashAppender.addDestinations(new InetSocketAddress(logstashProperties.getHost(), logstashProperties.getPort()));
+		logStashAppender.addDestinations(new InetSocketAddress(logStashProperties.getHost(), logStashProperties.getPort()));
 		logStashAppender.setContext(context);
 		logStashAppender.setEncoder(logstashEncoder(customFields));
 		logStashAppender.setName(ASYNC_LOG_STASH_APPENDER_NAME);
-		logStashAppender.setQueueSize(logstashProperties.getQueueSize());
+		logStashAppender.setQueueSize(logStashProperties.getQueueSize());
 		logStashAppender.start();
 		context.getLogger(Logger.ROOT_LOGGER_NAME).addAppender(logStashAppender);
 	}
@@ -108,13 +180,49 @@ public class LoggingUtil {
 	 * @param customFields a {@link String} object.
 	 * @param properties   a {@link net.dreamlu.mica.logging.config.MicaLoggingProperties} object.
 	 */
-	public static void addContextListener(LoggerContext context, String customFields, MicaLoggingProperties properties) {
-		LogbackLoggerContextListener loggerContextListener = new LogbackLoggerContextListener(properties, customFields);
+	public static void addContextListener(LoggerContext context,
+										  String logFile,
+										  String logErrorFile,
+										  String customFields,
+										  MicaLoggingProperties properties) {
+		LogbackLoggerContextListener loggerContextListener = new LogbackLoggerContextListener(logFile, logErrorFile, customFields, properties);
 		loggerContextListener.setContext(context);
 		context.addListener(loggerContextListener);
 	}
 
-	private static LoggingEventCompositeJsonEncoder compositeJsonEncoder(LoggerContext context, String customFields) {
+	private static RollingPolicy rollingPolicy(LoggerContext context,
+											   String logErrorFile) {
+		SizeAndTimeBasedRollingPolicy<ILoggingEvent> rollingPolicy = new SizeAndTimeBasedRollingPolicy<>();
+		rollingPolicy.setContext(context);
+		rollingPolicy.setCleanHistoryOnStart(SystemUtil.getPropToBool(LogbackLoggingSystemProperties.ROLLINGPOLICY_CLEAN_HISTORY_ON_START, false));
+		rollingPolicy.setFileNamePattern(logErrorFile + ".%d{yyyy-MM-dd}.%i.gz}");
+		rollingPolicy.setMaxFileSize(FileSize.valueOf(SystemUtil.getProp(LogbackLoggingSystemProperties.ROLLINGPOLICY_MAX_FILE_SIZE, "10MB")));
+		rollingPolicy.setMaxHistory(SystemUtil.getPropToInt(LogbackLoggingSystemProperties.ROLLINGPOLICY_MAX_HISTORY, 7));
+		rollingPolicy.setTotalSizeCap(FileSize.valueOf(SystemUtil.getProp(LogbackLoggingSystemProperties.ROLLINGPOLICY_TOTAL_SIZE_CAP, "0")));
+		rollingPolicy.start();
+		return rollingPolicy;
+	}
+
+	private static ThresholdFilter errorLevelFilter(LoggerContext context) {
+		final ThresholdFilter filter = new ThresholdFilter();
+		filter.setContext(context);
+		filter.setLevel(Level.ERROR.levelStr);
+		filter.start();
+		return filter;
+	}
+
+	private static Encoder<ILoggingEvent> patternLayoutEncoder(LoggerContext context) {
+		PatternLayoutEncoder encoder = new PatternLayoutEncoder();
+		encoder.setContext(context);
+		encoder.setPattern(context.getProperty(LoggingSystemProperties.FILE_LOG_PATTERN));
+		String charsetName = SystemUtil.getProp(LogbackLoggingSystemProperties.FILE_LOG_CHARSET, "default");
+		encoder.setCharset(Charset.forName(charsetName));
+		encoder.start();
+		return encoder;
+	}
+
+	private static LoggingEventCompositeJsonEncoder compositeJsonEncoder(LoggerContext context,
+																		 String customFields) {
 		final LoggingEventCompositeJsonEncoder compositeJsonEncoder = new LoggingEventCompositeJsonEncoder();
 		compositeJsonEncoder.setContext(context);
 		compositeJsonEncoder.setProviders(jsonProviders(context, customFields));
@@ -129,7 +237,8 @@ public class LoggingUtil {
 		return logstashEncoder;
 	}
 
-	private static LoggingEventJsonProviders jsonProviders(LoggerContext context, String customFields) {
+	private static LoggingEventJsonProviders jsonProviders(LoggerContext context,
+														   String customFields) {
 		final LoggingEventJsonProviders jsonProviders = new LoggingEventJsonProviders();
 		jsonProviders.addArguments(new ArgumentsJsonProvider());
 		jsonProviders.addContext(new ContextJsonProvider<>());
@@ -182,12 +291,19 @@ public class LoggingUtil {
 	 * This listener ensures that the programmatic configuration is also re-applied after reset.
 	 */
 	private static class LogbackLoggerContextListener extends ContextAwareBase implements LoggerContextListener {
-		private final MicaLoggingProperties loggingProperties;
+		private final String logFile;
+		private final String logErrorFile;
 		private final String customFields;
+		private final MicaLoggingProperties loggingProperties;
 
-		private LogbackLoggerContextListener(MicaLoggingProperties loggingProperties, String customFields) {
+		private LogbackLoggerContextListener(String logFile,
+											 String logErrorFile,
+											 String customFields,
+											 MicaLoggingProperties loggingProperties) {
 			this.loggingProperties = loggingProperties;
 			this.customFields = customFields;
+			this.logFile = logFile;
+			this.logErrorFile = logErrorFile;
 		}
 
 		@Override
@@ -197,21 +313,23 @@ public class LoggingUtil {
 
 		@Override
 		public void onStart(LoggerContext context) {
-			if (this.loggingProperties.isUseJsonFormat()) {
-				addJsonConsoleAppender(context, customFields);
-			}
 			if (this.loggingProperties.getLogstash().isEnabled()) {
-				addLogstashTcpSocketAppender(context, customFields, loggingProperties.getLogstash());
+				addLogStashTcpSocketAppender(context, customFields, loggingProperties.getLogstash());
+			} else {
+				boolean useJsonFormat = loggingProperties.isUseJsonFormat();
+				addAllFileAppender(context, logFile, useJsonFormat, customFields);
+				addErrorFileAppender(context, logErrorFile, useJsonFormat, customFields);
 			}
 		}
 
 		@Override
 		public void onReset(LoggerContext context) {
-			if (this.loggingProperties.isUseJsonFormat()) {
-				addJsonConsoleAppender(context, customFields);
-			}
 			if (this.loggingProperties.getLogstash().isEnabled()) {
-				addLogstashTcpSocketAppender(context, customFields, loggingProperties.getLogstash());
+				addLogStashTcpSocketAppender(context, customFields, loggingProperties.getLogstash());
+			} else {
+				boolean useJsonFormat = loggingProperties.isUseJsonFormat();
+				addAllFileAppender(context, logFile, useJsonFormat, customFields);
+				addErrorFileAppender(context, logErrorFile, useJsonFormat, customFields);
 			}
 		}
 
