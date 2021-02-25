@@ -13,8 +13,8 @@ ext {
     druidVersion = "1.2.5"
     okhttpVersion = "3.14.9"
     jsoupVersion = "1.13.1"
-    xxlJobVersion = "2.2.0"
-    lombokVersion = "1.18.16"
+    xxlJobVersion = "2.3.0"
+    lombokVersion = "1.18.18"
     findbugsVersion = "3.0.2"
     logstashVersion = "6.6"
 }
