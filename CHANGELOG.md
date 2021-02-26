@@ -6,6 +6,7 @@
 - :sparkles: mica-core 完善 JsonUtil 和 SystemUtil。
 - :sparkles: mica-core 请求开始时间 key。
 - :sparkles: mica-xss 支持转义和清理2种模式。
+- :sparkles: mica-swagger api key 认证 token key-name 默认改为 `Authorization`。
 - :memo: 添加观星图。
 - :memo: 更换模块图。
 - :arrow_up: 升级 spring boot 到 2.4.3

@@ -92,9 +92,9 @@ public class MicaSwaggerProperties {
 		 */
 		private String name = "Authorization";
 		/**
-		 * 鉴权传递的Header参数，默认：TOKEN
+		 * 鉴权传递的Header参数，默认：Authorization
 		 */
-		private String keyName = "TOKEN";
+		private String keyName = "Authorization";
 		/**
 		 * 需要开启鉴权URL的正则，默认：/**
 		 */

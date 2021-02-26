@@ -50,9 +50,9 @@ compile("net.dreamlu:mica-swagger:${version}")
 ### api key 认证配置
 | 配置项 | 默认值 | 说明 |
 | ----- | ------ | ------ |
-| mica.swagger.authorization.enabled | false | 开启Authorization，默认：false |
+| mica.swagger.authorization.enabled | false | 开启 Authorization，默认：false |
 | mica.swagger.authorization.name | Authorization | 鉴权策略ID，对应 SecurityReferences ID，默认：Authorization |
-| mica.swagger.authorization.key-name | TOKEN | 鉴权传递的Header参数，默认：TOKEN |
+| mica.swagger.authorization.key-name | Authorization | 鉴权传递的Header参数，默认：Authorization |
 | mica.swagger.authorization.path-patterns |  | 需要开启鉴权URL的正则，默认：/** |
 
 ## 自定义配置
