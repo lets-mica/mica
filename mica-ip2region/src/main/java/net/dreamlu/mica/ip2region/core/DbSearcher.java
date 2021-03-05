@@ -165,7 +165,7 @@ public class DbSearcher {
 		if (HeaderSip == null) {
 			//reader.seek(8L);    //pass the super block
 			//byte[] b = new byte[dbConfig.getTotalHeaderSize()];
-			byte[] b = new byte[4096];
+			byte[] b = new byte[8 * 1024];
 			//pass the super block
 			reader.readFully(8L, b, 0, b.length);
 

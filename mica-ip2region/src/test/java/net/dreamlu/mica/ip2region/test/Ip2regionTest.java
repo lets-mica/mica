@@ -3,7 +3,9 @@ package net.dreamlu.mica.ip2region.test;
 import net.dreamlu.mica.ip2region.config.Ip2regionConfiguration;
 import net.dreamlu.mica.ip2region.config.Ip2regionProperties;
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher;
+import net.dreamlu.mica.ip2region.core.IpInfo;
 import net.dreamlu.mica.ip2region.impl.Ip2regionSearcherImpl;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -35,4 +37,11 @@ public class Ip2regionTest {
 		System.out.println(searcher.memorySearch("223.29.220.0"));
 		System.out.println(searcher.memorySearch("82.120.124.0"));
 	}
+
+	@Test
+	public void test2() {
+		IpInfo ipInfo = searcher.btreeSearch("127.0.0.1");
+		Assert.assertNotNull(ipInfo);
+	}
+
 }
