@@ -224,11 +224,12 @@ public class MicaRedisCache {
 		final Set<String> keySet = new HashSet<>();
 		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
 		return redisTemplate.execute((RedisCallback<Pair<Long, Set<String>>>) action -> {
-			ScanOptions options = ScanOptions.scanOptions()
-				.match(pattern)
-				.count(count)
-				.build();
-			try (Cursor<byte[]> cursor = action.scan(options)) {
+			ScanOptions.ScanOptionsBuilder builder = ScanOptions.scanOptions()
+				.match(pattern);
+			if (count != null) {
+				builder.count(count);
+			}
+			try (Cursor<byte[]> cursor = action.scan(builder.build())) {
 				cursor.forEachRemaining((item) -> keySet.add(keySerializer.deserialize(item)));
 				return Pair.create(cursor.getPosition(), keySet);
 			} catch (IOException e) {
@@ -259,11 +260,12 @@ public class MicaRedisCache {
 	public void scan(@Nullable String pattern, @Nullable Long count, Consumer<String> consumer) {
 		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
 		redisTemplate.execute((RedisCallback<Object>) action -> {
-			ScanOptions options = ScanOptions.scanOptions()
-				.match(pattern)
-				.count(count)
-				.build();
-			try (Cursor<byte[]> cursor = action.scan(options)) {
+			ScanOptions.ScanOptionsBuilder builder = ScanOptions.scanOptions()
+				.match(pattern);
+			if (count != null) {
+				builder.count(count);
+			}
+			try (Cursor<byte[]> cursor = action.scan(builder.build())) {
 				cursor.forEachRemaining((item) -> {
 					String redisKey = keySerializer.deserialize(item);
 					consumer.accept(redisKey);
@@ -300,11 +302,12 @@ public class MicaRedisCache {
 		final Set<String> keySet = new HashSet<>();
 		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
 		return redisTemplate.execute((RedisCallback<Pair<Long, Set<String>>>) action -> {
-			ScanOptions options = ScanOptions.scanOptions()
-				.match(pattern)
-				.count(count)
-				.build();
-			try (Cursor<byte[]> cursor = action.sScan(keySerializer.serialize(key), options)) {
+			ScanOptions.ScanOptionsBuilder builder = ScanOptions.scanOptions()
+				.match(pattern);
+			if (count != null) {
+				builder.count(count);
+			}
+			try (Cursor<byte[]> cursor = action.sScan(keySerializer.serialize(key), builder.build())) {
 				cursor.forEachRemaining((item) -> keySet.add(keySerializer.deserialize(item)));
 				return Pair.create(cursor.getPosition(), keySet);
 			} catch (IOException e) {
@@ -337,11 +340,12 @@ public class MicaRedisCache {
 	public void sScan(String key, @Nullable String pattern, @Nullable Long count, Consumer<String> consumer) {
 		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
 		redisTemplate.execute((RedisCallback<Object>) action -> {
-			ScanOptions options = ScanOptions.scanOptions()
-				.match(pattern)
-				.count(count)
-				.build();
-			try (Cursor<byte[]> cursor = action.sScan(keySerializer.serialize(key), options)) {
+			ScanOptions.ScanOptionsBuilder builder = ScanOptions.scanOptions()
+				.match(pattern);
+			if (count != null) {
+				builder.count(count);
+			}
+			try (Cursor<byte[]> cursor = action.sScan(keySerializer.serialize(key), builder.build())) {
 				cursor.forEachRemaining((item) -> {
 					String redisKey = keySerializer.deserialize(item);
 					consumer.accept(redisKey);
