@@ -37,10 +37,7 @@ public class DesensitizationUtil {
 	 */
 	@Nullable
 	public static String chineseName(@Nullable final String fullName) {
-		if (StringUtil.isBlank(fullName)) {
-			return StringPool.EMPTY;
-		}
-		return sensitive(fullName, 1, 0, CharPool.STAR);
+		return sensitive(fullName, 1, 0);
 	}
 
 	/**
@@ -51,10 +48,7 @@ public class DesensitizationUtil {
 	 */
 	@Nullable
 	public static String idCardNum(@Nullable final String id) {
-		if (StringUtil.isBlank(id)) {
-			return StringPool.EMPTY;
-		}
-		return sensitive(id, 0, 4, CharPool.STAR);
+		return sensitive(id, 0, 4);
 	}
 
 	/**
@@ -65,10 +59,7 @@ public class DesensitizationUtil {
 	 */
 	@Nullable
 	public static String phoneNo(@Nullable final String num) {
-		if (StringUtil.isBlank(num)) {
-			return StringPool.EMPTY;
-		}
-		return sensitive(num, 0, 4, CharPool.STAR);
+		return sensitive(num, 0, 4);
 	}
 
 	/**
@@ -79,10 +70,7 @@ public class DesensitizationUtil {
 	 */
 	@Nullable
 	public static String mobileNo(@Nullable final String num) {
-		if (StringUtil.isBlank(num)) {
-			return StringPool.EMPTY;
-		}
-		return sensitive(num, 3, 4, CharPool.STAR);
+		return sensitive(num, 3, 4);
 	}
 
 	/**
@@ -94,10 +82,7 @@ public class DesensitizationUtil {
 	 */
 	@Nullable
 	public static String address(@Nullable final String address, final int sensitiveSize) {
-		if (StringUtil.isBlank(address)) {
-			return StringPool.EMPTY;
-		}
-		return sensitive(address, 0, sensitiveSize, CharPool.STAR);
+		return sensitive(address, 0, sensitiveSize);
 	}
 
 	/**
@@ -115,7 +100,7 @@ public class DesensitizationUtil {
 		if (index <= 1) {
 			return email;
 		} else {
-			return sensitive(email, 1, email.length() - index, CharPool.STAR);
+			return sensitive(email, 1, email.length() - index);
 		}
 	}
 
@@ -127,10 +112,7 @@ public class DesensitizationUtil {
 	 */
 	@Nullable
 	public static String bankCard(@Nullable final String cardNum) {
-		if (StringUtil.isBlank(cardNum)) {
-			return StringPool.EMPTY;
-		}
-		return sensitive(cardNum, 6, 4, CharPool.STAR);
+		return sensitive(cardNum, 6, 4);
 	}
 
 	/**
@@ -141,10 +123,7 @@ public class DesensitizationUtil {
 	 */
 	@Nullable
 	public static String cnapsCode(@Nullable final String code) {
-		if (StringUtil.isBlank(code)) {
-			return StringPool.EMPTY;
-		}
-		return sensitive(code, 2, 0, CharPool.STAR);
+		return sensitive(code, 2, 0);
 	}
 
 	/**
@@ -159,7 +138,7 @@ public class DesensitizationUtil {
 			return StringPool.EMPTY;
 		}
 		int length = sensitiveStr.length();
-		return sensitive(sensitiveStr, length / 2, 0, CharPool.STAR);
+		return sensitive(sensitiveStr, length / 2, 0);
 	}
 
 	/**
@@ -174,7 +153,7 @@ public class DesensitizationUtil {
 			return StringPool.EMPTY;
 		}
 		int length = sensitiveStr.length();
-		return sensitive(sensitiveStr, 0, length / 2, CharPool.STAR);
+		return sensitive(sensitiveStr, 0, length / 2);
 	}
 
 	/**
@@ -208,33 +187,90 @@ public class DesensitizationUtil {
 	 */
 	@Nullable
 	public static String all(@Nullable final String sensitiveStr) {
-		if (StringUtil.isBlank(sensitiveStr)) {
-			return StringPool.EMPTY;
-		}
-		return sensitive(sensitiveStr, 0, 0, CharPool.STAR);
+		return sensitive(sensitiveStr, 0, 0);
 	}
 
-	private static String sensitive(String str, int fromIndex, int lastSize, char padChar) {
+	/**
+	 * 文本脱敏
+	 *
+	 * @param str       字符串
+	 * @param fromIndex 开始的索引
+	 * @param lastSize  尾部长度
+	 * @return 脱敏后的字符串
+	 */
+	@Nullable
+	public static String sensitive(@Nullable String str, int fromIndex, int lastSize) {
+		return sensitive(str, fromIndex, lastSize, CharPool.STAR);
+	}
+
+	/**
+	 * 文本脱敏
+	 *
+	 * @param str       字符串
+	 * @param fromIndex 开始的索引
+	 * @param lastSize  尾部长度
+	 * @param padSize   填充的长度
+	 * @return 脱敏后的字符串
+	 */
+	@Nullable
+	public static String sensitive(@Nullable String str, int fromIndex, int lastSize, int padSize) {
+		return sensitive(str, fromIndex, lastSize, CharPool.STAR, padSize);
+	}
+
+	/**
+	 * 文本脱敏
+	 *
+	 * @param str       字符串
+	 * @param fromIndex 开始的索引
+	 * @param lastSize  尾部长度
+	 * @param padChar   填充的字符
+	 * @return 脱敏后的字符串
+	 */
+	@Nullable
+	public static String sensitive(@Nullable String str, int fromIndex, int lastSize, char padChar) {
+		return sensitive(str, fromIndex, lastSize, padChar, null);
+	}
+
+	/**
+	 * 文本脱敏
+	 *
+	 * @param str       字符串
+	 * @param fromIndex 开始的索引
+	 * @param lastSize  尾部长度
+	 * @param padChar   填充的字符
+	 * @param padCount  填充的长度
+	 * @return 脱敏后的字符串
+	 */
+	@Nullable
+	public static String sensitive(@Nullable String str, int fromIndex, int lastSize, char padChar, @Nullable Integer padCount) {
+		if (str == null) {
+			return null;
+		}
+		if (StringUtil.isBlank(str)) {
+			return StringPool.EMPTY;
+		}
 		int length = str.length();
 		// 全部脱敏
 		if (fromIndex == 0 && lastSize == 0) {
-			return StringUtil.repeat(CharPool.STAR, length);
+			int padSiz = padCount == null ? length : padCount;
+			return StringUtil.repeat(CharPool.STAR, padSiz);
 		}
 		int toIndex = length - lastSize;
+		int padSiz = padCount == null ? toIndex - fromIndex : padCount;
 		// 头部脱敏
 		if (fromIndex == 0) {
 			String tail = str.substring(toIndex);
-			return StringUtil.repeat(padChar, toIndex - fromIndex).concat(tail);
+			return StringUtil.repeat(padChar, padSiz).concat(tail);
 		}
 		// 尾部脱敏
 		if (toIndex == length) {
 			String head = str.substring(0, fromIndex);
-			return head.concat(StringUtil.repeat(padChar, toIndex - fromIndex));
+			return head.concat(StringUtil.repeat(padChar, padSiz));
 		}
 		// 中部
 		String head = str.substring(0, fromIndex);
 		String tail = str.substring(toIndex);
-		return head + StringUtil.repeat(padChar, toIndex - fromIndex) + tail;
+		return head + StringUtil.repeat(padChar, padSiz) + tail;
 	}
 
 }

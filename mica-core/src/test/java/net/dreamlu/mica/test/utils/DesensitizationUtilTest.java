@@ -74,4 +74,11 @@ public class DesensitizationUtilTest {
 		Assert.assertEquals("11***", middle1);
 	}
 
+	@Test
+	public void test9() {
+		String str1 = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzYzNlOGI5MTljMjg2OTMzYjIxMWRkNzNlNTgwZmJiNSIsImF1ZCI6Ik1pY2EtRmFzdC1XZWIiLCJpc3MiOiJNaWNhLUZhc3QtQXBpIiwiaWF0IjoxNjE1NDQzODQzLCJzdWIiOiJhZG1pbiIsIm5iZiI6MTYxNTQ0Mzg0MywiZXhwIjoxNjE4MDM1ODQzfQ.XjZV-f0r3FK75VjSdM7lNFf6rU4v_2jxPwD-_-NfyN4";
+		String sensitive = DesensitizationUtil.sensitive(str1, 14, 14, 4);
+		Assert.assertEquals("eyJhbGciOiJIUz****2jxPwD-_-NfyN4", sensitive);
+	}
+
 }
