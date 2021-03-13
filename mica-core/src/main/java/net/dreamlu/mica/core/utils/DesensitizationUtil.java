@@ -228,7 +228,7 @@ public class DesensitizationUtil {
 	 */
 	@Nullable
 	public static String sensitive(@Nullable String str, int fromIndex, int lastSize, char padChar) {
-		return sensitive(str, fromIndex, lastSize, padChar, null);
+		return sensitive(str, fromIndex, lastSize, padChar, -1);
 	}
 
 	/**
@@ -238,11 +238,11 @@ public class DesensitizationUtil {
 	 * @param fromIndex 开始的索引
 	 * @param lastSize  尾部长度
 	 * @param padChar   填充的字符
-	 * @param padCount  填充的长度
+	 * @param padSize   填充的长度
 	 * @return 脱敏后的字符串
 	 */
 	@Nullable
-	public static String sensitive(@Nullable String str, int fromIndex, int lastSize, char padChar, @Nullable Integer padCount) {
+	public static String sensitive(@Nullable String str, int fromIndex, int lastSize, char padChar, int padSize) {
 		if (str == null) {
 			return null;
 		}
@@ -252,11 +252,11 @@ public class DesensitizationUtil {
 		int length = str.length();
 		// 全部脱敏
 		if (fromIndex == 0 && lastSize == 0) {
-			int padSiz = padCount == null ? length : padCount;
+			int padSiz = padSize > 0 ? padSize : length;
 			return StringUtil.repeat(CharPool.STAR, padSiz);
 		}
 		int toIndex = length - lastSize;
-		int padSiz = padCount == null ? toIndex - fromIndex : padCount;
+		int padSiz = padSize > 0 ? padSize : toIndex - fromIndex;
 		// 头部脱敏
 		if (fromIndex == 0) {
 			String tail = str.substring(toIndex);
