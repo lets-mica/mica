@@ -1,6 +1,15 @@
 # 变更记录
 
 ## 发行版本
+### v2.4.4-GA - 2021-03-28
+- :sparkles: mica-core 优化完善 DesensitizationUtil。
+- :bug: mica-redis 修复 ScanOptions count 空指针。
+- :sparkles: 更新 mica-ip2region db 文件 gitee #I3AJNV 。
+- :arrow_up: 升级到 mica-auto 到 2.0.4
+- :arrow_up: 升级到 mica-weixin 到 2.0.6
+- :arrow_up: 升级到 spring cloud 2020.0.2
+- :arrow_up: 升级 spring boot 到 2.4.4
+
 ### v2.4.3-GA - 2021-02-27
 - :sparkles: 开源 mica-logging 组件。
 - :sparkles: mica-core 完善 JsonUtil 和 SystemUtil。
