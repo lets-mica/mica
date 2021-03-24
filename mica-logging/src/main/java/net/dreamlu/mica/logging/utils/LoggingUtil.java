@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.logging.config;
+package net.dreamlu.mica.logging.utils;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -37,6 +37,7 @@ import ch.qos.logback.core.util.FileSize;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.utils.SystemUtil;
+import net.dreamlu.mica.logging.config.MicaLoggingProperties;
 import net.logstash.logback.appender.LogstashTcpSocketAppender;
 import net.logstash.logback.composite.ContextJsonProvider;
 import net.logstash.logback.composite.GlobalCustomFieldsJsonProvider;

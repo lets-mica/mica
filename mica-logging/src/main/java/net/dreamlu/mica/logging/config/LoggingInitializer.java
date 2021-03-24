@@ -17,6 +17,7 @@
 package net.dreamlu.mica.logging.config;
 
 import net.dreamlu.mica.auto.annotation.AutoContextInitializer;
+import net.dreamlu.mica.logging.utils.LoggingUtil;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.Ordered;
