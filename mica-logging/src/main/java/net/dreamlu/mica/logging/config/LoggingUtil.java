@@ -211,7 +211,7 @@ public class LoggingUtil {
 		SizeAndTimeBasedRollingPolicy<ILoggingEvent> rollingPolicy = new SizeAndTimeBasedRollingPolicy<>();
 		rollingPolicy.setContext(context);
 		rollingPolicy.setCleanHistoryOnStart(SystemUtil.getPropToBool(LogbackLoggingSystemProperties.ROLLINGPOLICY_CLEAN_HISTORY_ON_START, false));
-		rollingPolicy.setFileNamePattern(logErrorFile + ".%d{yyyy-MM-dd}.%i.gz}");
+		rollingPolicy.setFileNamePattern(logErrorFile + ".%d{yyyy-MM-dd}.%i.gz");
 		rollingPolicy.setMaxFileSize(FileSize.valueOf(SystemUtil.getProp(LogbackLoggingSystemProperties.ROLLINGPOLICY_MAX_FILE_SIZE, "10MB")));
 		rollingPolicy.setMaxHistory(SystemUtil.getPropToInt(LogbackLoggingSystemProperties.ROLLINGPOLICY_MAX_HISTORY, 7));
 		rollingPolicy.setTotalSizeCap(FileSize.valueOf(SystemUtil.getProp(LogbackLoggingSystemProperties.ROLLINGPOLICY_TOTAL_SIZE_CAP, "0")));

@@ -42,6 +42,7 @@ spring:
 | ----- | ------ | ------ |
 | mica.logging.use-json-format | false | 使用 json 格式化，设置后文件打印 json 日志，可用于 filebeat 收集日志文件 |
 | mica.logging.console.close-after-start | false | 是否启动完成后将自动关闭控制台日志，默认**false**。**非开发环境**建议设置为 **true** |
+| mica.logging.files.enabled | true | 是否打印文件 `all.log` 和 `error.log` |
 | mica.logging.logstash.enabled | false | 是否开启 logstash 日志收集，直接收集到 logstash |
 | mica.logging.logstash.host | localhost | logstash host |
 | mica.logging.logstash.port | 5000 | logstash port |
