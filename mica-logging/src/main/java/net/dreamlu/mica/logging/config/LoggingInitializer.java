@@ -17,6 +17,7 @@
 package net.dreamlu.mica.logging.config;
 
 import net.dreamlu.mica.auto.annotation.AutoContextInitializer;
+import net.dreamlu.mica.logging.appender.ILoggingAppender;
 import net.dreamlu.mica.logging.utils.LoggingUtil;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -37,7 +38,7 @@ public class LoggingInitializer implements ApplicationContextInitializer<Configu
 		// 读取系统配置的日志目录，默认为项目下 logs
 		String logBase = environment.getProperty("logging.file.path", LoggingUtil.DEFAULT_LOG_DIR);
 		// 用于 spring boot admin 中展示日志
-		System.setProperty("logging.file.name", logBase + "/${spring.application.name}/all.log");
+		System.setProperty("logging.file.name", logBase + "/${spring.application.name}/" + ILoggingAppender.LOG_FILE_ALL);
 	}
 
 	@Override

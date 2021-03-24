@@ -33,10 +33,6 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 public class MicaLoggingProperties {
 	public static final String PREFIX = "mica.logging";
 
-	/**
-	 * 使用 json 格式化
-	 */
-	private boolean useJsonFormat = false;
 	private final Console console = new Console();
 	private final Files files = new Files();
 	private final Logstash logstash = new Logstash();
@@ -58,6 +54,10 @@ public class MicaLoggingProperties {
 		 * 是否开启文件日志
 		 */
 		private boolean enabled = true;
+		/**
+		 * 使用 json 格式化
+		 */
+		private boolean useJsonFormat = false;
 	}
 
 	@Getter

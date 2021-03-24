@@ -66,7 +66,7 @@ public class MicaLoggingConfiguration {
 		customFields.put("profile", profile);
 		String customFieldsJson = JsonUtil.toJson(customFields);
 		// 是否采用 json 格式化
-		boolean useJsonFormat = loggingProperties.isUseJsonFormat();
+		boolean useJsonFormat = loggingProperties.getFiles().isUseJsonFormat();
 		if (logStashProperties.isEnabled()) {
 			LoggingUtil.addLogStashTcpSocketAppender(context, customFieldsJson, logStashProperties);
 		} else {

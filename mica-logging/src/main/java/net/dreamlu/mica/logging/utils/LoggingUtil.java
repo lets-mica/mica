@@ -335,7 +335,7 @@ public class LoggingUtil {
 			if (this.loggingProperties.getLogstash().isEnabled()) {
 				addLogStashTcpSocketAppender(context, customFields, loggingProperties.getLogstash());
 			} else {
-				boolean useJsonFormat = loggingProperties.isUseJsonFormat();
+				boolean useJsonFormat = loggingProperties.getFiles().isUseJsonFormat();
 				addFileAppender(context, logFile, logErrorFile, useJsonFormat, customFields);
 			}
 		}
@@ -345,7 +345,7 @@ public class LoggingUtil {
 			if (this.loggingProperties.getLogstash().isEnabled()) {
 				addLogStashTcpSocketAppender(context, customFields, loggingProperties.getLogstash());
 			} else {
-				boolean useJsonFormat = loggingProperties.isUseJsonFormat();
+				boolean useJsonFormat = loggingProperties.getFiles().isUseJsonFormat();
 				addFileAppender(context, logFile, logErrorFile, useJsonFormat, customFields);
 			}
 		}
