@@ -83,7 +83,6 @@ public class LogStashUtil {
 	private static LoggingEventFormattedTimestampJsonProvider timestampJsonProvider() {
 		final LoggingEventFormattedTimestampJsonProvider timestampJsonProvider = new LoggingEventFormattedTimestampJsonProvider();
 		timestampJsonProvider.setTimeZone("UTC");
-		timestampJsonProvider.setFieldName("timestamp");
 		return timestampJsonProvider;
 	}
 
