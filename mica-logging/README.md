@@ -28,6 +28,8 @@ compile("net.dreamlu:mica-logging:${version}")
 ```
 
 ## 可选依赖
+**注意：** 开启 `json` 文件或 `logstash` **必须添加**该依赖！！！
+
 ```xml
 <dependency>
     <groupId>net.logstash.logback</groupId>
