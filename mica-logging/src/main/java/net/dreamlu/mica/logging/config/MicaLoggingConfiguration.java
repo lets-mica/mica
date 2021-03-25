@@ -16,23 +16,29 @@
 
 package net.dreamlu.mica.logging.config;
 
-import ch.qos.logback.classic.LoggerContext;
-import net.dreamlu.mica.core.constant.MicaConstant;
-import net.dreamlu.mica.core.utils.JsonUtil;
+import net.dreamlu.mica.core.utils.ObjectUtil;
+import net.dreamlu.mica.logging.appender.*;
+import net.dreamlu.mica.logging.listener.LogbackLoggerContextListener;
 import net.dreamlu.mica.logging.listener.LoggingStartedEventListener;
-import net.dreamlu.mica.logging.utils.LoggingUtil;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
+import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.logging.LoggingSystemProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ConditionContext;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.core.type.AnnotatedTypeMetadata;
+import org.springframework.util.ClassUtils;
 
-import java.util.HashMap;
+import java.lang.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * logging 日志配置
@@ -44,41 +50,111 @@ import java.util.Map;
 @EnableConfigurationProperties(MicaLoggingProperties.class)
 public class MicaLoggingConfiguration {
 
-	@Autowired
-	public MicaLoggingConfiguration(Environment environment,
-									MicaLoggingProperties loggingProperties) {
-		// 1. 服务名和环境和日志目录
-		String appName = environment.getRequiredProperty(MicaConstant.SPRING_APP_NAME_KEY);
-		String profile = environment.getRequiredProperty(MicaConstant.ACTIVE_PROFILES_PROPERTY);
-		// 2. 文件日志格式
-		String fileLogPattern = environment.resolvePlaceholders(LoggingUtil.DEFAULT_FILE_LOG_PATTERN);
-		System.setProperty(LoggingSystemProperties.FILE_LOG_PATTERN, fileLogPattern);
-		// 3. 生成日志文件的文件
-		String logDir = environment.getProperty("logging.file.path", LoggingUtil.DEFAULT_LOG_DIR);
-		String logFile = logDir + '/' + appName + "/all.log";
-		String logErrorFile = logDir + '/' + appName + "/error.log";
-		// 4. logStash 配置
-		MicaLoggingProperties.Logstash logStashProperties = loggingProperties.getLogstash();
-		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-		// 4. json 自定义字段
-		Map<String, Object> customFields = new HashMap<>();
-		customFields.put("appName", appName);
-		customFields.put("profile", profile);
-		String customFieldsJson = JsonUtil.toJson(customFields);
-		// 是否采用 json 格式化
-		boolean useJsonFormat = loggingProperties.getFiles().isUseJsonFormat();
-		if (logStashProperties.isEnabled()) {
-			LoggingUtil.addLogStashTcpSocketAppender(context, customFieldsJson, logStashProperties);
-		} else {
-			LoggingUtil.addFileAppender(context, logFile, logErrorFile, useJsonFormat, customFieldsJson);
-		}
-		if (useJsonFormat || logStashProperties.isEnabled()) {
-			LoggingUtil.addContextListener(context, logFile, logErrorFile, customFieldsJson, loggingProperties);
-		}
-	}
-
 	@Bean
 	public LoggingStartedEventListener loggingStartedEventListener(MicaLoggingProperties loggingProperties) {
 		return new LoggingStartedEventListener(loggingProperties);
 	}
+
+	@Bean
+	public LogbackLoggerContextListener logbackLoggerContextListener(ObjectProvider<List<ILoggingAppender>> provider) {
+		List<ILoggingAppender> loggingAppenderList = provider.getIfAvailable(ArrayList::new);
+		return new LogbackLoggerContextListener(loggingAppenderList);
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	@ConditionalOnAppender(Appender.FILE)
+	public static class LoggingFileConfiguration {
+
+		@Bean
+		public LoggingFileAppender loggingFileAppender(Environment environment,
+												MicaLoggingProperties properties) {
+			return new LoggingFileAppender(environment, properties);
+		}
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	@Conditional(LoggingCondition.class)
+	@ConditionalOnAppender(Appender.FILE_JSON)
+	public static class LoggingJsonFileConfiguration {
+
+		@Bean
+		public LoggingJsonFileAppender loggingJsonFileAppender(Environment environment,
+												MicaLoggingProperties properties) {
+			return new LoggingJsonFileAppender(environment, properties);
+		}
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	@Conditional(LoggingCondition.class)
+	@ConditionalOnAppender(Appender.LOG_STASH)
+	public static class LoggingLogStashConfiguration {
+
+		@Bean
+		public LoggingLogStashAppender loggingLogStashAppender(Environment environment,
+												MicaLoggingProperties properties) {
+			return new LoggingLogStashAppender(environment, properties);
+		}
+	}
+
+	@Target({ElementType.TYPE, ElementType.METHOD})
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	@Conditional(LoggingCondition.class)
+	public @interface ConditionalOnAppender {
+
+		/**
+		 * Appender
+		 *
+		 * @return Appender
+		 */
+		Appender value();
+
+	}
+
+	@Order(Ordered.HIGHEST_PRECEDENCE)
+	public static class LoggingCondition extends SpringBootCondition {
+		private static final String LOG_STASH_CLASS_NAME = "net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder";
+
+		@Override
+		public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
+			Map<String, Object> attributes = metadata.getAnnotationAttributes(ConditionalOnAppender.class.getName());
+			Object value = Objects.requireNonNull(attributes).get("value");
+			Appender appender = Appender.valueOf(value.toString());
+			Environment environment = context.getEnvironment();
+			ClassLoader classLoader = context.getClassLoader();
+			Boolean fileEnabled = environment.getProperty(MicaLoggingProperties.Files.PREFIX + ".enabled", Boolean.class, Boolean.TRUE);
+			Boolean logStashEnabled = environment.getProperty(MicaLoggingProperties.Logstash.PREFIX + ".enabled", Boolean.class, Boolean.FALSE);
+			if (Appender.LOG_STASH == appender) {
+				if (ObjectUtil.isFalse(logStashEnabled)) {
+					return ConditionOutcome.noMatch("Logging logstash is not enabled.");
+				}
+				if (hasLogStashDependencies(classLoader)) {
+					return ConditionOutcome.match();
+				}
+				throw new IllegalStateException("Logging logstash is enabled, please add logstash-logback-encoder dependencies.");
+			} else if (Appender.FILE_JSON == appender) {
+				Boolean isUseJsonFormat = environment.getProperty(MicaLoggingProperties.Files.PREFIX + ".use-json-format", Boolean.class, Boolean.FALSE);
+				// 没有开启文件或者没有开启 json 格式化
+				if (ObjectUtil.isFalse(fileEnabled) || ObjectUtil.isFalse(isUseJsonFormat)) {
+					return ConditionOutcome.noMatch("Logging json file is not enabled.");
+				}
+				if (hasLogStashDependencies(classLoader)) {
+					return ConditionOutcome.match();
+				}
+				throw new IllegalStateException("Logging file json format is enabled, please add logstash-logback-encoder dependencies.");
+			} else if (Appender.FILE == appender) {
+				if (ObjectUtil.isFalse(fileEnabled)) {
+					return ConditionOutcome.noMatch("Logging logstash is not enabled.");
+				}
+				return ConditionOutcome.match();
+			} else {
+				return ConditionOutcome.match();
+			}
+		}
+
+		private static boolean hasLogStashDependencies(ClassLoader classLoader) {
+			return ClassUtils.isPresent(LOG_STASH_CLASS_NAME, classLoader);
+		}
+	}
+
 }

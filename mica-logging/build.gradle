@@ -1,8 +1,8 @@
 dependencies {
     api project(":mica-core")
-    api "net.logstash.logback:logstash-logback-encoder:${logstashVersion}"
     api "org.springframework.boot:spring-boot-starter-logging"
-    implementation "org.springframework.boot:spring-boot"
+    implementation "net.logstash.logback:logstash-logback-encoder:${logstashVersion}"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
     compileOnly "org.springframework.cloud:spring-cloud-context"
     compileOnly "net.dreamlu:mica-auto:${micaAutoVersion}"
     annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"

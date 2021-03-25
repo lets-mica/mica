@@ -24,14 +24,6 @@ import ch.qos.logback.classic.LoggerContext;
  * @author L.cm
  */
 public interface ILoggingAppender {
-	/**
-	 * all.log
-	 */
-	String LOG_FILE_ALL = "all.log";
-	/**
-	 * error.log
-	 */
-	String LOG_FILE_ERROR = "error.log";
 
 	/**
 	 * 启动

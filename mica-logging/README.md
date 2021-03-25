@@ -27,6 +27,15 @@
 compile("net.dreamlu:mica-logging:${version}")
 ```
 
+## 可选依赖
+```xml
+<dependency>
+    <groupId>net.logstash.logback</groupId>
+    <artifactId>logstash-logback-encoder</artifactId>
+    <version>${version}</version>
+</dependency>
+```
+
 ## 配置
 **特别注意：** 需要配置`服务名`和`环境`，例如：
 
@@ -38,15 +47,15 @@ spring:
     active: dev
 ```
 
-| 配置项 | 默认值 | 说明 |
-| ----- | ------ | ------ |
-| mica.logging.use-json-format | false | 使用 json 格式化，设置后文件打印 json 日志，可用于 filebeat 收集日志文件 |
-| mica.logging.console.close-after-start | false | 是否启动完成后将自动关闭控制台日志，默认**false**。**非开发环境**建议设置为 **true** |
-| mica.logging.files.enabled | true | 是否打印文件 `all.log` 和 `error.log` |
-| mica.logging.logstash.enabled | false | 是否开启 logstash 日志收集，直接收集到 logstash |
-| mica.logging.logstash.host | localhost | logstash host |
-| mica.logging.logstash.port | 5000 | logstash port |
-| mica.logging.logstash.queue-size | 512 | logstash 队列大小 |
+| 配置项                                 | 默认值    | 说明                                                         |
+| -------------------------------------- | --------- | ------------------------------------------------------------ |
+| mica.logging.console.close-after-start | false     | 是否启动完成后将自动关闭控制台日志，默认**false**。**非开发环境**建议设置为 **true** |
+| mica.logging.files.enabled             | true      | 是否开启日志文件 `all.log` 和 `error.log`                    |
+| mica.logging.files.use-json-format     | false     | 使用 json 格式化，设置后文件打印 json 日志，可用于 filebeat 收集日志文件 |
+| mica.logging.logstash.enabled          | false     | 是否开启 logstash 日志收集，直接收集到 logstash              |
+| mica.logging.logstash.host             | localhost | logstash host                                                |
+| mica.logging.logstash.port             | 5000      | logstash port                                                |
+| mica.logging.logstash.queue-size       | 512       | logstash 队列大小                                            |
 
 ## 参考
 - [jhipster](https://github.com/jhipster/jhipster)
