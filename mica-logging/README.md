@@ -74,7 +74,7 @@ select id, parent_id, title, name, seq , path, permission, component, icon, is_f
 {"loggingLevelRoot":"info","appName":"mica-fast","profile":"dev","level":"INFO","logger_name":"o.s.b.w.e.u.UndertowWebServer","message":"Undertow started on port(s) 8080 (http)","thread_name":"main","@timestamp":"2021-03-25T13:10:34.371Z"}
 ```
 
-### logstash 日志（）
+### logstash 日志（stdout）
 ```json
 {
                 "port" => 57146,
