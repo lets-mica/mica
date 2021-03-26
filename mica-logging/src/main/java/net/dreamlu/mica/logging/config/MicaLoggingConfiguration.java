@@ -100,7 +100,7 @@ public class MicaLoggingConfiguration {
 	@Retention(RetentionPolicy.RUNTIME)
 	@Documented
 	@Conditional(LoggingCondition.class)
-	public @interface ConditionalOnAppender {
+	private @interface ConditionalOnAppender {
 
 		/**
 		 * Appender
@@ -112,7 +112,7 @@ public class MicaLoggingConfiguration {
 	}
 
 	@Order(Ordered.HIGHEST_PRECEDENCE)
-	public static class LoggingCondition extends SpringBootCondition {
+	private static class LoggingCondition extends SpringBootCondition {
 		private static final String LOG_STASH_CLASS_NAME = "net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder";
 
 		@Override
