@@ -19,10 +19,10 @@ package net.dreamlu.mica.core.utils;
 import lombok.experimental.UtilityClass;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.awt.image.RenderedImage;
+import java.io.*;
 import java.net.URL;
 
 /**
@@ -84,6 +84,78 @@ public class ImageUtil {
 	public static BufferedImage read(URL url) {
 		try {
 			return ImageIO.read(url);
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 写出图片
+	 *
+	 * @param im         RenderedImage to be written.
+	 * @param formatName a String containing the informal name of the format.
+	 * @param output     an ImageOutputStream to be written to.
+	 * @return false if no appropriate writer is found.
+	 */
+	public static boolean write(RenderedImage im,
+								String formatName,
+								ImageOutputStream output) {
+		try {
+			return ImageIO.write(im, formatName, output);
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 写出图片
+	 *
+	 * @param im         RenderedImage to be written.
+	 * @param formatName a String containing the informal name of the format.
+	 * @param output     an ImageOutputStream to be written to.
+	 * @return false if no appropriate writer is found.
+	 */
+	public static boolean write(RenderedImage im,
+								String formatName,
+								File output) {
+		try {
+			return ImageIO.write(im, formatName, output);
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 写出图片
+	 *
+	 * @param im         RenderedImage to be written.
+	 * @param formatName a String containing the informal name of the format.
+	 * @param output     an ImageOutputStream to be written to.
+	 * @return false if no appropriate writer is found.
+	 */
+	public static boolean write(RenderedImage im,
+								String formatName,
+								OutputStream output) {
+		try {
+			return ImageIO.write(im, formatName, output);
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 写出图片
+	 *
+	 * @param im         RenderedImage to be written.
+	 * @param formatName a String containing the informal name of the format.
+	 * @return false if no appropriate writer is found.
+	 */
+	public static byte[] writeAsBytes(RenderedImage im, String formatName) {
+		try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+			if (ImageIO.write(im, formatName, output)) {
+				return output.toByteArray();
+			}
+			throw new IllegalArgumentException("ImageWriter formatName " + formatName + " writer is null.");
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
