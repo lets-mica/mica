@@ -62,12 +62,22 @@ public class ImageUtil {
 	}
 
 	/**
-	 * 读取图片
+	 * 读取图片，http 或者 file 地址
 	 *
 	 * @param url 图片链接地址
 	 * @return BufferedImage
 	 */
 	public static BufferedImage read(String url) {
+		return isHttpUrl(url) ? readUrl(url) : read(new File(url));
+	}
+
+	/**
+	 * 读取图片
+	 *
+	 * @param url 图片链接地址
+	 * @return BufferedImage
+	 */
+	public static BufferedImage readUrl(String url) {
 		try {
 			return ImageIO.read(new URL(url));
 		} catch (IOException e) {
@@ -144,7 +154,7 @@ public class ImageUtil {
 	}
 
 	/**
-	 * 写出图片
+	 * 写出图片为 byte 数组
 	 *
 	 * @param im         RenderedImage to be written.
 	 * @param formatName a String containing the informal name of the format.
@@ -159,6 +169,21 @@ public class ImageUtil {
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
+	}
+
+	/**
+	 * 写出图片为 InputStream
+	 *
+	 * @param im         RenderedImage to be written.
+	 * @param formatName a String containing the informal name of the format.
+	 * @return false if no appropriate writer is found.
+	 */
+	public static ByteArrayInputStream writeAsStream(RenderedImage im, String formatName) {
+		return new ByteArrayInputStream(writeAsBytes(im, formatName));
+	}
+
+	private static boolean isHttpUrl(String text) {
+		return text.startsWith("http://") || text.startsWith("https://");
 	}
 
 }
