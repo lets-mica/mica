@@ -1,0 +1,4 @@
+dependencies {
+    api project(":mica-core")
+    api "com.google.zxing:javase:${zxingVersion}"
+}

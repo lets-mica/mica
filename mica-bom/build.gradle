@@ -30,6 +30,7 @@ dependencyManagement {
         dependency "net.dreamlu:mica-metrics:${VERSION}"
         dependency "net.dreamlu:mica-caffeine:${VERSION}"
         dependency "net.dreamlu:mica-logging:${VERSION}"
+        dependency "net.dreamlu:mica-qrcode:${VERSION}"
         // commons
         dependency "com.google.code.findbugs:jsr305:${findbugsVersion}"
         dependency "io.swagger:swagger-annotations:${swaggerAnnotationsVersion}"
@@ -41,5 +42,6 @@ dependencyManagement {
         dependency "com.alibaba:druid:${druidVersion}"
         dependency "com.alibaba:druid-spring-boot-starter:${druidVersion}"
         dependency "net.logstash.logback:logstash-logback-encoder:${logstashVersion}"
+        dependency "com.google.zxing:javase:${zxingVersion}"
     }
 }

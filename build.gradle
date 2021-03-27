@@ -17,6 +17,7 @@ ext {
     lombokVersion = "1.18.18"
     findbugsVersion = "3.0.2"
     logstashVersion = "6.6"
+    zxingVersion = "3.4.1"
 }
 
 configure(subprojects) {
