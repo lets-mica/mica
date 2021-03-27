@@ -68,7 +68,7 @@ public class ImageUtil {
 	 * @return BufferedImage
 	 */
 	public static BufferedImage read(String url) {
-		return isHttpUrl(url) ? readUrl(url) : read(new File(url));
+		return StringUtil.isHttpUrl(url) ? readUrl(url) : read(new File(url));
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class ImageUtil {
 	 * @param url 图片链接地址
 	 * @return BufferedImage
 	 */
-	public static BufferedImage readUrl(String url) {
+	private static BufferedImage readUrl(String url) {
 		try {
 			return ImageIO.read(new URL(url));
 		} catch (IOException e) {
@@ -180,10 +180,6 @@ public class ImageUtil {
 	 */
 	public static ByteArrayInputStream writeAsStream(RenderedImage im, String formatName) {
 		return new ByteArrayInputStream(writeAsBytes(im, formatName));
-	}
-
-	private static boolean isHttpUrl(String text) {
-		return text.startsWith("http://") || text.startsWith("https://");
 	}
 
 }

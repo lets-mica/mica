@@ -916,5 +916,15 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		return str.substring(pos, pos + len);
 	}
 
+	/**
+	 * 判断是否 http 地址
+	 *
+	 * @param text 文本
+	 * @return 是否 http 地址
+	 */
+	public static boolean isHttpUrl(String text) {
+		return text.startsWith("http://") || text.startsWith("https://");
+	}
+
 }
 

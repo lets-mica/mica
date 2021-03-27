@@ -56,7 +56,7 @@ public class ResourceUtil extends org.springframework.util.ResourceUtils {
 		if (resourceLocation.startsWith(FTP_URL_PREFIX)) {
 			return new UrlResource(resourceLocation);
 		}
-		if (resourceLocation.matches(HTTP_REGEX)) {
+		if (StringUtil.isHttpUrl(resourceLocation)) {
 			return new UrlResource(resourceLocation);
 		}
 		if (resourceLocation.startsWith(FILE_URL_PREFIX)) {
