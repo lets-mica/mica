@@ -2,9 +2,12 @@
 
 ## 发行版本
 ### v2.4.4-GA - 2021-03-28
-- :sparkles: mica-core 优化完善 DesensitizationUtil。
-- :bug: mica-redis 修复 ScanOptions count 空指针。
-- :sparkles: 更新 mica-ip2region db 文件 gitee #I3AJNV 。
+- :sparkles: mica-qrcode 新增模块，友好的二维码识别和生成
+- :sparkles: mica-logging 重新设计，`logstash-logback-encoder` 调整为可选，`logstash` 和 `json` 需手动添加依赖
+- :sparkles: mica-core 优化完善 DesensitizationUtil
+- :sparkles: mica-core 添加 ImageUtil
+- :sparkles: mica-ip2region 更新 db 文件 gitee #I3AJNV
+- :bug: mica-redis 修复 ScanOptions count 空指针
 - :arrow_up: 升级到 mica-auto 到 2.0.4
 - :arrow_up: 升级到 mica-weixin 到 2.0.6
 - :arrow_up: 升级到 spring cloud 2020.0.2
