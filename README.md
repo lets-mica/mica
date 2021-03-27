@@ -13,7 +13,7 @@
 ## 使用文档
 ![mica 2.x 模块图](docs/img/mica2.x-open.png)
 
-**使用文档**详见：[mica2.x 使用文档](http://wiki.dreamlu.net)
+**使用文档**详见：[http://wiki.dreamlu.net（mica2.x 使用文档）](http://wiki.dreamlu.net/guide/getting-started.html)
 
 **更新记录**详见：[Mica 更新记录](CHANGELOG.md)
 
