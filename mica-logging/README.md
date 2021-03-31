@@ -93,5 +93,9 @@ select id, parent_id, title, name, seq , path, permission, component, icon, is_f
 }
 ```
 
+## 日志服务（云服务接入）
+- 阿里云日志服务（json格式）：https://help.aliyun.com/document_detail/31720.htm
+- 腾讯云云日志服务（json格式）：https://cloud.tencent.com/document/product/614/17419
+
 ## 参考
 - [jhipster](https://github.com/jhipster/jhipster)
