@@ -24,6 +24,7 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import net.dreamlu.mica.core.utils.Base64Util;
 import net.dreamlu.mica.core.utils.CharPool;
 import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.core.utils.ImageUtil;
@@ -364,6 +365,15 @@ public final class QrCode {
 		BufferedImage bufferedImage = this.toImage();
 		ImageUtil.write(bufferedImage, this.imageFormat, qrCodeFile);
 		return qrCodeFile;
+	}
+
+	/**
+	 * 使用带默认值的「QrCode 生成器格式」，把指定的内容生成为一个 QrCode 的 base64 image。
+	 *
+	 * @return base64 字符串
+	 */
+	public String toBase64() {
+		return "data:image/png;base64," + Base64Util.encodeToString(toBytes());
 	}
 
 	/**
