@@ -20,6 +20,7 @@
     <!-- 基础组件 -->
     <logger name="RocketmqClient" level="WARN"/>
     <logger name="com.alibaba.nacos" level="ERROR"/>
+    <Logger name="org.reflections" level="ERROR"/>
     <!-- 请求日志打印，全部使用info，方便动态调整 -->
     <logger name="net.dreamlu.mica.servlet.logger" level="INFO"/>
     <logger name="net.dreamlu.mica.reactive.logger" level="INFO"/>
