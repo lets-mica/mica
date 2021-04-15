@@ -80,6 +80,15 @@ public enum SystemCode implements IResultCode {
 
 	//-------------------------------------------------------------//
 	/**
+	 * 网关异常
+	 */
+	BAD_GATEWAY(SystemCode.BAD_GATEWAY_CODE, "Bad gateway"),
+	SERVICE_UNAVAILABLE(SystemCode.SERVICE_UNAVAILABLE_CODE, "Service unavailable"),
+	GATEWAY_TIMEOUT(SystemCode.GATEWAY_TIMEOUT_CODE, "Gateway timeout"),
+	GATEWAY_FORBADE(SystemCode.GATEWAY_FORBADE_CODE, "Gateway forbade"),
+
+	//-------------------------------------------------------------//
+	/**
 	 * 数据不存在
 	 */
 	DATA_NOT_EXIST(SystemCode.DATA_NOT_EXIST_CODE, "数据不存在"),
@@ -115,7 +124,13 @@ public enum SystemCode implements IResultCode {
 	public static final int MEDIA_TYPE_NOT_SUPPORTED_CODE = 100007;
 	public static final int MEDIA_TYPE_NOT_ACCEPT_CODE = 100008;
 	public static final int REQ_REJECT_CODE = 100009;
-
+	/**
+	 * 网关通用 code
+	 */
+	public static final int BAD_GATEWAY_CODE = 100010;
+	public static final int SERVICE_UNAVAILABLE_CODE = 100011;
+	public static final int GATEWAY_TIMEOUT_CODE = 100012;
+	public static final int GATEWAY_FORBADE_CODE = 100013;
 	/**
 	 * 通用数据层 code
  	 */
