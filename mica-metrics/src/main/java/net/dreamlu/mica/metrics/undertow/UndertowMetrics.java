@@ -39,48 +39,48 @@ import static io.undertow.server.handlers.MetricsHandler.MetricResult;
  * @author L.cm
  */
 public class UndertowMetrics implements MetricsCollector, ApplicationListener<ApplicationStartedEvent> {
-    private final Map<String, MetricsHandler> metricsHandlers;
+	private final Map<String, MetricsHandler> metricsHandlers;
 
-    public UndertowMetrics() {
-        metricsHandlers = new HashMap<>();
-    }
+	public UndertowMetrics() {
+		metricsHandlers = new HashMap<>();
+	}
 
-    @Override
-    public void registerMetric(String servletName, MetricsHandler handler) {
-        metricsHandlers.put(servletName, handler);
-    }
+	@Override
+	public void registerMetric(String servletName, MetricsHandler handler) {
+		metricsHandlers.put(servletName, handler);
+	}
 
-    private void bindTimer(MeterRegistry registry, String name, String desc, String servletName, MetricResult metricResult, ToLongFunction<MetricResult> countFunc, ToDoubleFunction<MetricResult> consumer) {
-        FunctionTimer.builder(name, metricResult, countFunc, consumer, TimeUnit.MILLISECONDS)
-                .tag("servlet", servletName)
-                .description(desc)
-                .register(registry);
-    }
+	private void bindTimer(MeterRegistry registry, String name, String desc, String servletName, MetricResult metricResult, ToLongFunction<MetricResult> countFunc, ToDoubleFunction<MetricResult> consumer) {
+		FunctionTimer.builder(name, metricResult, countFunc, consumer, TimeUnit.MILLISECONDS)
+			.tag("servlet", servletName)
+			.description(desc)
+			.register(registry);
+	}
 
-    private void bindTimeGauge(MeterRegistry registry, String name, String desc, String servletName, MetricResult metricResult, ToDoubleFunction<MetricResult> consumer) {
-        TimeGauge.builder(name, metricResult, TimeUnit.MILLISECONDS, consumer)
-                .tag("servlet", servletName)
-                .description(desc)
-                .register(registry);
-    }
+	private void bindTimeGauge(MeterRegistry registry, String name, String desc, String servletName, MetricResult metricResult, ToDoubleFunction<MetricResult> consumer) {
+		TimeGauge.builder(name, metricResult, TimeUnit.MILLISECONDS, consumer)
+			.tag("servlet", servletName)
+			.description(desc)
+			.register(registry);
+	}
 
-    private void bindCounter(MeterRegistry registry, String name, String desc, String servletName, MetricResult metricResult, ToDoubleFunction<MetricResult> consumer) {
-        FunctionCounter.builder(name, metricResult, consumer)
-                .tag("servlet", servletName)
-                .description(desc)
-                .register(registry);
-    }
+	private void bindCounter(MeterRegistry registry, String name, String desc, String servletName, MetricResult metricResult, ToDoubleFunction<MetricResult> consumer) {
+		FunctionCounter.builder(name, metricResult, consumer)
+			.tag("servlet", servletName)
+			.description(desc)
+			.register(registry);
+	}
 
-    @Override
-    public void onApplicationEvent(ApplicationStartedEvent event) {
-        MeterRegistry registry = event.getApplicationContext().getBean(MeterRegistry.class);
-        for (Map.Entry<String, MetricsHandler> handlerEntry : metricsHandlers.entrySet()) {
-            MetricResult metricResult = handlerEntry.getValue().getMetrics();
-            String servletName = handlerEntry.getKey();
-            bindTimer(registry,  "undertow_requests", "Request duration", servletName, metricResult, MetricResult::getTotalRequests, MetricsHandler.MetricResult::getMinRequestTime);
-            bindTimeGauge(registry, "undertow_request_time_max", "Maximum time spent handling requests", servletName, metricResult, MetricResult::getMaxRequestTime);
-            bindTimeGauge(registry, "undertow_request_time_min", "Minimum time spent handling requests", servletName, metricResult, MetricResult::getMinRequestTime);
-            bindCounter(registry,  "undertow_request_errors", "Total number of error requests", servletName, metricResult, MetricResult::getTotalErrors);
-        }
-    }
+	@Override
+	public void onApplicationEvent(ApplicationStartedEvent event) {
+		MeterRegistry registry = event.getApplicationContext().getBean(MeterRegistry.class);
+		for (Map.Entry<String, MetricsHandler> handlerEntry : metricsHandlers.entrySet()) {
+			MetricResult metricResult = handlerEntry.getValue().getMetrics();
+			String servletName = handlerEntry.getKey();
+			bindTimer(registry, "undertow_requests", "Request duration", servletName, metricResult, MetricResult::getTotalRequests, MetricsHandler.MetricResult::getTotalRequestTime);
+			bindTimeGauge(registry, "undertow_request_time_max", "Maximum time spent handling requests", servletName, metricResult, MetricResult::getMaxRequestTime);
+			bindTimeGauge(registry, "undertow_request_time_min", "Minimum time spent handling requests", servletName, metricResult, MetricResult::getMinRequestTime);
+			bindCounter(registry, "undertow_request_total_errors", "Total number of error requests", servletName, metricResult, MetricResult::getTotalErrors);
+		}
+	}
 }
