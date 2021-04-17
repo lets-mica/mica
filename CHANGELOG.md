@@ -1,6 +1,18 @@
 # 变更记录
 
 ## 发行版本
+### v2.4.5-GA - 2021-04-24
+- :sparkles: 添加 mica-lite 模块。
+- :sparkles: mica-captcha 中的 cache 改为每次读取， caffeine 会刷新，照成引用为 null。
+- :sparkles: mica-metrics 优化 UndertowMetrics，待下版本完全重构。
+- :sparkles: mica-core 添加网关通用 code。
+- :sparkles: mica-logging 减少 reflections 日志。
+- :sparkles: mica-core Pkcs7Encoder 中默认的 BLOCK_SIZE 改为 16 github #35 兼容更多编程语言。
+- :bug: mica-caffeine 多 cache name 时报错。
+- :memo: mica-qrcode 添加 base64 image 方法。
+- :memo: mica-logging 添加阿里、腾讯云日志服务接入。
+- :arrow_up: 升级 spring boot 到 2.4.5
+
 ### v2.4.4-GA - 2021-03-28
 - :sparkles: mica-qrcode 新增模块，友好的二维码识别和生成
 - :sparkles: mica-logging 重新设计，`logstash-logback-encoder` 调整为可选，`logstash` 和 `json` 需手动添加依赖

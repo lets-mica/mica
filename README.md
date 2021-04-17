@@ -89,7 +89,7 @@ LGPL 是 GPL 的一个为主要为类库使用设计的开源协议。和 GPL �
 
 [![JetBrains](docs/img/jetbrains.png)](https://www.jetbrains.com/?from=mica)
 
-感谢 `如梦技术VIP群` 小伙伴们的大力支持。
+感谢 `如梦技术 VIP` **小伙伴们**的鼎力支持，更多 **VIP** 信息详见：https://www.dreamlu.net/vip/index.html
 
 ## 微信公众号
 
