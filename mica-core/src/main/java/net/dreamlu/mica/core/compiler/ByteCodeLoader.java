@@ -17,6 +17,7 @@
 package net.dreamlu.mica.core.compiler;
 
 import net.dreamlu.mica.core.function.CheckedFunction;
+import net.dreamlu.mica.core.utils.CollectionUtil;
 import net.dreamlu.mica.core.utils.Unchecked;
 
 import java.security.SecureClassLoader;
@@ -67,7 +68,7 @@ public class ByteCodeLoader extends SecureClassLoader {
 	 */
 	public static Class<?> load(String className, byte[] byteCode) {
 		CheckedFunction<String, Class<?>> classLoadFunc = (key) -> new ByteCodeLoader(key, byteCode).loadClass(className);
-		return javaFileObjectMap.computeIfAbsent(className, Unchecked.function(classLoadFunc));
+		return CollectionUtil.computeIfAbsent(javaFileObjectMap, className, Unchecked.function(classLoadFunc));
 	}
 
 	/**

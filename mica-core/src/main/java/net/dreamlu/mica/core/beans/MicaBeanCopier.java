@@ -16,10 +16,7 @@
 
 package net.dreamlu.mica.core.beans;
 
-import net.dreamlu.mica.core.utils.BeanUtil;
-import net.dreamlu.mica.core.utils.ClassUtil;
-import net.dreamlu.mica.core.utils.ReflectUtil;
-import net.dreamlu.mica.core.utils.StringUtil;
+import net.dreamlu.mica.core.utils.*;
 import org.springframework.asm.ClassVisitor;
 import org.springframework.asm.Label;
 import org.springframework.asm.Opcodes;
@@ -68,7 +65,7 @@ public abstract class MicaBeanCopier {
 	public static MicaBeanCopier create(Class source, Class target, boolean useConverter, boolean nonNull) {
 		MicaBeanCopierKey copierKey = new MicaBeanCopierKey(source, target, useConverter, nonNull);
 		// 利用 ConcurrentMap 缓存 提高性能，接近 直接 get set
-		return BEAN_COPIER_MAP.computeIfAbsent(copierKey, key -> {
+		return CollectionUtil.computeIfAbsent(BEAN_COPIER_MAP, copierKey, key -> {
 			Generator gen = new Generator();
 			gen.setSource(key.getSource());
 			gen.setTarget(key.getTarget());

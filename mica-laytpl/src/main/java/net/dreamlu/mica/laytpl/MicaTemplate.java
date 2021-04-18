@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.laytpl;
 
+import net.dreamlu.mica.core.utils.CollectionUtil;
 import net.dreamlu.mica.core.utils.IoUtil;
 import net.dreamlu.mica.core.utils.StringPool;
 import net.dreamlu.mica.core.utils.Unchecked;
@@ -57,8 +58,9 @@ public class MicaTemplate implements ApplicationContextAware, InitializingBean {
 
 	/**
 	 * 渲染html字符串
+	 *
 	 * @param tplName 模板名称
-	 * @param data 数据模型
+	 * @param data    数据模型
 	 * @return 渲染后的html
 	 */
 	public String renderTpl(String tplName, Object data) {
@@ -68,7 +70,7 @@ public class MicaTemplate implements ApplicationContextAware, InitializingBean {
 		final String tplPath = tplProperties.getPrefix() + tplName;
 		try {
 			String html = tplProperties.isCache()
-				? tplCache.computeIfAbsent(tplPath, tplFunction)
+				? CollectionUtil.computeIfAbsent(tplCache, tplPath, tplFunction)
 				: tplFunction.apply(tplPath);
 			return renderHtml(html, data);
 		} catch (ScriptException e) {
@@ -78,6 +80,7 @@ public class MicaTemplate implements ApplicationContextAware, InitializingBean {
 
 	/**
 	 * 渲染html字符串
+	 *
 	 * @param html html字符串
 	 * @return 渲染后的html
 	 */
@@ -87,6 +90,7 @@ public class MicaTemplate implements ApplicationContextAware, InitializingBean {
 
 	/**
 	 * 渲染html字符串
+	 *
 	 * @param html html字符串
 	 * @param data 数据模型
 	 * @return 渲染后的html

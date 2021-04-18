@@ -18,6 +18,7 @@ package net.dreamlu.mica.core.convert;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.core.utils.CollectionUtil;
 import net.dreamlu.mica.core.utils.ConvertUtil;
 import net.dreamlu.mica.core.utils.StringUtil;
 import org.springframework.core.convert.TypeDescriptor;
@@ -83,7 +84,7 @@ public class StringToEnumConverter implements ConditionalGenericConverter {
 			return null;
 		}
 		Class<?> clazz = targetType.getType();
-		AccessibleObject accessibleObject = ENUM_CACHE_MAP.computeIfAbsent(clazz, StringToEnumConverter::getAnnotation);
+		AccessibleObject accessibleObject = CollectionUtil.computeIfAbsent(ENUM_CACHE_MAP, clazz, StringToEnumConverter::getAnnotation);
 		String value = ((String) source).trim();
 		// 如果为null，走默认的转换
 		if (accessibleObject == null) {

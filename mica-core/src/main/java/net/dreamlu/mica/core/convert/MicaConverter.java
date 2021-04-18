@@ -19,10 +19,7 @@ package net.dreamlu.mica.core.convert;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.function.CheckedFunction;
-import net.dreamlu.mica.core.utils.ClassUtil;
-import net.dreamlu.mica.core.utils.ConvertUtil;
-import net.dreamlu.mica.core.utils.ReflectUtil;
-import net.dreamlu.mica.core.utils.Unchecked;
+import net.dreamlu.mica.core.utils.*;
 import org.springframework.cglib.core.Converter;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.lang.Nullable;
@@ -88,6 +85,6 @@ public class MicaConverter implements Converter {
 			}
 			return new TypeDescriptor(field);
 		};
-		return TYPE_CACHE.computeIfAbsent(srcCacheKey, Unchecked.function(uncheckedFunction));
+		return CollectionUtil.computeIfAbsent(TYPE_CACHE, srcCacheKey, Unchecked.function(uncheckedFunction));
 	}
 }
