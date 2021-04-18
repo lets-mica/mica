@@ -17,11 +17,17 @@
 package net.dreamlu.mica.metrics.druid;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.jdbc.DataSourceUnwrapper;
 import org.springframework.boot.jdbc.metadata.DataSourcePoolMetadataProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
+
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * DruidDataSourceMetadata Provide
@@ -30,7 +36,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(DruidDataSource.class)
-public class DruidDataSourceMetadataProviderConfiguration {
+public class DruidMetricsConfiguration {
+	private static final String DATASOURCE_SUFFIX = "dataSource";
 
 	@Bean
 	public DataSourcePoolMetadataProvider druidDataSourceMetadataProvider() {
@@ -41,6 +48,31 @@ public class DruidDataSourceMetadataProviderConfiguration {
 			}
 			return null;
 		};
+	}
+
+	@Bean
+	public DruidMetrics druidMetrics(ObjectProvider<Map<String, DataSource>> dataSourcesProvider) {
+		Map<String, DataSource> dataSourceMap = dataSourcesProvider.getIfAvailable(HashMap::new);
+		Map<String, DruidDataSource> druidDataSourceMap = new HashMap<>(1);
+		dataSourceMap.forEach((name, dataSource) -> {
+			// 保证连接池数据和 DataSourcePoolMetadataProvider 的一致
+			druidDataSourceMap.put(getDataSourceName(name), DataSourceUnwrapper.unwrap(dataSource, DruidDataSource.class));
+		});
+		return new DruidMetrics(druidDataSourceMap);
+	}
+
+	/**
+	 * Get the name of a DataSource based on its {@code beanName}.
+	 *
+	 * @param beanName the name of the data source bean
+	 * @return a name for the given data source
+	 */
+	private static String getDataSourceName(String beanName) {
+		if (beanName.length() > DATASOURCE_SUFFIX.length()
+			&& StringUtils.endsWithIgnoreCase(beanName, DATASOURCE_SUFFIX)) {
+			return beanName.substring(0, beanName.length() - DATASOURCE_SUFFIX.length());
+		}
+		return beanName;
 	}
 
 }
