@@ -54,12 +54,12 @@ public class UndertowMetrics implements ApplicationListener<ApplicationStartedEv
 	/**
 	 * XWorker
 	 */
-	private static final String METRIC_NAME_XWORK_WORKER_POOL_CORE_SIZE 	= UNDERTOW_METRIC_NAME_PREFIX + ".xwork.worker.pool.core.size";
-	private static final String METRIC_NAME_XWORK_WORKER_POOL_MAX_SIZE 		= UNDERTOW_METRIC_NAME_PREFIX + ".xwork.worker.pool.max.size";
-	private static final String METRIC_NAME_XWORK_WORKER_POOL_SIZE 			= UNDERTOW_METRIC_NAME_PREFIX + ".xwork.worker.pool.size";
-	private static final String METRIC_NAME_XWORK_WORKER_THREAD_BUSY_COUNT 	= UNDERTOW_METRIC_NAME_PREFIX + ".xwork.worker.thread.busy.count";
-	private static final String METRIC_NAME_XWORK_IO_THREAD_COUNT 			= UNDERTOW_METRIC_NAME_PREFIX + ".xwork.io.thread.count";
-	private static final String METRIC_NAME_XWORK_WORKER_QUEUE_SIZE 		= UNDERTOW_METRIC_NAME_PREFIX + ".xwork.worker.queue.size";
+	private static final String METRIC_NAME_X_WORK_WORKER_POOL_CORE_SIZE 		= UNDERTOW_METRIC_NAME_PREFIX + ".xwork.worker.pool.core.size";
+	private static final String METRIC_NAME_X_WORK_WORKER_POOL_MAX_SIZE 		= UNDERTOW_METRIC_NAME_PREFIX + ".xwork.worker.pool.max.size";
+	private static final String METRIC_NAME_X_WORK_WORKER_POOL_SIZE 			= UNDERTOW_METRIC_NAME_PREFIX + ".xwork.worker.pool.size";
+	private static final String METRIC_NAME_X_WORK_WORKER_THREAD_BUSY_COUNT 	= UNDERTOW_METRIC_NAME_PREFIX + ".xwork.worker.thread.busy.count";
+	private static final String METRIC_NAME_X_WORK_IO_THREAD_COUNT 				= UNDERTOW_METRIC_NAME_PREFIX + ".xwork.io.thread.count";
+	private static final String METRIC_NAME_X_WORK_WORKER_QUEUE_SIZE 			= UNDERTOW_METRIC_NAME_PREFIX + ".xwork.worker.queue.size";
 	/**
 	 * connectors
 	 */
@@ -83,7 +83,7 @@ public class UndertowMetrics implements ApplicationListener<ApplicationStartedEv
 	private static final String METRIC_NAME_SESSIONS_REJECTED 					= UNDERTOW_METRIC_NAME_PREFIX + ".sessions.rejected";
 	private static final String METRIC_NAME_SESSIONS_ALIVE_MAX 					= UNDERTOW_METRIC_NAME_PREFIX + ".sessions.alive.max";
 
-	private static Field undertowField;
+	private static final Field UNDERTOW_FIELD;
 	private final Iterable<Tag> tags;
 
 	public UndertowMetrics() {
@@ -117,32 +117,32 @@ public class UndertowMetrics implements ApplicationListener<ApplicationStartedEv
 	}
 
 	private void registerXWorker(MeterRegistry registry, XnioWorkerMXBean workerMXBean) {
-		Gauge.builder(METRIC_NAME_XWORK_WORKER_POOL_CORE_SIZE, workerMXBean, XnioWorkerMXBean::getCoreWorkerPoolSize)
+		Gauge.builder(METRIC_NAME_X_WORK_WORKER_POOL_CORE_SIZE, workerMXBean, XnioWorkerMXBean::getCoreWorkerPoolSize)
 			.description("XWork core worker pool size")
 			.tags(tags)
 			.tag("name", workerMXBean.getName())
 			.register(registry);
-		Gauge.builder(METRIC_NAME_XWORK_WORKER_POOL_MAX_SIZE, workerMXBean, XnioWorkerMXBean::getMaxWorkerPoolSize)
+		Gauge.builder(METRIC_NAME_X_WORK_WORKER_POOL_MAX_SIZE, workerMXBean, XnioWorkerMXBean::getMaxWorkerPoolSize)
 			.description("XWork max worker pool size")
 			.tags(tags)
 			.tag("name", workerMXBean.getName())
 			.register(registry);
-		Gauge.builder(METRIC_NAME_XWORK_WORKER_POOL_SIZE, workerMXBean, XnioWorkerMXBean::getWorkerPoolSize)
+		Gauge.builder(METRIC_NAME_X_WORK_WORKER_POOL_SIZE, workerMXBean, XnioWorkerMXBean::getWorkerPoolSize)
 			.description("XWork worker pool size")
 			.tags(tags)
 			.tag("name", workerMXBean.getName())
 			.register(registry);
-		Gauge.builder(METRIC_NAME_XWORK_WORKER_THREAD_BUSY_COUNT, workerMXBean, XnioWorkerMXBean::getBusyWorkerThreadCount)
+		Gauge.builder(METRIC_NAME_X_WORK_WORKER_THREAD_BUSY_COUNT, workerMXBean, XnioWorkerMXBean::getBusyWorkerThreadCount)
 			.description("XWork busy worker thread count")
 			.tags(tags)
 			.tag("name", workerMXBean.getName())
 			.register(registry);
-		Gauge.builder(METRIC_NAME_XWORK_IO_THREAD_COUNT, workerMXBean, XnioWorkerMXBean::getIoThreadCount)
+		Gauge.builder(METRIC_NAME_X_WORK_IO_THREAD_COUNT, workerMXBean, XnioWorkerMXBean::getIoThreadCount)
 			.description("XWork io thread count")
 			.tags(tags)
 			.tag("name", workerMXBean.getName())
 			.register(registry);
-		Gauge.builder(METRIC_NAME_XWORK_WORKER_QUEUE_SIZE, workerMXBean, XnioWorkerMXBean::getWorkerQueueSize)
+		Gauge.builder(METRIC_NAME_X_WORK_WORKER_QUEUE_SIZE, workerMXBean, XnioWorkerMXBean::getWorkerQueueSize)
 			.description("XWork worker queue size")
 			.tags(tags)
 			.tag("name", workerMXBean.getName())
@@ -237,14 +237,14 @@ public class UndertowMetrics implements ApplicationListener<ApplicationStartedEv
 	}
 
 	static {
-		undertowField = ReflectionUtils.findField(UndertowWebServer.class, "undertow");
-		Objects.requireNonNull(undertowField, "UndertowWebServer class undertow field is null.");
-		ReflectionUtils.makeAccessible(undertowField);
+		UNDERTOW_FIELD = ReflectionUtils.findField(UndertowWebServer.class, "undertow");
+		Objects.requireNonNull(UNDERTOW_FIELD, "UndertowWebServer class field undertow not exist.");
+		ReflectionUtils.makeAccessible(UNDERTOW_FIELD);
 	}
 
 	private static Undertow getUndertow(UndertowWebServer undertowWebServer) {
 		try {
-			return (Undertow) undertowField.get(undertowWebServer);
+			return (Undertow) UNDERTOW_FIELD.get(undertowWebServer);
 		} catch (IllegalAccessException e) {
 			throw Exceptions.unchecked(e);
 		}
