@@ -16,8 +16,8 @@
 
 package net.dreamlu.mica.captcha.config;
 
-import net.dreamlu.mica.captcha.core.Captcha;
 import net.dreamlu.mica.captcha.cache.ICaptchaCache;
+import net.dreamlu.mica.captcha.core.Captcha;
 import net.dreamlu.mica.captcha.service.CaptchaServiceImpl;
 import net.dreamlu.mica.captcha.service.ICaptchaService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

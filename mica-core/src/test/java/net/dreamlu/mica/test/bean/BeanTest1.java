@@ -1,7 +1,6 @@
 package net.dreamlu.mica.test.bean;
 
 import net.dreamlu.mica.core.utils.BeanUtil;
-import org.springframework.core.ResolvableType;
 
 import java.util.ArrayList;
 import java.util.List;

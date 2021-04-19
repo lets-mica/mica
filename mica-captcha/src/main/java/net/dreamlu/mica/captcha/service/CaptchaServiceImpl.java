@@ -18,9 +18,9 @@ package net.dreamlu.mica.captcha.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.dreamlu.mica.captcha.core.Captcha;
 import net.dreamlu.mica.captcha.cache.ICaptchaCache;
 import net.dreamlu.mica.captcha.config.MicaCaptchaProperties;
+import net.dreamlu.mica.captcha.core.Captcha;
 import net.dreamlu.mica.core.utils.StringUtil;
 
 import java.io.OutputStream;

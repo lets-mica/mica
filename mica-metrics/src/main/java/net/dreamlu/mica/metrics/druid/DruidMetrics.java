@@ -19,16 +19,15 @@ package net.dreamlu.mica.metrics.druid;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.stat.JdbcConnectionStat;
 import com.alibaba.druid.stat.JdbcDataSourceStat;
-import io.micrometer.core.instrument.FunctionTimer;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.binder.BaseUnits;
 import io.micrometer.core.instrument.binder.MeterBinder;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * druid Metrics
@@ -40,20 +39,20 @@ public class DruidMetrics implements MeterBinder {
 	/**
 	 * Prefix used for all Druid metric names.
 	 */
-	public static final String HIKARI_METRIC_NAME_PREFIX = "druid";
+	public static final String DRUID_METRIC_NAME_PREFIX = "druid";
 
 	private static final String METRIC_CATEGORY = "name";
-	private static final String METRIC_NAME_CONNECT_TIME_MAX = HIKARI_METRIC_NAME_PREFIX + "_connections_connect_time_max";
-	private static final String METRIC_NAME_ALIVE_TIME_MAX = HIKARI_METRIC_NAME_PREFIX + "_connections_alive_time_max";
-	private static final String METRIC_NAME_ALIVE_TIME_MIN = HIKARI_METRIC_NAME_PREFIX + "_connections_alive_time_min";
+	private static final String METRIC_NAME_CONNECT_MAX_TIME = DRUID_METRIC_NAME_PREFIX + ".connections.connect.max.time";
+	private static final String METRIC_NAME_ALIVE_MAX_TIME = DRUID_METRIC_NAME_PREFIX + ".connections.alive.max.time";
+	private static final String METRIC_NAME_ALIVE_MIN_TIME = DRUID_METRIC_NAME_PREFIX + ".connections.alive.min.time";
 
-	private static final String METRIC_NAME_CONNECT_COUNT = HIKARI_METRIC_NAME_PREFIX + "_connections_connect_count";
-	private static final String METRIC_NAME_ACTIVE_COUNT = HIKARI_METRIC_NAME_PREFIX + "_connections_active_count";
-	private static final String METRIC_NAME_CLOSE_COUNT = HIKARI_METRIC_NAME_PREFIX + "_connections_close_count";
-	private static final String METRIC_NAME_ERROR_COUNT = HIKARI_METRIC_NAME_PREFIX + "_connections_error_count";
-	private static final String METRIC_NAME_CONNECT_ERROR_COUNT = HIKARI_METRIC_NAME_PREFIX + "_connections_connect_error_count";
-	private static final String METRIC_NAME_COMMIT_COUNT = HIKARI_METRIC_NAME_PREFIX + "_connections_commit_count";
-	private static final String METRIC_NAME_ROLLBACK_COUNT = HIKARI_METRIC_NAME_PREFIX + "_connections_rollback_count";
+	private static final String METRIC_NAME_CONNECT_COUNT = DRUID_METRIC_NAME_PREFIX + ".connections.connect.count";
+	private static final String METRIC_NAME_ACTIVE_COUNT = DRUID_METRIC_NAME_PREFIX + ".connections.active.count";
+	private static final String METRIC_NAME_CLOSE_COUNT = DRUID_METRIC_NAME_PREFIX + ".connections.close.count";
+	private static final String METRIC_NAME_ERROR_COUNT = DRUID_METRIC_NAME_PREFIX + ".connections.error.count";
+	private static final String METRIC_NAME_CONNECT_ERROR_COUNT = DRUID_METRIC_NAME_PREFIX + ".connections.connect.error.count";
+	private static final String METRIC_NAME_COMMIT_COUNT = DRUID_METRIC_NAME_PREFIX + ".connections.commit.count";
+	private static final String METRIC_NAME_ROLLBACK_COUNT = DRUID_METRIC_NAME_PREFIX + ".connections.rollback.count";
 
 	private final Map<String, DruidDataSource> druidDataSourceMap;
 	private final Iterable<Tag> tags;
@@ -68,20 +67,23 @@ public class DruidMetrics implements MeterBinder {
 			JdbcDataSourceStat dsStats = dataSource.getDataSourceStat();
 			JdbcConnectionStat connectionStat = dsStats.getConnectionStat();
 			// time
-			FunctionTimer.builder(METRIC_NAME_CONNECT_TIME_MAX, connectionStat, (x) -> 1L, JdbcConnectionStat::getConnectMillisMax, TimeUnit.MILLISECONDS)
+			Gauge.builder(METRIC_NAME_CONNECT_MAX_TIME, connectionStat, JdbcConnectionStat::getConnectMillisMax)
 				.description("Connection connect max time")
 				.tags(tags)
 				.tag(METRIC_CATEGORY, name)
+				.baseUnit(BaseUnits.MILLISECONDS)
 				.register(meterRegistry);
-			FunctionTimer.builder(METRIC_NAME_ALIVE_TIME_MAX, connectionStat, (x) -> 1L, JdbcConnectionStat::getAliveMillisMax, TimeUnit.MILLISECONDS)
+			Gauge.builder(METRIC_NAME_ALIVE_MAX_TIME, connectionStat, JdbcConnectionStat::getAliveMillisMax)
 				.description("Connection alive max time")
 				.tags(tags)
 				.tag(METRIC_CATEGORY, name)
+				.baseUnit(BaseUnits.MILLISECONDS)
 				.register(meterRegistry);
-			FunctionTimer.builder(METRIC_NAME_ALIVE_TIME_MIN, connectionStat, (x) -> 1L, JdbcConnectionStat::getAliveMillisMin, TimeUnit.MILLISECONDS)
+			Gauge.builder(METRIC_NAME_ALIVE_MIN_TIME, connectionStat, JdbcConnectionStat::getAliveMillisMin)
 				.description("Connection alive min time")
 				.tags(tags)
 				.tag(METRIC_CATEGORY, name)
+				.baseUnit(BaseUnits.MILLISECONDS)
 				.register(meterRegistry);
 			// count
 			Gauge.builder(METRIC_NAME_ACTIVE_COUNT, connectionStat, JdbcConnectionStat::getActiveCount)

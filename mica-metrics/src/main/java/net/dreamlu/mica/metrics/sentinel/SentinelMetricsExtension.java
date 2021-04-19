@@ -32,13 +32,20 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @AutoService(MetricExtension.class)
 public class SentinelMetricsExtension implements MetricExtension {
-	public static final String PASS_REQUESTS_TOTAL = "sentinel_pass_requests_total";
-	public static final String BLOCK_REQUESTS_TOTAL = "sentinel_block_requests_total";
-	public static final String SUCCESS_REQUESTS_TOTAL = "sentinel_success_requests_total";
-	public static final String EXCEPTION_REQUESTS_TOTAL = "sentinel_exception_requests_total";
-	public static final String REQUESTS_LATENCY_SECONDS = "sentinel_requests_latency_seconds";
-	public static final String CURRENT_THREADS = "sentinel_current_threads";
-	public static final String DEFAULT_TAT_NAME = "resource";
+	/**
+	 * Prefix used for all Sentinel metric names.
+	 */
+	public static final String SENTINEL_METRIC_NAME_PREFIX = "undertow";
+	/**
+	 * Metric name
+	 */
+	public static final String PASS_REQUESTS_TOTAL 		= SENTINEL_METRIC_NAME_PREFIX + ".pass.requests.total";
+	public static final String BLOCK_REQUESTS_TOTAL 	= SENTINEL_METRIC_NAME_PREFIX + ".block.requests.total";
+	public static final String SUCCESS_REQUESTS_TOTAL 	= SENTINEL_METRIC_NAME_PREFIX + ".success.requests.total";
+	public static final String EXCEPTION_REQUESTS_TOTAL = SENTINEL_METRIC_NAME_PREFIX + ".exception_requests_total";
+	public static final String REQUESTS_LATENCY_SECONDS = SENTINEL_METRIC_NAME_PREFIX + ".requests.latency.seconds";
+	public static final String CURRENT_THREADS 			= SENTINEL_METRIC_NAME_PREFIX + ".current.threads";
+	public static final String DEFAULT_TAT_NAME 		= "resource";
 	private final AtomicLong CURRENT_THREAD_COUNT = new AtomicLong(0);
 
 	@Override

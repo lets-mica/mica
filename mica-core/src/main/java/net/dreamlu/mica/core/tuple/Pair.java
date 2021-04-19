@@ -16,7 +16,9 @@
 
 package net.dreamlu.mica.core.tuple;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * tuple Pair

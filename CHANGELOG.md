@@ -3,8 +3,8 @@
 ## 发行版本
 ### v2.4.5-GA - 2021-04-24
 - :sparkles: 添加 mica-lite 模块。
-- :sparkles: mica-metrics 完善 DruidMetrics。
-- :sparkles: mica-metrics 优化 UndertowMetrics，待下版本完全重构。
+- :sparkles: mica-metrics 重构 UndertowMetrics，暴露更加有用的指标。
+- :sparkles: mica-metrics 完善 DruidMetrics，暴露更加有用的指标。
 - :sparkles: mica-captcha 中的 cache 改为每次读取， caffeine 会刷新，照成引用为 null。
 - :sparkles: mica-logging 减少 reflections 日志，readme 添加阿里云、腾讯云日志服务接入链接。
 - :sparkles: mica-core 添加网关通用 code。
