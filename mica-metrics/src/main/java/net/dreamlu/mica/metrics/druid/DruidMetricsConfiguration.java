@@ -16,9 +16,11 @@
 
 package net.dreamlu.mica.metrics.druid;
 
+import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.jdbc.DataSourceUnwrapper;
 import org.springframework.boot.jdbc.metadata.DataSourcePoolMetadataProvider;
 import org.springframework.context.annotation.Bean;
@@ -48,6 +50,12 @@ public class DruidMetricsConfiguration {
 			}
 			return null;
 		};
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	public StatFilter statFilter() {
+		return new StatFilter();
 	}
 
 	@Bean
