@@ -118,32 +118,32 @@ public class UndertowMetrics implements ApplicationListener<ApplicationStartedEv
 
 	private void registerXWorker(MeterRegistry registry, XnioWorkerMXBean workerMXBean) {
 		Gauge.builder(METRIC_NAME_XWORK_WORKER_POOL_CORE_SIZE, workerMXBean, XnioWorkerMXBean::getCoreWorkerPoolSize)
-			.description("XWorker core worker pool size")
+			.description("XWork core worker pool size")
 			.tags(tags)
 			.tag("name", workerMXBean.getName())
 			.register(registry);
 		Gauge.builder(METRIC_NAME_XWORK_WORKER_POOL_MAX_SIZE, workerMXBean, XnioWorkerMXBean::getMaxWorkerPoolSize)
-			.description("XWorker max worker pool size")
+			.description("XWork max worker pool size")
 			.tags(tags)
 			.tag("name", workerMXBean.getName())
 			.register(registry);
 		Gauge.builder(METRIC_NAME_XWORK_WORKER_POOL_SIZE, workerMXBean, XnioWorkerMXBean::getWorkerPoolSize)
-			.description("XWorker worker pool size")
+			.description("XWork worker pool size")
 			.tags(tags)
 			.tag("name", workerMXBean.getName())
 			.register(registry);
 		Gauge.builder(METRIC_NAME_XWORK_WORKER_THREAD_BUSY_COUNT, workerMXBean, XnioWorkerMXBean::getBusyWorkerThreadCount)
-			.description("XWorker busy worker thread count")
+			.description("XWork busy worker thread count")
 			.tags(tags)
 			.tag("name", workerMXBean.getName())
 			.register(registry);
 		Gauge.builder(METRIC_NAME_XWORK_IO_THREAD_COUNT, workerMXBean, XnioWorkerMXBean::getIoThreadCount)
-			.description("XWorker io thread count")
+			.description("XWork io thread count")
 			.tags(tags)
 			.tag("name", workerMXBean.getName())
 			.register(registry);
 		Gauge.builder(METRIC_NAME_XWORK_WORKER_QUEUE_SIZE, workerMXBean, XnioWorkerMXBean::getWorkerQueueSize)
-			.description("XWorker worker queue size")
+			.description("XWork worker queue size")
 			.tags(tags)
 			.tag("name", workerMXBean.getName())
 			.register(registry);
