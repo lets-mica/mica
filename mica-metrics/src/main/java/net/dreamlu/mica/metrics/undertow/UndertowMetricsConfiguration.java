@@ -44,7 +44,7 @@ public class UndertowMetricsConfiguration {
 	}
 
 	@Bean
-	public UndertowBuilderCustomizer undertowBuilderCustomizer() {
+	public UndertowBuilderCustomizer undertowBuilderCustomizerEnableStatistics() {
 		return builder -> builder.setServerOption(UndertowOptions.ENABLE_STATISTICS, true);
 	}
 

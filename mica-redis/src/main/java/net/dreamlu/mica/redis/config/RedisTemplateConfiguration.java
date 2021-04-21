@@ -70,10 +70,10 @@ public class RedisTemplateConfiguration {
 		return new GenericJackson2JsonRedisSerializer(objectMapper);
 	}
 
-	@Bean(name = "redisTemplate")
+	@Bean
 	@ConditionalOnMissingBean(RedisTemplate.class)
-	public RedisTemplate<String, Object> redisTemplate(
-		RedisConnectionFactory redisConnectionFactory, RedisSerializer<Object> redisSerializer) {
+	public RedisTemplate<String, Object> micaRedisTemplate(RedisConnectionFactory redisConnectionFactory,
+														   RedisSerializer<Object> redisSerializer) {
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 		// key 序列化
 		RedisSerializer<String> keySerializer = RedisSerializer.string();
@@ -88,7 +88,7 @@ public class RedisTemplateConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean(ValueOperations.class)
-	public ValueOperations valueOperations(RedisTemplate redisTemplate) {
+	public ValueOperations<String, Object> valueOperations(RedisTemplate<String, Object> redisTemplate) {
 		return redisTemplate.opsForValue();
 	}
 
