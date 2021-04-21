@@ -18,6 +18,7 @@ package net.dreamlu.mica.captcha.service;
 
 import net.dreamlu.mica.captcha.vo.CaptchaVo;
 import net.dreamlu.mica.core.utils.Base64Util;
+import net.dreamlu.mica.core.utils.StringUtil;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -75,6 +76,15 @@ public interface ICaptchaService {
 		FastByteArrayOutputStream outputStream = new FastByteArrayOutputStream();
 		this.generate(uuid, outputStream);
 		return "data:image/jpeg;base64," + Base64Util.encodeToString(outputStream.toByteArray());
+	}
+
+	/**
+	 * 生成验证码 base64 CaptchaVo
+	 *
+	 * @return CaptchaVo
+	 */
+	default CaptchaVo generateBase64Vo() {
+		return generateBase64Vo(StringUtil.getUUID());
 	}
 
 	/**

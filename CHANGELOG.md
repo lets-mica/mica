@@ -6,6 +6,7 @@
 - :sparkles: mica-metrics 重构 UndertowMetrics，暴露更加有用的指标。
 - :sparkles: mica-metrics 完善 DruidMetrics，暴露更加有用的指标。
 - :sparkles: mica-captcha 中的 cache 改为每次读取， caffeine 会刷新，照成引用为 null。
+- :sparkles: mica-captcha 优化 bean 名称和添加 generateBase64Vo 方法。
 - :sparkles: mica-logging 减少 reflections 日志，readme 添加阿里云、腾讯云日志服务接入链接。
 - :sparkles: mica-core 添加网关通用 code。
 - :sparkles: mica-core 添加 CollectionUtil computeIfAbsent 方法 避免 jdk8 下的 bugs JDK-8161372

@@ -43,13 +43,13 @@ public class MicaCaptchaAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public Captcha captcha(MicaCaptchaProperties properties) {
+	public Captcha imageCaptcha(MicaCaptchaProperties properties) {
 		return new Captcha(properties.getCaptchaType());
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
-	public ICaptchaService captchaService(MicaCaptchaProperties properties,
+	public ICaptchaService imageCaptchaService(MicaCaptchaProperties properties,
 										  ICaptchaCache captchaCache,
 										  Captcha captcha) {
 		return new CaptchaServiceImpl(properties, captchaCache, captcha);
