@@ -1,0 +1,51 @@
+{
+  "groups": [
+    {
+      "name": "jetcache",
+      "type": "com.alicp.jetcache.autoconfigure.JetCacheProperties",
+      "sourceType": "com.alicp.jetcache.autoconfigure.JetCacheProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "jetcache.area-in-cache-name",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.alicp.jetcache.autoconfigure.JetCacheProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "jetcache.enable-method-cache",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.alicp.jetcache.autoconfigure.JetCacheProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "jetcache.hidden-packages",
+      "type": "java.lang.String[]",
+      "sourceType": "com.alicp.jetcache.autoconfigure.JetCacheProperties"
+    },
+    {
+      "name": "jetcache.local",
+      "type": "java.util.Map<java.lang.String,java.util.Map<java.lang.String,java.lang.Object>>",
+      "sourceType": "com.alicp.jetcache.autoconfigure.JetCacheProperties"
+    },
+    {
+      "name": "jetcache.penetration-protect",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.alicp.jetcache.autoconfigure.JetCacheProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "jetcache.remote",
+      "type": "java.util.Map<java.lang.String,java.util.Map<java.lang.String,java.lang.Object>>",
+      "sourceType": "com.alicp.jetcache.autoconfigure.JetCacheProperties"
+    },
+    {
+      "name": "jetcache.stat-interval-minutes",
+      "type": "java.lang.Integer",
+      "sourceType": "com.alicp.jetcache.autoconfigure.JetCacheProperties",
+      "defaultValue": 0
+    }
+  ],
+  "hints": []
+}
