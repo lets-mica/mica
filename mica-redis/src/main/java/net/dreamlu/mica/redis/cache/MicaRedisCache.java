@@ -95,6 +95,19 @@ public class MicaRedisCache {
 	}
 
 	/**
+	 * Set the {@code value} and expiration {@code timeout} for {@code key}.
+	 *
+	 * @param key must not be {@literal null}.
+	 * @param value must not be {@literal null}.
+	 * @param timeout the key expiration timeout.
+	 * @param unit must not be {@literal null}.
+	 * @see <a href="https://redis.io/commands/setex">Redis Documentation: SETEX</a>
+	 */
+	public void setEx(String key, Object value, long timeout, TimeUnit unit) {
+		valueOps.set(key, value, timeout, unit);
+	}
+
+	/**
 	 * 返回 key 所关联的 value 值
 	 * 如果 key 不存在那么返回特殊值 nil 。
 	 */
