@@ -28,17 +28,17 @@ jetcache:
   local:
     default:
       type: caffeine
-      keyConvertor: jackson
+      keyConvertor: bean:jacksonKeyConvertor
   remote:
-    default:
-      type: redis
-      keyConvertor: jackson
-      valueEncoder: kryo
-      valueDecoder: kryo
-      poolConfig:
-        minIdle: 5
-        maxIdle: 20
-        maxTotal: 50
-      host: 127.0.0.1
-      port: 6379
+      default:
+        type: redis.springdata
+        keyConvertor: bean:jacksonKeyConvertor
+        valueEncoder: kryo
+        valueDecoder: kryo
+        poolConfig:
+          minIdle: 5
+          maxIdle: 20
+          maxTotal: 50
+        host: 127.0.0.1
+        port: 6379
 ```

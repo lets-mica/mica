@@ -16,12 +16,15 @@
 
 package net.dreamlu.mica.jetcache.config;
 
+import com.alicp.jetcache.anno.support.DefaultSpringKeyConvertorParser;
 import com.alicp.jetcache.anno.support.GlobalCacheConfig;
+import com.alicp.jetcache.anno.support.SpringConfigProvider;
 import com.alicp.jetcache.support.StatInfo;
 import com.alicp.jetcache.support.StatInfoLogger;
 import net.dreamlu.mica.jetcache.jackson.JacksonKeyConvertor;
 import net.dreamlu.mica.jetcache.metrics.JetCacheMonitorManager;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,9 +38,18 @@ import java.util.function.Consumer;
 @Configuration(proxyBeanMethods = false)
 public class JetCacheConfiguration {
 
-	@Bean
-	public JacksonKeyConvertor jacksonKeyConvertor() {
+	@Bean("jacksonKeyConvertor")
+	public JacksonKeyConvertor JacksonKeyConvertor() {
 		return new JacksonKeyConvertor();
+	}
+
+	@Bean
+	public SpringConfigProvider springConfigProvider(ApplicationContext applicationContext) {
+		DefaultSpringKeyConvertorParser convertorParser = new DefaultSpringKeyConvertorParser();
+		convertorParser.setApplicationContext(applicationContext);
+		SpringConfigProvider springConfigProvider = new SpringConfigProvider();
+		springConfigProvider.setKeyConvertorParser(convertorParser);
+		return springConfigProvider;
 	}
 
 	@Bean
