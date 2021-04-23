@@ -19,3 +19,26 @@
 ```groovy
 compile("net.dreamlu:mica-jetcache:${version}")
 ```
+
+## 配置示例
+```yaml
+jetcache:
+  statIntervalMinutes: 1
+  areaInCacheName: false
+  local:
+    default:
+      type: caffeine
+      keyConvertor: jackson
+  remote:
+    default:
+      type: redis
+      keyConvertor: jackson
+      valueEncoder: kryo
+      valueDecoder: kryo
+      poolConfig:
+        minIdle: 5
+        maxIdle: 20
+        maxTotal: 50
+      host: 127.0.0.1
+      port: 6379
+```
