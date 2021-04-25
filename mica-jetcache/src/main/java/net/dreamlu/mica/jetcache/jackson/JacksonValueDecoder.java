@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.jetcache.jackson;
 
+import com.alicp.jetcache.CacheValueHolder;
 import com.alicp.jetcache.support.CacheEncodeException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class JacksonValueDecoder implements Function<byte[], Object> {
 	@Override
 	public Object apply(byte[] bytes) {
 		try {
-			return mapper.readValue(bytes, Object.class);
+			return mapper.readValue(bytes, CacheValueHolder.class);
 		} catch (IOException e) {
 			throw new CacheEncodeException("decode error", e);
 		}

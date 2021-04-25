@@ -16,9 +16,11 @@
 
 package net.dreamlu.mica.jetcache.config;
 
-import com.alicp.jetcache.anno.support.*;
+import com.alicp.jetcache.anno.support.ConfigMap;
+import com.alicp.jetcache.anno.support.DefaultSpringEncoderParser;
+import com.alicp.jetcache.anno.support.DefaultSpringKeyConvertorParser;
+import com.alicp.jetcache.anno.support.SpringConfigProvider;
 import com.alicp.jetcache.autoconfigure.JetCacheAutoConfiguration;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.jetcache.jackson.JacksonKeyConvertor;
@@ -26,6 +28,7 @@ import net.dreamlu.mica.jetcache.jackson.JacksonValueDecoder;
 import net.dreamlu.mica.jetcache.jackson.JacksonValueEncoder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,6 +59,7 @@ public class JetCacheConfiguration implements InitializingBean {
 	}
 
 	@Bean
+	@ConditionalOnMissingBean
 	public ConfigMap configMap() {
 		return new ConfigMap();
 	}
@@ -83,7 +87,7 @@ public class JetCacheConfiguration implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		ObjectMapper mapper = JsonUtil.getInstance().copy();
-		mapper.activateDefaultTyping(mapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+		mapper.activateDefaultTyping(mapper.getPolymorphicTypeValidator());
 		this.cacheMapper = mapper;
 	}
 
