@@ -16,19 +16,17 @@
 
 package net.dreamlu.mica.jetcache.config;
 
-import com.alicp.jetcache.anno.support.DefaultSpringKeyConvertorParser;
-import com.alicp.jetcache.anno.support.GlobalCacheConfig;
 import com.alicp.jetcache.anno.support.SpringConfigProvider;
-import com.alicp.jetcache.support.StatInfo;
-import com.alicp.jetcache.support.StatInfoLogger;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.jetcache.jackson.JacksonKeyConvertor;
-import net.dreamlu.mica.jetcache.metrics.JetCacheMonitorManager;
-import org.springframework.beans.factory.ObjectProvider;
+import net.dreamlu.mica.jetcache.jackson.JacksonValueDecoder;
+import net.dreamlu.mica.jetcache.jackson.JacksonValueEncoder;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.function.Consumer;
 
 /**
  * jetcache 配置
@@ -36,27 +34,43 @@ import java.util.function.Consumer;
  * @author L.cm
  */
 @Configuration(proxyBeanMethods = false)
-public class JetCacheConfiguration {
+public class JetCacheConfiguration implements InitializingBean {
+	private ObjectMapper cacheMapper;
 
 	@Bean("jacksonKeyConvertor")
-	public JacksonKeyConvertor JacksonKeyConvertor() {
-		return new JacksonKeyConvertor();
+	public JacksonKeyConvertor jacksonKeyConvertor() {
+		return new JacksonKeyConvertor(JsonUtil.getInstance());
+	}
+
+	@Bean("jacksonValueDecoder")
+	public JacksonValueDecoder jacksonValueDecoder() {
+		return new JacksonValueDecoder(cacheMapper);
+	}
+
+	@Bean("jacksonValueEncoder")
+	public JacksonValueEncoder jacksonValueEncoder() {
+		return new JacksonValueEncoder(cacheMapper);
 	}
 
 	@Bean
 	public SpringConfigProvider springConfigProvider(ApplicationContext applicationContext) {
-		DefaultSpringKeyConvertorParser convertorParser = new DefaultSpringKeyConvertorParser();
-		convertorParser.setApplicationContext(applicationContext);
 		SpringConfigProvider springConfigProvider = new SpringConfigProvider();
-		springConfigProvider.setKeyConvertorParser(convertorParser);
+		springConfigProvider.setApplicationContext(applicationContext);
 		return springConfigProvider;
 	}
 
-	@Bean
-	public JetCacheMonitorManager jetCacheMonitorManager(GlobalCacheConfig globalCacheConfig,
-														 ObjectProvider<Consumer<StatInfo>> metricsProvide) {
-		Consumer<StatInfo> metricsCallback = metricsProvide.getIfAvailable(() -> new StatInfoLogger(false));
-		return new JetCacheMonitorManager(globalCacheConfig, metricsCallback);
+//	@Bean
+//	public JetCacheMonitorManager jetCacheMonitorManager(GlobalCacheConfig globalCacheConfig,
+//														 ObjectProvider<Consumer<StatInfo>> metricsProvide) {
+//		Consumer<StatInfo> metricsCallback = metricsProvide.getIfAvailable(() -> new StatInfoLogger(false));
+//		return new JetCacheMonitorManager(globalCacheConfig, metricsCallback);
+//	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		ObjectMapper mapper = JsonUtil.getInstance().copy();
+		mapper.activateDefaultTyping(mapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+		this.cacheMapper = mapper;
 	}
 
 }

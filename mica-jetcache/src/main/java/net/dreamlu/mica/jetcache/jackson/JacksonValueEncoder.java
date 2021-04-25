@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.jetcache.jackson;
 
-
 import com.alicp.jetcache.support.CacheEncodeException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,28 +24,21 @@ import lombok.RequiredArgsConstructor;
 import java.util.function.Function;
 
 /**
- * JacksonKey Convertor
+ * Jackson ValueEncoder
  *
  * @author L.cm
  */
 @RequiredArgsConstructor
-public class JacksonKeyConvertor implements Function<Object, Object> {
+public class JacksonValueEncoder implements Function<Object, byte[]> {
 	private final ObjectMapper mapper;
 
 	@Override
-	public Object apply(Object originalKey) {
-		if (originalKey == null) {
-			return null;
-		}
-		if (originalKey instanceof String) {
-			return originalKey;
-		}
+	public byte[] apply(Object o) {
 		try {
-			return mapper.writeValueAsString(originalKey);
+			return mapper.writeValueAsBytes(o);
 		} catch (JsonProcessingException e) {
-			throw new CacheEncodeException("Key convertor error", e);
+			throw new CacheEncodeException("decode error", e);
 		}
 	}
 
 }
-

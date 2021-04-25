@@ -1,8 +1,9 @@
 # mica-metrics 组件
 
 ## 功能
-- sentinel 指标收集。
+- druid 指标收集。
 - undertow 指标收集。
+- sentinel 指标收集。
 
 ## 使用
 ### maven
