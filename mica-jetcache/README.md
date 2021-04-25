@@ -1,9 +1,9 @@
 # mica-jetcache
 
 ## 功能扩展
-- 扩展 metrics 打通 micrometer
-- jackson KeyConvertorParser
+- jackson KeyConvertorParser、encoder、decoder
 - 添加 spring-configuration-metadata.json
+- 扩展 metrics 打通 micrometer（暂时未实现）
 
 ## 使用
 ### maven
@@ -27,14 +27,14 @@ jetcache:
   areaInCacheName: false
   local:
     default:
-      type: caffeine
+      type: caffeine # 还支持：linkedhashmap
       keyConvertor: bean:jacksonKeyConvertor
   remote:
     default:
       type: redis.springdata
       keyConvertor: bean:jacksonKeyConvertor
-      valueEncoder: bean:jacksonValueEncoder
-      valueDecoder: bean:jacksonValueDecoder
+      valueEncoder: bean:jacksonValueEncoder # 支持：kryo、java 
+      valueDecoder: bean:jacksonValueDecoder # 支持：kryo、java
       poolConfig:
         minIdle: 5
         maxIdle: 20

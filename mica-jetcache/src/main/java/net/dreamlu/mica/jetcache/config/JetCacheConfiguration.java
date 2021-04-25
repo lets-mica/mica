@@ -16,7 +16,8 @@
 
 package net.dreamlu.mica.jetcache.config;
 
-import com.alicp.jetcache.anno.support.SpringConfigProvider;
+import com.alicp.jetcache.anno.support.*;
+import com.alicp.jetcache.autoconfigure.JetCacheAutoConfiguration;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dreamlu.mica.core.utils.JsonUtil;
@@ -24,6 +25,7 @@ import net.dreamlu.mica.jetcache.jackson.JacksonKeyConvertor;
 import net.dreamlu.mica.jetcache.jackson.JacksonValueDecoder;
 import net.dreamlu.mica.jetcache.jackson.JacksonValueEncoder;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +36,7 @@ import org.springframework.context.annotation.Configuration;
  * @author L.cm
  */
 @Configuration(proxyBeanMethods = false)
+@AutoConfigureBefore(JetCacheAutoConfiguration.class)
 public class JetCacheConfiguration implements InitializingBean {
 	private ObjectMapper cacheMapper;
 
@@ -53,9 +56,20 @@ public class JetCacheConfiguration implements InitializingBean {
 	}
 
 	@Bean
+	public ConfigMap configMap() {
+		return new ConfigMap();
+	}
+
+	@Bean
 	public SpringConfigProvider springConfigProvider(ApplicationContext applicationContext) {
+		DefaultSpringKeyConvertorParser convertorParser = new DefaultSpringKeyConvertorParser();
+		convertorParser.setApplicationContext(applicationContext);
 		SpringConfigProvider springConfigProvider = new SpringConfigProvider();
+		springConfigProvider.setKeyConvertorParser(convertorParser);
 		springConfigProvider.setApplicationContext(applicationContext);
+		DefaultSpringEncoderParser encoderParser = new DefaultSpringEncoderParser();
+		encoderParser.setApplicationContext(applicationContext);
+		springConfigProvider.setEncoderParser(encoderParser);
 		return springConfigProvider;
 	}
 

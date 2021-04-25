@@ -35,6 +35,7 @@ import java.util.function.Consumer;
  *
  * @author L.cm
  */
+@SuppressWarnings("unchecked")
 public class JetCacheMonitorManager implements CacheMonitorManager, InitializingBean, DisposableBean {
 	private final DefaultMetricsManager defaultMetricsManager;
 
