@@ -11,11 +11,11 @@
 `注意`：`snapshots` 版本会及时响应，修复最新的 `bug` 或者必要的需求。
 
 ## 使用文档
-![mica 2.x 模块图](docs/img/mica2.x-open.jpg)
-
 **使用文档**详见：[http://wiki.dreamlu.net（mica2.x 使用文档）](http://wiki.dreamlu.net/guide/getting-started.html)
 
 **更新记录**详见：[Mica 更新记录](CHANGELOG.md)
+
+![mica 2.x 模块图](docs/img/mica2.x-open.jpg)
 
 ## 版本说明
 | 最新版本     | mica 版本         | spring boot 版本  | spring cloud 版本 |
