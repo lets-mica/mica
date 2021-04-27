@@ -19,7 +19,6 @@ package net.dreamlu.mica.metrics.druid;
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnAvailableEndpoint;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.jdbc.DataSourceUnwrapper;
@@ -39,7 +38,6 @@ import java.util.Map;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(DruidDataSource.class)
-@ConditionalOnAvailableEndpoint(endpoint = DruidMetrics.class)
 public class DruidMetricsConfiguration {
 	private static final String DATASOURCE_SUFFIX = "dataSource";
 
