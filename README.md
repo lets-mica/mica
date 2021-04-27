@@ -11,7 +11,7 @@
 `注意`：`snapshots` 版本会及时响应，修复最新的 `bug` 或者必要的需求。
 
 ## 使用文档
-![mica 2.x 模块图](docs/img/mica2.x-open.png)
+![mica 2.x 模块图](docs/img/mica2.x-open.jpg)
 
 **使用文档**详见：[http://wiki.dreamlu.net（mica2.x 使用文档）](http://wiki.dreamlu.net/guide/getting-started.html)
 
