@@ -15,7 +15,6 @@
 - :sparkles: mica-core 添加 CollectionUtil computeIfAbsent 方法 避免 jdk8 下的 bugs JDK-8161372
 - :sparkles: mica-core Pkcs7Encoder 中默认的 BLOCK_SIZE 改为 16 github #35 兼容更多编程语言。
 - :bug: mica-caffeine 多 cache name 时报错。
-- :memo: mica-logging 添加阿里、腾讯云日志服务接入。
 - :arrow_up: 升级 spring boot 到 2.4.5
 
 ### v2.4.4-GA - 2021-03-28
