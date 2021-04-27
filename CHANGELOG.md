@@ -16,6 +16,7 @@
 - :sparkles: mica-core Pkcs7Encoder 中默认的 BLOCK_SIZE 改为 16 github #35 兼容更多编程语言。
 - :bug: mica-caffeine 多 cache name 时报错。
 - :arrow_up: 升级 spring boot 到 2.4.5
+- :arrow_up: 升级 mica-weixin 到 2.1.0（优化对 mica-caffeine 的支持）
 
 ### v2.4.4-GA - 2021-03-28
 - :sparkles: mica-qrcode 新增模块，友好的二维码识别和生成
