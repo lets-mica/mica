@@ -16,10 +16,10 @@
 
 package net.dreamlu.mica.logging.config;
 
-import net.dreamlu.mica.auto.annotation.AutoContextInitializer;
+import net.dreamlu.mica.auto.annotation.AutoEnvPostProcessor;
 import net.dreamlu.mica.logging.utils.LoggingUtil;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 
@@ -28,12 +28,11 @@ import org.springframework.core.env.ConfigurableEnvironment;
  *
  * @author L.cm
  */
-@AutoContextInitializer
-public class LoggingInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext>, Ordered {
+@AutoEnvPostProcessor
+public class LoggingInitializer implements EnvironmentPostProcessor, Ordered {
 
 	@Override
-	public void initialize(ConfigurableApplicationContext context) {
-		ConfigurableEnvironment environment = context.getEnvironment();
+	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
 		// 读取系统配置的日志目录，默认为项目下 logs
 		String logBase = environment.getProperty("logging.file.path", LoggingUtil.DEFAULT_LOG_DIR);
 		// 用于 spring boot admin 中展示日志
