@@ -30,8 +30,9 @@ import java.util.List;
  */
 @Getter
 @Setter
-@ConfigurationProperties("mica.xss")
+@ConfigurationProperties(MicaXssProperties.PREFIX)
 public class MicaXssProperties {
+	public static final String PREFIX = "mica.xss";
 
 	/**
 	 * 开启xss

@@ -77,13 +77,6 @@ public class JetCacheConfiguration implements InitializingBean {
 		return springConfigProvider;
 	}
 
-//	@Bean
-//	public JetCacheMonitorManager jetCacheMonitorManager(GlobalCacheConfig globalCacheConfig,
-//														 ObjectProvider<Consumer<StatInfo>> metricsProvide) {
-//		Consumer<StatInfo> metricsCallback = metricsProvide.getIfAvailable(() -> new StatInfoLogger(false));
-//		return new JetCacheMonitorManager(globalCacheConfig, metricsCallback);
-//	}
-
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		ObjectMapper mapper = JsonUtil.getInstance().copy();

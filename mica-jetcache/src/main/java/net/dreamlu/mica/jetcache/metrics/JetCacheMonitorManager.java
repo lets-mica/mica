@@ -20,15 +20,11 @@ import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.CacheUtil;
 import com.alicp.jetcache.MultiLevelCache;
 import com.alicp.jetcache.anno.support.CacheMonitorManager;
-import com.alicp.jetcache.anno.support.GlobalCacheConfig;
 import com.alicp.jetcache.support.DefaultCacheMonitor;
 import com.alicp.jetcache.support.DefaultMetricsManager;
-import com.alicp.jetcache.support.StatInfo;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
+import org.springframework.lang.Nullable;
 
 /**
  * JetCache CacheMonitorManager
@@ -37,11 +33,11 @@ import java.util.function.Consumer;
  */
 @SuppressWarnings("unchecked")
 public class JetCacheMonitorManager implements CacheMonitorManager, InitializingBean, DisposableBean {
+	@Nullable
 	private final DefaultMetricsManager defaultMetricsManager;
 
-	public JetCacheMonitorManager(GlobalCacheConfig globalCacheConfig,
-								  Consumer<StatInfo> metricsCallback) {
-		this.defaultMetricsManager = new JetCacheMetricsManager(globalCacheConfig.getStatIntervalMinutes(), TimeUnit.MINUTES, metricsCallback);
+	public JetCacheMonitorManager(@Nullable DefaultMetricsManager defaultMetricsManager) {
+		this.defaultMetricsManager = defaultMetricsManager;
 	}
 
 	@Override
@@ -56,22 +52,30 @@ public class JetCacheMonitorManager implements CacheMonitorManager, Initializing
 				local.config().getMonitors().add(localMonitor);
 				DefaultCacheMonitor remoteMonitor = new DefaultCacheMonitor(cacheName + "_remote");
 				remote.config().getMonitors().add(remoteMonitor);
-				defaultMetricsManager.add(localMonitor, remoteMonitor);
+				if (defaultMetricsManager != null) {
+					defaultMetricsManager.add(localMonitor, remoteMonitor);
+				}
 			}
 		}
 		DefaultCacheMonitor monitor = new DefaultCacheMonitor(cacheName);
 		cache.config().getMonitors().add(monitor);
-		defaultMetricsManager.add(monitor);
-	}
-
-	@Override
-	public void destroy() throws Exception {
-		defaultMetricsManager.stop();
+		if (defaultMetricsManager != null) {
+			defaultMetricsManager.add(monitor);
+		}
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		defaultMetricsManager.start();
+		if (defaultMetricsManager != null) {
+			defaultMetricsManager.start();
+		}
+	}
+
+	@Override
+	public void destroy() throws Exception {
+		if (defaultMetricsManager != null) {
+			defaultMetricsManager.stop();
+		}
 	}
 
 }
