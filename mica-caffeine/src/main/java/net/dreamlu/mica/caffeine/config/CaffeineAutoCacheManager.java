@@ -65,6 +65,11 @@ public class CaffeineAutoCacheManager extends CaffeineCacheManager {
 	}
 
 	@Override
+	public void setCaffeine(Caffeine<Object, Object> caffeine) {
+		throw new IllegalArgumentException("mica-caffeine not support customization Caffeine bean，you can customize CaffeineSpec bean.");
+	}
+
+	@Override
 	public void setCaffeineSpec(CaffeineSpec caffeineSpec) {
 		super.setCaffeineSpec(caffeineSpec);
 		this.caffeineSpec = caffeineSpec;
