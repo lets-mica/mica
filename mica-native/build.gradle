@@ -1,0 +1,4 @@
+dependencies {
+    compileOnly "org.springframework.experimental:spring-aot:${springnativeVersion}"
+    compileOnly "org.springframework.experimental:spring-native:${springnativeVersion}"
+}

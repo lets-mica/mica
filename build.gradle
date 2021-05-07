@@ -5,6 +5,7 @@ plugins {
 ext {
     javaVersion = JavaVersion.VERSION_1_8
     springBootVersion = "2.4.5"
+    springnativeVersion = "0.9.1"
     springCloudVersion = "2020.0.2"
     micaAutoVersion = "2.0.4"
     micaWeiXinVersion = "2.1.0"
@@ -50,6 +51,7 @@ configure(subprojects - project(":mica-bom")) {
         maven { url "https://maven.aliyun.com/repository/public" }
         maven { url "https://maven.aliyun.com/repository/spring" }
         maven { url "https://maven.aliyun.com/repository/spring-plugin" }
+        maven { url "https://repo.spring.io/release" }
         maven { url "https://repo.spring.io/milestone" }
         mavenCentral()
     }
