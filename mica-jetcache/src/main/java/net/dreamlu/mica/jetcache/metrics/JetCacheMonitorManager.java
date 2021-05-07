@@ -22,6 +22,7 @@ import com.alicp.jetcache.MultiLevelCache;
 import com.alicp.jetcache.anno.support.CacheMonitorManager;
 import com.alicp.jetcache.support.DefaultCacheMonitor;
 import com.alicp.jetcache.support.DefaultMetricsManager;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.lang.Nullable;
@@ -35,9 +36,12 @@ import org.springframework.lang.Nullable;
 public class JetCacheMonitorManager implements CacheMonitorManager, InitializingBean, DisposableBean {
 	@Nullable
 	private final DefaultMetricsManager defaultMetricsManager;
+	private final MeterRegistry meterRegistry;
 
-	public JetCacheMonitorManager(@Nullable DefaultMetricsManager defaultMetricsManager) {
+	public JetCacheMonitorManager(@Nullable DefaultMetricsManager defaultMetricsManager,
+								  MeterRegistry meterRegistry) {
 		this.defaultMetricsManager = defaultMetricsManager;
+		this.meterRegistry = meterRegistry;
 	}
 
 	@Override

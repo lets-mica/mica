@@ -18,7 +18,7 @@ package net.dreamlu.mica.jetcache.config;
 
 import com.alicp.jetcache.anno.support.GlobalCacheConfig;
 import com.alicp.jetcache.support.DefaultMetricsManager;
-import io.micrometer.core.instrument.Meter;
+import io.micrometer.core.instrument.MeterRegistry;
 import net.dreamlu.mica.jetcache.metrics.JetCacheMonitorManager;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  * @author L.cm
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(Meter.class)
+@ConditionalOnClass(MeterRegistry.class)
 @ConditionalOnProperty(
 	prefix = JetCacheMetricsProperties.PREFIX,
 	name = "enabled",
@@ -46,14 +46,15 @@ public class JetCacheMetricsConfiguration {
 
 	@Bean
 	public JetCacheMonitorManager jetCacheMonitorManager(JetCacheMetricsProperties properties,
-														 GlobalCacheConfig globalCacheConfig) {
+														 GlobalCacheConfig globalCacheConfig,
+														 MeterRegistry meterRegistry) {
 		DefaultMetricsManager defaultMetricsManager;
 		if (properties.isEnabledStatInfoLogger()) {
 			defaultMetricsManager = new DefaultMetricsManager(globalCacheConfig.getStatIntervalMinutes(), TimeUnit.MINUTES, properties.isVerboseLog());
 		} else {
 			defaultMetricsManager = null;
 		}
-		return new JetCacheMonitorManager(defaultMetricsManager);
+		return new JetCacheMonitorManager(defaultMetricsManager, meterRegistry);
 	}
 
 }
