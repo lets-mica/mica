@@ -34,6 +34,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 import org.springframework.nativex.hint.AccessBits;
+import org.springframework.nativex.hint.FieldHint;
 import org.springframework.nativex.hint.NativeHint;
 import org.springframework.nativex.hint.TypeHint;
 import org.springframework.util.CollectionUtils;
@@ -53,7 +54,12 @@ import java.util.stream.Collectors;
 @ConditionalOnMissingBean(CacheManager.class)
 @ConditionalOnClass({Caffeine.class, CaffeineCacheManager.class})
 @AutoConfigureBefore(name = "org.springframework.boot.autoconfigure.cache.CaffeineCacheConfiguration")
-@NativeHint(types = @TypeHint(types = CaffeineAutoCacheManager.class, access = AccessBits.ALL))
+@NativeHint(types = {
+		@TypeHint(types = CaffeineAutoCacheManager.class, access = AccessBits.ALL),
+		@TypeHint(types = CaffeineCacheManager.class, access = AccessBits.ALL),
+        @TypeHint(typeNames = "com.github.benmanes.caffeine.cache.SSA", access = AccessBits.ALL),
+        @TypeHint(typeNames = "com.github.benmanes.caffeine.cache.UnsafeAccess", fields = @FieldHint(name = "UNSAFE", allowUnsafeAccess = true), access = AccessBits.PUBLIC_METHODS)
+})
 public class CaffeineAutoCacheConfiguration {
 
 	@Bean
