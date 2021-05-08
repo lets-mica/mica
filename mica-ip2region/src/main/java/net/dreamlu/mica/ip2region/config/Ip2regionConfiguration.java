@@ -22,6 +22,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.nativex.hint.NativeHint;
+import org.springframework.nativex.hint.ResourceHint;
 
 /**
  * ip2region 自动化配置
@@ -30,6 +32,7 @@ import org.springframework.core.io.ResourceLoader;
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(Ip2regionProperties.class)
+@NativeHint(resources = @ResourceHint(patterns = "^ip2region/ip2region.db"))
 public class Ip2regionConfiguration {
 
 	@Bean
