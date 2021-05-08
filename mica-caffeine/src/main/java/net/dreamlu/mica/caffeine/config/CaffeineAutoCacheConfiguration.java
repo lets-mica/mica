@@ -33,6 +33,9 @@ import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
+import org.springframework.nativex.hint.AccessBits;
+import org.springframework.nativex.hint.NativeHint;
+import org.springframework.nativex.hint.TypeHint;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -50,6 +53,7 @@ import java.util.stream.Collectors;
 @ConditionalOnMissingBean(CacheManager.class)
 @ConditionalOnClass({Caffeine.class, CaffeineCacheManager.class})
 @AutoConfigureBefore(name = "org.springframework.boot.autoconfigure.cache.CaffeineCacheConfiguration")
+@NativeHint(types = @TypeHint(types = CaffeineAutoCacheManager.class, access = AccessBits.ALL))
 public class CaffeineAutoCacheConfiguration {
 
 	@Bean
@@ -72,7 +76,7 @@ public class CaffeineAutoCacheConfiguration {
 		return customizers.customize(cacheManager);
 	}
 
-	private CaffeineAutoCacheManager createCacheManager(CacheProperties cacheProperties,
+	private static CaffeineAutoCacheManager createCacheManager(CacheProperties cacheProperties,
 														ObjectProvider<Caffeine<Object, Object>> caffeine, ObjectProvider<CaffeineSpec> caffeineSpec,
 														ObjectProvider<CacheLoader<Object, Object>> cacheLoader) {
 		CaffeineAutoCacheManager cacheManager = new CaffeineAutoCacheManager();
@@ -81,7 +85,7 @@ public class CaffeineAutoCacheConfiguration {
 		return cacheManager;
 	}
 
-	private void setCacheBuilder(CacheProperties cacheProperties,
+	private static void setCacheBuilder(CacheProperties cacheProperties,
 								 @Nullable CaffeineSpec caffeineSpec,
 								 @Nullable Caffeine<Object, Object> caffeine,
 								 CaffeineCacheManager cacheManager) {

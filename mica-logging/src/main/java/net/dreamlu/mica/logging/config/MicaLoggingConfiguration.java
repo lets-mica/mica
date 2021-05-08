@@ -32,6 +32,8 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+import org.springframework.nativex.hint.NativeHint;
+import org.springframework.nativex.hint.ResourceHint;
 import org.springframework.util.ClassUtils;
 
 import java.lang.annotation.*;
@@ -48,6 +50,7 @@ import java.util.Objects;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(MicaLoggingProperties.class)
+@NativeHint(resources = @ResourceHint(patterns = "^logback-spring-graalvm.xml"))
 public class MicaLoggingConfiguration {
 
 	@Bean

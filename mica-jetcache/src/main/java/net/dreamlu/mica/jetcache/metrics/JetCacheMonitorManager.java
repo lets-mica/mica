@@ -50,12 +50,18 @@ public class JetCacheMonitorManager implements CacheMonitorManager, Initializing
 		if (cache instanceof MultiLevelCache) {
 			MultiLevelCache mc = (MultiLevelCache) cache;
 			if (mc.caches().length == 2) {
+				// local cache
 				Cache local = mc.caches()[0];
-				Cache remote = mc.caches()[1];
-				DefaultCacheMonitor localMonitor = new DefaultCacheMonitor(cacheName + "_local");
+				String localCacheName = cacheName + "_local";
+				DefaultCacheMonitor localMonitor = new DefaultCacheMonitor(localCacheName);
 				local.config().getMonitors().add(localMonitor);
+				registerMeters(meterRegistry, localCacheName, localMonitor);
+				// remote cache
+				Cache remote = mc.caches()[1];
+				String remoteCacheName = cacheName + "_remote";
 				DefaultCacheMonitor remoteMonitor = new DefaultCacheMonitor(cacheName + "_remote");
 				remote.config().getMonitors().add(remoteMonitor);
+				registerMeters(meterRegistry, remoteCacheName, remoteMonitor);
 				if (defaultMetricsManager != null) {
 					defaultMetricsManager.add(localMonitor, remoteMonitor);
 				}
@@ -63,6 +69,7 @@ public class JetCacheMonitorManager implements CacheMonitorManager, Initializing
 		}
 		DefaultCacheMonitor monitor = new DefaultCacheMonitor(cacheName);
 		cache.config().getMonitors().add(monitor);
+		registerMeters(meterRegistry, cacheName, monitor);
 		if (defaultMetricsManager != null) {
 			defaultMetricsManager.add(monitor);
 		}
@@ -80,6 +87,12 @@ public class JetCacheMonitorManager implements CacheMonitorManager, Initializing
 		if (defaultMetricsManager != null) {
 			defaultMetricsManager.stop();
 		}
+	}
+
+	private static void registerMeters(MeterRegistry meterRegistry,
+									   String cacheName,
+									   DefaultCacheMonitor remoteMonitor) {
+
 	}
 
 }

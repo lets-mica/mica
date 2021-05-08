@@ -5,5 +5,6 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     compileOnly "org.springframework.cloud:spring-cloud-context"
     compileOnly "net.dreamlu:mica-auto:${micaAutoVersion}"
+    compileOnly "org.springframework.experimental:spring-native:${springnativeVersion}"
     annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
 }

@@ -17,6 +17,7 @@
 package net.dreamlu.mica.logging.config;
 
 import net.dreamlu.mica.auto.annotation.AutoEnvPostProcessor;
+import net.dreamlu.mica.core.graalvm.NativeUtil;
 import net.dreamlu.mica.logging.utils.LoggingUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
@@ -37,6 +38,12 @@ public class LoggingInitializer implements EnvironmentPostProcessor, Ordered {
 		String logBase = environment.getProperty("logging.file.path", LoggingUtil.DEFAULT_LOG_DIR);
 		// 用于 spring boot admin 中展示日志
 		System.setProperty("logging.file.name", logBase + "/${spring.application.name}/" + LoggingUtil.LOG_FILE_ALL);
+		// graal 下 logback 单独配置 issues: https://github.com/spring-projects-experimental/spring-native/issues/607
+		if (NativeUtil.inNativeImage()) {
+			String rootLogLevel = environment.getProperty("logging.level.root", "INFO");
+			System.setProperty("rootLogLevel", rootLogLevel);
+			System.setProperty("logging.config", "classpath:logback-spring-graalvm.xml");
+		}
 	}
 
 	@Override
