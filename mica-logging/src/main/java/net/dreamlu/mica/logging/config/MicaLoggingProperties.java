@@ -36,6 +36,7 @@ public class MicaLoggingProperties {
 	private final Console console = new Console();
 	private final Files files = new Files();
 	private final Logstash logstash = new Logstash();
+	private final Loki loki = new Loki();
 
 	@Getter
 	@Setter
@@ -69,16 +70,90 @@ public class MicaLoggingProperties {
 		 */
 		private boolean enabled = false;
 		/**
-		 * logstash host
+		 * 目标地址，默认： localhost:5000，示例： host1.domain.com,host2.domain.com:5560
 		 */
-		private String host = "localhost";
-		/**
-		 * logstash port
-		 */
-		private int port = 5000;
+		private String destinations = "localhost:5000";
 		/**
 		 * logstash 队列大小
 		 */
 		private int queueSize = 512;
 	}
+
+	@Getter
+	@Setter
+	public static class Loki {
+		public static final String PREFIX = MicaLoggingProperties.PREFIX + ".loki";
+		/**
+		 * 是否开启 loki 日志收集
+		 */
+		private boolean enabled = false;
+		/**
+		 * 编码方式
+		 */
+		private LokiEncoder encoder = LokiEncoder.Json;
+		/**
+		 * http sender，默认: java11
+		 */
+		private HttpSender httpSender = HttpSender.JAVA_11;
+		/**
+		 * 通用配置
+		 */
+		private int batchMaxItems = 1000;
+		private int batchMaxBytes = 4 * 1024 * 1024;
+		private long batchTimeoutMs = 60000;
+		private long sendQueueMaxBytes = 41943040;
+		/**
+		 * 使用堆外内存
+		 */
+		private boolean useDirectBuffers = true;
+		private boolean drainOnStop = true;
+		/**
+		 * 开启 metrics
+		 */
+		private boolean metricsEnabled = false;
+		private boolean verbose = false;
+		/**
+		 * http 配置
+		 */
+		private String httpUrl;
+		private long httpConnectionTimeoutMs = 30000;
+		private long httpRequestTimeoutMs = 5000;
+		private String httpAuthUsername;
+		private String httpAuthPassword;
+		private String httpAuthTenantId;
+		/**
+		 * format 配置
+		 */
+		private String formatLabelPattern;
+		private String formatLabelPairSeparator = ",";
+		private String formatLabelKeyValueSeparator = "=";
+		private boolean formatLabelNoPex = true;
+		private String formatMessagePattern;
+		private boolean formatStaticLabels = false;
+		private boolean formatSortByTime = false;
+	}
+
+	/**
+	 * 编码方式
+	 */
+	public enum LokiEncoder {
+		/**
+		 * Encoder
+		 */
+		Json,
+		ProtoBuf
+	}
+
+	/**
+	 * http Sender
+	 */
+	public enum HttpSender {
+		/**
+		 * http 方式
+		 */
+		JAVA_11,
+		OK_HTTP,
+		APACHE_HTTP
+	}
+
 }

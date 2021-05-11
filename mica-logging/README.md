@@ -28,12 +28,21 @@ compile("net.dreamlu:mica-logging:${version}")
 ```
 
 ## 可选依赖
-**注意：** 开启 `json` 文件或 `logstash` **必须添加**该依赖！！！
+- 开启 `json` 文件或 `logstash` **必须添加**该依赖！！！
 
 ```xml
 <dependency>
     <groupId>net.logstash.logback</groupId>
     <artifactId>logstash-logback-encoder</artifactId>
+    <version>${version}</version>
+</dependency>
+```
+
+- 开启 `logstash` 额外还需要得依赖项
+```xml
+<dependency>
+    <groupId>com.lmax</groupId>
+    <artifactId>disruptor</artifactId>
     <version>${version}</version>
 </dependency>
 ```
@@ -58,6 +67,34 @@ spring:
 | mica.logging.logstash.host             | localhost | logstash host                                                |
 | mica.logging.logstash.port             | 5000      | logstash port                                                |
 | mica.logging.logstash.queue-size       | 512       | logstash 队列大小                                            |
+
+### loki 配置项
+| 配置项 | 默认值 | 说明 |
+| ----- | ------ | ------ |
+| mica.logging.loki.batch-max-bytes | 0 |  |
+| mica.logging.loki.batch-max-items | 1000 | 通用配置 |
+| mica.logging.loki.batch-timeout-ms | 60000 |  |
+| mica.logging.loki.drain-on-stop | true |  |
+| mica.logging.loki.enabled | false | 是否开启 loki 日志收集 |
+| mica.logging.loki.encoder |  | 编码方式 |
+| mica.logging.loki.format-label-key-value-separator | = |  |
+| mica.logging.loki.format-label-no-pex | true |  |
+| mica.logging.loki.format-label-pair-separator | , |  |
+| mica.logging.loki.format-label-pattern |  | format 配置 |
+| mica.logging.loki.format-message-pattern |  |  |
+| mica.logging.loki.format-sort-by-time | false |  |
+| mica.logging.loki.format-static-labels | false |  |
+| mica.logging.loki.http-auth-password |  |  |
+| mica.logging.loki.http-auth-tenant-id |  |  |
+| mica.logging.loki.http-auth-username |  |  |
+| mica.logging.loki.http-connection-timeout-ms | 30000 |  |
+| mica.logging.loki.http-request-timeout-ms | 5000 |  |
+| mica.logging.loki.http-sender |  | http sender，默认: java11 |
+| mica.logging.loki.http-url |  | http 配置 |
+| mica.logging.loki.metrics-enabled | false | 开启 metrics |
+| mica.logging.loki.send-queue-max-bytes | 41943040 |  |
+| mica.logging.loki.use-direct-buffers | true | 使用堆外内存 |
+| mica.logging.loki.verbose | false |  |
 
 ## 日志示例
 ### 文件日志

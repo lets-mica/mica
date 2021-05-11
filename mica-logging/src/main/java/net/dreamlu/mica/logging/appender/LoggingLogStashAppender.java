@@ -28,7 +28,6 @@ import net.logstash.logback.encoder.LogstashEncoder;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 
-import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,12 +83,12 @@ public class LoggingLogStashAppender implements ILoggingAppender {
 	 * @param customFields       a {@link String} object.
 	 * @param logStashProperties a {@link net.dreamlu.mica.logging.config.MicaLoggingProperties.Logstash} object.
 	 */
-	public static void addLogStashTcpSocketAppender(LoggerContext context,
+	private static void addLogStashTcpSocketAppender(LoggerContext context,
 													String customFields,
 													MicaLoggingProperties.Logstash logStashProperties) {
 		// More documentation is available at: https://github.com/logstash/logstash-logback-encoder
 		final LogstashTcpSocketAppender logStashAppender = new LogstashTcpSocketAppender();
-		logStashAppender.addDestinations(new InetSocketAddress(logStashProperties.getHost(), logStashProperties.getPort()));
+		logStashAppender.addDestination(logStashProperties.getDestinations());
 		logStashAppender.setContext(context);
 		logStashAppender.setEncoder(logstashEncoder(customFields));
 		logStashAppender.setName(ASYNC_LOG_STASH_APPENDER_NAME);

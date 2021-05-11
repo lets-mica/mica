@@ -18,6 +18,7 @@ ext {
     lombokVersion = "1.18.20"
     findbugsVersion = "3.0.2"
     logstashVersion = "6.6"
+    lokiLogbackAppender = "1.2.0"
     zxingVersion = "3.4.1"
     jetCacheVersion = "2.6.0"
 }

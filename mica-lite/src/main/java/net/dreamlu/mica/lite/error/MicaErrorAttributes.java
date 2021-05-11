@@ -21,12 +21,14 @@ import net.dreamlu.mica.core.exception.ServiceException;
 import net.dreamlu.mica.core.result.R;
 import net.dreamlu.mica.core.result.SystemCode;
 import net.dreamlu.mica.core.utils.BeanUtil;
+import net.dreamlu.mica.core.utils.StringUtil;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.lang.Nullable;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.RequestDispatcher;
 import java.util.Map;
 import java.util.Optional;
 
@@ -41,8 +43,14 @@ public class MicaErrorAttributes extends DefaultErrorAttributes {
 
 	@Override
 	public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options) {
-		String requestUrl = this.getAttr(webRequest, "javax.servlet.error.request_uri");
-		Integer status = this.getAttr(webRequest, "javax.servlet.error.status_code");
+		// 请求地址
+		String requestUrl = this.getAttr(webRequest, RequestDispatcher.ERROR_REQUEST_URI);
+		if (StringUtil.isBlank(requestUrl)) {
+			requestUrl = this.getAttr(webRequest, RequestDispatcher.FORWARD_REQUEST_URI);
+		}
+		// status code
+		Integer status = this.getAttr(webRequest, RequestDispatcher.ERROR_STATUS_CODE);
+		// error
 		Throwable error = getError(webRequest);
 		log.error("URL:{} error status:{}", requestUrl, status, error);
 		R<Object> result;

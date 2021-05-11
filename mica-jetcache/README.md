@@ -3,7 +3,7 @@
 ## 功能扩展
 - jackson KeyConvertorParser、encoder、decoder
 - 添加 spring-configuration-metadata.json
-- 扩展 metrics 打通 micrometer（暂时未实现）
+- 扩展 metrics 打通 micrometer
 
 ## 使用
 ### maven
@@ -19,6 +19,13 @@
 ```groovy
 compile("net.dreamlu:mica-jetcache:${version}")
 ```
+
+## 配置项
+| 配置项 | 默认值 | 说明 |
+| ----- | ------ | ------ |
+| jetcache.metrics.enabled | true | 开启 jetcache metrics，默认：true |
+| jetcache.metrics.enabled-stat-info-logger | false | 开启 StatInfoLogger |
+| jetcache.metrics.verbose-log | false | StatInfoLogger 打印明细，默认：false |
 
 ## 配置示例
 ```yaml

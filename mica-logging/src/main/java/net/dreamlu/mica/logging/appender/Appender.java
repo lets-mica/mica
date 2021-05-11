@@ -22,6 +22,10 @@ public enum Appender {
 	/**
 	 * logstash
 	 */
-	LOG_STASH;
+	LOG_STASH,
+	/**
+	 * loki
+	 */
+	LOKI;
 
 }
