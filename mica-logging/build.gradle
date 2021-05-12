@@ -2,7 +2,7 @@ dependencies {
     api project(":mica-core")
     api "org.springframework.boot:spring-boot-starter-logging"
     implementation "net.logstash.logback:logstash-logback-encoder:${logstashVersion}"
-    implementation "com.github.loki4j:loki-logback-appender:${lokiLogbackAppender}"
+    implementation "com.github.loki4j:loki-logback-appender-jdk8:${lokiLogbackAppender}"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     compileOnly "org.springframework.cloud:spring-cloud-context"
     compileOnly "com.squareup.okhttp3:okhttp"
