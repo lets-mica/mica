@@ -67,7 +67,7 @@ public class MicaLoggingConfiguration {
 
 		@Bean
 		public LoggingFileAppender loggingFileAppender(Environment environment,
-												MicaLoggingProperties properties) {
+													   MicaLoggingProperties properties) {
 			return new LoggingFileAppender(environment, properties);
 		}
 	}
@@ -79,7 +79,7 @@ public class MicaLoggingConfiguration {
 
 		@Bean
 		public LoggingJsonFileAppender loggingJsonFileAppender(Environment environment,
-												MicaLoggingProperties properties) {
+															   MicaLoggingProperties properties) {
 			return new LoggingJsonFileAppender(environment, properties);
 		}
 	}
@@ -91,7 +91,7 @@ public class MicaLoggingConfiguration {
 
 		@Bean
 		public LoggingLogStashAppender loggingLogStashAppender(Environment environment,
-												MicaLoggingProperties properties) {
+															   MicaLoggingProperties properties) {
 			return new LoggingLogStashAppender(environment, properties);
 		}
 	}
@@ -102,8 +102,9 @@ public class MicaLoggingConfiguration {
 	public static class LoggingLokiConfiguration {
 
 		@Bean
-		public LoggingLokiAppender loggingLokiAppender(MicaLoggingProperties properties) {
-			return new LoggingLokiAppender(properties);
+		public LoggingLokiAppender loggingLokiAppender(Environment environment,
+													   MicaLoggingProperties properties) {
+			return new LoggingLokiAppender(environment, properties);
 		}
 	}
 

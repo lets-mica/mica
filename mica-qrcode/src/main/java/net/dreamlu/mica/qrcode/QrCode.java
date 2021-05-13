@@ -476,6 +476,8 @@ public final class QrCode {
 			return result.getText();
 		} catch (NotFoundException | ChecksumException | FormatException e) {
 			throw Exceptions.unchecked(e);
+		} finally {
+			qrCodeImage.getGraphics().dispose();
 		}
 	}
 
@@ -507,10 +509,11 @@ public final class QrCode {
 		g2.setComposite(AlphaComposite.SrcAtop);
 		// 画 logo 图
 		g2.drawImage(logoImage, 4, 4, logoRectWidth - 8, logoRectHeight - 8, null);
+		logoImage.getGraphics().dispose();
 		g2.dispose();
 		// 将 logo 添加到 二维码上
 		Graphics2D gc = (Graphics2D) qrCodeImage.getGraphics();
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		gc.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		gc.setColor(qrCode.backGroundColor);
 		gc.drawImage(logoRect,
 			(baseWidth - logoRectWidth) / 2,

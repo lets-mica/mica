@@ -45,7 +45,7 @@ public class LoggingLogStashAppender implements ILoggingAppender {
 	public LoggingLogStashAppender(Environment environment,
 								   MicaLoggingProperties properties) {
 		this.properties = properties;
-		// 1. 服务名和环境和日志目录
+		// 1. 服务名和环境
 		String appName = environment.getRequiredProperty(MicaConstant.SPRING_APP_NAME_KEY);
 		String profile = environment.getRequiredProperty(MicaConstant.ACTIVE_PROFILES_PROPERTY);
 		// 2. json 自定义字段

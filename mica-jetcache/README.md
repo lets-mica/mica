@@ -20,6 +20,26 @@
 compile("net.dreamlu:mica-jetcache:${version}")
 ```
 
+### 可选依赖 spring data redis
+```xml
+<dependency>
+    <groupId>com.alicp.jetcache</groupId>
+    <artifactId>jetcache-redis-springdata</artifactId>
+    <version>2.6.0</version>
+</dependency>
+```
+
+### 可选依赖 jedis
+```xml
+<dependency>
+    <groupId>com.alicp.jetcache</groupId>
+    <artifactId>jetcache-redis</artifactId>
+    <version>2.6.0</version>
+</dependency>
+```
+
+**注意:** 可选依赖，必选其一。
+
 ## 配置项
 | 配置项 | 默认值 | 说明 |
 | ----- | ------ | ------ |
@@ -49,3 +69,6 @@ jetcache:
       host: 127.0.0.1
       port: 6379
 ```
+
+## jetcache 官方文档
+更多详细使用文档请见： https://github.com/alibaba/jetcache

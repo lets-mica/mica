@@ -88,13 +88,13 @@ public class MicaLoggingProperties {
 		 */
 		private boolean enabled = false;
 		/**
-		 * 编码方式
+		 * 编码方式，支持 Json、ProtoBuf，默认： Json
 		 */
 		private LokiEncoder encoder = LokiEncoder.Json;
 		/**
-		 * http sender，默认: java11
+		 * http sender，支持 java11、OKHttp、ApacheHttp，默认: java11
 		 */
-		private HttpSender httpSender = HttpSender.JAVA_11;
+		private HttpSender httpSender = HttpSender.JAVA11;
 		/**
 		 * 通用配置
 		 */
@@ -113,21 +113,30 @@ public class MicaLoggingProperties {
 		private boolean metricsEnabled = false;
 		private boolean verbose = false;
 		/**
-		 * http 配置
+		 * http 配置，默认: http://localhost:3100/loki/api/v1/push
 		 */
-		private String httpUrl;
+		private String httpUrl = "http://localhost:3100/loki/api/v1/push";
 		private long httpConnectionTimeoutMs = 30000;
 		private long httpRequestTimeoutMs = 5000;
 		private String httpAuthUsername;
 		private String httpAuthPassword;
-		private String httpAuthTenantId;
+		private String httpTenantId;
 		/**
-		 * format 配置
+		 * format 标签，默认： appName=${appName},profile=${profile},host=${HOSTNAME},level=%level,requestId=%X{requestId:-}
 		 */
-		private String formatLabelPattern;
+		private String formatLabelPattern = "appName=${appName},profile=${profile},host=${HOSTNAME},level=%level,requestId=%X{requestId:-NAN}";
+		/**
+		 * format 标签分隔符，默认:，
+		 */
 		private String formatLabelPairSeparator = ",";
+		/**
+		 * format 标签 key、value 分隔符，默认: =
+		 */
 		private String formatLabelKeyValueSeparator = "=";
 		private boolean formatLabelNoPex = true;
+		/**
+		 * 消息体格式，默认为: l=%level c=%logger{20} t=%thread | %msg %ex
+		 */
 		private String formatMessagePattern;
 		private boolean formatStaticLabels = false;
 		private boolean formatSortByTime = false;
@@ -151,9 +160,9 @@ public class MicaLoggingProperties {
 		/**
 		 * http 方式
 		 */
-		JAVA_11,
-		OK_HTTP,
-		APACHE_HTTP
+		JAVA11,
+		OKHttp,
+		ApacheHttp
 	}
 
 }
