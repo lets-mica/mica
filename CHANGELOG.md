@@ -6,6 +6,7 @@
 - :sparkles: mica-ip2region、mica-captcha 添加对 spring-native 的支持 #38 #I3PX2N
 - :sparkles: mica-jetcache 完善 metrics 待续 #37 #I3PX2K
 - :sparkles: mica-caffeine 添加不支持自定义 Caffeine bean 提示。
+- :sparkles: mica-core R 添加 throwOn 系列方法。
 - :bug: mica-logging 修复 LoggingInitializer Spring boot 2.4.x 失效的问题。
 - :arrow_up: 升级 druid 到 1.2.6
 

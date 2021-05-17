@@ -27,6 +27,8 @@ import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * 响应信息主体
@@ -185,6 +187,49 @@ public class R<T> implements Serializable {
 	 */
 	public static <T> R<T> fail(IResultCode rCode, String msg) {
 		return new R<>(rCode, msg);
+	}
+
+	/**
+	 * 断言 成功时：直接抛出失败异常，返回传入的 result。
+	 *
+	 * @param predicate 断言函数
+	 * @param object    模型
+	 * @param result    响应对象
+	 * @param <T>       泛型
+	 */
+	public static <T> void throwOn(Predicate<T> predicate, T object, R<?> result) {
+		if (predicate.test(object)) {
+			throw new ServiceException(result);
+		}
+	}
+
+	/**
+	 * 断言 成功时：直接抛出失败异常，返回传入的 result。
+	 *
+	 * @param predicate 断言函数
+	 * @param object    模型
+	 * @param rCode     响应 code
+	 * @param <T>       泛型
+	 */
+	public static <T> void throwOn(Predicate<T> predicate, T object, IResultCode rCode) {
+		if (predicate.test(object)) {
+			throw new ServiceException(rCode);
+		}
+	}
+
+	/**
+	 * 断言 成功时：直接抛出失败异常，返回传入的 result。
+	 *
+	 * @param predicate 断言函数
+	 * @param object    模型
+	 * @param rCode     响应 code
+	 * @param msg       自定义消息
+	 * @param <T>       泛型
+	 */
+	public static <T> void throwOn(Predicate<T> predicate, T object, IResultCode rCode, String msg) {
+		if (predicate.test(object)) {
+			throw new ServiceException(rCode, msg);
+		}
 	}
 
 	/**
