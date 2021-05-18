@@ -23,16 +23,17 @@
 | 2.4.5       | mica 2.4.x       | 2.4.x            | 2020              |
 | 2.1.1-GA    | mica 2.0.x~2.1.x | 2.2.x ~ 2.3.x    | Hoxton            |
 
+## 版本号说明
+`release` 版本号格式为 `x.x.x`， 基本上保持跟 `Spring boot` 一致。
+
+`snapshots` 版本号格式为 `x.x.x-SNAPSHOT`，`snapshots` 版每次 `push` 后会自动构建。
+
 ## mica 生态
 - mica-auto (Spring boot starter 利器): https://gitee.com/596392912/mica-auto
-- mica-weixin（jfinal weixin 的 spring boot starter）：https://gitee.com/596392912/mica-weixin
-- mica-mqtt（基于 t-io 实现的 mqtt组件）：https://gitee.com/596392912/mica-mqtt
+- mica-weixin（jfinal weixin 的 spring boot starter）: https://gitee.com/596392912/mica-weixin
+- mica-mqtt（基于 t-io 实现的 mqtt组件）: https://gitee.com/596392912/mica-mqtt
 - Spring cloud 微服务 http2 方案（h2c）: https://gitee.com/596392912/spring-cloud-java11
-
-## 版本号说明
-`release` 版本号格式为 `x.x.x-GA`，响应 `冷神` 的吐槽，改短了一点。
-
-`snapshots` 版本号格式为 `x.x.x-SNAPSHOT`，`snapshots` 版每次提交后会自动构建。
+- mica-security（mica权限系统 vue 改造中）: https://gitee.com/596392912/mica-security
 
 ## 已知问题
 lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861
@@ -69,7 +70,6 @@ LGPL 是 GPL 的一个为主要为类库使用设计的开源协议。和 GPL �
 * `bladex` 完整的线上解决方案（企业生产必备）：https://bladex.vip
 
 ## 相关链接
-* `示例项目`：[https://github.com/lets-mica/mica-example](https://github.com/lets-mica/mica-example)
 * mica 源码 Github：[https://github.com/lets-mica](https://github.com/lets-mica)
 * mica 源码 Gitee（码云）：[https://gitee.com/596392912/mica](https://gitee.com/596392912/mica)
 * mica 性能压测：[https://github.com/lets-mica/mica-jmh](https://github.com/lets-mica/mica-jmh)

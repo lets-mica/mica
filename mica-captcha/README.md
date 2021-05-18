@@ -5,7 +5,7 @@
 ![数学验证码02](../docs/images/0702.m.jpg)
 
 ![随机数验证码03](../docs/images/0703.r.jpg)
-![随机数验证码04](../docs/images/0703.r.jpg)
+![随机数验证码04](../docs/images/0704.r.jpg)
 
 ## 功能和特点
 1. 验证码生成

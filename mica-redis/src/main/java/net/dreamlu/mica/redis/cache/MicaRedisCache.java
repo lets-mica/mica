@@ -17,7 +17,6 @@
 package net.dreamlu.mica.redis.cache;
 
 import lombok.Getter;
-import net.dreamlu.mica.core.tuple.Pair;
 import net.dreamlu.mica.core.utils.CollectionUtil;
 import net.dreamlu.mica.core.utils.Exceptions;
 import org.springframework.data.redis.core.*;
@@ -97,10 +96,10 @@ public class MicaRedisCache {
 	/**
 	 * Set the {@code value} and expiration {@code timeout} for {@code key}.
 	 *
-	 * @param key must not be {@literal null}.
-	 * @param value must not be {@literal null}.
+	 * @param key     must not be {@literal null}.
+	 * @param value   must not be {@literal null}.
 	 * @param timeout the key expiration timeout.
-	 * @param unit must not be {@literal null}.
+	 * @param unit    must not be {@literal null}.
 	 * @see <a href="https://redis.io/commands/setex">Redis Documentation: SETEX</a>
 	 */
 	public void setEx(String key, Object value, long timeout, TimeUnit unit) {
@@ -215,63 +214,61 @@ public class MicaRedisCache {
 	}
 
 	/**
-	 * redis scan
+	 * redis scan，count 默认 100
 	 *
 	 * @param pattern 匹配表达式
 	 * @return 扫描结果
 	 */
-	public Set<String> scan(@Nullable String pattern) {
+	public Set<String> scan(String pattern) {
+		return scan(pattern, 100L);
+	}
+
+	/**
+	 * redis scan
+	 *
+	 * @param pattern 匹配表达式
+	 * @param count   一次扫描的数量, redis 默认为 10
+	 * @return 扫描结果
+	 */
+	public Set<String> scan(String pattern, @Nullable Long count) {
 		final Set<String> keySet = new HashSet<>();
-		scan(pattern, keySet::add);
+		scan(pattern, count, keySet::add);
 		return keySet;
 	}
 
 	/**
-	 * redis scan
+	 * redis scan, count 默认 100
 	 *
-	 * @param pattern 匹配表达式
-	 * @param count   一次扫描的数量
+	 * @param pattern  匹配表达式
+	 * @param consumer 消费者
 	 * @return 扫描结果
 	 */
-	public Pair<Long, Set<String>> scan(@Nullable String pattern, @Nullable Long count) {
-		final Set<String> keySet = new HashSet<>();
-		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
-		return redisTemplate.execute((RedisCallback<Pair<Long, Set<String>>>) action -> {
-			ScanOptions.ScanOptionsBuilder builder = ScanOptions.scanOptions()
-				.match(pattern);
-			if (count != null) {
-				builder.count(count);
-			}
-			try (Cursor<byte[]> cursor = action.scan(builder.build())) {
-				cursor.forEachRemaining((item) -> keySet.add(keySerializer.deserialize(item)));
-				return Pair.create(cursor.getPosition(), keySet);
-			} catch (IOException e) {
-				throw Exceptions.unchecked(e);
-			}
-		});
+	public void scan(String pattern, Consumer<String> consumer) {
+		scan(pattern, 100L, consumer);
 	}
 
 	/**
 	 * redis scan
 	 *
-	 * @param pattern 匹配表达式
+	 * @param pattern  匹配表达式
+	 * @param count    一次扫描的数量
 	 * @param consumer 消费者
 	 * @return 扫描结果
 	 */
-	public void scan(@Nullable String pattern, Consumer<String> consumer) {
-		scan(pattern, null, consumer);
+	public void scan(String pattern, @Nullable Long count, Consumer<String> consumer) {
+		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
+		scanBytes(pattern, count, (bytes) -> consumer.accept(keySerializer.deserialize(bytes)));
 	}
 
 	/**
 	 * redis scan
 	 *
-	 * @param pattern 匹配表达式
-	 * @param count   一次扫描的数量
+	 * @param pattern  匹配表达式
+	 * @param count    一次扫描的数量
 	 * @param consumer 消费者
 	 * @return 扫描结果
 	 */
-	public void scan(@Nullable String pattern, @Nullable Long count, Consumer<String> consumer) {
-		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
+	public void scanBytes(String pattern, @Nullable Long count, Consumer<byte[]> consumer) {
 		redisTemplate.execute((RedisCallback<Object>) action -> {
 			ScanOptions.ScanOptionsBuilder builder = ScanOptions.scanOptions()
 				.match(pattern);
@@ -279,10 +276,7 @@ public class MicaRedisCache {
 				builder.count(count);
 			}
 			try (Cursor<byte[]> cursor = action.scan(builder.build())) {
-				cursor.forEachRemaining((item) -> {
-					String redisKey = keySerializer.deserialize(item);
-					consumer.accept(redisKey);
-				});
+				cursor.forEachRemaining(consumer);
 			} catch (IOException e) {
 				throw Exceptions.unchecked(e);
 			}
@@ -291,66 +285,66 @@ public class MicaRedisCache {
 	}
 
 	/**
-	 * redis sscan
+	 * redis sscan，count 默认 100
 	 *
-	 * @param key key
+	 * @param key     key
 	 * @param pattern 匹配表达式
 	 * @return 扫描结果
 	 */
-	public Set<String> sScan(String key, @Nullable String pattern) {
+	public Set<String> sScan(String key, String pattern) {
+		return sScan(key, pattern, 100L);
+	}
+
+	/**
+	 * redis sscan
+	 *
+	 * @param key     key
+	 * @param pattern 匹配表达式
+	 * @param count   一次扫描的数量
+	 * @return 扫描结果
+	 */
+	public Set<String> sScan(String key, String pattern, @Nullable Long count) {
 		final Set<String> keySet = new HashSet<>();
-		sScan(key, pattern, keySet::add);
+		sScan(key, pattern, count, keySet::add);
 		return keySet;
 	}
 
 	/**
 	 * redis sscan
 	 *
-	 * @param key key
-	 * @param pattern 匹配表达式
-	 * @param count   一次扫描的数量
+	 * @param key      key
+	 * @param pattern  匹配表达式
+	 * @param consumer consumer
 	 * @return 扫描结果
 	 */
-	public Pair<Long, Set<String>> sScan(String key, @Nullable String pattern, @Nullable Long count) {
-		final Set<String> keySet = new HashSet<>();
+	public void sScan(String key, String pattern, Consumer<String> consumer) {
+		sScan(key, pattern, 100L, consumer);
+	}
+
+	/**
+	 * redis sscan
+	 *
+	 * @param key      key
+	 * @param pattern  匹配表达式
+	 * @param count    一次扫描的数量
+	 * @param consumer consumer
+	 * @return 扫描结果
+	 */
+	public void sScan(String key, String pattern, @Nullable Long count, Consumer<String> consumer) {
 		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
-		return redisTemplate.execute((RedisCallback<Pair<Long, Set<String>>>) action -> {
-			ScanOptions.ScanOptionsBuilder builder = ScanOptions.scanOptions()
-				.match(pattern);
-			if (count != null) {
-				builder.count(count);
-			}
-			try (Cursor<byte[]> cursor = action.sScan(keySerializer.serialize(key), builder.build())) {
-				cursor.forEachRemaining((item) -> keySet.add(keySerializer.deserialize(item)));
-				return Pair.create(cursor.getPosition(), keySet);
-			} catch (IOException e) {
-				throw Exceptions.unchecked(e);
-			}
-		});
+		sScanBytes(key, pattern, count, (bytes) -> consumer.accept(keySerializer.deserialize(bytes)));
 	}
 
 	/**
 	 * redis sscan
 	 *
-	 * @param key key
-	 * @param pattern 匹配表达式
-	 * @param consumer    consumer
+	 * @param key      key
+	 * @param pattern  匹配表达式
+	 * @param count    一次扫描的数量
+	 * @param consumer consumer
 	 * @return 扫描结果
 	 */
-	public void sScan(String key, @Nullable String pattern, Consumer<String> consumer) {
-		sScan(key, pattern, null, consumer);
-	}
-
-	/**
-	 * redis sscan
-	 *
-	 * @param key key
-	 * @param pattern 匹配表达式
-	 * @param count   一次扫描的数量
-	 * @param consumer    consumer
-	 * @return 扫描结果
-	 */
-	public void sScan(String key, @Nullable String pattern, @Nullable Long count, Consumer<String> consumer) {
+	public void sScanBytes(String key, String pattern, @Nullable Long count, Consumer<byte[]> consumer) {
 		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
 		redisTemplate.execute((RedisCallback<Object>) action -> {
 			ScanOptions.ScanOptionsBuilder builder = ScanOptions.scanOptions()
@@ -359,10 +353,7 @@ public class MicaRedisCache {
 				builder.count(count);
 			}
 			try (Cursor<byte[]> cursor = action.sScan(keySerializer.serialize(key), builder.build())) {
-				cursor.forEachRemaining((item) -> {
-					String redisKey = keySerializer.deserialize(item);
-					consumer.accept(redisKey);
-				});
+				cursor.forEachRemaining(consumer);
 			} catch (IOException e) {
 				throw Exceptions.unchecked(e);
 			}
@@ -496,9 +487,9 @@ public class MicaRedisCache {
 	/**
 	 * 获取记数器的值，用于初始化获取 incr、incrBy 的值
 	 *
-	 * @param key key
+	 * @param key     key
 	 * @param seconds 超时时间
-	 * @param loader 加载器
+	 * @param loader  加载器
 	 */
 	public Long getCounter(String key, long seconds, Supplier<Long> loader) {
 		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
@@ -522,6 +513,13 @@ public class MicaRedisCache {
 	 */
 	public Boolean exists(String key) {
 		return redisTemplate.hasKey(key);
+	}
+
+	/**
+	 * 检查给定 key 是否存在。
+	 */
+	public Boolean exists(CacheKey cacheKey) {
+		return exists(cacheKey.getKey());
 	}
 
 	/**
