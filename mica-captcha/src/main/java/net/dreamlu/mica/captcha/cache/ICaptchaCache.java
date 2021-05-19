@@ -35,6 +35,10 @@ public interface ICaptchaCache {
 	/**
 	 * 保存缓存
 	 *
+	 * <p>
+	 *     非 spring cache 等启动就确定超时的缓存，重新改方法
+	 * </p>
+	 *
 	 * @param cacheKey    缓存key
 	 * @param value       缓存value
 	 * @param ttlInMillis ttl
@@ -58,6 +62,10 @@ public interface ICaptchaCache {
 
 	/**
 	 * 获取并删除缓存，验证码不管成功只能验证一次
+	 *
+	 * <p>
+	 *     非 spring cache 等启动就确定超时的缓存，重新改方法
+	 * </p>
 	 *
 	 * @param cacheKey 缓存空间
 	 * @return 验证码

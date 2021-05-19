@@ -36,13 +36,13 @@ public class SpringCacheCaptchaCache implements ICaptchaCache, InitializingBean 
 
 	@Override
 	public void put(String cacheName, String uuid, String value) {
-		Cache captchaCache = getCache();
+		Cache captchaCache = getCache(cacheName);
 		captchaCache.put(uuid, value);
 	}
 
 	@Override
 	public String getAndRemove(String cacheName, String uuid) {
-		Cache captchaCache = getCache();
+		Cache captchaCache = getCache(cacheName);
 		String value = captchaCache.get(uuid, String.class);
 		if (value != null) {
 			captchaCache.evict(uuid);
@@ -55,8 +55,7 @@ public class SpringCacheCaptchaCache implements ICaptchaCache, InitializingBean 
 	 *
 	 * @return Cache
 	 */
-	private Cache getCache() {
-		String cacheName = properties.getCacheName();
+	private Cache getCache(String cacheName) {
 		return cacheManager.getCache(cacheName);
 	}
 
