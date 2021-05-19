@@ -122,9 +122,9 @@ public class MicaLoggingProperties {
 		private String httpAuthPassword;
 		private String httpTenantId;
 		/**
-		 * format 标签，默认： appName=${appName},profile=${profile},host=${HOSTNAME},level=%level,requestId=%X{requestId:-}
+		 * format 标签，默认： appName=${appName},profile=${profile},host=${HOSTNAME},level=%level,traceId=%X{traceId:-NAN},requestId=%X{requestId:-}
 		 */
-		private String formatLabelPattern = "appName=${appName},profile=${profile},host=${HOSTNAME},level=%level,requestId=%X{requestId:-NAN}";
+		private String formatLabelPattern = "appName=${appName},profile=${profile},host=${HOSTNAME},level=%level,traceId=%X{traceId:-NAN},requestId=%X{requestId:-NAN}";
 		/**
 		 * format 标签分隔符，默认:，
 		 */

@@ -2,14 +2,14 @@
 
 ## 发行版本
 ### v2.4.6 - 2021-05-23
-- :sparkles: mica-logging 完成 loki 支持 #36 #I3PX2F
-- :sparkles: mica-ip2region、mica-captcha 添加对 spring-native 的支持 #38 #I3PX2N
-- :sparkles: mica-jetcache 完善 metrics 待续 #37 #I3PX2K
+- :sparkles: mica-logging 完成 loki 支持 #36 #I3PX2F。
+- :sparkles: mica-ip2region、mica-captcha 添加对 spring-native 的支持 #38 #I3PX2N。
+- :sparkles: mica-jetcache 添加 metrics 支持 #37 #I3PX2K。
 - :sparkles: mica-caffeine 添加不支持自定义 Caffeine bean 提示。
 - :sparkles: mica-core R 添加 throwOn 系列方法。
 - :sparkles: mica-redis 优化 ICacheKey 和 scan。
 - :bug: mica-logging 修复 LoggingInitializer Spring boot 2.4.x 失效的问题。
-- :arrow_up: 升级 druid 到 1.2.6
+- :arrow_up: 升级 druid 到 1.2.6。
 
 ### v2.4.5 - 2021-04-28
 - :sparkles: 添加 mica-jetcache 模块。
