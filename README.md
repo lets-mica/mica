@@ -8,15 +8,6 @@
 
 `Mica`，Spring Cloud 微服务开发核心包，支持 `web` 和 `webflux`。
 
-`注意`：`snapshots` 版本会及时响应，修复最新的 `bug` 或者必要的需求。
-
-## 使用文档
-**使用文档**详见：[http://wiki.dreamlu.net（mica2.x 使用文档）](http://wiki.dreamlu.net/guide/getting-started.html)
-
-**更新记录**详见：[Mica 更新记录](CHANGELOG.md)
-
-![mica 2.x 模块图](docs/img/mica2.x-open.jpg)
-
 ## 版本说明
 | 最新版本     | mica 版本         | spring boot 版本  | spring cloud 版本 |
 | ----------- | ---------------- | ---------------- | ----------------- |
@@ -26,7 +17,14 @@
 ## 版本号说明
 `release` 版本号格式为 `x.x.x`， 基本上保持跟 `Spring boot` 一致。
 
-`snapshots` 版本号格式为 `x.x.x-SNAPSHOT`，`snapshots` 版每次 `push` 后会自动构建。
+`snapshots` 版本号格式为 `x.x.x-SNAPSHOT`。
+
+`注意`：`snapshots` 版本每次 `push` 后会自动构建，及时响应、修复最新的 `bug` 和必要的需求。
+
+## 使用文档
+**使用文档**详见：[http://wiki.dreamlu.net（mica2.x 使用文档）](http://wiki.dreamlu.net/guide/getting-started.html)
+
+**更新记录**详见：[Mica 更新记录](CHANGELOG.md)
 
 ## mica 生态
 - mica-auto (Spring boot starter 利器): https://gitee.com/596392912/mica-auto
@@ -34,6 +32,8 @@
 - mica-mqtt（基于 t-io 实现的 mqtt组件）: https://gitee.com/596392912/mica-mqtt
 - Spring cloud 微服务 http2 方案（h2c）: https://gitee.com/596392912/spring-cloud-java11
 - mica-security（mica权限系统 vue 改造中）: https://gitee.com/596392912/mica-security
+
+![mica 2.x 模块图](docs/img/mica2.x-open.jpg)
 
 ## 已知问题
 lombok 生成的 method 问题：https://github.com/rzwitserloot/lombok/issues/1861
@@ -66,15 +66,15 @@ LGPL 是 GPL 的一个为主要为类库使用设计的开源协议。和 GPL �
 `注意`：若禁止条款被发现有权追讨 **19999** 的授权费。
 
 ## 授权用户（最佳实践）
-* `pigx` 宇宙最强微服务（架构师必备）：https://pig4cloud.com
-* `bladex` 完整的线上解决方案（企业生产必备）：https://bladex.vip
+- `pigx` 宇宙最强微服务（架构师必备）：https://pig4cloud.com
+- `bladex` 完整的线上解决方案（企业生产必备）：https://bladex.vip
 
 ## 相关链接
-* mica 源码 Github：[https://github.com/lets-mica](https://github.com/lets-mica)
-* mica 源码 Gitee（码云）：[https://gitee.com/596392912/mica](https://gitee.com/596392912/mica)
-* mica 性能压测：[https://github.com/lets-mica/mica-jmh](https://github.com/lets-mica/mica-jmh)
-* 文档地址（官网）：[http://wiki.dreamlu.net](http://wiki.dreamlu.net/guide/getting-started.html)
-* 文档地址（语雀-可关注订阅）：[https://www.yuque.com/dreamlu](https://www.yuque.com/dreamlu)
+- mica 源码 Github：[https://github.com/lets-mica](https://github.com/lets-mica)
+- mica 源码 Gitee（码云）：[https://gitee.com/596392912/mica](https://gitee.com/596392912/mica)
+- mica 性能压测：[https://github.com/lets-mica/mica-jmh](https://github.com/lets-mica/mica-jmh)
+- 文档地址（官网）：[http://wiki.dreamlu.net](http://wiki.dreamlu.net/guide/getting-started.html)
+- 文档地址（语雀-可关注订阅）：[https://www.yuque.com/dreamlu](https://www.yuque.com/dreamlu)
 
 ## 开源推荐
 - `Avue` 一款基于 vue 可配置化的神奇框架：[https://gitee.com/smallweigit/avue](https://gitee.com/smallweigit/avue)
