@@ -22,11 +22,13 @@ import ch.qos.logback.core.CoreConstants;
 import com.github.loki4j.logback.*;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.constant.MicaConstant;
+import net.dreamlu.mica.core.utils.CharPool;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.logging.config.MicaLoggingProperties;
 import net.dreamlu.mica.logging.loki.OkHttpSender;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.util.Assert;
 
 /**
  * loki 日志接收
@@ -101,7 +103,7 @@ public class LoggingLokiAppender implements ILoggingAppender {
 			new ProtobufEncoder() : new JsonEncoder();
 		// label config
 		AbstractLoki4jEncoder.LabelCfg labelCfg = new AbstractLoki4jEncoder.LabelCfg();
-		labelCfg.setPattern(formatLabelPatternHandle(context, properties.getFormatLabelPattern()));
+		labelCfg.setPattern(formatLabelPatternHandle(context, properties));
 		labelCfg.setPairSeparator(properties.getFormatLabelPairSeparator());
 		labelCfg.setKeyValueSeparator(properties.getFormatLabelKeyValueSeparator());
 		labelCfg.setNopex(properties.isFormatLabelNoPex());
@@ -151,7 +153,13 @@ public class LoggingLokiAppender implements ILoggingAppender {
 		return httpSender;
 	}
 
-	private String formatLabelPatternHandle(LoggerContext context, String labelPattern) {
+	private String formatLabelPatternHandle(LoggerContext context, MicaLoggingProperties.Loki properties) {
+		String labelPattern = properties.getFormatLabelPattern();
+		Assert.hasText(labelPattern, "MicaLoggingProperties mica.logging.loki.format-label-pattern is blank.");
+		String labelPatternExtend = properties.getFormatLabelPatternExtend();
+		if (StringUtil.isNotBlank(labelPatternExtend)) {
+			labelPattern = labelPattern + CharPool.COMMA + labelPatternExtend;
+		}
 		return labelPattern
 			.replace("${appName}", appName)
 			.replace("${profile}", profile)

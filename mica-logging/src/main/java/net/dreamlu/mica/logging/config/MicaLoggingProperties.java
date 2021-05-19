@@ -126,6 +126,10 @@ public class MicaLoggingProperties {
 		 */
 		private String formatLabelPattern = "appName=${appName},profile=${profile},host=${HOSTNAME},level=%level,traceId=%X{traceId:-NAN},requestId=%X{requestId:-NAN}";
 		/**
+		 * format 标签扩展
+		 */
+		private String formatLabelPatternExtend;
+		/**
 		 * format 标签分隔符，默认:，
 		 */
 		private String formatLabelPairSeparator = ",";
