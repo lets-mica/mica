@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.ip2region.core;
 
+import net.dreamlu.mica.ip2region.utils.IpInfoUtil;
 import org.springframework.lang.Nullable;
 
 /**
@@ -87,5 +88,41 @@ public interface Ip2regionSearcher {
 	 */
 	@Nullable
 	IpInfo binarySearch(String ip);
+
+	/**
+	 * 获取地址信息
+	 * @param ip ip
+	 * @return 地址
+	 */
+	default String getAddress(long ip) {
+		return IpInfoUtil.readInfo(memorySearch(ip), IpInfo::getAddress);
+	}
+
+	/**
+	 * 获取地址信息
+	 * @param ip ip
+	 * @return 地址
+	 */
+	default String getAddress(String ip) {
+		return IpInfoUtil.readInfo(memorySearch(ip), IpInfo::getAddress);
+	}
+
+	/**
+	 * 获取地址信息包含 isp
+	 * @param ip ip
+	 * @return 地址
+	 */
+	default String getAddressAndIsp(long ip) {
+		return IpInfoUtil.readInfo(memorySearch(ip), IpInfo::getAddressAndIsp);
+	}
+
+	/**
+	 * 获取地址信息包含 isp
+	 * @param ip ip
+	 * @return 地址
+	 */
+	default String getAddressAndIsp(String ip) {
+		return IpInfoUtil.readInfo(memorySearch(ip), IpInfo::getAddressAndIsp);
+	}
 
 }
