@@ -18,12 +18,10 @@ package net.dreamlu.mica.redis.cache;
 
 import lombok.Getter;
 import net.dreamlu.mica.core.utils.CollectionUtil;
-import net.dreamlu.mica.core.utils.Exceptions;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.lang.Nullable;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -277,8 +275,6 @@ public class MicaRedisCache {
 			}
 			try (Cursor<byte[]> cursor = action.scan(builder.build())) {
 				cursor.forEachRemaining(consumer);
-			} catch (IOException e) {
-				throw Exceptions.unchecked(e);
 			}
 			return null;
 		});
@@ -354,8 +350,6 @@ public class MicaRedisCache {
 			}
 			try (Cursor<byte[]> cursor = action.sScan(keySerializer.serialize(key), builder.build())) {
 				cursor.forEachRemaining(consumer);
-			} catch (IOException e) {
-				throw Exceptions.unchecked(e);
 			}
 			return null;
 		});
