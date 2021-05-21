@@ -22,6 +22,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MapPropertySource;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * logging 日志初始化
@@ -30,13 +34,21 @@ import org.springframework.core.env.ConfigurableEnvironment;
  */
 @AutoEnvPostProcessor
 public class LoggingInitializer implements EnvironmentPostProcessor, Ordered {
+	public static final String LOGGING_FILE_PATH_KEY = "logging.file.path";
+	public static final String LOGGING_FILE_NAME_KEY = "logging.file.name";
+	public static final String MICA_LOGGING_PROPERTY_SOURCE_NAME = "micaLoggingPropertySource";
 
 	@Override
 	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
 		// 读取系统配置的日志目录，默认为项目下 logs
-		String logBase = environment.getProperty("logging.file.path", LoggingUtil.DEFAULT_LOG_DIR);
+		String logBase = environment.getProperty(LOGGING_FILE_PATH_KEY, LoggingUtil.DEFAULT_LOG_DIR);
 		// 用于 spring boot admin 中展示日志
-		System.setProperty("logging.file.name", logBase + "/${spring.application.name}/" + LoggingUtil.LOG_FILE_ALL);
+		if (!environment.containsProperty(LOGGING_FILE_NAME_KEY)) {
+			Map<String, Object> map = new HashMap<>(2);
+			map.put(LOGGING_FILE_NAME_KEY, logBase + "/${spring.application.name}/" + LoggingUtil.LOG_FILE_ALL);
+			MapPropertySource propertySource = new MapPropertySource(MICA_LOGGING_PROPERTY_SOURCE_NAME, map);
+			environment.getPropertySources().addLast(propertySource);
+		}
 	}
 
 	@Override

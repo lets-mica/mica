@@ -61,7 +61,7 @@ public class DruidMetricsConfiguration {
 	@Bean
 	public DruidMetrics druidMetrics(ObjectProvider<Map<String, DataSource>> dataSourcesProvider) {
 		Map<String, DataSource> dataSourceMap = dataSourcesProvider.getIfAvailable(HashMap::new);
-		Map<String, DruidDataSource> druidDataSourceMap = new HashMap<>(1);
+		Map<String, DruidDataSource> druidDataSourceMap = new HashMap<>(2);
 		dataSourceMap.forEach((name, dataSource) -> {
 			// 保证连接池数据和 DataSourcePoolMetadataProvider 的一致
 			druidDataSourceMap.put(getDataSourceName(name), DataSourceUnwrapper.unwrap(dataSource, DruidDataSource.class));

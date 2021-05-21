@@ -33,14 +33,14 @@ public enum HostCookieJar implements CookieJar {
 	 */
 	INSTANCE;
 
-	private static final Map<String, Map<String, Cookie>> COOKIE_MAP = new HashMap<>();
+	private static final Map<String, Map<String, Cookie>> COOKIE_MAP = new HashMap<>(8);
 
 	@Override
 	public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
 		String host = url.host();
 		Map<String, Cookie> cookieMap = COOKIE_MAP.get(host);
 		if (cookieMap == null) {
-			cookieMap = new HashMap<>();
+			cookieMap = new HashMap<>(8);
 		}
 		// 便于新 cookie 替换老的 cookie
 		for (Cookie cookie : cookies) {

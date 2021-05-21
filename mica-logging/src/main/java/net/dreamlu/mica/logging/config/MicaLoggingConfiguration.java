@@ -126,7 +126,7 @@ public class MicaLoggingConfiguration {
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	private static class LoggingCondition extends SpringBootCondition {
 		private static final String LOG_STASH_CLASS_NAME = "net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder";
-		private static final String Loki_CLASS_NAME = "com.github.loki4j.logback.Loki4jAppender";
+		private static final String LOKI_CLASS_NAME = "com.github.loki4j.logback.Loki4jAppender";
 
 		@Override
 		public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
@@ -179,7 +179,7 @@ public class MicaLoggingConfiguration {
 		}
 
 		private static boolean hasLokiDependencies(ClassLoader classLoader) {
-			return ClassUtils.isPresent(Loki_CLASS_NAME, classLoader);
+			return ClassUtils.isPresent(LOKI_CLASS_NAME, classLoader);
 		}
 	}
 

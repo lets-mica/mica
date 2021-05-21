@@ -49,7 +49,7 @@ public class LoggingLogStashAppender implements ILoggingAppender {
 		String appName = environment.getRequiredProperty(MicaConstant.SPRING_APP_NAME_KEY);
 		String profile = environment.getRequiredProperty(MicaConstant.ACTIVE_PROFILES_PROPERTY);
 		// 2. json 自定义字段
-		Map<String, Object> customFields = new HashMap<>();
+		Map<String, Object> customFields = new HashMap<>(4);
 		customFields.put("appName", appName);
 		customFields.put("profile", profile);
 		this.customFieldsJson = JsonUtil.toJson(customFields);

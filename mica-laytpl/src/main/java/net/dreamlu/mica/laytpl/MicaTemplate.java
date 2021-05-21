@@ -116,7 +116,7 @@ public class MicaTemplate implements ApplicationContextAware, InitializingBean {
 		final ScriptEngineManager engineManager = new ScriptEngineManager();
 		final ScriptEngine engine = engineManager.getEngineByMimeType("text/javascript");
 		Bindings bindings = engine.createBindings();
-		Map<String, String> config = new HashMap<>(2);
+		Map<String, String> config = new HashMap<>(4);
 		config.put("open", tplProperties.getOpen());
 		config.put("close", tplProperties.getClose());
 		bindings.put("console", console);

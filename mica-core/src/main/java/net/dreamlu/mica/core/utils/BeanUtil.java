@@ -506,12 +506,12 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 		Assert.notNull(src, "diff Map src is null.");
 		Assert.notNull(src, "diff Map dist is null.");
 		// 改变
-		Map<String, Object> difference = new HashMap<>();
+		Map<String, Object> difference = new HashMap<>(8);
 		difference.putAll(src);
 		difference.putAll(dist);
 		difference.entrySet().removeAll(src.entrySet());
 		// 老值
-		Map<String, Object> oldValues = new HashMap<>();
+		Map<String, Object> oldValues = new HashMap<>(8);
 		difference.keySet().forEach((k) -> oldValues.put(k, src.get(k)));
 		BeanDiff diff = new BeanDiff();
 		diff.getFields().addAll(difference.keySet());

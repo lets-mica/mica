@@ -59,7 +59,7 @@ public class LoggingJsonFileAppender implements ILoggingAppender {
 		String logDir = environment.getProperty("logging.file.path", LoggingUtil.DEFAULT_LOG_DIR);
 		this.logAllFile = logDir + CharPool.SLASH + appName + CharPool.SLASH + LoggingUtil.LOG_FILE_ALL;
 		// 4. json 自定义字段
-		Map<String, Object> customFields = new HashMap<>();
+		Map<String, Object> customFields = new HashMap<>(4);
 		customFields.put("appName", appName);
 		customFields.put("profile", profile);
 		this.customFieldsJson = JsonUtil.toJson(customFields);

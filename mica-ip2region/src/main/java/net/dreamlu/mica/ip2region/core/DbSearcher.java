@@ -14,9 +14,6 @@ import java.nio.charset.StandardCharsets;
  * @author chenxin<chenxin619315 @ gmail.com>
  */
 public class DbSearcher {
-	public static final int BTREE_ALGORITHM = 1;
-	public static final int BINARY_ALGORITHM = 2;
-	public static final int MEMORY_ALGORITYM = 3;
 
 	/**
 	 * db config
@@ -274,7 +271,9 @@ public class DbSearcher {
 		}
 
 		//not matched
-		if (dataptr == 0) return null;
+		if (dataptr == 0) {
+			return null;
+		}
 
 		//3. get the data
 		int dataLen = (int) ((dataptr >> 24) & 0xFF);
@@ -342,7 +341,9 @@ public class DbSearcher {
 		}
 
 		//not matched
-		if (dataptr == 0) return null;
+		if (dataptr == 0) {
+			return null;
+		}
 
 		//get the data
 		int dataLen = (int) ((dataptr >> 24) & 0xFF);

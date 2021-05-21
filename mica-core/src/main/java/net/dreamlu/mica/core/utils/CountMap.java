@@ -32,7 +32,7 @@ public class CountMap {
 	private final Map<Object, AtomicLong> data;
 
 	public CountMap() {
-		this(new HashMap<>());
+		this(new HashMap<>(8));
 	}
 
 	/**
