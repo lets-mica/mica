@@ -11,6 +11,7 @@
 - :sparkles: 代码统一优化，减少部分阿里巴巴规约提示。
 - :bug: mica-logging 修复 LoggingInitializer Spring boot 2.4.x 失效的问题。
 - :arrow_up: 升级 druid 到 1.2.6。
+- :arrow_up: 升级 Spring boot 到 2.4.6。
 
 ### v2.4.5 - 2021-04-28
 - :sparkles: 添加 mica-jetcache 模块。
