@@ -8,6 +8,7 @@
 - :sparkles: mica-caffeine 添加不支持自定义 Caffeine bean 提示。
 - :sparkles: mica-core R 添加 throwOn 系列方法。
 - :sparkles: mica-redis 优化 ICacheKey 和 scan。
+- :sparkles: 代码统一优化，减少部分阿里巴巴规约提示。
 - :bug: mica-logging 修复 LoggingInitializer Spring boot 2.4.x 失效的问题。
 - :arrow_up: 升级 druid 到 1.2.6。
 
