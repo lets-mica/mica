@@ -84,7 +84,8 @@ public class IpInfoUtil {
 	 * @param function Function
 	 * @return info
 	 */
-	public static String readInfo(IpInfo ipInfo, Function<IpInfo, String> function) {
+	@Nullable
+	public static String readInfo(@Nullable IpInfo ipInfo, Function<IpInfo, String> function) {
 		if (ipInfo == null) {
 			return null;
 		}
