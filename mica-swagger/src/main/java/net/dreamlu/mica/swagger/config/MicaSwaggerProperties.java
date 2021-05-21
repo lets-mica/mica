@@ -33,8 +33,9 @@ import java.util.List;
 @Getter
 @Setter
 @RefreshScope
-@ConfigurationProperties("mica.swagger")
+@ConfigurationProperties(MicaSwaggerProperties.PREFIX)
 public class MicaSwaggerProperties {
+	public static final String PREFIX = "mica.swagger";
 
 	/**
 	 * 是否开启 swagger，默认：true

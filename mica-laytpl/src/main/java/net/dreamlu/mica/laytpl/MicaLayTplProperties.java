@@ -30,8 +30,9 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @Getter
 @Setter
 @RefreshScope
-@ConfigurationProperties("mica.laytpl")
+@ConfigurationProperties(MicaLayTplProperties.PREFIX)
 public class MicaLayTplProperties {
+	public static final String PREFIX = "mica.laytpl";
 
 	/**
 	 * 模板分隔符开始，默认：{{

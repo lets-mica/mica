@@ -29,8 +29,9 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @Getter
 @Setter
 @RefreshScope
-@ConfigurationProperties(prefix = "mica.ip2region")
+@ConfigurationProperties(Ip2regionProperties.PREFIX)
 public class Ip2regionProperties {
+	public static final String PREFIX = "mica.ip2region";
 
 	/**
 	 * ip2region.db 文件路径

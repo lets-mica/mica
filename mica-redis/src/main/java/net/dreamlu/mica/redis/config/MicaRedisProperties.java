@@ -29,8 +29,9 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @Getter
 @Setter
 @RefreshScope
-@ConfigurationProperties("mica.redis")
+@ConfigurationProperties(MicaRedisProperties.PREFIX)
 public class MicaRedisProperties {
+	public static final String PREFIX = "mica.redis";
 
 	/**
 	 * 序列化方式

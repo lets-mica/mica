@@ -32,8 +32,10 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @Getter
 @Setter
 @RefreshScope
-@ConfigurationProperties(prefix = "xxl.job")
+@ConfigurationProperties(XxlJobClientProperties.PREFIX)
 public class XxlJobClientProperties {
+	public static final String PREFIX = "xxl.job";
+
 	/**
 	 * 是否启用分布式调度任务，默认：开启
 	 */

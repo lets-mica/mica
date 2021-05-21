@@ -46,11 +46,16 @@ import static net.dreamlu.mica.jobs.properties.XxlJobClientProperties.XxlJobExec
 @Slf4j
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(XxlJobClientProperties.class)
+@ConditionalOnProperty(
+	prefix = XxlJobClientProperties.PREFIX,
+	name = "enabled",
+	havingValue = "true",
+	matchIfMissing = true
+)
 public class XxlJobClientAutoConfiguration {
 	private static final String LB_PREFIX = "lb://";
 
 	@Bean
-	@ConditionalOnProperty(prefix = "xxl.job", value = "enabled", havingValue = "true", matchIfMissing = true)
 	public XxlJobSpringExecutor xxlJobExecutor(XxlJobClientProperties properties,
 											   DiscoveryClient discoveryClient,
 											   Environment environment,

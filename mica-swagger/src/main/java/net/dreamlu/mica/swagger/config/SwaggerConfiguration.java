@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(Docket.class)
 @EnableConfigurationProperties(MicaSwaggerProperties.class)
-@ConditionalOnProperty(value = "mica.swagger.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = MicaSwaggerProperties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnMissingClass("org.springframework.cloud.gateway.config.GatewayAutoConfiguration")
 public class SwaggerConfiguration {
 
