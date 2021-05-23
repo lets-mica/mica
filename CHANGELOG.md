@@ -1,6 +1,10 @@
 # 变更记录
 
 ## 发行版本
+### v2.5.0 - 2021-05-23
+- :sparkles: mica-redis 微调，支持 Spring boot 到 2.5.0。
+- :arrow_up: 升级 Spring boot 到 2.5.0。
+
 ### v2.4.6 - 2021-05-23
 - :sparkles: mica-logging 完成 loki 支持 #36 #I3PX2F。
 - :sparkles: mica-ip2region、mica-captcha 添加对 spring-native 的支持 #38 #I3PX2N。
