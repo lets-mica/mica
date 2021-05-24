@@ -188,6 +188,7 @@ public final class QrCode {
 			default:
 				this.errorCorrectionLevel = ErrorCorrectionLevel.M;
 				this.errorCorrectionLevelValue = 0.15;
+				break;
 		}
 		return this;
 	}
