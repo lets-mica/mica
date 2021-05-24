@@ -3,8 +3,7 @@
 ![JAVA 8](https://img.shields.io/badge/JDK-1.8+-brightgreen.svg)
 [![Mica Maven release](https://img.shields.io/nexus/r/https/oss.sonatype.org/net.dreamlu/mica-bom.svg?style=flat-square)](https://mvnrepository.com/artifact/net.dreamlu/mica-bom)
 [![Mica maven snapshots](https://img.shields.io/nexus/s/https/oss.sonatype.org/net.dreamlu/mica-bom.svg?style=flat-square)](https://oss.sonatype.org/content/repositories/snapshots/net/dreamlu/)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/eadcb54f2ec14f31b8abf3ab13ad2d4d)](https://app.codacy.com/app/ChunMengLu/mica?utm_source=github.com&utm_medium=referral&utm_content=lets-mica/mica&utm_campaign=Badge_Grade_Settings)
-[![GitHub](https://img.shields.io/github/license/lets-mica/mica.svg?style=flat-square)](https://github.com/lets-mica/mica/blob/master/LICENSE)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/1d1253221f524945882ff480351cfa6b)](https://www.codacy.com/gh/lets-mica/mica/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lets-mica/mica&amp;utm_campaign=Badge_Grade)[![GitHub](https://img.shields.io/github/license/lets-mica/mica.svg?style=flat-square)](https://github.com/lets-mica/mica/blob/master/LICENSE)
 
 `Mica`，Spring Cloud 微服务开发核心包，支持 `web` 和 `webflux`。
 

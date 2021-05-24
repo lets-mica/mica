@@ -83,11 +83,11 @@ public class Captcha implements ICaptcha {
 	}
 
 	public void setInterferenceDraw(InterferenceDraw interferenceDraw) {
-		this.interferenceDraw = Objects.requireNonNull(interferenceDraw, "InterferenceDraw is null.");;
+		this.interferenceDraw = Objects.requireNonNull(interferenceDraw, "InterferenceDraw is null.");
 	}
 
 	public void setRandom(Random random) {
-		this.random = Objects.requireNonNull(random, "Random is null.");;
+		this.random = Objects.requireNonNull(random, "Random is null.");
 	}
 
 	@Override
