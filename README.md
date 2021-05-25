@@ -23,7 +23,7 @@
 `注意`：`snapshots` 版本 `push` 后会自动发布，及时响应修复最新的 `bug` 和需求。
 
 ## 📝 使用文档
-**使用文档**详见：[http://wiki.dreamlu.net（mica2.x 使用文档）](http://wiki.dreamlu.net/guide/getting-started.html)
+**使用文档**详见：[https://www.dreamlu.net/mica2x/index.html（mica2.x 使用文档）](https://www.dreamlu.net/mica2x/index.html)
 
 **更新记录**详见：[Mica 更新记录](CHANGELOG.md)
 
@@ -74,7 +74,7 @@ LGPL 是 GPL 的一个为主要为类库使用设计的开源协议。和 GPL �
 - mica 源码 Github：[https://github.com/lets-mica](https://github.com/lets-mica)
 - mica 源码 Gitee（码云）：[https://gitee.com/596392912/mica](https://gitee.com/596392912/mica)
 - mica 性能压测：[https://github.com/lets-mica/mica-jmh](https://github.com/lets-mica/mica-jmh)
-- 文档地址（官网）：[http://wiki.dreamlu.net](http://wiki.dreamlu.net/guide/getting-started.html)
+- 文档地址（官网）：[https://www.dreamlu.net/mica2x/index.html](https://www.dreamlu.net/mica2x/index.html)
 - 文档地址（语雀-可关注订阅）：[https://www.yuque.com/dreamlu](https://www.yuque.com/dreamlu)
 
 ## 🍻 开源推荐
