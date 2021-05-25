@@ -1,6 +1,18 @@
 # 变更记录
 
 ## 发行版本
+### v2.5.0.1 - 2021-05-25
+- :sparkles: 代码优化，减少 codacy 上的问题。
+- :bug: 修复 mica-redis RedisTemplate 初始化。
+- :memo: update README.md 更新文档地址。
+- :sparkles: 优化包导入。
+
+### v2.4.6.1 - 2021-05-25
+- :sparkles: 代码优化，减少 codacy 上的问题。
+- :bug: 修复 mica-redis RedisTemplate 初始化。
+- :memo: update README.md 更新文档地址。
+- :sparkles: 优化包导入。
+
 ### v2.5.0 - 2021-05-23
 - :sparkles: mica-redis 微调，支持 Spring boot 到 2.5.0。
 - :arrow_up: 升级 Spring boot 到 2.5.0。
