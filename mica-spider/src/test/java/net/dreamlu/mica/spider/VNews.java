@@ -17,7 +17,7 @@ public class VNews {
 	@CssQuery(value = "a", attr = "href")
 	private String href;
 
-	@CssQuery(value = ".news-date", attr = "text")
+	@CssQuery(value = ".item-extra", attr = "text")
 	@DateTimeFormat(pattern = "MM/dd")
 	private Date date;
 

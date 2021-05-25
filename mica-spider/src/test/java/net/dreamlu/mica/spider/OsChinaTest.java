@@ -19,8 +19,7 @@ public class OsChinaTest {
 		}
 		System.out.println(oschina.getTitle());
 
-		System.out.println("热门新闻");
-
+		System.out.println("综合资讯");
 		List<VNews> vNews = oschina.getVNews();
 		for (VNews vNew : vNews) {
 			System.out.println("title:\t" + vNew.getTitle());
