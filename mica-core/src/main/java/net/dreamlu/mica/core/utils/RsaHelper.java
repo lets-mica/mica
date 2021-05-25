@@ -200,7 +200,7 @@ public class RsaHelper {
 	 **/
 	public RSAPrivateKey getRSAPrivateKey() throws Exception {
 		if (keyD == null) {
-			throw new Exception("当前为公钥，无法获得私钥");
+			throw new IllegalArgumentException("当前为公钥，无法获得私钥");
 		}
 		RSAPrivateKeySpec spec = new RSAPrivateKeySpec(bigX(keyModulus), bigX(keyD));
 		KeyFactory factory = KeyFactory.getInstance("RSA");
@@ -246,7 +246,7 @@ public class RsaHelper {
 		for (int aInt = 2; true; aInt++) {
 			if (aInt % 10 == 0 && System.currentTimeMillis() - now > 3000) {
 				//测试最多循环2次，1024位的速度很快 8ms
-				throw new RuntimeException("推算RSA.P超时");
+				throw new IllegalArgumentException("推算RSA.P超时");
 			}
 
 			BigInteger aPow = BigInteger.valueOf(aInt).modPow(t, n);
@@ -376,7 +376,7 @@ public class RsaHelper {
 					return data[idx++];
 				}
 			}
-			throw new Exception("PEM未能提取到数据");
+			throw new IllegalArgumentException("PEM未能提取到数据");
 		} finally {
 			idxO[0] = idx;
 		}
