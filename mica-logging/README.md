@@ -141,7 +141,7 @@ spring:
 | mica.logging.loki.batch-timeout-ms | 60000 |  |
 | mica.logging.loki.drain-on-stop | true |  |
 | mica.logging.loki.encoder | json | 编码方式 Json 或 ProtoBuf |
-| mica.logging.loki.format-label-pattern | appName=${appName},profile=${profile},host=${HOSTNAME},level=%level,requestId=%X{requestId:-} | format 配置 |
+| mica.logging.loki.format-label-pattern | `appName=${appName},profile=${profile},host=${HOSTNAME},level=%level,traceId=%X{traceId:-NAN},requestId=%X{requestId:-NAN}` | format 配置 |
 | mica.logging.loki.format-label-pattern-extend |  | format 配置扩展格式同 format-label-pattern |
 | mica.logging.loki.format-label-pair-separator | , |  |
 | mica.logging.loki.format-label-key-value-separator | = |  |
@@ -153,7 +153,7 @@ spring:
 | mica.logging.loki.http-auth-password |  |  |
 | mica.logging.loki.http-auth-tenant-id |  |  |
 | mica.logging.loki.http-url |  | http 配置，默认：http://localhost:3100/loki/api/v1/push |
-| mica.logging.loki.http-sender |  | http sender，支持 java11、OKHttp、ApacheHttp，默认: java11 |
+| mica.logging.loki.http-sender |  | http sender，支持 java11、OKHttp、ApacheHttp，默认: 从项目依赖中查找，顺序 java11 -> okHttp -> ApacheHttp |
 | mica.logging.loki.http-connection-timeout-ms | 30000 |  |
 | mica.logging.loki.http-request-timeout-ms | 5000 |  |
 | mica.logging.loki.metrics-enabled | false | 开启 metrics |

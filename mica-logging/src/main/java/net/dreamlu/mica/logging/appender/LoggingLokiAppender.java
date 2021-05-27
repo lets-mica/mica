@@ -126,7 +126,7 @@ public class LoggingLokiAppender implements ILoggingAppender {
 	private static HttpSender getSender(LoggerContext context,
 										Loki4jEncoder loki4jEncoder,
 										MicaLoggingProperties.Loki properties) {
-		MicaLoggingProperties.HttpSender httpSenderType = properties.getHttpSender();
+		MicaLoggingProperties.HttpSender httpSenderType = getHttpSender(properties);
 		AbstractHttpSender httpSender;
 		if (MicaLoggingProperties.HttpSender.OKHttp == httpSenderType) {
 			httpSender = new OkHttpSender();
@@ -164,5 +164,24 @@ public class LoggingLokiAppender implements ILoggingAppender {
 			.replace("${appName}", appName)
 			.replace("${profile}", profile)
 			.replace("${HOSTNAME}", context.getProperty(CoreConstants.HOSTNAME_KEY));
+	}
+
+	private static MicaLoggingProperties.HttpSender getHttpSender(MicaLoggingProperties.Loki properties) {
+		MicaLoggingProperties.HttpSender httpSenderProp = properties.getHttpSender();
+		if (httpSenderProp != null && httpSenderProp.isAvailable()) {
+			log.debug("mica logging use {} HttpSender", httpSenderProp);
+			return httpSenderProp;
+		}
+		if (httpSenderProp == null) {
+			MicaLoggingProperties.HttpSender[] httpSenders = MicaLoggingProperties.HttpSender.values();
+			for (MicaLoggingProperties.HttpSender httpSender : httpSenders) {
+				if (httpSender.isAvailable()) {
+					log.debug("mica logging use {} HttpSender", httpSender);
+					return httpSender;
+				}
+			}
+			throw new IllegalArgumentException("Not java11 and no okHttp or apache http dependency.");
+		}
+		throw new NoClassDefFoundError(httpSenderProp.getSenderClass());
 	}
 }
