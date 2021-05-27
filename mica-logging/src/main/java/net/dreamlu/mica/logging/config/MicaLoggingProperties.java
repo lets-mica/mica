@@ -17,9 +17,11 @@
 package net.dreamlu.mica.logging.config;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.util.ClassUtils;
 
 /**
  * logging 配置
@@ -92,9 +94,9 @@ public class MicaLoggingProperties {
 		 */
 		private LokiEncoder encoder = LokiEncoder.Json;
 		/**
-		 * http sender，支持 java11、OKHttp、ApacheHttp，默认: java11
+		 * http sender，支持 java11、OKHttp、ApacheHttp，默认: 从项目依赖中查找，顺序 java11 -> okHttp -> ApacheHttp
 		 */
-		private HttpSender httpSender = HttpSender.JAVA11;
+		private HttpSender httpSender;
 		/**
 		 * 通用配置
 		 */
@@ -160,13 +162,24 @@ public class MicaLoggingProperties {
 	/**
 	 * http Sender
 	 */
+	@Getter
+	@RequiredArgsConstructor
 	public enum HttpSender {
 		/**
 		 * http 方式
 		 */
-		JAVA11,
-		OKHttp,
-		ApacheHttp
+		JAVA11("java.net.http.HttpClient"),
+		OKHttp("okhttp3.OkHttpClient"),
+		ApacheHttp("org.apache.http.impl.client.HttpClients");
+
+		/**
+		 * sender 判定类
+		 */
+		private final String senderClass;
+
+		public boolean isAvailable() {
+			return ClassUtils.isPresent(senderClass, null);
+		}
 	}
 
 }
