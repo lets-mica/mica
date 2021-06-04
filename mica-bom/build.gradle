@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         maven { url "https://plugins.gradle.org/m2/" }
-        maven { url "http://repo.spring.io/plugins-release" }
+        maven { url "https://repo.spring.io/plugins-release" }
     }
     dependencies {
         classpath "io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE"
@@ -33,6 +33,7 @@ dependencyManagement {
         dependency "net.dreamlu:mica-qrcode:${VERSION}"
         dependency "net.dreamlu:mica-jetcache:${VERSION}"
         dependency "net.dreamlu:mica-lite:${VERSION}"
+        dependency "net.dreamlu:mica-activerecord:${VERSION}"
         // commons
         dependency "com.google.code.findbugs:jsr305:${findbugsVersion}"
         dependency "io.swagger:swagger-annotations:${swaggerAnnotationsVersion}"
