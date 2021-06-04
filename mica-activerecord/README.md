@@ -1,5 +1,15 @@
 # mica-activerecord 模块
 
+## 功能
+- `@TableName` 注解 Model 自动 Mapping 映射。
+- 基于 Druid 的可执行 Sql 打印。
+- 基于 Druid 的 `DruidSqlDialect`，分页 sql 优化，支持多种数据库。
+- Record 的 `jackson` 处理。
+- `@Tx` 注解的 JFinal ActiveRecord 事务。
+- 可自定义 `ActiveRecordPluginCustomizer` Bean，实现自定义扩展。
+- `CodeGenerator` 代码生成 `markdown` 格式数据字典。
+- `ModelUtil` 实现 Model、Record -> Bean 转换。
+
 ## 文档
 jfinal ActiveRecord 文档：https://jfinal.com/doc/5-1
 
@@ -17,7 +27,7 @@ jfinal ActiveRecord 文档：https://jfinal.com/doc/5-1
 ### ActiveRecord
 | 配置项 | 默认值 | 说明 |
 | ----- | ------ | ------ |
-| mica.activerecord.dialect | druid | 方言，默认： Ansi + druid 分页优化，支持多种数据库 |
+| mica.activerecord.dialect | mysql | 方言，默认：mysql，注意：设置为 Druid 时采用 Ansi + druid 分页优化，支持多种数据库 |
 | mica.activerecord.auto-table-scan | true | 自定表扫描 |
 | mica.activerecord.model-package |  | 模型的包路径 |
 | mica.activerecord.base-template-path |  | sql 模板前缀 |

@@ -35,7 +35,7 @@ public class MicaActiveRecordProperties {
 	/**
 	 * 数据库方言
 	 */
-	private DialectType dialect = DialectType.Druid;
+	private DialectType dialect = DialectType.Mysql;
 	/**
 	 * 模型的包路径
 	 */
