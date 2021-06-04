@@ -8,6 +8,7 @@
 - `@Tx` 注解的 JFinal ActiveRecord 事务。
 - 可自定义 `ActiveRecordPluginCustomizer` Bean，实现自定义扩展。
 - `CodeGenerator` 代码生成 `markdown` 格式数据字典。
+- `ModelUtil` 实现 Model、Record -> Bean 转换。
 
 ## 文档
 jfinal ActiveRecord 文档：https://jfinal.com/doc/5-1
