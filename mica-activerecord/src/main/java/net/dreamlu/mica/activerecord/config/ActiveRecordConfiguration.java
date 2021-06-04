@@ -76,13 +76,13 @@ public class ActiveRecordConfiguration {
 
 	@Bean
 	@ConditionalOnBean(DataSource.class)
-	public IDataSourceProvider dataSourceProvider(DataSource dataSource) {
+	public IDataSourceProvider springDataSourceProvider(DataSource dataSource) {
 		return new SpringDataSourceProvider(dataSource);
 	}
 
 	@Bean
 	@ConditionalOnMissingBean(IDataSourceProvider.class)
-	public IDataSourceProvider dataSourceProvider(MicaDruidProperties properties) {
+	public IDataSourceProvider druidDataSourceProvider(MicaDruidProperties properties) {
 		// 数据库信息
 		String dbUrl = StrKit.isBlank(url) ? properties.getUrl() : url;
 		String dbUserName = StrKit.isBlank(username) ? properties.getUsername() : username;
