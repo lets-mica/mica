@@ -21,6 +21,7 @@ ext {
     lokiLogbackAppender = "1.2.0"
     zxingVersion = "3.4.1"
     jetCacheVersion = "2.6.0"
+    jfinalVersion = "4.9.11"
 }
 
 configure(subprojects) {

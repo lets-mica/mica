@@ -1,0 +1,19 @@
+dependencies {
+    api project(":mica-core")
+    api "com.alibaba:druid:${druidVersion}"
+    api "com.jfinal:activerecord:${jfinalVersion}"
+    api "org.springframework.boot:spring-boot-starter-aop"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    compileOnly "org.springframework.cloud:spring-cloud-context"
+    compileOnly "net.dreamlu:mica-auto:${micaAutoVersion}"
+    testImplementation "mysql:mysql-connector-java"
+    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ['src/main/java', 'src/main/resources']
+        }
+    }
+}
