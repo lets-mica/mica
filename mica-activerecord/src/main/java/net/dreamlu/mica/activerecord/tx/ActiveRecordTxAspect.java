@@ -128,7 +128,7 @@ public class ActiveRecordTxAspect {
 		if (txConfig != null) {
 			Config config = DbKit.getConfig(txConfig.value());
 			if (config == null) {
-				throw new RuntimeException("Config not found with TxConfig: " + txConfig.value());
+				throw new IllegalArgumentException("Config not found with @TxConfig: " + txConfig.value());
 			}
 			return config;
 		}
