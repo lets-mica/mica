@@ -1,6 +1,24 @@
 # 变更记录
 
 ## 发行版本
+### v2.5.1 - 2021-06-11
+- :sparkles: 整体代码优化减少 codacy 上的问题。
+- :sparkles: mica-http 代码优化，支持自定义 Logger。
+- :sparkles: 添加 mica-activerecord 模块。
+- :sparkles: mica-core 优化 DisableValidationTrustManager 方便使用。
+- :sparkles: mica-redis 可自定义 RedisTemplate。
+- :sparkles: mica-logging loki sender 默认值优化，根据依赖判断，gitee #I3T68Y。
+- :arrow_up: 升级到 Spring cloud 2020.0.3
+
+### v2.4.7 - 2021-06-11
+- :sparkles: 整体代码优化减少 codacy 上的问题。
+- :sparkles: mica-http 代码优化，支持自定义 Logger。
+- :sparkles: 添加 mica-activerecord 模块。
+- :sparkles: mica-core 优化 DisableValidationTrustManager 方便使用。
+- :sparkles: mica-redis 可自定义 RedisTemplate。
+- :sparkles: mica-logging loki sender 默认值优化，根据依赖判断，gitee #I3T68Y。
+- :arrow_up: 升级到 Spring cloud 2020.0.3
+
 ### v2.5.0.1 - 2021-05-25
 - :sparkles: 代码优化，减少 codacy 上的问题。
 - :bug: 修复 mica-redis RedisTemplate 初始化。
