@@ -16,8 +16,8 @@
 
 package net.dreamlu.mica.http;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
@@ -26,7 +26,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * @author L.cm
  */
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum LogLevel {
 	/**
 	 * No logs.
@@ -84,5 +84,5 @@ public enum LogLevel {
 	 */
 	BODY(HttpLoggingInterceptor.Level.BODY);
 
-	private HttpLoggingInterceptor.Level level;
+	private final HttpLoggingInterceptor.Level level;
 }
