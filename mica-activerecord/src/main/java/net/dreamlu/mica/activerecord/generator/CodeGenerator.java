@@ -18,12 +18,15 @@ package net.dreamlu.mica.activerecord.generator;
 
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.generator.Generator;
+import com.jfinal.plugin.activerecord.generator.MappingKitGenerator;
+import com.jfinal.plugin.activerecord.generator.TableMeta;
 import com.jfinal.plugin.druid.DruidPlugin;
 import net.dreamlu.mica.core.utils.StringPool;
 import org.springframework.util.Assert;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * CodeGenerator
@@ -31,6 +34,7 @@ import java.io.IOException;
  * @author L.cm
  */
 public class CodeGenerator extends Generator {
+	public static final EmptyMappingKitGenerator EMPTY_MAPPING = new EmptyMappingKitGenerator();
 	private final String outputDir;
 	private final boolean openDir;
 
@@ -75,6 +79,25 @@ public class CodeGenerator extends Generator {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public static String getModelTemplatePath() {
+		return StringPool.SLASH + CodeGenerator.class.getPackage().getName()
+			.replace(StringPool.DOT, StringPool.SLASH)
+			.concat("/model_template.jf");
+	}
+
+	public static class EmptyMappingKitGenerator extends MappingKitGenerator {
+		private static final String DEFAULT_PKG = "net.dreamlu.mica";
+
+		private EmptyMappingKitGenerator() {
+			super(DEFAULT_PKG, DEFAULT_PKG);
+		}
+
+		@Override
+		public void generate(List<TableMeta> tableMetas) {
+
 		}
 	}
 
@@ -134,9 +157,9 @@ public class CodeGenerator extends Generator {
 			// 创建生成器
 			DataSource dataSource = getDataSource();
 			CodeGenerator generator = new CodeGenerator(dataSource, baseModelPackageName, baseModelOutputDir, modelPackageName, modelOutputDir, openDir);
-			generator.setModelTemplate(MicaGenerator.getModelTemplatePath());
+			generator.setModelTemplate(CodeGenerator.getModelTemplatePath());
 			generator.setDataDictionaryGenerator(new DataDictionaryGenerator(dataSource, modelOutputDir));
-			generator.setMappingKitGenerator(MicaGenerator.EMPTY_MAPPING);
+			generator.setMappingKitGenerator(CodeGenerator.EMPTY_MAPPING);
 			// 配置是否生成备注
 			generator.setGenerateRemarks(true);
 			// 设置是否生成字典文件
