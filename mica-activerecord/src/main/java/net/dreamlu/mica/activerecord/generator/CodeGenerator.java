@@ -34,7 +34,6 @@ import java.util.List;
  * @author L.cm
  */
 public class CodeGenerator extends Generator {
-	public static final EmptyMappingKitGenerator EMPTY_MAPPING = new EmptyMappingKitGenerator();
 	private final String outputDir;
 	private final boolean openDir;
 
@@ -90,6 +89,7 @@ public class CodeGenerator extends Generator {
 
 	public static class EmptyMappingKitGenerator extends MappingKitGenerator {
 		private static final String DEFAULT_PKG = "net.dreamlu.mica";
+		public static final EmptyMappingKitGenerator INSTANCE = new EmptyMappingKitGenerator();
 
 		private EmptyMappingKitGenerator() {
 			super(DEFAULT_PKG, DEFAULT_PKG);
@@ -159,7 +159,7 @@ public class CodeGenerator extends Generator {
 			CodeGenerator generator = new CodeGenerator(dataSource, baseModelPackageName, baseModelOutputDir, modelPackageName, modelOutputDir, openDir);
 			generator.setModelTemplate(CodeGenerator.getModelTemplatePath());
 			generator.setDataDictionaryGenerator(new DataDictionaryGenerator(dataSource, modelOutputDir));
-			generator.setMappingKitGenerator(CodeGenerator.EMPTY_MAPPING);
+			generator.setMappingKitGenerator(EmptyMappingKitGenerator.INSTANCE);
 			// 配置是否生成备注
 			generator.setGenerateRemarks(true);
 			// 设置是否生成字典文件
