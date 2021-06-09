@@ -22,7 +22,6 @@ import io.undertow.Undertow;
 import io.undertow.server.ConnectorStatistics;
 import io.undertow.server.session.SessionManagerStatistics;
 import lombok.RequiredArgsConstructor;
-import net.dreamlu.mica.core.utils.Exceptions;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServer;
 import org.springframework.boot.web.embedded.undertow.UndertowWebServer;
@@ -243,11 +242,7 @@ public class UndertowMetrics implements ApplicationListener<ApplicationStartedEv
 	}
 
 	private static Undertow getUndertow(UndertowWebServer undertowWebServer) {
-		try {
-			return (Undertow) UNDERTOW_FIELD.get(undertowWebServer);
-		} catch (IllegalAccessException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return (Undertow) ReflectionUtils.getField(UNDERTOW_FIELD, undertowWebServer);
 	}
 
 	private static UndertowWebServer findUndertowWebServer(ConfigurableApplicationContext applicationContext) {

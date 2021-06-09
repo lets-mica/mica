@@ -38,8 +38,8 @@ public enum DisableValidationTrustManager implements X509TrustManager {
 	 *
 	 * @return TrustManager 数组
 	 */
-	public static TrustManager[] getTrustManagers() {
-		return new TrustManager[]{DisableValidationTrustManager.INSTANCE};
+	public TrustManager[] getTrustManagers() {
+		return new TrustManager[]{this};
 	}
 
 	@Override
