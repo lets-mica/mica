@@ -19,11 +19,11 @@ package net.dreamlu.mica.caffeine.config;
 import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.CaffeineSpec;
-import net.dreamlu.mica.core.utils.ReflectUtil;
 import net.dreamlu.mica.core.utils.StringPool;
 import org.springframework.boot.convert.DurationStyle;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.lang.Nullable;
+import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.time.Duration;
@@ -39,7 +39,7 @@ public class CaffeineAutoCacheManager extends CaffeineCacheManager {
 	private static final Field CACHE_LOADER_FIELD;
 
 	static {
-		CACHE_LOADER_FIELD = Objects.requireNonNull(ReflectUtil.getField(CaffeineCacheManager.class, "cacheLoader"));
+		CACHE_LOADER_FIELD = Objects.requireNonNull(ReflectionUtils.findField(CaffeineCacheManager.class, "cacheLoader"));
 		CACHE_LOADER_FIELD.setAccessible(true);
 	}
 
@@ -57,11 +57,7 @@ public class CaffeineAutoCacheManager extends CaffeineCacheManager {
 	@Nullable
 	@SuppressWarnings("unchecked")
 	protected CacheLoader<Object, Object> getCacheLoader() {
-		try {
-			return (CacheLoader<Object, Object>) CACHE_LOADER_FIELD.get(this);
-		} catch (IllegalAccessException e) {
-			return null;
-		}
+		return (CacheLoader<Object, Object>) ReflectionUtils.getField(CACHE_LOADER_FIELD, this);
 	}
 
 	@Override

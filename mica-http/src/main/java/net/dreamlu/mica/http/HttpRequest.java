@@ -66,7 +66,7 @@ public class HttpRequest {
 	@Nullable
 	private Boolean followSslRedirects;
 	@Nullable
-	private HttpLogger httpLogger;
+	private HttpLoggingInterceptor.Logger logger;
 	@Nullable
 	private HttpLoggingInterceptor.Level logLevel;
 	@Nullable
@@ -281,8 +281,8 @@ public class HttpRequest {
 		if (retryPolicy != null) {
 			builder.addInterceptor(new RetryInterceptor(retryPolicy));
 		}
-		if (httpLogger != null && logLevel != null && HttpLoggingInterceptor.Level.NONE != logLevel) {
-			builder.addInterceptor(getLoggingInterceptor(httpLogger, logLevel));
+		if (logger != null && logLevel != null && HttpLoggingInterceptor.Level.NONE != logLevel) {
+			builder.addInterceptor(getLoggingInterceptor(logger, logLevel));
 		} else if (globalLoggingInterceptor != null) {
 			builder.addInterceptor(globalLoggingInterceptor);
 		}
@@ -376,32 +376,11 @@ public class HttpRequest {
 		return this;
 	}
 
-	private static HttpLoggingInterceptor getLoggingInterceptor(HttpLogger httpLogger, HttpLoggingInterceptor.Level level) {
-		HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(httpLogger.getLogger());
+	private static HttpLoggingInterceptor getLoggingInterceptor(HttpLoggingInterceptor.Logger httpLogger,
+																HttpLoggingInterceptor.Level level) {
+		HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(httpLogger);
 		loggingInterceptor.setLevel(level);
 		return loggingInterceptor;
-	}
-
-	/**
-	 * 建议使用 useSlf4jLog 或者 useConsoleLog 方法
-	 *
-	 * @return HttpRequest
-	 */
-	@Deprecated
-	public HttpRequest log() {
-		this.logLevel = HttpLoggingInterceptor.Level.BODY;
-		return this;
-	}
-
-	/**
-	 * 建议使用 logLevel 方法
-	 *
-	 * @return HttpRequest
-	 */
-	@Deprecated
-	public HttpRequest log(LogLevel logLevel) {
-		this.logLevel = logLevel.getLevel();
-		return this;
 	}
 
 	public HttpRequest useSlf4jLog() {
@@ -420,8 +399,8 @@ public class HttpRequest {
 		return useLog(HttpLogger.Console, logLevel);
 	}
 
-	public HttpRequest useLog(HttpLogger logger, LogLevel logLevel) {
-		this.httpLogger = logger;
+	public HttpRequest useLog(HttpLoggingInterceptor.Logger logger, LogLevel logLevel) {
+		this.logger = logger;
 		this.logLevel = logLevel.getLevel();
 		return this;
 	}
@@ -553,7 +532,7 @@ public class HttpRequest {
 		setGlobalLog(HttpLogger.Slf4j, logLevel);
 	}
 
-	public static void setGlobalLog(HttpLogger logger, LogLevel logLevel) {
+	public static void setGlobalLog(HttpLoggingInterceptor.Logger logger, LogLevel logLevel) {
 		HttpRequest.globalLoggingInterceptor = getLoggingInterceptor(logger, logLevel.getLevel());
 	}
 
@@ -569,10 +548,9 @@ public class HttpRequest {
 
 	private static void disableSslValidation(OkHttpClient.Builder builder) {
 		try {
-			X509TrustManager disabledTrustManager = DisableValidationTrustManager.INSTANCE;
-			TrustManager[] trustManagers = new TrustManager[]{disabledTrustManager};
+			DisableValidationTrustManager disabledTrustManager = DisableValidationTrustManager.INSTANCE;
 			SSLContext sslContext = SSLContext.getInstance("SSL");
-			sslContext.init(null, trustManagers, Holder.SECURE_RANDOM);
+			sslContext.init(null, disabledTrustManager.getTrustManagers(), Holder.SECURE_RANDOM);
 			SSLSocketFactory disabledSslSocketFactory = sslContext.getSocketFactory();
 			builder.sslSocketFactory(disabledSslSocketFactory, disabledTrustManager);
 			builder.hostnameVerifier(TrustAllHostNames.INSTANCE);
