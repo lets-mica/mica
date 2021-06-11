@@ -8,7 +8,8 @@
 - :sparkles: mica-core 优化 DisableValidationTrustManager 方便使用。
 - :sparkles: mica-redis 可自定义 RedisTemplate。
 - :sparkles: mica-logging loki sender 默认值优化，根据依赖判断，gitee #I3T68Y。
-- :arrow_up: 升级到 Spring cloud 2020.0.3
+- :arrow_up: 升级到 Spring cloud 2020.0.3。
+- :arrow_up: 升级到 Spring boot 到 2.5.1。
 
 ### v2.4.7 - 2021-06-11
 - :sparkles: 整体代码优化减少 codacy 上的问题。
@@ -17,7 +18,8 @@
 - :sparkles: mica-core 优化 DisableValidationTrustManager 方便使用。
 - :sparkles: mica-redis 可自定义 RedisTemplate。
 - :sparkles: mica-logging loki sender 默认值优化，根据依赖判断，gitee #I3T68Y。
-- :arrow_up: 升级到 Spring cloud 2020.0.3
+- :arrow_up: 升级到 Spring cloud 2020.0.3。
+- :arrow_up: 升级到 Spring boot 到 2.4.7。
 
 ### v2.5.0.1 - 2021-05-25
 - :sparkles: 代码优化，减少 codacy 上的问题。
