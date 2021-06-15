@@ -1,7 +1,7 @@
 # 变更记录
 
 ## 发行版本
-### v2.5.1 - 2021-06-11
+### v2.5.1 - 2021-06-15
 - :sparkles: 整体代码优化减少 codacy 上的问题。
 - :sparkles: mica-http 代码优化，支持自定义 Logger。
 - :sparkles: 添加 mica-activerecord 模块。
@@ -11,7 +11,7 @@
 - :arrow_up: 升级到 Spring cloud 2020.0.3。
 - :arrow_up: 升级到 Spring boot 到 2.5.1。
 
-### v2.4.7 - 2021-06-11
+### v2.4.7 - 2021-06-15
 - :sparkles: 整体代码优化减少 codacy 上的问题。
 - :sparkles: mica-http 代码优化，支持自定义 Logger。
 - :sparkles: 添加 mica-activerecord 模块。
