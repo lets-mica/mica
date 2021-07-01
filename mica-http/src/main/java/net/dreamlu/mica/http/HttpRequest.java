@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -353,6 +354,13 @@ public class HttpRequest {
 
 	public HttpRequest addCookie(final Cookie cookie) {
 		this.addHeader("Cookie", cookie.toString());
+		return this;
+	}
+
+	public HttpRequest addCookie(Consumer<Cookie.Builder> consumer) {
+		Cookie.Builder builder = new Cookie.Builder();
+		consumer.accept(builder);
+		this.addHeader("Cookie", builder.build().toString());
 		return this;
 	}
 
