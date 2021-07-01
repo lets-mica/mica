@@ -62,15 +62,16 @@ public class AsyncExchange {
 		call.enqueue(new AsyncCallback(this));
 	}
 
-	void onResponse(HttpResponse httpResponse) {
+	protected void onResponse(HttpResponse httpResponse) {
 		responseConsumer.accept(httpResponse);
 	}
 
-	void onSuccessful(HttpResponse httpResponse) {
+	protected void onSuccessful(HttpResponse httpResponse) {
 		successConsumer.accept(httpResponse);
 	}
 
-	void onFailure(Request request, IOException e) {
+	protected void onFailure(Request request, IOException e) {
 		failedBiConsumer.accept(request, e);
 	}
+
 }
