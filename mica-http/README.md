@@ -41,14 +41,10 @@ HttpRequest.setGlobalLog(HttpLogger.Console, LogLevel.BODY);
 ```java
 // 同步请求 url，方法支持 get、post、patch、put、delete
 HttpRequest.get("https://www.baidu.com")
-    .useSlf4jLog()                   //使用 Slf4j 日志，同类的有 .useConsoleLog(),日志级别为 BODY
+    .useSlf4jLog() // 使用 Slf4j 日志，同类的有 .useConsoleLog(),日志级别为 BODY
     .addHeader("x-account-id", "mica001") // 添加 header
-    .addCookie(new Cookie.Builder()  // 添加 cookie
-        .name("sid")
-        .value("mica_user_001")
-        .build()
-    )
-    .query("q", "mica") //设置 url 参数，默认进行 url encode
+    .addCookie(builder -> builder.domain("www.baidu.com").name("name").value("value"))  // 添加 cookie
+    .query("q", "mica") // 设置 url 参数，默认进行 url encode
     .queryEncoded("name", "encodedValue")
     .formBuilder()    // 表单构造器，同类 multipartFormBuilder 文件上传表单
     .add("id", 123123) // 表单参数
@@ -89,6 +85,13 @@ HttpRequest.delete("https://www.baidu.com")
         JsonNode jsonNode = responseSpec.asJsonNode();
     })
     .execute(); // 异步最后发起请求
+
+// cookie 管理，另外可以自定义实现 okhttp 的 CookieJar
+InMemoryCookieManager cookieManager = new InMemoryCookieManager();
+HttpRequest.get("https://demo.dreamlu.net/captcha.jpg")
+    .cookieManager(cookieManager)
+    .execute()
+    .asString();
 ```
 
 ## 示例
