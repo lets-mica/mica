@@ -1,6 +1,24 @@
 # 变更记录
 
 ## 发行版本
+### v2.5.2 - 2021-07-02
+- :sparkles: 代码优化，减少 codacy 上的问题。
+- :sparkles: 优化 mica-http 添加 cookie 管理。
+- :memo: 完善 mica-http README.md。
+- :memo: 更新模块图。
+- :arrow_up: 升级到 Spring boot 到 2.5.2
+- :arrow_up: 升级到 Spring Native 到 0.10.1
+- :arrow_up: 升级到 mica auto 到 2.1.1
+
+### v2.4.8 - 2021-07-02
+- :sparkles: 代码优化，减少 codacy 上的问题。
+- :sparkles: 优化 mica-http 添加 cookie 管理。
+- :memo: 完善 mica-http README.md。
+- :memo: 更新模块图。
+- :arrow_up: 升级到 Spring boot 到 2.4.8
+- :arrow_up: 升级到 Spring Native 到 0.10.1
+- :arrow_up: 升级到 mica auto 到 2.1.1
+
 ### v2.5.1 - 2021-06-15
 - :sparkles: 整体代码优化减少 codacy 上的问题。
 - :sparkles: mica-http 代码优化，支持自定义 Logger。
