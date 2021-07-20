@@ -31,8 +31,14 @@ import org.springframework.lang.Nullable;
 @Getter
 @Setter
 @RefreshScope
-@ConfigurationProperties("mica.upload")
+@ConfigurationProperties(MicaUploadProperties.PREFIX)
 public class MicaUploadProperties {
+	public static final String PREFIX = "mica.upload";
+
+	/**
+	 * 是否启用本地的文件上传，默认：开启
+	 */
+	private boolean enable = true;
 
 	/**
 	 * 上传的文件 路径匹配

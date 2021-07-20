@@ -17,6 +17,7 @@
 package net.dreamlu.mica.lite.upload;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -29,6 +30,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnProperty(
+	prefix = MicaUploadProperties.PREFIX,
+	name = "enabled",
+	havingValue = "true",
+	matchIfMissing = true
+)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class MicaServletUploadConfiguration implements WebMvcConfigurer {
 	private final MicaUploadProperties properties;
