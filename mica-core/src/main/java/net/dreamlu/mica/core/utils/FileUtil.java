@@ -29,6 +29,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -299,8 +300,8 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	 * @return the file contents, never {@code null}
 	 */
 	public static String readToString(final File file, final Charset encoding) {
-		try (InputStream in = Files.newInputStream(file.toPath())) {
-			return IoUtil.readToString(in, encoding);
+		try {
+			return Files.readString(file.toPath(), encoding);
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -314,8 +315,8 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	 * @return the file contents, never {@code null}
 	 */
 	public static byte[] readToByteArray(final File file) {
-		try (InputStream in = Files.newInputStream(file.toPath())) {
-			return IoUtil.readToByteArray(in);
+		try {
+			return Files.readAllBytes(file.toPath());
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -364,8 +365,12 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	 *                 end of the file rather than overwriting
 	 */
 	public static void writeToFile(final File file, final String data, final Charset encoding, final boolean append) {
-		try (OutputStream out = new FileOutputStream(file, append)) {
-			IoUtil.write(data, out, encoding);
+		try {
+			if (append) {
+				Files.writeString(file.toPath(), data, encoding, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+			} else {
+				Files.writeString(file.toPath(), data, encoding, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+			}
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}

@@ -47,7 +47,7 @@ public class PathUtil {
 	}
 
 	@Nullable
-	public static String toFilePath(@Nullable URL url) {
+	private static String toFilePath(@Nullable URL url) {
 		if (url == null) { return null; }
 		String protocol = url.getProtocol();
 		String file = UrlUtil.decode(url.getPath(), Charsets.UTF_8);

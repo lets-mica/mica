@@ -52,7 +52,7 @@ public class RuntimeUtil {
 			pId = NumberUtil.toInt(jvmName.substring(0, index), -1);
 			return pId;
 		}
-		return -1;
+		return pId;
 	}
 
 	/**
