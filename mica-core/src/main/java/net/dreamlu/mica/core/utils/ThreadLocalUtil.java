@@ -128,6 +128,7 @@ public class ThreadLocalUtil {
 	 * @see this#get(String)
 	 * @see this#remove(String)
 	 */
+	@Nullable
 	public static <T> T getAndRemove(String key) {
 		try {
 			return get(key);
