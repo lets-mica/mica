@@ -4,16 +4,16 @@ plugins {
 
 ext {
     javaVersion = JavaVersion.VERSION_1_8
-    springBootVersion = "2.5.2"
+    springBootVersion = "2.5.3"
     springNativeVersion = "0.10.1"
     springCloudVersion = "2020.0.3"
-    micaAutoVersion = "2.1.1"
+    micaAutoVersion = "2.1.2"
     micaWeiXinVersion = "2.1.1"
     knife4jVersion = "3.0.2"
     swaggerAnnotationsVersion = "1.5.22"
     druidVersion = "1.2.6"
     okhttpVersion = "3.14.9"
-    jsoupVersion = "1.13.1"
+    jsoupVersion = "1.14.1"
     xxlJobVersion = "2.3.0"
     lombokVersion = "1.18.20"
     findbugsVersion = "3.0.2"
@@ -21,7 +21,7 @@ ext {
     lokiLogbackAppender = "1.2.0"
     zxingVersion = "3.4.1"
     jetCacheVersion = "2.6.0"
-    jfinalVersion = "4.9.11"
+    jfinalVersion = "4.9.15"
 }
 
 configure(subprojects) {
