@@ -73,7 +73,6 @@ public class MicaLoggingConfiguration {
 	}
 
 	@Configuration(proxyBeanMethods = false)
-	@Conditional(LoggingCondition.class)
 	@ConditionalOnAppender(Appender.FILE_JSON)
 	public static class LoggingJsonFileConfiguration {
 
@@ -85,7 +84,6 @@ public class MicaLoggingConfiguration {
 	}
 
 	@Configuration(proxyBeanMethods = false)
-	@Conditional(LoggingCondition.class)
 	@ConditionalOnAppender(Appender.LOG_STASH)
 	public static class LoggingLogStashConfiguration {
 
@@ -97,7 +95,6 @@ public class MicaLoggingConfiguration {
 	}
 
 	@Configuration(proxyBeanMethods = false)
-	@Conditional(LoggingCondition.class)
 	@ConditionalOnAppender(Appender.LOKI)
 	public static class LoggingLokiConfiguration {
 
