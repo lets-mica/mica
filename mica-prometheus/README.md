@@ -1,0 +1,31 @@
+# mica-prometheus 模块
+
+## 功能
+- `Spring cloud` 对接 Prometheus `http_sd`。
+
+## 依赖引用
+### maven
+```xml
+<dependency>
+  <groupId>net.dreamlu</groupId>
+  <artifactId>mica-prometheus</artifactId>
+  <version>${version}</version>
+</dependency>
+```
+
+### gradle
+```groovy
+compile("net.dreamlu:mica-prometheus:${version}")
+```
+
+## 使用
+```yaml
+- job_name: micax-cloud
+  honor_timestamps: true
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  metrics_path: /actuator/prometheus
+  scheme: http
+  http_sd_configs:
+  - url: 'http://{ip}:{port}/actuator/prometheus/sd'
+```
