@@ -17,3 +17,15 @@
 ```groovy
 compile("net.dreamlu:mica-prometheus:${version}")
 ```
+
+## 使用
+```yaml
+- job_name: micax-cloud
+  honor_timestamps: true
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  metrics_path: /actuator/prometheus
+  scheme: http
+  http_sd_configs:
+  - url: 'http://{ip}:{port}/actuator/prometheus/sd'
+```
