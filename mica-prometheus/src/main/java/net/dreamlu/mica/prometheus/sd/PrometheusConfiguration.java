@@ -16,9 +16,12 @@
 
 package net.dreamlu.mica.prometheus.sd;
 
-import org.springframework.cloud.client.ConditionalOnBlockingDiscoveryEnabled;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.client.ConditionalOnDiscoveryEnabled;
+import org.springframework.cloud.client.ConditionalOnReactiveDiscoveryEnabled;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,13 +31,33 @@ import org.springframework.context.annotation.Configuration;
  * @author L.cm
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnDiscoveryEnabled
-@ConditionalOnBlockingDiscoveryEnabled
 public class PrometheusConfiguration {
 
-	@Bean
-	public PrometheusApi prometheusApi(DiscoveryClient discoveryClient) {
-		return new PrometheusApi(discoveryClient);
+	@Configuration(proxyBeanMethods = false)
+	@ConditionalOnBean(DiscoveryClient.class)
+	@ConditionalOnDiscoveryEnabled
+	// @ConditionalOnBlockingDiscoveryEnabled
+	@ConditionalOnProperty(value = "spring.cloud.discovery.blocking.enabled")
+	public static class PrometheusApiConfiguration {
+
+		@Bean
+		public PrometheusApi prometheusApi(DiscoveryClient discoveryClient) {
+			return new PrometheusApi(discoveryClient);
+		}
+
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	@ConditionalOnBean(ReactiveDiscoveryClient.class)
+	@ConditionalOnDiscoveryEnabled
+	@ConditionalOnReactiveDiscoveryEnabled
+	public static class ReactivePrometheusApiConfiguration {
+
+		@Bean
+		public ReactivePrometheusApi reactivePrometheusApi(ReactiveDiscoveryClient discoveryClient) {
+			return new ReactivePrometheusApi(discoveryClient);
+		}
+
 	}
 
 }
