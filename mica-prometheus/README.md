@@ -29,3 +29,7 @@ compile("net.dreamlu:mica-prometheus:${version}")
   http_sd_configs:
   - url: 'http://{ip}:{port}/actuator/prometheus/sd'
 ```
+
+## 效果图
+
+![mica-prometheus 效果图](../docs/images/mica-prometheus-show.png)
