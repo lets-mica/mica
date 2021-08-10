@@ -119,18 +119,28 @@ public class HexUtil {
 	}
 
 	/**
-	 * encode Hex
+	 * decodeToString Hex
+	 *
+	 * @param data Data to Hex
+	 * @return bytes as a hex string
+	 */
+	public static String decodeToString(byte[] data) {
+		byte[] decodeBytes = decode(data);
+		return new String(decodeBytes, DEFAULT_CHARSET);
+	}
+
+	/**
+	 * decodeToString Hex
 	 *
 	 * @param data Data to Hex
 	 * @return bytes as a hex string
 	 */
 	@Nullable
 	public static String decodeToString(@Nullable String data) {
-		byte[] decodeBytes = decode(data);
-		if (decodeBytes == null) {
+		if (StringUtil.isBlank(data)) {
 			return null;
 		}
-		return new String(decodeBytes, DEFAULT_CHARSET);
+		return decodeToString(data.getBytes(DEFAULT_CHARSET));
 	}
 
 	/**
