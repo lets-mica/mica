@@ -8,6 +8,8 @@
 
 `Mica`，Spring Cloud 微服务开发核心包，支持 `web` 和 `webflux`。
 
+简体中文 | [English](README_EN.md)
+
 ## 🔖 版本说明
 | 最新版本     | mica 版本         | spring boot 版本  | spring cloud 版本 |
 | ----------- | ---------------- | ---------------- | ----------------- |
