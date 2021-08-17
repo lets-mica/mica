@@ -18,7 +18,8 @@
 compile("net.dreamlu:mica-prometheus:${version}")
 ```
 
-## 使用
+## http-sd 使用
+### 添加配置
 ```yaml
 - job_name: micax-cloud
   honor_timestamps: true
@@ -30,6 +31,26 @@ compile("net.dreamlu:mica-prometheus:${version}")
   - url: 'http://{ip}:{port}/actuator/prometheus/sd'
 ```
 
-## 效果图
+### 效果图
 
 ![mica-prometheus 效果图](../docs/images/mica-prometheus-show.png)
+
+## alert web hook
+
+### 添加配置
+```yaml
+receivers:
+- name: "alerts"
+  webhook_configs:
+  - url: 'http://{ip}:{port}/actuator/prometheus/alerts'
+    send_resolved: true
+```
+
+### 自定义监听事件并处理
+```java
+@Async
+@EventListener
+public void onAlertEvent(AlertMessage message) {
+	// 处理 alert webhook message
+}
+```

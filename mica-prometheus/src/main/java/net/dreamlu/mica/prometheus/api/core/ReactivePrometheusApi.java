@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.prometheus.sd;
+package net.dreamlu.mica.prometheus.api.core;
 
 import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.auto.annotation.AutoIgnore;
+import net.dreamlu.mica.prometheus.api.pojo.AlertMessage;
+import net.dreamlu.mica.prometheus.api.pojo.TargetGroup;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
 import java.util.HashMap;
@@ -40,6 +42,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReactivePrometheusApi {
 	private final ReactiveDiscoveryClient discoveryClient;
+	private final ApplicationEventPublisher eventPublisher;
 
 	@GetMapping("sd")
 	public Flux<TargetGroup> getList() {
@@ -53,6 +56,12 @@ public class ReactivePrometheusApi {
 				labels.put("__meta_prometheus_job", serviceId);
 				return instanceGrouped.collect(Collectors.toList()).map(targets -> new TargetGroup(targets, labels));
 			});
+	}
+
+	@PostMapping("alerts")
+	public ResponseEntity<Object> postAlerts(@RequestBody AlertMessage message) {
+		eventPublisher.publishEvent(message);
+		return ResponseEntity.ok().build();
 	}
 
 }

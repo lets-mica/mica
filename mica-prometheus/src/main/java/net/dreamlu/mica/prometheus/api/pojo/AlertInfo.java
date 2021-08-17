@@ -14,22 +14,49 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.prometheus.sd;
+package net.dreamlu.mica.prometheus.api.pojo;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 
-import java.util.List;
+import java.io.Serializable;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * prometheus http sd 模型
+ * 告警模型
  *
  * @author L.cm
  */
-@Getter
-@RequiredArgsConstructor
-public class TargetGroup {
-	private final List<String> targets;
-	private final Map<String, String> labels;
+@Data
+public class AlertInfo implements Serializable {
+
+	/**
+	 * 状态 resolved|firing
+	 */
+	private String status;
+	/**
+	 * 标签集合
+	 */
+	private Map<String, String> labels;
+	/**
+	 * 注释集合
+	 */
+	private Map<String, String> annotations;
+	/**
+	 * 开始时间
+	 */
+	private OffsetDateTime startsAt;
+	/**
+	 * 结束时间
+	 */
+	private OffsetDateTime endsAt;
+	/**
+	 * identifies the entity that caused the alert
+	 */
+	private String generatorURL;
+	/**
+	 * fingerprint to identify the alert
+	 */
+	private String fingerprint;
+
 }

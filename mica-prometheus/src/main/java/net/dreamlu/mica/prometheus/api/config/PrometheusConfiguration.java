@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.prometheus.sd;
+package net.dreamlu.mica.prometheus.api.config;
 
+import net.dreamlu.mica.prometheus.api.core.PrometheusApi;
+import net.dreamlu.mica.prometheus.api.core.ReactivePrometheusApi;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.client.ConditionalOnDiscoveryEnabled;
 import org.springframework.cloud.client.ConditionalOnReactiveDiscoveryEnabled;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -41,8 +44,9 @@ public class PrometheusConfiguration {
 	public static class PrometheusApiConfiguration {
 
 		@Bean
-		public PrometheusApi prometheusApi(DiscoveryClient discoveryClient) {
-			return new PrometheusApi(discoveryClient);
+		public PrometheusApi prometheusApi(DiscoveryClient discoveryClient,
+										   ApplicationEventPublisher eventPublisher) {
+			return new PrometheusApi(discoveryClient, eventPublisher);
 		}
 
 	}
@@ -54,8 +58,9 @@ public class PrometheusConfiguration {
 	public static class ReactivePrometheusApiConfiguration {
 
 		@Bean
-		public ReactivePrometheusApi reactivePrometheusApi(ReactiveDiscoveryClient discoveryClient) {
-			return new ReactivePrometheusApi(discoveryClient);
+		public ReactivePrometheusApi reactivePrometheusApi(ReactiveDiscoveryClient discoveryClient,
+														   ApplicationEventPublisher eventPublisher) {
+			return new ReactivePrometheusApi(discoveryClient, eventPublisher);
 		}
 
 	}
