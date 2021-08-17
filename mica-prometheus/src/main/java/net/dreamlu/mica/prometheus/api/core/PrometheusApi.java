@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.prometheus.sd;
+package net.dreamlu.mica.prometheus.api.core;
 
 import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.auto.annotation.AutoIgnore;
+import net.dreamlu.mica.prometheus.api.pojo.AlertMessage;
+import net.dreamlu.mica.prometheus.api.pojo.TargetGroup;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -37,6 +39,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PrometheusApi {
 	private final DiscoveryClient discoveryClient;
+	private final ApplicationEventPublisher eventPublisher;
 
 	@GetMapping("sd")
 	public List<TargetGroup> getList() {
@@ -56,6 +59,12 @@ public class PrometheusApi {
 			targetGroupList.add(new TargetGroup(targets, labels));
 		}
 		return targetGroupList;
+	}
+
+	@PostMapping("alerts")
+	public ResponseEntity<Object> postAlerts(@RequestBody AlertMessage message) {
+		eventPublisher.publishEvent(message);
+		return ResponseEntity.ok().build();
 	}
 
 }

@@ -58,7 +58,7 @@ public class MyXssCleaner implements XssCleaner {
 			// 2. 保留换行
 			.prettyPrint(false);
 		// 注意会被转义
-		String escapedText = Jsoup.clean(html, "", XssUtil.WHITE_LIST, settings);
+		String escapedText = Jsoup.clean(html, "", XssUtil.HtmlWhitelist.INSTANCE, settings);
 		// 3. 反转义
 		return Entities.unescape(escapedText);
 	}

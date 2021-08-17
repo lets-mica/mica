@@ -32,7 +32,7 @@ import org.springframework.util.StringUtils;
  * @author michael
  */
 public class XssUtil {
-	public static final HtmlWhitelist WHITE_LIST = new HtmlWhitelist();
+	public static final HtmlSafeList WHITE_LIST = HtmlSafeList.INSTANCE;
 
 	/**
 	 * trim 字符串
@@ -62,9 +62,10 @@ public class XssUtil {
 	 *
 	 * @author michael
 	 */
-	public static class HtmlWhitelist extends org.jsoup.safety.Whitelist {
+	public static class HtmlSafeList extends org.jsoup.safety.Safelist {
+		public static final HtmlSafeList INSTANCE = new HtmlSafeList();
 
-		public HtmlWhitelist() {
+		public HtmlSafeList() {
 			addTags("a", "b", "blockquote", "br", "caption", "cite", "code", "col", "colgroup", "dd", "div", "span", "embed", "object", "dl", "dt",
 				"em", "h1", "h2", "h3", "h4", "h5", "h6", "i", "img", "li", "ol", "p", "pre", "q", "small",
 				"strike", "strong", "sub", "sup", "table", "tbody", "td", "tfoot", "th", "thead", "tr", "u", "ul");
