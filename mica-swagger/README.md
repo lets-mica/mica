@@ -3,7 +3,7 @@
 ## 说明
 对 `swagger` 和 `knife4j` 的封装，方便使用。
 
-**注意**: 添加 `@Api` 注解的控制器会自动暴露给 `swagger`。
+**注意**: 添加 `@Api` 或 swagger v3 `@Tag` 注解的控制器会自动暴露给 `swagger`。
 
 ## 使用
 ### maven
