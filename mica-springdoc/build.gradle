@@ -1,0 +1,9 @@
+dependencies {
+    api "com.github.xiaoymin:knife4j-springdoc-ui:${knife4jVersion}"
+    api("org.springdoc:springdoc-openapi-webmvc-core:${springdocVersion}") {
+        exclude group: "org.springframework", module: "spring-webmvc"
+    }
+    api("org.springdoc:springdoc-openapi-webflux-core:${springdocVersion}") {
+        exclude group: "org.springframework", module: "spring-webflux"
+    }
+}
