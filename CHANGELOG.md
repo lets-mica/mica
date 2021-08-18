@@ -3,6 +3,7 @@
 ## 发行版本
 ### v2.5.4 - 2021-08-22
 - :sparkles: 新增 mica-prometheus 模块支持 http sd 和 alert webhook。
+- :sparkles: mica-swagger 支持 v3 注解 `@Tag`，`R` 添加 v3 注解。  
 - :sparkles: mica-logging 代码优化。
 - :sparkles: github actions 添加缓存。
 - :memo: 更新模块图。
