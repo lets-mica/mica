@@ -17,6 +17,7 @@
 package net.dreamlu.mica.swagger.config;
 
 import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import net.dreamlu.mica.swagger.config.MicaSwaggerProperties.Authorization;
 import net.dreamlu.mica.swagger.config.MicaSwaggerProperties.GrantTypes;
 import net.dreamlu.mica.swagger.config.MicaSwaggerProperties.Oauth2;
@@ -30,6 +31,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.lang.Nullable;
 import org.springframework.util.AntPathMatcher;
+import springfox.documentation.RequestHandler;
 import springfox.documentation.builders.*;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
@@ -65,7 +67,7 @@ public class SwaggerConfiguration {
 			.useDefaultResponseMessages(false)
 			.globalRequestParameters(globalHeaders(properties))
 			.apiInfo(apiInfo(appName, properties)).select()
-			.apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
+			.apis(SwaggerConfiguration::isSwaggerController)
 			.paths(PathSelectors.any())
 			.build();
 		// 2. 如果开启 apiKey 认证
@@ -83,6 +85,14 @@ public class SwaggerConfiguration {
 		// 4. 自定义 customizer 配置
 		swaggerCustomizersProvider.ifAvailable(customizers -> customizers.forEach(customizer -> customizer.customize(docket)));
 		return docket;
+	}
+
+	private static boolean isSwaggerController(RequestHandler requestHandler) {
+		Optional<Api> optional = requestHandler.findControllerAnnotation(Api.class);
+		if (optional.isPresent()) {
+			return true;
+		}
+		return requestHandler.findControllerAnnotation(Tag.class).isPresent();
 	}
 
 	/**
