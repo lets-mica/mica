@@ -19,5 +19,3 @@ include "mica-jetcache"
 include "mica-lite"
 include "mica-activerecord"
 include "mica-prometheus"
-include 'mica-springdoc'
-
