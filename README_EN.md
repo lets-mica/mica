@@ -15,8 +15,8 @@ English | [简体中文](README.md)
 
 | Latest version | mica version     | spring boot version | spring cloud version |
 | -------------- | ---------------- | ------------------- | -------------------- |
-| 2.5.3          | mica 2.5.x       | 2.5.x               | 2020                 |
-| 2.4.9          | mica 2.4.x       | 2.4.x               | 2020                 |
+| 2.5.4          | mica 2.5.x       | 2.5.x               | 2020                 |
+| 2.4.10         | mica 2.4.x       | 2.4.x               | 2020                 |
 | 2.1.1-GA       | mica 2.0.x~2.1.x | 2.2.x ~ 2.3.x       | Hoxton               |
 
 ## 🏷️ Version number description

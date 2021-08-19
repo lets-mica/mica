@@ -13,9 +13,9 @@
 ## 🔖 版本说明
 | 最新版本     | mica 版本         | spring boot 版本  | spring cloud 版本 |
 | ----------- | ---------------- | ---------------- | ----------------- |
-| 2.5.3       | mica 2.5.x       | 2.5.x            | 2020              |
-| 2.4.9       | mica 2.4.x       | 2.4.x            | 2020              |
-| 2.1.1-GA    | mica 2.0.x~2.1.x | 2.2.x ~ 2.3.x    | Hoxton            |
+| 2.5.3          | mica 2.5.x       | 2.5.x               | 2020                 |
+| 2.4.9          | mica 2.4.x       | 2.4.x               | 2020                 |
+| 2.1.1-GA       | mica 2.0.x~2.1.x | 2.2.x ~ 2.3.x       | Hoxton               |
 
 ## 🏷️ 版本号说明
 `release` 版本号格式为 `x.x.x`， 基本上保持跟 `Spring boot` 一致。
@@ -76,7 +76,7 @@ LGPL 是 GPL 的一个为主要为类库使用设计的开源协议。和 GPL �
 - mica 源码 Github：[https://github.com/lets-mica](https://github.com/lets-mica)
 - mica 源码 Gitee（码云）：[https://gitee.com/596392912/mica](https://gitee.com/596392912/mica)
 - mica 性能压测：[https://github.com/lets-mica/mica-jmh](https://github.com/lets-mica/mica-jmh)
-- 文档地址（官网）：[https://www.dreamlu.net/mica2x/index.html](https://www.dreamlu.net/mica2x/index.html)
+- 文档地址（官网）：[http://wiki.dreamlu.net](http://wiki.dreamlu.net/guide/getting-started.html)
 - 文档地址（语雀-可关注订阅）：[https://www.yuque.com/dreamlu](https://www.yuque.com/dreamlu)
 
 ## 🍻 开源推荐
