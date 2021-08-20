@@ -7,10 +7,13 @@
 - :sparkles: mica-logging 代码优化。
 - :sparkles: github actions 添加缓存。
 - :memo: 更新模块图。
+- :memo: [Summer 2021] 添加英文 readme。
 - :arrow_up: 升级 Spring Native 到 0.10.2。
+- :arrow_up: 升级到 Spring boot 到 2.5.4
 - :arrow_up: 升级 mica-auto 到 2.1.3 修复多模块增量编译问题。
 - :arrow_up: 升级 jsoup 到 1.14.2，不再支持低版本 jsoup。
 - :arrow_up: 升级 knife4j 到 3.0.3
+- :arrow_up: 升级到 jfinal 到 4.9.16
 
 ### v2.5.3 - 2021-07-30
 - :sparkles: 完善 mica-lite，添加 SpringContextUtil bean，文件上传添加开关。
