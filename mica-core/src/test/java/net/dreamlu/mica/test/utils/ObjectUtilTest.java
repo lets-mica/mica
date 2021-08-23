@@ -74,4 +74,17 @@ public class ObjectUtilTest {
 		Assert.assertTrue(ObjectUtil.isEmpty(Collections.emptyList()));
 	}
 
+	/**
+	 * Method: toBoolean(@Nullable Object obj)
+	 */
+	@Test
+	public void testToBoolean() throws Exception {
+		Assert.assertNull(ObjectUtil.toBoolean(null));
+		Assert.assertNull(ObjectUtil.toBoolean("a"));
+		Assert.assertTrue(ObjectUtil.toBoolean("1"));
+		Assert.assertTrue(ObjectUtil.toBoolean(null, true));
+		Assert.assertTrue(ObjectUtil.toBoolean("a", true));
+		Assert.assertTrue(ObjectUtil.toBoolean("1", true));
+	}
+
 }

@@ -79,5 +79,7 @@ public interface StringPool {
 	String GET              = "get";
 	String IS               = "is";
 	String UNKNOWN          = "unknown";
+	String OK               = "ok";
+
 	// @formatter:on
 }
