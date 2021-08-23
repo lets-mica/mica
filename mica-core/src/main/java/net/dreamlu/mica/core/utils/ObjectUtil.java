@@ -237,7 +237,7 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	/**
 	 * 对象转为 Float
 	 *
-	 * @param object Object
+	 * @param object       Object
 	 * @param defaultValue float
 	 * @return 结果
 	 */
@@ -269,7 +269,7 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	/**
 	 * 对象转为 Double
 	 *
-	 * @param object Object
+	 * @param object       Object
 	 * @param defaultValue double
 	 * @return 结果
 	 */
@@ -301,7 +301,7 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	/**
 	 * 对象转为 Byte
 	 *
-	 * @param object Object
+	 * @param object       Object
 	 * @param defaultValue byte
 	 * @return 结果
 	 */
@@ -333,7 +333,7 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	/**
 	 * 对象转为 Short
 	 *
-	 * @param object Object
+	 * @param object       Object
 	 * @param defaultValue short
 	 * @return 结果
 	 */
@@ -364,9 +364,9 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	}
 
 	/**
-	 * 对象转为 Boolean
+	 * 对象转为 Boolean，支持 1、0，y、yes、n、no，on、off，true、false
 	 *
-	 * @param object Object
+	 * @param object       Object
 	 * @param defaultValue 默认值
 	 * @return 结果
 	 */
@@ -374,13 +374,20 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	public static Boolean toBoolean(@Nullable Object object, @Nullable Boolean defaultValue) {
 		if (object instanceof Boolean) {
 			return (Boolean) object;
-		}
-		if (object instanceof CharSequence) {
+		} else if (object instanceof CharSequence) {
 			String value = ((CharSequence) object).toString();
-			try {
-				return Boolean.parseBoolean(value.trim());
-			} catch (NumberFormatException nfe) {
-				return defaultValue;
+			if (StringPool.TRUE.equalsIgnoreCase(value) ||
+				StringPool.Y.equalsIgnoreCase(value) ||
+				StringPool.YES.equalsIgnoreCase(value) ||
+				StringPool.ON.equalsIgnoreCase(value) ||
+				StringPool.ONE.equalsIgnoreCase(value)) {
+				return true;
+			} else if (StringPool.FALSE.equalsIgnoreCase(value) ||
+				StringPool.N.equalsIgnoreCase(value) ||
+				StringPool.NO.equalsIgnoreCase(value) ||
+				StringPool.OFF.equalsIgnoreCase(value) ||
+				StringPool.ZERO.equalsIgnoreCase(value)) {
+				return false;
 			}
 		}
 		return defaultValue;
