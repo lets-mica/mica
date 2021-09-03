@@ -34,7 +34,6 @@ public interface CheckedConsumer<T> extends Serializable {
 	 * @param t T
 	 * @throws Throwable UncheckedException
 	 */
-	@Nullable
 	void accept(@Nullable T t) throws Throwable;
 
 }
