@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.xss.core.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -44,6 +45,7 @@ import java.util.List;
 	havingValue = "true",
 	matchIfMissing = true
 )
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class MicaXssConfiguration implements WebMvcConfigurer {
 	private final MicaXssProperties xssProperties;
 
