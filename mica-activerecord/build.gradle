@@ -10,10 +10,8 @@ dependencies {
     annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
 }
 
-sourceSets {
-    main {
-        resources {
-            srcDirs = ['src/main/java', 'src/main/resources']
-        }
+processResources {
+    from("src/main/java") {
+        include "**/*.jf"
     }
 }
