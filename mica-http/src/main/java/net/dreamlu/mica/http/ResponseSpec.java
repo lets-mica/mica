@@ -62,6 +62,15 @@ public interface ResponseSpec {
 	}
 
 	/**
+	 * Returns the HTTP is not successful.
+	 *
+	 * @return boolean
+	 */
+	default boolean isNotOk() {
+		return !isOk();
+	}
+
+	/**
 	 * Returns the is Redirect.
 	 *
 	 * @return is Redirect
