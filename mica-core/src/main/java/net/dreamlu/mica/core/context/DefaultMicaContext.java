@@ -31,11 +31,6 @@ public class DefaultMicaContext implements IMicaContext {
 	}
 
 	@Override
-	public String getTenantId() {
-		return null;
-	}
-
-	@Override
 	public String getAccountId() {
 		return null;
 	}
