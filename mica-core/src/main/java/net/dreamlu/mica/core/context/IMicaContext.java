@@ -41,7 +41,9 @@ public interface IMicaContext {
 	 * @return 租户id
 	 */
 	@Nullable
-	String getTenantId();
+	default String getTenantId() {
+		return null;
+	}
 
 	/**
 	 * 账号id
@@ -50,6 +52,16 @@ public interface IMicaContext {
 	 */
 	@Nullable
 	String getAccountId();
+
+	/**
+	 * 微服务版本号，用于灰度
+	 *
+	 * @return 账号id
+	 */
+	@Nullable
+	default String getVersion() {
+		return null;
+	}
 
 	/**
 	 * 获取上下文中的数据
