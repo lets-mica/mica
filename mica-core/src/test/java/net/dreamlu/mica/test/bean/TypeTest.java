@@ -20,6 +20,6 @@ public class TypeTest {
 		Object aa = new Integer[]{123123};
 		Stream<Integer> stream = Arrays.stream((Integer[]) aa);
 		Object[] objects = stream.unordered().toArray();
-		System.out.println((int[])aa);
+		System.out.println(aa);
 	}
 }
