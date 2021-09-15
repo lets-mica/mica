@@ -29,6 +29,7 @@ import java.security.ProtectionDomain;
  * @author L.cm
  */
 public abstract class MicaBeanMap extends BeanMap {
+	private static final String BEAN_NAME_PREFIX = MicaBeanMap.class.getName();
 	protected MicaBeanMap() {}
 
 	protected MicaBeanMap(Object bean) {
@@ -38,6 +39,9 @@ public abstract class MicaBeanMap extends BeanMap {
 	public static MicaBeanMap create(Object bean) {
 		MicaGenerator gen = new MicaGenerator();
 		gen.setBean(bean);
+		gen.setContextClass(MicaBeanMap.class);
+		gen.setNamePrefix(BEAN_NAME_PREFIX);
+		gen.setUseCache(true);
 		return gen.create();
 	}
 
@@ -112,9 +116,13 @@ public abstract class MicaBeanMap extends BeanMap {
 			if (beanClass == null) {
 				throw new IllegalArgumentException("Class of bean unknown");
 			}
-			setNamePrefix(beanClass.getName());
 			MicaBeanMapKey key = new MicaBeanMapKey(beanClass, require);
 			return (MicaBeanMap)super.create(key);
+		}
+
+		@Override
+		public void setNamePrefix(String namePrefix) {
+			super.setNamePrefix(namePrefix);
 		}
 
 		@Override
