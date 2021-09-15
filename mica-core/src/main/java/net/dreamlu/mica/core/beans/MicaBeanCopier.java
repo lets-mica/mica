@@ -27,7 +27,6 @@ import org.springframework.util.ClassUtils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +52,7 @@ public abstract class MicaBeanCopier {
 	private static final Signature BEAN_MAP_GET = TypeUtils.parseSignature("Object get(Object)");
 	private static final Type CLASS_UTILS = TypeUtils.parseType(ClassUtils.class.getName());
 	private static final Signature IS_ASSIGNABLE_VALUE = TypeUtils.parseSignature("boolean isAssignableValue(Class, Object)");
+	private static final String BEAN_NAME_PREFIX = MicaBeanCopier.class.getName();
 	/**
 	 * The map to store {@link MicaBeanCopier} of source type and class type for copy.
 	 */
@@ -69,8 +69,11 @@ public abstract class MicaBeanCopier {
 			Generator gen = new Generator();
 			gen.setSource(key.getSource());
 			gen.setTarget(key.getTarget());
+			gen.setContextClass(MicaBeanCopier.class);
 			gen.setUseConverter(key.isUseConverter());
 			gen.setNonNull(key.isNonNull());
+			gen.setNamePrefix(BEAN_NAME_PREFIX);
+			gen.setUseCache(true);
 			return gen.create(key);
 		});
 	}
@@ -96,17 +99,16 @@ public abstract class MicaBeanCopier {
 		}
 
 		public void setSource(Class source) {
-			if (!Modifier.isPublic(source.getModifiers())) {
-				setNamePrefix(source.getName());
-			}
 			this.source = source;
 		}
 
 		public void setTarget(Class target) {
-			if (!Modifier.isPublic(target.getModifiers())) {
-				setNamePrefix(target.getName());
-			}
 			this.target = target;
+		}
+
+		@Override
+		public void setNamePrefix(String namePrefix) {
+			super.setNamePrefix(namePrefix);
 		}
 
 		public void setUseConverter(boolean useConverter) {
