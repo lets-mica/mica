@@ -30,11 +30,11 @@ import java.util.function.Consumer;
  */
 public class AsyncExchange {
 	private final static Consumer<ResponseSpec> DEFAULT_CONSUMER = (r) -> {};
-	private final static BiConsumer<Request, IOException> DEFAULT_FAIL_CONSUMER = (r, e) -> {};
+	private final static BiConsumer<Request, HttpException> DEFAULT_FAIL_CONSUMER = (r, e) -> {};
 	private final Call call;
 	private Consumer<ResponseSpec> successConsumer;
 	private Consumer<ResponseSpec> responseConsumer;
-	private BiConsumer<Request, IOException> failedBiConsumer;
+	private BiConsumer<Request, HttpException> failedBiConsumer;
 
 	AsyncExchange(Call call) {
 		this.call = call;
@@ -53,7 +53,7 @@ public class AsyncExchange {
 		this.execute();
 	}
 
-	public AsyncExchange onFailed(BiConsumer<Request, IOException> biConsumer) {
+	public AsyncExchange onFailed(BiConsumer<Request, HttpException> biConsumer) {
 		this.failedBiConsumer = biConsumer;
 		return this;
 	}
@@ -70,7 +70,7 @@ public class AsyncExchange {
 		successConsumer.accept(httpResponse);
 	}
 
-	protected void onFailure(Request request, IOException e) {
+	protected void onFailure(Request request, HttpException e) {
 		failedBiConsumer.accept(request, e);
 	}
 
