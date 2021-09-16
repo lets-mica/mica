@@ -13,9 +13,7 @@ public class HttpTest {
 			.onFailed((request, e) -> {
 				e.printStackTrace();
 				ResponseSpec response = e.getResponse();
-				if (response != null) {
-					System.out.println(response.asString());
-				}
+				System.out.println(response.asString());
 			})
 			.onSuccessful(ResponseSpec::asString);
 		System.out.println(html);

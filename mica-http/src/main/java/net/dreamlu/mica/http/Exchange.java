@@ -65,7 +65,8 @@ public class Exchange {
 		try (HttpResponse response = new HttpResponse(call.execute())) {
 			return func.apply(response);
 		} catch (IOException e) {
-			failedBiConsumer.accept(call.request(), new HttpException(e));
+			Request request = call.request();
+			failedBiConsumer.accept(request, new HttpException(request, e));
 			return null;
 		}
 	}
@@ -79,7 +80,8 @@ public class Exchange {
 				failedBiConsumer.accept(call.request(), new HttpException(response));
 			}
 		} catch (IOException e) {
-			failedBiConsumer.accept(call.request(), new HttpException(e));
+			Request request = call.request();
+			failedBiConsumer.accept(request, new HttpException(request, e));
 		}
 		return null;
 	}
@@ -96,7 +98,7 @@ public class Exchange {
 	 * Returns ok http response.
 	 *
 	 * <p>
-	 *     注意：body 不能读取，因为已经关闭掉了，建议还是直接用 onResponse 函数处理。
+	 * 注意：body 不能读取，因为已经关闭掉了，建议还是直接用 onResponse 函数处理。
 	 * </p>
 	 *
 	 * @return Response

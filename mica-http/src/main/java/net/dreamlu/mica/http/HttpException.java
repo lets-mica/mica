@@ -16,7 +16,11 @@
 
 package net.dreamlu.mica.http;
 
-import javax.annotation.Nullable;
+import okhttp3.Protocol;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 
 /**
@@ -24,21 +28,20 @@ import java.io.IOException;
  *
  * @author L.cm
  */
+@ParametersAreNonnullByDefault
 public class HttpException extends IOException {
-	@Nullable
 	private final ResponseSpec response;
 
-	public HttpException(ResponseSpec response) {
+	HttpException(ResponseSpec response) {
 		super(response.toString());
 		this.response = response;
 	}
 
-	public HttpException(Throwable cause) {
+	HttpException(Request request, Throwable cause) {
 		super(cause);
-		this.response = null;
+		this.response = getResponse(request, cause.getMessage());
 	}
 
-	@Nullable
 	public ResponseSpec getResponse() {
 		return response;
 	}
@@ -51,6 +54,23 @@ public class HttpException extends IOException {
 		} else {
 			return cause.fillInStackTrace();
 		}
+	}
+
+	/**
+	 * 构造 HttpResponse
+	 *
+	 * @param request Request
+	 * @param message message
+	 * @return HttpResponse
+	 */
+	private static HttpResponse getResponse(Request request, String message) {
+		Response response = new Response.Builder()
+			.request(request)
+			.protocol(Protocol.HTTP_1_1)
+			.message(message)
+			.code(500)
+			.build();
+		return new HttpResponse(response);
 	}
 
 }
