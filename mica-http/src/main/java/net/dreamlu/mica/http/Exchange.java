@@ -18,7 +18,6 @@ package net.dreamlu.mica.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import okhttp3.Call;
@@ -41,11 +40,15 @@ import java.util.function.Function;
  *
  * @author L.cm
  */
-@RequiredArgsConstructor
 public class Exchange {
-	private BiConsumer<Request, HttpException> failedBiConsumer = (r, e) -> {
-	};
 	private final Call call;
+	@Nullable
+	private BiConsumer<Request, HttpException> failedBiConsumer;
+
+	public Exchange(Call call) {
+		this.call = call;
+		this.failedBiConsumer = null;
+	}
 
 	public Exchange onFailed(BiConsumer<Request, HttpException> failConsumer) {
 		this.failedBiConsumer = failConsumer;
@@ -65,8 +68,7 @@ public class Exchange {
 		try (HttpResponse response = new HttpResponse(call.execute())) {
 			return func.apply(response);
 		} catch (IOException e) {
-			Request request = call.request();
-			failedBiConsumer.accept(request, new HttpException(request, e));
+			onFailure(call.request(), e);
 			return null;
 		}
 	}
@@ -77,11 +79,10 @@ public class Exchange {
 			if (response.isOk()) {
 				return func.apply(response);
 			} else {
-				failedBiConsumer.accept(call.request(), new HttpException(response));
+				onFailure(response);
 			}
 		} catch (IOException e) {
-			Request request = call.request();
-			failedBiConsumer.accept(request, new HttpException(request, e));
+			onFailure(call.request(), e);
 		}
 		return null;
 	}
@@ -234,6 +235,18 @@ public class Exchange {
 	 */
 	public Path toFile(Path path) {
 		return onResponse(responseSpec -> responseSpec.toFile(path));
+	}
+
+	private void onFailure(Request request, IOException e) {
+		if (failedBiConsumer != null) {
+			failedBiConsumer.accept(request, new HttpException(request, e));
+		}
+	}
+
+	private void onFailure(HttpResponse response) {
+		if (failedBiConsumer != null) {
+			failedBiConsumer.accept(response.rawRequest(), new HttpException(response));
+		}
 	}
 
 }

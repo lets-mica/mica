@@ -19,6 +19,8 @@ package net.dreamlu.mica.http;
 import okhttp3.Call;
 import okhttp3.Request;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -28,19 +30,21 @@ import java.util.function.Consumer;
  *
  * @author L.cm
  */
+@ParametersAreNonnullByDefault
 public class AsyncExchange {
-	private final static Consumer<ResponseSpec> DEFAULT_CONSUMER = (r) -> {};
-	private final static BiConsumer<Request, HttpException> DEFAULT_FAIL_CONSUMER = (r, e) -> {};
 	private final Call call;
+	@Nullable
 	private Consumer<ResponseSpec> successConsumer;
+	@Nullable
 	private Consumer<ResponseSpec> responseConsumer;
+	@Nullable
 	private BiConsumer<Request, HttpException> failedBiConsumer;
 
 	AsyncExchange(Call call) {
 		this.call = call;
-		this.successConsumer = DEFAULT_CONSUMER;
-		this.responseConsumer = DEFAULT_CONSUMER;
-		this.failedBiConsumer = DEFAULT_FAIL_CONSUMER;
+		this.successConsumer = null;
+		this.responseConsumer = null;
+		this.failedBiConsumer = null;
 	}
 
 	public void onSuccessful(Consumer<ResponseSpec> consumer) {
@@ -62,16 +66,28 @@ public class AsyncExchange {
 		call.enqueue(new AsyncCallback(this));
 	}
 
-	protected void onResponse(HttpResponse httpResponse) {
-		responseConsumer.accept(httpResponse);
+	protected void onResponse(HttpResponse response) {
+		if (responseConsumer != null) {
+			responseConsumer.accept(response);
+		}
 	}
 
-	protected void onSuccessful(HttpResponse httpResponse) {
-		successConsumer.accept(httpResponse);
+	protected void onSuccessful(HttpResponse response) {
+		if (successConsumer != null) {
+			successConsumer.accept(response);
+		}
 	}
 
-	protected void onFailure(Request request, HttpException e) {
-		failedBiConsumer.accept(request, e);
+	protected void onFailure(Request request, IOException e) {
+		if (failedBiConsumer != null) {
+			failedBiConsumer.accept(request, new HttpException(request, e));
+		}
+	}
+
+	protected void onFailure(HttpResponse response) {
+		if (failedBiConsumer != null) {
+			failedBiConsumer.accept(response.rawRequest(), new HttpException(response));
+		}
 	}
 
 }

@@ -18,7 +18,6 @@ package net.dreamlu.mica.http;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Request;
 import okhttp3.Response;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -39,8 +38,7 @@ public class AsyncCallback implements Callback {
 
 	@Override
 	public void onFailure(Call call, IOException e) {
-		Request request = call.request();
-		exchange.onFailure(request, new HttpException(request, e));
+		exchange.onFailure(call.request(), e);
 	}
 
 	@Override
@@ -50,7 +48,7 @@ public class AsyncCallback implements Callback {
 			if (response.isSuccessful()) {
 				exchange.onSuccessful(httpResponse);
 			} else {
-				exchange.onFailure(call.request(), new HttpException(httpResponse));
+				exchange.onFailure(httpResponse);
 			}
 		}
 	}
