@@ -43,11 +43,11 @@ import java.util.function.Function;
  */
 @RequiredArgsConstructor
 public class Exchange {
-	private BiConsumer<Request, IOException> failedBiConsumer = (r, e) -> {
+	private BiConsumer<Request, HttpException> failedBiConsumer = (r, e) -> {
 	};
 	private final Call call;
 
-	public Exchange onFailed(BiConsumer<Request, IOException> failConsumer) {
+	public Exchange onFailed(BiConsumer<Request, HttpException> failConsumer) {
 		this.failedBiConsumer = failConsumer;
 		return this;
 	}
@@ -65,7 +65,7 @@ public class Exchange {
 		try (HttpResponse response = new HttpResponse(call.execute())) {
 			return func.apply(response);
 		} catch (IOException e) {
-			failedBiConsumer.accept(call.request(), e);
+			failedBiConsumer.accept(call.request(), new HttpException(e));
 			return null;
 		}
 	}
@@ -76,10 +76,10 @@ public class Exchange {
 			if (response.isOk()) {
 				return func.apply(response);
 			} else {
-				failedBiConsumer.accept(call.request(), new IOException(response.toString()));
+				failedBiConsumer.accept(call.request(), new HttpException(response));
 			}
 		} catch (IOException e) {
-			failedBiConsumer.accept(call.request(), e);
+			failedBiConsumer.accept(call.request(), new HttpException(e));
 		}
 		return null;
 	}

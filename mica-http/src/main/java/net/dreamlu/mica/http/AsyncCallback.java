@@ -38,7 +38,7 @@ public class AsyncCallback implements Callback {
 
 	@Override
 	public void onFailure(Call call, IOException e) {
-		exchange.onFailure(call.request(), e);
+		exchange.onFailure(call.request(), new HttpException(e));
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class AsyncCallback implements Callback {
 			if (response.isSuccessful()) {
 				exchange.onSuccessful(httpResponse);
 			} else {
-				exchange.onFailure(call.request(), new IOException(httpResponse.message()));
+				exchange.onFailure(call.request(), new HttpException(httpResponse));
 			}
 		}
 	}
