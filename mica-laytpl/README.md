@@ -6,6 +6,15 @@
 - jmh 实测性能不是很出色，约为 `Thymeleaf` 的 `1/2` 适合用于对性能不是特别高的场景。例如：代码生成等。
 - java15 中会移除 Nashorn（[JEP 372:Remove the Nashorn JavaScript Engine](https://openjdk.java.net/projects/jdk/15/)）
 
+### java15 之后需要添加 nashorn-core
+```xml
+<dependency>
+  <groupId>org.openjdk.nashorn</groupId>
+  <artifactId>nashorn-core</artifactId>
+  <version>${version}</version>
+</dependency>
+```
+
 ## 添加依赖
 ### maven
 ```xml
