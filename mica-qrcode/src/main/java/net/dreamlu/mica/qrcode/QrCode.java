@@ -403,7 +403,7 @@ public final class QrCode {
 	 * @return QRCode 的图像对象
 	 */
 	public BufferedImage toImage() {
-		String text = new String(content.getBytes(this.encode));
+		String text = new String(content.getBytes(this.encode), this.encode);
 		BitMatrix matrix;
 		try {
 			matrix = new QRCodeWriter().encode(text,
