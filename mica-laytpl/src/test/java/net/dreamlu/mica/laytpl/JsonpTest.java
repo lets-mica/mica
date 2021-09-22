@@ -1,4 +1,4 @@
-package net.dreamlu.mica.test.script;
+package net.dreamlu.mica.laytpl;
 
 import org.junit.Assert;
 import org.junit.Test;
