@@ -8,6 +8,7 @@
 - :sparkles: mica-core 优化 Mica Context 接口。
 - :sparkles: 优化 github action。
 - :sparkles: 升级 gradle 版本到 7.2，支持 java17。
+- :bug: mica-qrcode 修复 toImage 字符集问题。
 - :bug: mica-xss 目前只支持 servlet 只在 servlet 下启用。
 - :bug: mica-core 修复 ObjectUtil#toBoolean 方法，感谢 `@caiqyxyx` 同学反馈。
 
