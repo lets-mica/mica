@@ -11,6 +11,21 @@
 - :bug: mica-qrcode 修复 toImage 字符集问题。
 - :bug: mica-xss 目前只支持 servlet 只在 servlet 下启用。
 - :bug: mica-core 修复 ObjectUtil#toBoolean 方法，感谢 `@caiqyxyx` 同学反馈。
+- :arrow_up: 升级到 Spring boot 到 2.5.5
+- :arrow_up: 升级到 Spring cloud 2020.0.4。
+
+### v2.4.11 - 2021-09-25
+- :sparkles: mica-http 添加 HttpException 方便异常时获取相应信息。
+- :sparkles: mica-http ResponseSpec 添加 isNotOk 用于重试断言。
+- :sparkles: mica-core 优化 bean copy 和 bean map 支持 java17。
+- :sparkles: mica-core 优化 Mica Context 接口。
+- :sparkles: 优化 github action。
+- :sparkles: 升级 gradle 版本到 7.2，支持 java17。
+- :bug: mica-qrcode 修复 toImage 字符集问题。
+- :bug: mica-xss 目前只支持 servlet 只在 servlet 下启用。
+- :bug: mica-core 修复 ObjectUtil#toBoolean 方法，感谢 `@caiqyxyx` 同学反馈。
+- :arrow_up: 升级到 Spring boot 到 2.4.11
+- :arrow_up: 升级到 Spring cloud 2020.0.4。
 
 ### v2.5.4 - 2021-08-22
 - :sparkles: 新增 mica-prometheus 模块支持 http sd 和 alert webhook。
