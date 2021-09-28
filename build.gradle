@@ -13,7 +13,7 @@ ext {
     springdocVersion = "1.5.10"
     swaggerVersion = "1.5.22"
     swagger3xVersion = "2.1.10"
-    druidVersion = "1.2.6"
+    druidVersion = "1.2.7"
     okhttpVersion = "3.14.9"
     jsoupVersion = "1.14.2"
     xxlJobVersion = "2.3.0"
