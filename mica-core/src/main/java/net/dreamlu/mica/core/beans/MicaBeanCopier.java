@@ -262,7 +262,7 @@ public abstract class MicaBeanCopier {
 					}
 
 					EmitUtils.load_class(e, setterType);
-					// 更改成了属性名，之前是 set 方法名
+					// 更改成了属性名，cglib 默认是 set 方法名
 					e.push(propName);
 					e.invoke_interface(CONVERTER, CONVERT);
 					e.unbox_or_zero(setterType);
@@ -306,7 +306,7 @@ public abstract class MicaBeanCopier {
 		 * @param sourceType sourceType
 		 * @param targetType targetType
 		 */
-		public void generateClassFormMap(ClassEmitter ce, CodeEmitter e, Type sourceType, Type targetType) {
+		private void generateClassFormMap(ClassEmitter ce, CodeEmitter e, Type sourceType, Type targetType) {
 			// 2018.12.27 by L.cm 支持链式 bean
 			PropertyDescriptor[] setters = ReflectUtil.getBeanSetters(target);
 

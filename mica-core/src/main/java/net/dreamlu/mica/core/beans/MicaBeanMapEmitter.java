@@ -20,6 +20,7 @@ import net.dreamlu.mica.core.utils.ReflectUtil;
 import org.springframework.asm.ClassVisitor;
 import org.springframework.asm.Label;
 import org.springframework.asm.Type;
+import org.springframework.cglib.beans.FixedKeySet;
 import org.springframework.cglib.core.*;
 
 import java.beans.PropertyDescriptor;
@@ -34,7 +35,7 @@ import java.util.Map;
  */
 class MicaBeanMapEmitter extends ClassEmitter {
 	private static final Type BEAN_MAP = TypeUtils.parseType(MicaBeanMap.class.getName());
-	private static final Type FIXED_KEY_SET = TypeUtils.parseType("org.springframework.cglib.beans.FixedKeySet");
+	private static final Type FIXED_KEY_SET = TypeUtils.parseType(FixedKeySet.class.getName());
 	private static final Signature CSTRUCT_OBJECT = TypeUtils.parseConstructor("Object");
 	private static final Signature CSTRUCT_STRING_ARRAY = TypeUtils.parseConstructor("String[]");
 	private static final Signature BEAN_MAP_GET = TypeUtils.parseSignature("Object get(Object, Object)");
