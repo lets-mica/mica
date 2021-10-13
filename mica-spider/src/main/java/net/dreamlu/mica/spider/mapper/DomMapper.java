@@ -120,6 +120,7 @@ public class DomMapper {
 		Enhancer enhancer = new Enhancer();
 		enhancer.setSuperclass(clazz);
 		enhancer.setUseCache(true);
+		enhancer.setContextClass(clazz);
 		enhancer.setCallback(new CssQueryMethodInterceptor(clazz, doc));
 		return (T) enhancer.create();
 	}
