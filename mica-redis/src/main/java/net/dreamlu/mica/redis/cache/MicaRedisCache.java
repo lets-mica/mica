@@ -171,6 +171,7 @@ public class MicaRedisCache {
 	 * 删除给定的一个 key
 	 * 不存在的 key 会被忽略。
 	 */
+	@Nullable
 	public Boolean del(String key) {
 		return redisTemplate.delete(key);
 	}
@@ -179,6 +180,7 @@ public class MicaRedisCache {
 	 * 删除给定的一个 key
 	 * 不存在的 key 会被忽略。
 	 */
+	@Nullable
 	public Boolean del(CacheKey key) {
 		return redisTemplate.delete(key.getKey());
 	}
@@ -195,6 +197,7 @@ public class MicaRedisCache {
 	 * 删除给定的多个 key
 	 * 不存在的 key 会被忽略。
 	 */
+	@Nullable
 	public Long del(Collection<String> keys) {
 		return redisTemplate.delete(keys);
 	}
@@ -207,6 +210,7 @@ public class MicaRedisCache {
 	 * KEYS h[ae]llo 匹配 hello 和 hallo ，但不匹配 hillo 。
 	 * 特殊符号用 \ 隔开
 	 */
+	@Nullable
 	public Set<String> keys(String pattern) {
 		return redisTemplate.keys(pattern);
 	}
@@ -374,6 +378,7 @@ public class MicaRedisCache {
 	 * 返回所有(一个或多个)给定 key 的值。
 	 * 如果给定的 key 里面，有某个 key 不存在，那么这个 key 返回特殊值 nil 。因此，该命令永不失败。
 	 */
+	@Nullable
 	public List<Object> mGet(String... keys) {
 		return mGet(Arrays.asList(keys));
 	}
@@ -382,6 +387,7 @@ public class MicaRedisCache {
 	 * 返回所有(一个或多个)给定 key 的值。
 	 * 如果给定的 key 里面，有某个 key 不存在，那么这个 key 返回特殊值 nil 。因此，该命令永不失败。
 	 */
+	@Nullable
 	public List<Object> mGet(Collection<String> keys) {
 		return valueOps.multiGet(keys);
 	}
@@ -393,6 +399,7 @@ public class MicaRedisCache {
 	 * 本操作的值限制在 64 位(bit)有符号数字表示之内。
 	 * 关于递增(increment) / 递减(decrement)操作的更多信息，请参见 INCR 命令。
 	 */
+	@Nullable
 	public Long decr(String key) {
 		return valueOps.decrement(key);
 	}
@@ -404,6 +411,7 @@ public class MicaRedisCache {
 	 * 本操作的值限制在 64 位(bit)有符号数字表示之内。
 	 * 关于更多递增(increment) / 递减(decrement)操作的更多信息，请参见 INCR 命令。
 	 */
+	@Nullable
 	public Long decrBy(String key, long longValue) {
 		return valueOps.decrement(key, longValue);
 	}
@@ -432,6 +440,7 @@ public class MicaRedisCache {
 	 * 如果值包含错误的类型，或字符串类型的值不能表示为数字，那么返回一个错误。
 	 * 本操作的值限制在 64 位(bit)有符号数字表示之内。
 	 */
+	@Nullable
 	public Long incr(String key) {
 		return valueOps.increment(key);
 	}
@@ -443,6 +452,7 @@ public class MicaRedisCache {
 	 * 本操作的值限制在 64 位(bit)有符号数字表示之内。
 	 * 关于递增(increment) / 递减(decrement)操作的更多信息，参见 INCR 命令。
 	 */
+	@Nullable
 	public Long incrBy(String key, long longValue) {
 		return valueOps.increment(key, longValue);
 	}
@@ -470,6 +480,7 @@ public class MicaRedisCache {
 	 *
 	 * @param key key
 	 */
+	@Nullable
 	public Long getCounter(String key) {
 		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
 		return redisTemplate.execute((RedisCallback<Long>) action -> {
@@ -485,6 +496,7 @@ public class MicaRedisCache {
 	 * @param seconds 超时时间
 	 * @param loader  加载器
 	 */
+	@Nullable
 	public Long getCounter(String key, long seconds, Supplier<Long> loader) {
 		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
 		return redisTemplate.execute((RedisCallback<Long>) action -> {
@@ -505,6 +517,7 @@ public class MicaRedisCache {
 	/**
 	 * 检查给定 key 是否存在。
 	 */
+	@Nullable
 	public Boolean exists(String key) {
 		return redisTemplate.hasKey(key);
 	}
@@ -512,6 +525,7 @@ public class MicaRedisCache {
 	/**
 	 * 检查给定 key 是否存在。
 	 */
+	@Nullable
 	public Boolean exists(CacheKey cacheKey) {
 		return exists(cacheKey.getKey());
 	}
@@ -519,6 +533,7 @@ public class MicaRedisCache {
 	/**
 	 * 从当前数据库中随机返回(不删除)一个 key 。
 	 */
+	@Nullable
 	public String randomKey() {
 		return redisTemplate.randomKey();
 	}
@@ -537,6 +552,7 @@ public class MicaRedisCache {
 	 * 如果当前数据库(源数据库)和给定数据库(目标数据库)有相同名字的给定 key ，或者 key 不存在于当前数据库，那么 MOVE 没有任何效果。
 	 * 因此，也可以利用这一特性，将 MOVE 当作锁(locking)原语(primitive)。
 	 */
+	@Nullable
 	public Boolean move(String key, int dbIndex) {
 		return redisTemplate.move(key, dbIndex);
 	}
@@ -545,6 +561,7 @@ public class MicaRedisCache {
 	 * 为给定 key 设置生存时间，当 key 过期时(生存时间为 0 )，它会被自动删除。
 	 * 在 Redis 中，带有生存时间的 key 被称为『易失的』(volatile)。
 	 */
+	@Nullable
 	public Boolean expire(String key, long seconds) {
 		return redisTemplate.expire(key, seconds, TimeUnit.SECONDS);
 	}
@@ -553,6 +570,7 @@ public class MicaRedisCache {
 	 * 为给定 key 设置生存时间，当 key 过期时(生存时间为 0 )，它会被自动删除。
 	 * 在 Redis 中，带有生存时间的 key 被称为『易失的』(volatile)。
 	 */
+	@Nullable
 	public Boolean expire(String key, Duration timeout) {
 		return expire(key, timeout.getSeconds());
 	}
@@ -560,6 +578,7 @@ public class MicaRedisCache {
 	/**
 	 * EXPIREAT 的作用和 EXPIRE 类似，都用于为 key 设置生存时间。不同在于 EXPIREAT 命令接受的时间参数是 UNIX 时间戳(unix timestamp)。
 	 */
+	@Nullable
 	public Boolean expireAt(String key, Date date) {
 		return redisTemplate.expireAt(key, date);
 	}
@@ -567,6 +586,7 @@ public class MicaRedisCache {
 	/**
 	 * EXPIREAT 的作用和 EXPIRE 类似，都用于为 key 设置生存时间。不同在于 EXPIREAT 命令接受的时间参数是 UNIX 时间戳(unix timestamp)。
 	 */
+	@Nullable
 	public Boolean expireAt(String key, long unixTime) {
 		return expireAt(key, new Date(unixTime));
 	}
@@ -574,6 +594,7 @@ public class MicaRedisCache {
 	/**
 	 * 这个命令和 EXPIRE 命令的作用类似，但是它以毫秒为单位设置 key 的生存时间，而不像 EXPIRE 命令那样，以秒为单位。
 	 */
+	@Nullable
 	public Boolean pExpire(String key, long milliseconds) {
 		return redisTemplate.expire(key, milliseconds, TimeUnit.MILLISECONDS);
 	}
@@ -582,6 +603,7 @@ public class MicaRedisCache {
 	 * 将给定 key 的值设为 value ，并返回 key 的旧值(old value)。
 	 * 当 key 存在但不是字符串类型时，返回一个错误。
 	 */
+	@Nullable
 	public <T> T getSet(String key, Object value) {
 		return (T) valueOps.getAndSet(key, value);
 	}
@@ -589,6 +611,7 @@ public class MicaRedisCache {
 	/**
 	 * 移除给定 key 的生存时间，将这个 key 从『易失的』(带生存时间 key )转换成『持久的』(一个不带生存时间、永不过期的 key )。
 	 */
+	@Nullable
 	public Boolean persist(String key) {
 		return redisTemplate.persist(key);
 	}
@@ -603,6 +626,7 @@ public class MicaRedisCache {
 	/**
 	 * 以秒为单位，返回给定 key 的剩余生存时间(TTL, time to live)。
 	 */
+	@Nullable
 	public Long ttl(String key) {
 		return redisTemplate.getExpire(key);
 	}
@@ -610,6 +634,7 @@ public class MicaRedisCache {
 	/**
 	 * 这个命令类似于 TTL 命令，但它以毫秒为单位返回 key 的剩余生存时间，而不是像 TTL 命令那样，以秒为单位。
 	 */
+	@Nullable
 	public Long pttl(String key) {
 		return redisTemplate.getExpire(key, TimeUnit.MILLISECONDS);
 	}
@@ -635,6 +660,7 @@ public class MicaRedisCache {
 	/**
 	 * 返回哈希表 key 中给定域 field 的值。
 	 */
+	@Nullable
 	public <T> T hGet(String key, Object field) {
 		return (T) hashOps.get(key, field);
 	}
@@ -733,6 +759,7 @@ public class MicaRedisCache {
 	 * 你也可以使用负数下标，以 -1 表示列表的最后一个元素， -2 表示列表的倒数第二个元素，以此类推。
 	 * 如果 key 不是列表类型，返回一个错误。
 	 */
+	@Nullable
 	public <T> T lIndex(String key, long index) {
 		return (T) listOps.index(key, index);
 	}
@@ -742,6 +769,7 @@ public class MicaRedisCache {
 	 * 如果 key 不存在，则 key 被解释为一个空列表，返回 0 .
 	 * 如果 key 不是列表类型，返回一个错误。
 	 */
+	@Nullable
 	public Long lLen(String key) {
 		return listOps.size(key);
 	}
@@ -749,6 +777,7 @@ public class MicaRedisCache {
 	/**
 	 * 移除并返回列表 key 的头元素。
 	 */
+	@Nullable
 	public <T> T lPop(String key) {
 		return (T) listOps.leftPop(key);
 	}
@@ -761,8 +790,25 @@ public class MicaRedisCache {
 	 * 如果 key 不存在，一个空列表会被创建并执行 LPUSH 操作。
 	 * 当 key 存在但不是列表类型时，返回一个错误。
 	 */
+	@Nullable
 	public Long lPush(String key, Object... values) {
-		return listOps.leftPush(key, values);
+		if (values.length == 1) {
+			return listOps.leftPush(key, values[0]);
+		}
+		return listOps.leftPushAll(key, values);
+	}
+
+	/**
+	 * 将一个或多个值 value 插入到列表 key 的表头
+	 * 如果有多个 value 值，那么各个 value 值按从左到右的顺序依次插入到表头： 比如说，
+	 * 对空列表 mylist 执行命令 LPUSH mylist a b c ，列表的值将是 c b a ，
+	 * 这等同于原子性地执行 LPUSH mylist a 、 LPUSH mylist b 和 LPUSH mylist c 三个命令。
+	 * 如果 key 不存在，一个空列表会被创建并执行 LPUSH 操作。
+	 * 当 key 存在但不是列表类型时，返回一个错误。
+	 */
+	@Nullable
+	public Long lPush(String key, Collection<Object> values) {
+		return listOps.leftPushAll(key, values);
 	}
 
 	/**
@@ -781,6 +827,7 @@ public class MicaRedisCache {
 	 * count < 0 : 从表尾开始向表头搜索，移除与 value 相等的元素，数量为 count 的绝对值。
 	 * count = 0 : 移除表中所有与 value 相等的值。
 	 */
+	@Nullable
 	public Long lRem(String key, long count, Object value) {
 		return listOps.remove(key, count, value);
 	}
@@ -795,8 +842,9 @@ public class MicaRedisCache {
 	 * 获取 list 中下标 1 到 3 的数据： cache.lrange(listKey, 1, 3);
 	 * </pre>
 	 */
-	public List lRange(String key, long start, long end) {
-		return listOps.range(key, start, end);
+	@Nullable
+	public <T> List<T> lRange(String key, long start, long end) {
+		return (List<T>) listOps.range(key, start, end);
 	}
 
 	/**
@@ -813,6 +861,7 @@ public class MicaRedisCache {
 	/**
 	 * 移除并返回列表 key 的尾元素。
 	 */
+	@Nullable
 	public <T> T rPop(String key) {
 		return (T) listOps.rightPop(key);
 	}
@@ -825,8 +874,25 @@ public class MicaRedisCache {
 	 * 如果 key 不存在，一个空列表会被创建并执行 RPUSH 操作。
 	 * 当 key 存在但不是列表类型时，返回一个错误。
 	 */
+	@Nullable
 	public Long rPush(String key, Object... values) {
-		return listOps.rightPush(key, values);
+		if (values.length == 1) {
+			return listOps.rightPush(key, values[0]);
+		}
+		return listOps.rightPushAll(key, values);
+	}
+
+	/**
+	 * 将一个或多个值 value 插入到列表 key 的表尾(最右边)。
+	 * 如果有多个 value 值，那么各个 value 值按从左到右的顺序依次插入到表尾：比如
+	 * 对一个空列表 mylist 执行 RPUSH mylist a b c ，得出的结果列表为 a b c ，
+	 * 等同于执行命令 RPUSH mylist a 、 RPUSH mylist b 、 RPUSH mylist c 。
+	 * 如果 key 不存在，一个空列表会被创建并执行 RPUSH 操作。
+	 * 当 key 存在但不是列表类型时，返回一个错误。
+	 */
+	@Nullable
+	public Long rPush(String key, Collection<Object> values) {
+		return listOps.rightPushAll(key, values);
 	}
 
 	/**
@@ -834,6 +900,7 @@ public class MicaRedisCache {
 	 * 将列表 source 中的最后一个元素(尾元素)弹出，并返回给客户端。
 	 * 将 source 弹出的元素插入到列表 destination ，作为 destination 列表的的头元素。
 	 */
+	@Nullable
 	public <T> T rPopLPush(String srcKey, String dstKey) {
 		return (T) listOps.rightPopAndLeftPush(srcKey, dstKey);
 	}
@@ -843,6 +910,7 @@ public class MicaRedisCache {
 	 * 假如 key 不存在，则创建一个只包含 member 元素作成员的集合。
 	 * 当 key 不是集合类型时，返回一个错误。
 	 */
+	@Nullable
 	public Long sAdd(String key, Object... members) {
 		return setOps.add(key, members);
 	}
@@ -851,6 +919,7 @@ public class MicaRedisCache {
 	 * 移除并返回集合中的一个随机元素。
 	 * 如果只想获取一个随机元素，但不想该元素从集合中被移除的话，可以使用 SRANDMEMBER 命令。
 	 */
+	@Nullable
 	public <T> T sPop(String key) {
 		return (T) setOps.pop(key);
 	}
@@ -859,29 +928,33 @@ public class MicaRedisCache {
 	 * 返回集合 key 中的所有成员。
 	 * 不存在的 key 被视为空集合。
 	 */
-	public Set sMembers(String key) {
-		return setOps.members(key);
+	@Nullable
+	public <T> Set<T> sMembers(String key) {
+		return (Set<T>) setOps.members(key);
 	}
 
 	/**
 	 * 判断 member 元素是否集合 key 的成员。
 	 */
-	public boolean sIsMember(String key, Object member) {
+	@Nullable
+	public Boolean sIsMember(String key, Object member) {
 		return setOps.isMember(key, member);
 	}
 
 	/**
 	 * 返回多个集合的交集，多个集合由 keys 指定
 	 */
-	public Set sInter(String key, String otherKey) {
-		return setOps.intersect(key, otherKey);
+	@Nullable
+	public <T> Set<T> sInter(String key, String otherKey) {
+		return (Set<T>) setOps.intersect(key, otherKey);
 	}
 
 	/**
 	 * 返回多个集合的交集，多个集合由 keys 指定
 	 */
-	public Set sInter(String key, Collection<String> otherKeys) {
-		return setOps.intersect(key, otherKeys);
+	@Nullable
+	public <T> Set<T> sInter(String key, Collection<String> otherKeys) {
+		return (Set<T>) setOps.intersect(key, otherKeys);
 	}
 
 	/**
@@ -899,13 +972,15 @@ public class MicaRedisCache {
 	 * 如果 count 为负数，那么命令返回一个数组，数组中的元素可能会重复出现多次，而数组的长度为 count 的绝对值。
 	 * 该操作和 SPOP 相似，但 SPOP 将随机元素从集合中移除并返回，而 SRANDMEMBER 则仅仅返回随机元素，而不对集合进行任何改动。
 	 */
-	public List sRandMember(String key, int count) {
-		return setOps.randomMembers(key, count);
+	@Nullable
+	public <T> List<T> sRandMember(String key, int count) {
+		return (List<T>) setOps.randomMembers(key, count);
 	}
 
 	/**
 	 * 移除集合 key 中的一个或多个 member 元素，不存在的 member 元素会被忽略。
 	 */
+	@Nullable
 	public Long sRem(String key, Object... members) {
 		return setOps.remove(key, members);
 	}
@@ -914,32 +989,36 @@ public class MicaRedisCache {
 	 * 返回多个集合的并集，多个集合由 keys 指定
 	 * 不存在的 key 被视为空集。
 	 */
-	public Set sUnion(String key, String otherKey) {
-		return setOps.union(key, otherKey);
+	@Nullable
+	public <T> Set<T> sUnion(String key, String otherKey) {
+		return (Set<T>) setOps.union(key, otherKey);
 	}
 
 	/**
 	 * 返回多个集合的并集，多个集合由 keys 指定
 	 * 不存在的 key 被视为空集。
 	 */
-	public Set sUnion(String key, Collection<String> otherKeys) {
-		return setOps.union(key, otherKeys);
+	@Nullable
+	public <T> Set<T> sUnion(String key, Collection<String> otherKeys) {
+		return (Set<T>) setOps.union(key, otherKeys);
 	}
 
 	/**
 	 * 返回一个集合的全部成员，该集合是所有给定集合之间的差集。
 	 * 不存在的 key 被视为空集。
 	 */
-	public Set sDiff(String key, String otherKey) {
-		return setOps.difference(key, otherKey);
+	@Nullable
+	public <T> Set<T> sDiff(String key, String otherKey) {
+		return (Set<T>) setOps.difference(key, otherKey);
 	}
 
 	/**
 	 * 返回一个集合的全部成员，该集合是所有给定集合之间的差集。
 	 * 不存在的 key 被视为空集。
 	 */
-	public Set sDiff(String key, Collection<String> otherKeys) {
-		return setOps.difference(key, otherKeys);
+	@Nullable
+	public <T> Set<T> sDiff(String key, Collection<String> otherKeys) {
+		return (Set<T>) setOps.difference(key, otherKeys);
 	}
 
 	/**
@@ -947,6 +1026,7 @@ public class MicaRedisCache {
 	 * 如果某个 member 已经是有序集的成员，那么更新这个 member 的 score 值，
 	 * 并通过重新插入这个 member 元素，来保证该 member 在正确的位置上。
 	 */
+	@Nullable
 	public Boolean zAdd(String key, Object member, double score) {
 		return zSetOps.add(key, member, score);
 	}
@@ -956,6 +1036,7 @@ public class MicaRedisCache {
 	 * 如果某个 member 已经是有序集的成员，那么更新这个 member 的 score 值，
 	 * 并通过重新插入这个 member 元素，来保证该 member 在正确的位置上。
 	 */
+	@Nullable
 	public Long zAdd(String key, Map<Object, Double> scoreMembers) {
 		Set<ZSetOperations.TypedTuple<Object>> tuples = new HashSet<>();
 		scoreMembers.forEach((k, v) -> {
@@ -967,6 +1048,7 @@ public class MicaRedisCache {
 	/**
 	 * 返回有序集 key 的基数。
 	 */
+	@Nullable
 	public Long zCard(String key) {
 		return zSetOps.zCard(key);
 	}
@@ -975,6 +1057,7 @@ public class MicaRedisCache {
 	 * 返回有序集 key 中， score 值在 min 和 max 之间(默认包括 score 值等于 min 或 max )的成员的数量。
 	 * 关于参数 min 和 max 的详细使用方法，请参考 ZRANGEBYSCORE 命令。
 	 */
+	@Nullable
 	public Long zCount(String key, double min, double max) {
 		return zSetOps.count(key, min, max);
 	}
@@ -982,6 +1065,7 @@ public class MicaRedisCache {
 	/**
 	 * 为有序集 key 的成员 member 的 score 值加上增量 increment 。
 	 */
+	@Nullable
 	public Double zIncrBy(String key, Object member, double score) {
 		return zSetOps.incrementScore(key, member, score);
 	}
@@ -992,8 +1076,9 @@ public class MicaRedisCache {
 	 * 具有相同 score 值的成员按字典序(lexicographical order )来排列。
 	 * 如果你需要成员按 score 值递减(从大到小)来排列，请使用 ZREVRANGE 命令。
 	 */
-	public Set zRange(String key, long start, long end) {
-		return zSetOps.range(key, start, end);
+	@Nullable
+	public <T> Set<T> zRange(String key, long start, long end) {
+		return (Set<T>) zSetOps.range(key, start, end);
 	}
 
 	/**
@@ -1002,16 +1087,18 @@ public class MicaRedisCache {
 	 * 具有相同 score 值的成员按字典序的逆序(reverse lexicographical order)排列。
 	 * 除了成员按 score 值递减的次序排列这一点外， ZREVRANGE 命令的其他方面和 ZRANGE 命令一样。
 	 */
-	public Set zRevrange(String key, long start, long end) {
-		return zSetOps.reverseRange(key, start, end);
+	@Nullable
+	public <T> Set<T> zRevrange(String key, long start, long end) {
+		return (Set<T>) zSetOps.reverseRange(key, start, end);
 	}
 
 	/**
 	 * 返回有序集 key 中，所有 score 值介于 min 和 max 之间(包括等于 min 或 max )的成员。
 	 * 有序集成员按 score 值递增(从小到大)次序排列。
 	 */
-	public Set zRangeByScore(String key, double min, double max) {
-		return zSetOps.rangeByScore(key, min, max);
+	@Nullable
+	public <T> Set<T> zRangeByScore(String key, double min, double max) {
+		return (Set<T>) zSetOps.rangeByScore(key, min, max);
 	}
 
 	/**
@@ -1019,6 +1106,7 @@ public class MicaRedisCache {
 	 * 排名以 0 为底，也就是说， score 值最小的成员排名为 0 。
 	 * 使用 ZREVRANK 命令可以获得成员按 score 值递减(从大到小)排列的排名。
 	 */
+	@Nullable
 	public Long zRank(String key, Object member) {
 		return zSetOps.rank(key, member);
 	}
@@ -1028,6 +1116,7 @@ public class MicaRedisCache {
 	 * 排名以 0 为底，也就是说， score 值最大的成员排名为 0 。
 	 * 使用 ZRANK 命令可以获得成员按 score 值递增(从小到大)排列的排名。
 	 */
+	@Nullable
 	public Long zRevrank(String key, Object member) {
 		return zSetOps.reverseRank(key, member);
 	}
@@ -1036,6 +1125,7 @@ public class MicaRedisCache {
 	 * 移除有序集 key 中的一个或多个成员，不存在的成员将被忽略。
 	 * 当 key 存在但不是有序集类型时，返回一个错误。
 	 */
+	@Nullable
 	public Long zRem(String key, Object... members) {
 		return zSetOps.remove(key, members);
 	}
@@ -1044,6 +1134,7 @@ public class MicaRedisCache {
 	 * 返回有序集 key 中，成员 member 的 score 值。
 	 * 如果 member 元素不是有序集 key 的成员，或 key 不存在，返回 nil 。
 	 */
+	@Nullable
 	public Double zScore(String key, Object member) {
 		return zSetOps.score(key, member);
 	}
