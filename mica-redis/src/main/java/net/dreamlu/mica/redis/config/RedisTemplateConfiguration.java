@@ -93,7 +93,7 @@ public class RedisTemplateConfiguration {
 	}
 
 	@Bean
-	public MicaRedisCache redisClient(RedisTemplate<String, Object> micaRedisTemplate) {
+	public MicaRedisCache micaRedisCache(RedisTemplate<String, Object> micaRedisTemplate) {
 		return new MicaRedisCache(micaRedisTemplate);
 	}
 }
