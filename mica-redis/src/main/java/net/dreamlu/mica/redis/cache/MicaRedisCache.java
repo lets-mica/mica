@@ -791,10 +791,20 @@ public class MicaRedisCache {
 	 * 当 key 存在但不是列表类型时，返回一个错误。
 	 */
 	@Nullable
+	public Long lPush(String key, Object value) {
+		return listOps.leftPush(key, value);
+	}
+
+	/**
+	 * 将一个或多个值 value 插入到列表 key 的表头
+	 * 如果有多个 value 值，那么各个 value 值按从左到右的顺序依次插入到表头： 比如说，
+	 * 对空列表 mylist 执行命令 LPUSH mylist a b c ，列表的值将是 c b a ，
+	 * 这等同于原子性地执行 LPUSH mylist a 、 LPUSH mylist b 和 LPUSH mylist c 三个命令。
+	 * 如果 key 不存在，一个空列表会被创建并执行 LPUSH 操作。
+	 * 当 key 存在但不是列表类型时，返回一个错误。
+	 */
+	@Nullable
 	public Long lPush(String key, Object... values) {
-		if (values.length == 1) {
-			return listOps.leftPush(key, values[0]);
-		}
 		return listOps.leftPushAll(key, values);
 	}
 
@@ -875,10 +885,20 @@ public class MicaRedisCache {
 	 * 当 key 存在但不是列表类型时，返回一个错误。
 	 */
 	@Nullable
+	public Long rPush(String key, Object value) {
+		return listOps.rightPush(key, value);
+	}
+
+	/**
+	 * 将一个或多个值 value 插入到列表 key 的表尾(最右边)。
+	 * 如果有多个 value 值，那么各个 value 值按从左到右的顺序依次插入到表尾：比如
+	 * 对一个空列表 mylist 执行 RPUSH mylist a b c ，得出的结果列表为 a b c ，
+	 * 等同于执行命令 RPUSH mylist a 、 RPUSH mylist b 、 RPUSH mylist c 。
+	 * 如果 key 不存在，一个空列表会被创建并执行 RPUSH 操作。
+	 * 当 key 存在但不是列表类型时，返回一个错误。
+	 */
+	@Nullable
 	public Long rPush(String key, Object... values) {
-		if (values.length == 1) {
-			return listOps.rightPush(key, values[0]);
-		}
 		return listOps.rightPushAll(key, values);
 	}
 
