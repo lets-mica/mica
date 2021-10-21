@@ -88,12 +88,12 @@ public class RedisTemplateConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean(ValueOperations.class)
-	public ValueOperations<String, Object> valueOperations(RedisTemplate<String, Object> redisTemplate) {
-		return redisTemplate.opsForValue();
+	public ValueOperations<String, Object> valueOperations(RedisTemplate<String, Object> micaRedisTemplate) {
+		return micaRedisTemplate.opsForValue();
 	}
 
 	@Bean
-	public MicaRedisCache redisClient(RedisTemplate<String, Object> redisTemplate) {
-		return new MicaRedisCache(redisTemplate);
+	public MicaRedisCache redisClient(RedisTemplate<String, Object> micaRedisTemplate) {
+		return new MicaRedisCache(micaRedisTemplate);
 	}
 }
