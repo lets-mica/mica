@@ -1,6 +1,14 @@
 # 变更记录
 
 ## 发行版本
+### v2.5.6 - 2021-10-28
+- :sparkles: mica-redis 优化 MicaRedisCache bean 名称。
+- :bug: mica-redis rpush、lpush 修复，优化 MicaRedisCache 方法泛型。
+- :sparkles: mica-spider 更好的支持 java17
+- :sparkles: mica-core BeanUtil#generator 支持 java17
+- :arrow_up: 升级 druid 到 1.2.8
+- :arrow_up: 升级到 Spring boot 到 2.5.6
+
 ### v2.5.5 - 2021-09-25
 - :sparkles: mica-http 添加 HttpException 方便异常时获取相应信息。
 - :sparkles: mica-http ResponseSpec 添加 isNotOk 用于重试断言。
