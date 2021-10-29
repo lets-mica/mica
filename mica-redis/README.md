@@ -24,7 +24,7 @@ compile("net.dreamlu:mica-redis:${version}")
 | ----- | ------ | ------ |
 | mica.redis.key-expired-event.enable | false | 是否启用redis key 失效事件，默认：关闭 |
 | mica.redis.rate-limiter.enable | false | 是否开启 redis 分布式限流，默认：关闭 |
-| mica.redis.serializer-type | JSON | 序列化方式，默认：JSON |
+| mica.redis.serializer-type | JSON | 序列化方式 JSON、JDK，需要自定义实现 `RedisSerializer` 即可，默认：JSON |
 
 ## 使用文档
 
