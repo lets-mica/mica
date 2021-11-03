@@ -18,10 +18,12 @@ package net.dreamlu.mica.redis.cache;
 
 import lombok.Getter;
 import net.dreamlu.mica.core.utils.CollectionUtil;
+import net.dreamlu.mica.core.utils.JsonUtil;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.lang.Nullable;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -114,6 +116,30 @@ public class MicaRedisCache {
 	}
 
 	/**
+	 * 返回 key 所关联的 value 值，采用 jdk 序列化
+	 * 如果 key 不存在那么返回特殊值 nil 。
+	 */
+	@Nullable
+	public <T> T getByJdkSer(String key) {
+		return (T) redisTemplate.execute((RedisCallback<Object>) redis -> {
+			byte[] bytes = redis.get(keySerialize(key));
+			return RedisSerializer.java().deserialize(bytes);
+		});
+	}
+
+	/**
+	 * 返回 key 所关联的 value 值，采用 json 序列化
+	 * 如果 key 不存在那么返回特殊值 nil 。
+	 */
+	@Nullable
+	public <T> T getByJsonSer(String key, Class<T> clazz) {
+		return redisTemplate.execute((RedisCallback<T>) redis -> {
+			byte[] valueBytes = redis.get(keySerialize(key));
+			return JsonUtil.readValue(valueBytes, clazz);
+		});
+	}
+
+	/**
 	 * 获取cache 为 null 时使用加载器，然后设置缓存
 	 *
 	 * @param key    cacheKey
@@ -136,12 +162,44 @@ public class MicaRedisCache {
 	}
 
 	/**
+	 * 获取cache 为 null 时使用加载器，然后设置缓存
+	 *
+	 * @param key    cacheKey
+	 * @param clazz  Class
+	 * @param loader cache loader
+	 * @param <T>    泛型
+	 * @return 结果
+	 */
+	@Nullable
+	public <T> T getByJsonSer(String key, Class<T> clazz, Supplier<T> loader) {
+		T value = this.getByJsonSer(key, clazz);
+		if (value != null) {
+			return value;
+		}
+		value = loader.get();
+		if (value == null) {
+			return null;
+		}
+		this.set(key, value);
+		return value;
+	}
+
+	/**
 	 * 返回 key 所关联的 value 值
 	 * 如果 key 不存在那么返回特殊值 nil 。
 	 */
 	@Nullable
 	public <T> T get(CacheKey cacheKey) {
 		return (T) valueOps.get(cacheKey.getKey());
+	}
+
+	/**
+	 * 返回 key 所关联的 value 值
+	 * 如果 key 不存在那么返回特殊值 nil 。
+	 */
+	@Nullable
+	public <T> T getByJsonSer(CacheKey cacheKey, Class<T> clazz) {
+		return getByJsonSer(cacheKey.getKey(), clazz);
 	}
 
 	/**
@@ -156,6 +214,29 @@ public class MicaRedisCache {
 	public <T> T get(CacheKey cacheKey, Supplier<T> loader) {
 		String key = cacheKey.getKey();
 		T value = this.get(key);
+		if (value != null) {
+			return value;
+		}
+		value = loader.get();
+		if (value == null) {
+			return null;
+		}
+		this.set(cacheKey, value);
+		return value;
+	}
+
+	/**
+	 * 获取cache 为 null 时使用加载器，然后设置缓存
+	 *
+	 * @param cacheKey cacheKey
+	 * @param loader   cache loader
+	 * @param <T>      泛型
+	 * @return 结果
+	 */
+	@Nullable
+	public <T> T getByJsonSer(CacheKey cacheKey, Class<T> clazz, Supplier<T> loader) {
+		String key = cacheKey.getKey();
+		T value = this.getByJsonSer(key, clazz);
 		if (value != null) {
 			return value;
 		}
@@ -189,6 +270,7 @@ public class MicaRedisCache {
 	 * 删除给定的多个 key
 	 * 不存在的 key 会被忽略。
 	 */
+	@Nullable
 	public Long del(String... keys) {
 		return del(Arrays.asList(keys));
 	}
@@ -243,7 +325,6 @@ public class MicaRedisCache {
 	 *
 	 * @param pattern  匹配表达式
 	 * @param consumer 消费者
-	 * @return 扫描结果
 	 */
 	public void scan(String pattern, Consumer<String> consumer) {
 		scan(pattern, 100L, consumer);
@@ -255,11 +336,9 @@ public class MicaRedisCache {
 	 * @param pattern  匹配表达式
 	 * @param count    一次扫描的数量
 	 * @param consumer 消费者
-	 * @return 扫描结果
 	 */
 	public void scan(String pattern, @Nullable Long count, Consumer<String> consumer) {
-		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
-		scanBytes(pattern, count, (bytes) -> consumer.accept(keySerializer.deserialize(bytes)));
+		scanBytes(pattern, count, (bytes) -> consumer.accept(keyDeserialize(bytes)));
 	}
 
 	/**
@@ -268,16 +347,15 @@ public class MicaRedisCache {
 	 * @param pattern  匹配表达式
 	 * @param count    一次扫描的数量
 	 * @param consumer 消费者
-	 * @return 扫描结果
 	 */
 	public void scanBytes(String pattern, @Nullable Long count, Consumer<byte[]> consumer) {
-		redisTemplate.execute((RedisCallback<Object>) action -> {
+		redisTemplate.execute((RedisCallback<Object>) redis -> {
 			ScanOptions.ScanOptionsBuilder builder = ScanOptions.scanOptions()
 				.match(pattern);
 			if (count != null) {
 				builder.count(count);
 			}
-			try (Cursor<byte[]> cursor = action.scan(builder.build())) {
+			try (Cursor<byte[]> cursor = redis.scan(builder.build())) {
 				cursor.forEachRemaining(consumer);
 			}
 			return null;
@@ -331,8 +409,7 @@ public class MicaRedisCache {
 	 * @return 扫描结果
 	 */
 	public void sScan(String key, String pattern, @Nullable Long count, Consumer<String> consumer) {
-		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
-		sScanBytes(key, pattern, count, (bytes) -> consumer.accept(keySerializer.deserialize(bytes)));
+		sScanBytes(key, pattern, count, (bytes) -> consumer.accept(keyDeserialize(bytes)));
 	}
 
 	/**
@@ -345,14 +422,13 @@ public class MicaRedisCache {
 	 * @return 扫描结果
 	 */
 	public void sScanBytes(String key, String pattern, @Nullable Long count, Consumer<byte[]> consumer) {
-		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
-		redisTemplate.execute((RedisCallback<Object>) action -> {
+		redisTemplate.execute((RedisCallback<Object>) redis -> {
 			ScanOptions.ScanOptionsBuilder builder = ScanOptions.scanOptions()
 				.match(pattern);
 			if (count != null) {
 				builder.count(count);
 			}
-			try (Cursor<byte[]> cursor = action.sScan(keySerializer.serialize(key), builder.build())) {
+			try (Cursor<byte[]> cursor = redis.sScan(keySerialize(key), builder.build())) {
 				cursor.forEachRemaining(consumer);
 			}
 			return null;
@@ -424,11 +500,10 @@ public class MicaRedisCache {
 	 * 关于更多递增(increment) / 递减(decrement)操作的更多信息，请参见 INCR 命令。
 	 */
 	public Long decrBy(String key, long longValue, long seconds) {
-		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
-		byte[] serializedKey = keySerializer.serialize(key);
-		List<Object> result = redisTemplate.executePipelined((RedisCallback<Long>) action -> {
-			Long data = action.decrBy(serializedKey, longValue);
-			action.expire(serializedKey, seconds);
+		byte[] serializedKey = keySerialize(key);
+		List<Object> result = redisTemplate.executePipelined((RedisCallback<Long>) redis -> {
+			Long data = redis.decrBy(serializedKey, longValue);
+			redis.expire(serializedKey, seconds);
 			return data;
 		});
 		return (Long) result.get(0);
@@ -465,11 +540,10 @@ public class MicaRedisCache {
 	 * 关于递增(increment) / 递减(decrement)操作的更多信息，参见 INCR 命令。
 	 */
 	public Long incrBy(String key, long longValue, long seconds) {
-		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
-		byte[] serializedKey = keySerializer.serialize(key);
-		List<Object> result = redisTemplate.executePipelined((RedisCallback<Long>) action -> {
-			Long data = action.incrBy(serializedKey, longValue);
-			action.expire(serializedKey, seconds);
+		byte[] serializedKey = keySerialize(key);
+		List<Object> result = redisTemplate.executePipelined((RedisCallback<Long>) redis -> {
+			Long data = redis.incrBy(serializedKey, longValue);
+			redis.expire(serializedKey, seconds);
 			return data;
 		});
 		return (Long) result.get(0);
@@ -482,10 +556,12 @@ public class MicaRedisCache {
 	 */
 	@Nullable
 	public Long getCounter(String key) {
-		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
-		return redisTemplate.execute((RedisCallback<Long>) action -> {
-			byte[] value = action.get(keySerializer.serialize(key));
-			return Long.valueOf(new String(value));
+		return redisTemplate.execute((RedisCallback<Long>) redis -> {
+			byte[] value = redis.get(keySerialize(key));
+			if (value == null) {
+				return null;
+			}
+			return Long.valueOf(new String(value, StandardCharsets.UTF_8));
 		});
 	}
 
@@ -498,17 +574,16 @@ public class MicaRedisCache {
 	 */
 	@Nullable
 	public Long getCounter(String key, long seconds, Supplier<Long> loader) {
-		RedisSerializer<String> keySerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
-		return redisTemplate.execute((RedisCallback<Long>) action -> {
-			byte[] keyBytes = keySerializer.serialize(key);
-			byte[] value = action.get(keyBytes);
+		return redisTemplate.execute((RedisCallback<Long>) redis -> {
+			byte[] keyBytes = keySerialize(key);
+			byte[] value = redis.get(keyBytes);
 			long longValue;
 			if (value != null) {
-				longValue = Long.valueOf(new String(value));
+				longValue = Long.parseLong(new String(value, StandardCharsets.UTF_8));
 			} else {
 				Long loaderValue = loader.get();
 				longValue = loaderValue == null ? 0 : loaderValue;
-				action.setEx(keyBytes, seconds, String.valueOf(longValue).getBytes());
+				redis.setEx(keyBytes, seconds, String.valueOf(longValue).getBytes());
 			}
 			return longValue;
 		});
@@ -1059,9 +1134,7 @@ public class MicaRedisCache {
 	@Nullable
 	public Long zAdd(String key, Map<Object, Double> scoreMembers) {
 		Set<ZSetOperations.TypedTuple<Object>> tuples = new HashSet<>();
-		scoreMembers.forEach((k, v) -> {
-			tuples.add(new DefaultTypedTuple<>(k, v));
-		});
+		scoreMembers.forEach((k, v) -> tuples.add(new DefaultTypedTuple<>(k, v)));
 		return zSetOps.add(key, tuples);
 	}
 
@@ -1157,6 +1230,26 @@ public class MicaRedisCache {
 	@Nullable
 	public Double zScore(String key, Object member) {
 		return zSetOps.score(key, member);
+	}
+
+	/**
+	 * redisKey 序列化
+	 *
+	 * @param redisKey redisKey
+	 * @return byte array
+	 */
+	public static byte[] keySerialize(String redisKey) {
+		return Objects.requireNonNull(RedisSerializer.string().serialize(redisKey), "Redis key is null.");
+	}
+
+	/**
+	 * redisKey 序列化
+	 *
+	 * @param redisKey redisKey
+	 * @return byte array
+	 */
+	public static String keyDeserialize(byte[] redisKey) {
+		return Objects.requireNonNull(RedisSerializer.string().deserialize(redisKey), "Redis key is null.");
 	}
 
 }
