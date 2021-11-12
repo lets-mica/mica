@@ -22,6 +22,7 @@ import net.dreamlu.mica.auto.annotation.AutoIgnore;
 import net.dreamlu.mica.core.utils.StringPool;
 import net.dreamlu.mica.xss.config.MicaXssProperties;
 import net.dreamlu.mica.xss.utils.XssUtil;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -35,6 +36,12 @@ import java.beans.PropertyEditorSupport;
  */
 @AutoIgnore
 @ControllerAdvice
+@ConditionalOnProperty(
+	prefix = MicaXssProperties.PREFIX,
+	name = "enabled",
+	havingValue = "true",
+	matchIfMissing = true
+)
 @RequiredArgsConstructor
 public class FormXssClean {
 	private final MicaXssProperties properties;
