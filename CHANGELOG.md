@@ -9,6 +9,7 @@
 - :arrow_up: 升级 Gradle 到 7.3。
 - :arrow_up: 升级 lombok 到 1.18.22。
 - :arrow_up: 升级 Spring boot 到 2.5.7。
+- :arrow_up: 升级 mica-weixin 到 2.1.2。
 
 ### v2.5.6 - 2021-10-28
 - :sparkles: mica-redis 优化 MicaRedisCache bean 名称。
