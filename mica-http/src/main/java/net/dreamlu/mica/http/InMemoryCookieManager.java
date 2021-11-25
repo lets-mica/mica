@@ -57,7 +57,7 @@ public class InMemoryCookieManager implements CookieJar {
 		}
 		// 清除过期 cookie
 		if (!needRemoveCookieList.isEmpty()) {
-			cookieSet.removeAll(needRemoveCookieList);
+			needRemoveCookieList.forEach(cookieSet::remove);
 		}
 		return matchedCookieList;
 	}
