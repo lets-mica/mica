@@ -77,7 +77,7 @@ public final class SimpleRetry implements IRetry {
 				return retryCallback.call();
 			} catch (Throwable e) {
 				retryCount = i + 1;
-				log.warn("retry on {} times.", retryCount, e);
+				log.warn("retry on {} times error{}.", retryCount, e.getMessage());
 				lastThrowable = e;
 				if (sleepMillis > 0 && retryCount < maxAttempts) {
 					ThreadUtil.sleep(sleepMillis);
