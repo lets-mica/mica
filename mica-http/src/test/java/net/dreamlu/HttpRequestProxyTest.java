@@ -29,7 +29,7 @@ public class HttpRequestProxyTest {
 		// 代理都不可用
 		HttpRequest.get("https://www.baidu.com")
 			.useConsoleLog(LogLevel.BASIC)
-//			.retry()
+			.retry()
 			.proxySelector(new MicaProxySelector())
 			.execute()
 			.asString();
