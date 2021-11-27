@@ -11,7 +11,7 @@
 </dependency>
 ```
 
-spring-retry 为可选依赖，用来对 http 结果断言重试。
+注意：**2.5.7 开始已经不再需要** spring-retry 为可选依赖，用来对 http 结果断言重试。
 ```xml
 <dependency>
     <groupId>org.springframework.retry</groupId>
