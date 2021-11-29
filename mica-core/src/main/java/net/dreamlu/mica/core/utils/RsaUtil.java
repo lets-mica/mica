@@ -197,7 +197,7 @@ public class RsaUtil {
 	}
 
 	/**
-	 * 共要加密
+	 * 公钥加密
 	 *
 	 * @param base64PublicKey base64 的公钥
 	 * @param data            待加密的内容
@@ -208,7 +208,7 @@ public class RsaUtil {
 	}
 
 	/**
-	 * 共要加密
+	 * 公钥加密
 	 *
 	 * @param publicKey 公钥
 	 * @param data      待加密的内容
