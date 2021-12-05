@@ -521,7 +521,7 @@ public class JsonUtil {
 	 * @return 集合
 	 */
 	public static <K, V> Map<K, V> readMap(@Nullable InputStream content, Class<?> keyClass, Class<?> valueClass) {
-		if (ObjectUtil.isEmpty(content)) {
+		if (content == null) {
 			return Collections.emptyMap();
 		}
 		try {
