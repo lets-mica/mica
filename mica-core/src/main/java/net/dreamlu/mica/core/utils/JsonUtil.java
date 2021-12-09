@@ -413,7 +413,7 @@ public class JsonUtil {
 	 * @return 集合
 	 */
 	public static <T> List<T> readList(@Nullable String content, Class<T> elementClass) {
-		if (ObjectUtil.isEmpty(content)) {
+		if (StringUtil.isBlank(content)) {
 			return Collections.emptyList();
 		}
 		try {
@@ -521,7 +521,7 @@ public class JsonUtil {
 	 * @return 集合
 	 */
 	public static <K, V> Map<K, V> readMap(@Nullable InputStream content, Class<?> keyClass, Class<?> valueClass) {
-		if (ObjectUtil.isEmpty(content)) {
+		if (content == null) {
 			return Collections.emptyMap();
 		}
 		try {
@@ -542,7 +542,7 @@ public class JsonUtil {
 	 * @return 集合
 	 */
 	public static <K, V> Map<K, V> readMap(@Nullable String content, Class<?> keyClass, Class<?> valueClass) {
-		if (ObjectUtil.isEmpty(content)) {
+		if (StringUtil.isBlank(content)) {
 			return Collections.emptyMap();
 		}
 		try {

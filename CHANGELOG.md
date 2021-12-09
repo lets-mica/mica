@@ -1,6 +1,19 @@
 # 变更记录
 
 ## 发行版本
+### v2.5.7 - 2021-11-28
+- :sparkles: mica-redis 优化，方便自定义序列化。
+- :sparkles: mica-xss 优化，避免 xss 关闭时被类扫描，导致 bean 找不到异常。
+- :sparkles: mica-core 添加 retry 接口。
+- :sparkles: mica-http 代码优化去掉 spring retry 依赖。
+- :memo: mica-redis 优化 README.md 文档。
+- :memo: mica-http 更新 README.md 文档。
+- :arrow_up: Upgrading dependencies.
+- :arrow_up: 升级 Gradle 到 7.3。
+- :arrow_up: 升级 lombok 到 1.18.22。
+- :arrow_up: 升级 Spring boot 到 2.5.7。
+- :arrow_up: 升级 mica-weixin 到 2.1.2。
+
 ### v2.5.6 - 2021-10-28
 - :sparkles: mica-redis 优化 MicaRedisCache bean 名称。
 - :bug: mica-redis rpush、lpush 修复，优化 MicaRedisCache 方法泛型。

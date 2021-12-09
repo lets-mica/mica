@@ -16,6 +16,8 @@
 
 package net.dreamlu.mica.http;
 
+import net.dreamlu.mica.core.retry.IRetry;
+import net.dreamlu.mica.core.retry.SimpleRetry;
 import net.dreamlu.mica.core.ssl.DisableValidationTrustManager;
 import net.dreamlu.mica.core.ssl.TrustAllHostNames;
 import net.dreamlu.mica.core.utils.Exceptions;
@@ -28,7 +30,10 @@ import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import javax.annotation.Nullable;
-import javax.net.ssl.*;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
@@ -92,7 +97,9 @@ public class HttpRequest {
 	@Nullable
 	private Authenticator proxyAuthenticator;
 	@Nullable
-	private RetryPolicy retryPolicy;
+	private IRetry retry;
+	@Nullable
+	private Predicate<ResponseSpec> respPredicate;
 	@Nullable
 	private Boolean disableSslValidation;
 	@Nullable
@@ -279,8 +286,8 @@ public class HttpRequest {
 		if (followSslRedirects != null) {
 			builder.followSslRedirects(followSslRedirects);
 		}
-		if (retryPolicy != null) {
-			builder.addInterceptor(new RetryInterceptor(retryPolicy));
+		if (retry != null) {
+			builder.addInterceptor(new RetryInterceptor(retry, respPredicate));
 		}
 		if (logger != null && logLevel != null && HttpLoggingInterceptor.Level.NONE != logLevel) {
 			builder.addInterceptor(getLoggingInterceptor(logger, logLevel));
@@ -482,22 +489,29 @@ public class HttpRequest {
 	}
 
 	public HttpRequest retry() {
-		this.retryPolicy = RetryPolicy.INSTANCE;
-		return this;
+		return retry(new SimpleRetry());
 	}
 
 	public HttpRequest retryOn(Predicate<ResponseSpec> respPredicate) {
-		this.retryPolicy = new RetryPolicy(respPredicate);
-		return this;
+		return retry(new SimpleRetry(), respPredicate);
 	}
 
 	public HttpRequest retry(int maxAttempts, long sleepMillis) {
-		this.retryPolicy = new RetryPolicy(maxAttempts, sleepMillis);
-		return this;
+		return retry(new SimpleRetry(maxAttempts, sleepMillis));
 	}
 
 	public HttpRequest retry(int maxAttempts, long sleepMillis, Predicate<ResponseSpec> respPredicate) {
-		this.retryPolicy = new RetryPolicy(maxAttempts, sleepMillis);
+		return retry(new SimpleRetry(maxAttempts, sleepMillis), respPredicate);
+	}
+
+	public HttpRequest retry(IRetry retry) {
+		this.retry = retry;
+		return this;
+	}
+
+	public HttpRequest retry(IRetry retry, Predicate<ResponseSpec> respPredicate) {
+		this.retry = retry;
+		this.respPredicate = respPredicate;
 		return this;
 	}
 

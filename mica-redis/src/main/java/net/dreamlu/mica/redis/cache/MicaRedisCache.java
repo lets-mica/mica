@@ -28,6 +28,7 @@ import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -78,6 +79,17 @@ public class MicaRedisCache {
 	}
 
 	/**
+	 * 存放 key value 对到 redis，用于自定义序列化的方式
+	 *
+	 * @param key    redis key
+	 * @param mapper 序列化转换
+	 * @param <T>    泛型
+	 */
+	public <T> void set(String key, T value, Function<T, byte[]> mapper) {
+		redisTemplate.execute((RedisCallback<Object>) redis -> redis.set(keySerialize(key), mapper.apply(value)));
+	}
+
+	/**
 	 * 存放 key value 对到 redis，并将 key 的生存时间设为 seconds (以秒为单位)。
 	 * 如果 key 已经存在， SETEX 命令将覆写旧值。
 	 */
@@ -116,15 +128,31 @@ public class MicaRedisCache {
 	}
 
 	/**
+	 * 返回 key 所关联的 value 值
+	 *
+	 * @param key    redis key
+	 * @param mapper 函数式
+	 * @param <T>    泛型
+	 * @return T
+	 */
+	@Nullable
+	public <T> T get(String key, Function<byte[], T> mapper) {
+		return redisTemplate.execute((RedisCallback<T>) redis -> {
+			byte[] value = redis.get(keySerialize(key));
+			if (value == null) {
+				return null;
+			}
+			return mapper.apply(value);
+		});
+	}
+
+	/**
 	 * 返回 key 所关联的 value 值，采用 jdk 序列化
 	 * 如果 key 不存在那么返回特殊值 nil 。
 	 */
 	@Nullable
 	public <T> T getByJdkSer(String key) {
-		return (T) redisTemplate.execute((RedisCallback<Object>) redis -> {
-			byte[] bytes = redis.get(keySerialize(key));
-			return RedisSerializer.java().deserialize(bytes);
-		});
+		return get(key, (value) -> (T) RedisSerializer.java().deserialize(value));
 	}
 
 	/**
@@ -133,10 +161,7 @@ public class MicaRedisCache {
 	 */
 	@Nullable
 	public <T> T getByJsonSer(String key, Class<T> clazz) {
-		return redisTemplate.execute((RedisCallback<T>) redis -> {
-			byte[] valueBytes = redis.get(keySerialize(key));
-			return JsonUtil.readValue(valueBytes, clazz);
-		});
+		return get(key, (value) -> JsonUtil.readValue(value, clazz));
 	}
 
 	/**
@@ -433,6 +458,16 @@ public class MicaRedisCache {
 			}
 			return null;
 		});
+	}
+
+	/**
+	 * 返回集合中元素的数量。
+	 * @param key redis key
+	 * @return 数量
+	 */
+	@Nullable
+	public Long sCard(String key) {
+		return setOps.size(key);
 	}
 
 	/**

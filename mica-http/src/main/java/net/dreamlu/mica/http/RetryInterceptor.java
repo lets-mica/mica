@@ -17,14 +17,13 @@
 package net.dreamlu.mica.http;
 
 import lombok.RequiredArgsConstructor;
+import net.dreamlu.mica.core.retry.IRetry;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import org.springframework.retry.backoff.FixedBackOffPolicy;
-import org.springframework.retry.policy.SimpleRetryPolicy;
-import org.springframework.retry.support.RetryTemplate;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.function.Predicate;
 
@@ -35,16 +34,16 @@ import java.util.function.Predicate;
  */
 @RequiredArgsConstructor
 public class RetryInterceptor implements Interceptor {
-	private final RetryPolicy retryPolicy;
+	private final IRetry retry;
+	@Nullable
+	private final Predicate<ResponseSpec> respPredicate;
 
 	@Override
 	public Response intercept(Chain chain) throws IOException {
 		Request request = chain.request();
-		RetryTemplate template = createRetryTemplate(retryPolicy);
-		return template.execute(context -> {
+		return retry.execute(() -> {
 			Response response = chain.proceed(request);
 			// 结果集校验
-			Predicate<ResponseSpec> respPredicate = retryPolicy.getRespPredicate();
 			if (respPredicate == null) {
 				return response;
 			}
@@ -59,16 +58,4 @@ public class RetryInterceptor implements Interceptor {
 		});
 	}
 
-	private static RetryTemplate createRetryTemplate(RetryPolicy policy) {
-		RetryTemplate template = new RetryTemplate();
-		// 重试策略
-		SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
-		retryPolicy.setMaxAttempts(policy.getMaxAttempts());
-		// 设置间隔策略
-		FixedBackOffPolicy backOffPolicy = new FixedBackOffPolicy();
-		backOffPolicy.setBackOffPeriod(policy.getSleepMillis());
-		template.setRetryPolicy(retryPolicy);
-		template.setBackOffPolicy(backOffPolicy);
-		return template;
-	}
 }
