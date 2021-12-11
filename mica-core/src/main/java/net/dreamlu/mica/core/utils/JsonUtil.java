@@ -88,9 +88,8 @@ public class JsonUtil {
 	 * @return jsonString json字符串
 	 */
 	public static JsonNode readTree(String jsonString) {
-		Objects.requireNonNull(jsonString, "jsonString is null");
 		try {
-			return getInstance().readTree(jsonString);
+			return getInstance().readTree(Objects.requireNonNull(jsonString, "jsonString is null"));
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -103,9 +102,8 @@ public class JsonUtil {
 	 * @return jsonString json字符串
 	 */
 	public static JsonNode readTree(InputStream in) {
-		Objects.requireNonNull(in, "InputStream in is null");
 		try {
-			return getInstance().readTree(in);
+			return getInstance().readTree(Objects.requireNonNull(in, "InputStream in is null"));
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -118,9 +116,8 @@ public class JsonUtil {
 	 * @return jsonString json字符串
 	 */
 	public static JsonNode readTree(Reader reader) {
-		Objects.requireNonNull(reader, "Reader in is null");
 		try {
-			return getInstance().readTree(reader);
+			return getInstance().readTree(Objects.requireNonNull(reader, "Reader in is null"));
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -133,9 +130,8 @@ public class JsonUtil {
 	 * @return jsonString json字符串
 	 */
 	public static JsonNode readTree(byte[] content) {
-		Objects.requireNonNull(content, "byte[] content is null");
 		try {
-			return getInstance().readTree(content);
+			return getInstance().readTree(Objects.requireNonNull(content, "byte[] content is null"));
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -148,9 +144,8 @@ public class JsonUtil {
 	 * @return jsonString json字符串
 	 */
 	public static JsonNode readTree(JsonParser jsonParser) {
-		Objects.requireNonNull(jsonParser, "jsonParser is null");
 		try {
-			return getInstance().readTree(jsonParser);
+			return getInstance().readTree(Objects.requireNonNull(jsonParser, "jsonParser is null"));
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
