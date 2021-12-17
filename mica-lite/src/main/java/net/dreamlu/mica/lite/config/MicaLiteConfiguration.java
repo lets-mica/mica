@@ -17,6 +17,7 @@
 package net.dreamlu.mica.lite.config;
 
 import net.dreamlu.mica.core.spring.SpringContextUtil;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,6 +30,7 @@ import org.springframework.context.annotation.Configuration;
 public class MicaLiteConfiguration {
 
 	@Bean
+	@ConditionalOnMissingBean
 	public SpringContextUtil springContextUtil() {
 		return new SpringContextUtil();
 	}

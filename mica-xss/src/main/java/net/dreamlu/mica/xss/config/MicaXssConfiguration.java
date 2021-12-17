@@ -17,6 +17,7 @@
 package net.dreamlu.mica.xss.config;
 
 import lombok.RequiredArgsConstructor;
+import net.dreamlu.mica.core.spring.SpringContextUtil;
 import net.dreamlu.mica.xss.core.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -51,6 +52,12 @@ public class MicaXssConfiguration implements WebMvcConfigurer {
 
 	@Bean
 	@ConditionalOnMissingBean
+	public SpringContextUtil springContextUtil() {
+		return new SpringContextUtil();
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
 	public XssCleaner xssCleaner(MicaXssProperties properties) {
 		return new DefaultXssCleaner(properties);
 	}
@@ -64,8 +71,7 @@ public class MicaXssConfiguration implements WebMvcConfigurer {
 	@Bean
 	public Jackson2ObjectMapperBuilderCustomizer xssJacksonCustomizer(MicaXssProperties properties,
 																	  XssCleaner xssCleaner) {
-		JacksonXssClean xssClean = new JacksonXssClean(properties, xssCleaner);
-		return builder -> builder.deserializerByType(String.class, xssClean);
+		return builder -> builder.deserializerByType(String.class, new JacksonXssClean(properties, xssCleaner));
 	}
 
 	@Override
