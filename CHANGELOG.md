@@ -1,6 +1,14 @@
 # 变更记录
 
 ## 发行版本
+### v2.5.8 - 2021-12-30
+- :sparkles: mica-xss 添加一个使用场景。
+- :sparkles: JsonUtil 新增支持 java.io.Reader 转换操作 感谢 @caiqyxyx
+- :memo: fix Comment error close #I4K6LZ
+- :arrow_up: spring boot 到 2.5.8
+- :arrow_up: spring cloud 到 2020.0.5
+- :arrow_up: jetCache 到 2.6.2
+
 ### v2.5.7 - 2021-11-28
 - :sparkles: mica-redis 优化，方便自定义序列化。
 - :sparkles: mica-xss 优化，避免 xss 关闭时被类扫描，导致 bean 找不到异常。
