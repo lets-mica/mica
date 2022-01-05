@@ -4,7 +4,7 @@ plugins {
 
 ext {
     javaVersion = JavaVersion.VERSION_1_8
-    springBootVersion = "2.6.1"
+    springBootVersion = "2.6.2"
     springNativeVersion = "0.11.0"
     springCloudVersion = "2021.0.0"
     micaAutoVersion = "2.2.1"
