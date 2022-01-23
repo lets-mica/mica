@@ -21,7 +21,7 @@ javadoc {
         author true
         version true
         failOnError false
-        links "http://docs.oracle.com/javase/8/docs/api"
+        links "https://docs.oracle.com/javase/8/docs/api"
     }
 }
 
