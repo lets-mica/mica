@@ -30,6 +30,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.stream.Stream;
+
 /**
  * 项目启动事件通知
  *
@@ -49,8 +51,9 @@ public class StartedEventListener {
 		String profile = StringUtils.arrayToCommaDelimitedString(environment.getActiveProfiles());
 		System.err.printf("---[%s]---启动完成，当前使用的端口:[%d]，环境变量:[%s]---%n", appName, localPort, profile);
 		// 如果有 swagger，打印开发阶段的 swagger ui 地址
-		if (ClassUtils.isPresent("springfox.documentation.spring.web.plugins.Docket", null)) {
+		if (hasOpenApi()) {
 			System.out.printf("http://localhost:%s/doc.html%n", localPort);
+			System.out.printf("http://localhost:%s/swagger-ui/index.html%n", localPort);
 		} else {
 			System.out.printf("http://localhost:%s%n", localPort);
 		}
@@ -60,6 +63,11 @@ public class StartedEventListener {
 			// 去除 error 的转换，因为 error 会打印成很 N 条
 			// System.setErr(LogPrintStream.log(true));
 		}
+	}
+
+	private static boolean hasOpenApi() {
+		return Stream.of("springfox.documentation.spring.web.plugins.Docket", "io.swagger.v3.oas.models.OpenAPI")
+			.anyMatch(clazz -> ClassUtils.isPresent(clazz, null));
 	}
 
 }
