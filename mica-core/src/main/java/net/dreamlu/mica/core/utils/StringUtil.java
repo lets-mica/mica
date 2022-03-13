@@ -182,7 +182,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		if (ObjectUtil.isEmpty(css)) {
 			return false;
 		}
-		return Stream.of(css).anyMatch(StringUtil::isNoneBlank);
+		return Stream.of(css).anyMatch(StringUtil::isNotBlank);
 	}
 
 	/**
@@ -195,7 +195,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		if (CollectionUtil.isEmpty(css)) {
 			return false;
 		}
-		return css.stream().anyMatch(StringUtil::isNoneBlank);
+		return css.stream().anyMatch(StringUtil::isNotBlank);
 	}
 
 	/**
