@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.redis.config;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
@@ -61,6 +62,7 @@ public class RedisTemplateConfiguration {
 		}
 		// jackson findAndRegisterModules，use copy
 		ObjectMapper objectMapper = objectProvider.getIfAvailable(ObjectMapper::new).copy();
+		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 		// findAndRegisterModules
 		objectMapper.findAndRegisterModules();
 		// class type info to json
