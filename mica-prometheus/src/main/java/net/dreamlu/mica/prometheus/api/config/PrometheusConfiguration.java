@@ -27,6 +27,7 @@ import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 /**
  * prometheus http sd
@@ -44,9 +45,12 @@ public class PrometheusConfiguration {
 	public static class PrometheusApiConfiguration {
 
 		@Bean
-		public PrometheusApi prometheusApi(DiscoveryClient discoveryClient,
+		public PrometheusApi prometheusApi(Environment environment,
+										   DiscoveryClient discoveryClient,
 										   ApplicationEventPublisher eventPublisher) {
-			return new PrometheusApi(discoveryClient, eventPublisher);
+			String[] activeProfiles = environment.getActiveProfiles();
+			String activeProfile = activeProfiles.length > 0 ? activeProfiles[0] : null;
+			return new PrometheusApi(activeProfile, discoveryClient, eventPublisher);
 		}
 
 	}
@@ -58,9 +62,12 @@ public class PrometheusConfiguration {
 	public static class ReactivePrometheusApiConfiguration {
 
 		@Bean
-		public ReactivePrometheusApi reactivePrometheusApi(ReactiveDiscoveryClient discoveryClient,
+		public ReactivePrometheusApi reactivePrometheusApi(Environment environment,
+														   ReactiveDiscoveryClient discoveryClient,
 														   ApplicationEventPublisher eventPublisher) {
-			return new ReactivePrometheusApi(discoveryClient, eventPublisher);
+			String[] activeProfiles = environment.getActiveProfiles();
+			String activeProfile = activeProfiles.length > 0 ? activeProfiles[0] : null;
+			return new ReactivePrometheusApi(activeProfile, discoveryClient, eventPublisher);
 		}
 
 	}

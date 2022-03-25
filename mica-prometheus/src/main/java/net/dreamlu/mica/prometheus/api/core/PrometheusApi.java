@@ -24,6 +24,7 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -38,6 +39,7 @@ import java.util.*;
 @RequestMapping("actuator/prometheus")
 @RequiredArgsConstructor
 public class PrometheusApi {
+	private final String activeProfile;
 	private final DiscoveryClient discoveryClient;
 	private final ApplicationEventPublisher eventPublisher;
 
@@ -54,7 +56,12 @@ public class PrometheusApi {
 			for (ServiceInstance instance : instanceList) {
 				targets.add(String.format("%s:%d", instance.getHost(), instance.getPort()));
 			}
-			Map<String, String> labels = new HashMap<>(2);
+			Map<String, String> labels = new HashMap<>(4);
+			// 1. 环境
+			if (StringUtils.hasText(activeProfile)) {
+				labels.put("profile", activeProfile);
+			}
+			// 2. 服务名
 			labels.put("__meta_prometheus_job", serviceId);
 			targetGroupList.add(new TargetGroup(targets, labels));
 		}

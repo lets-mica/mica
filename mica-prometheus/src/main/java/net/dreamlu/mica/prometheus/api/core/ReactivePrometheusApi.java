@@ -24,6 +24,7 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
@@ -41,6 +42,7 @@ import java.util.stream.Collectors;
 @RequestMapping("actuator/prometheus")
 @RequiredArgsConstructor
 public class ReactivePrometheusApi {
+	private final String activeProfile;
 	private final ReactiveDiscoveryClient discoveryClient;
 	private final ApplicationEventPublisher eventPublisher;
 
@@ -48,10 +50,15 @@ public class ReactivePrometheusApi {
 	public Flux<TargetGroup> getList() {
 		return discoveryClient.getServices()
 			.flatMap(discoveryClient::getInstances)
-			.groupBy(ServiceInstance::getServiceId, (instance) ->
+			.groupBy(ServiceInstance::getServiceId, instance ->
 				String.format("%s:%d", instance.getHost(), instance.getPort())
 			).flatMap(instanceGrouped -> {
-				Map<String, String> labels = new HashMap<>(2);
+				Map<String, String> labels = new HashMap<>(4);
+				// 1. 环境
+				if (StringUtils.hasText(activeProfile)) {
+					labels.put("profile", activeProfile);
+				}
+				// 2. 服务名
 				String serviceId = instanceGrouped.key();
 				labels.put("__meta_prometheus_job", serviceId);
 				return instanceGrouped.collect(Collectors.toList()).map(targets -> new TargetGroup(targets, labels));
