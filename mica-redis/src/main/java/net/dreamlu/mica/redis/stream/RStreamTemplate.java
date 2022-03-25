@@ -17,7 +17,6 @@
 package net.dreamlu.mica.redis.stream;
 
 import org.springframework.data.redis.connection.stream.MapRecord;
-import org.springframework.data.redis.connection.stream.ObjectRecord;
 import org.springframework.data.redis.connection.stream.Record;
 import org.springframework.data.redis.connection.stream.RecordId;
 
@@ -39,7 +38,7 @@ public interface RStreamTemplate {
 	 * @return 消息id
 	 */
 	default RecordId send(String name, Object value) {
-		return send(ObjectRecord.create(name, value));
+		return send(name, "payload", value);
 	}
 
 	/**
@@ -50,7 +49,7 @@ public interface RStreamTemplate {
 	 * @param value 消息
 	 * @return 消息id
 	 */
-	default RecordId send(String name, Object key, Object value) {
+	default RecordId send(String name, String key, Object value) {
 		return send(name, Collections.singletonMap(key, value));
 	}
 
@@ -61,7 +60,7 @@ public interface RStreamTemplate {
 	 * @param messages 消息
 	 * @return 消息id
 	 */
-	default RecordId send(String name, Map<Object, Object> messages) {
+	default RecordId send(String name, Map<String, Object> messages) {
 		return send(MapRecord.create(name, messages));
 	}
 

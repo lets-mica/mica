@@ -51,16 +51,17 @@ public @interface RStreamListener {
 	MessageModel messageModel() default MessageModel.CLUSTERING;
 
 	/**
-	 * offset
+	 * offsetModel，默认：LAST_CONSUMED
 	 *
 	 * <p>
+	 * 0-0 : 从开始的地方读。
 	 * $ ：表示从尾部开始消费，只接受新消息，当前 Stream 消息会全部忽略。
 	 * > : 读取所有新到达的元素，这些元素的id大于消费组使用的最后一个元素。
 	 * </p>
 	 *
-	 * @return String
+	 * @return ReadOffsetModel
 	 */
-	String offset() default "";
+	ReadOffsetModel offsetModel() default ReadOffsetModel.LAST_CONSUMED;
 
 	/**
 	 * 自动 ack
