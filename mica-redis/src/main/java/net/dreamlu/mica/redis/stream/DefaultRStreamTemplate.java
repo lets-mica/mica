@@ -16,26 +16,79 @@
 
 package net.dreamlu.mica.redis.stream;
 
-import org.springframework.data.redis.connection.stream.Record;
-import org.springframework.data.redis.connection.stream.RecordId;
+import net.dreamlu.mica.core.utils.JsonUtil;
+import org.springframework.data.redis.connection.RedisStreamCommands;
+import org.springframework.data.redis.connection.stream.*;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StreamOperations;
+import org.springframework.data.redis.core.convert.RedisCustomConversions;
+import org.springframework.data.redis.hash.Jackson2HashMapper;
+import org.springframework.data.redis.serializer.RedisSerializer;
+
+import java.util.Collections;
+import java.util.Objects;
 
 /**
  * 默认的 RStreamTemplate
  *
  * @author L.cm
  */
+@SuppressWarnings("unchecked")
 public class DefaultRStreamTemplate implements RStreamTemplate {
-	private final StreamOperations<String, Object, Object> streamOperations;
+	private static final RedisCustomConversions customConversions = new RedisCustomConversions();
+	private final RedisTemplate<String, Object> redisTemplate;
+	private final StreamOperations<String, String, Object> streamOperations;
+	private final Jackson2HashMapper hashMapper;
 
-	public DefaultRStreamTemplate(RedisTemplate<String, Object> redisTemplate) {
+	public DefaultRStreamTemplate(RedisTemplate<String, Object> redisTemplate, Jackson2HashMapper hashMapper) {
+		this.redisTemplate = redisTemplate;
 		this.streamOperations = redisTemplate.opsForStream();
+		this.hashMapper = hashMapper;
 	}
 
 	@Override
 	public RecordId send(Record<String, ?> record) {
-		return streamOperations.add(record);
+		// 1. MapRecord
+		if (record instanceof MapRecord) {
+			return streamOperations.add(record);
+		}
+		String stream = Objects.requireNonNull(record.getStream(), "RStreamTemplate send stream name is null.");
+		Object recordValue = Objects.requireNonNull(record.getValue(), "RStreamTemplate send stream: " + stream + " value is null.");
+		Class<?> valueClass = recordValue.getClass();
+		// 2. 普通类型的 ObjectRecord
+		if (customConversions.isSimpleType(valueClass)) {
+			return streamOperations.add(record);
+		}
+		// 3. 自定义类型，手动序列化
+		ObjectRecord<String, Object> objectRecord = (ObjectRecord) record;
+		// 3.1 value 类型转换
+		MapRecord<String, String, String> objectMapRecord = objectRecord.toMapRecord(this.hashMapper).mapEntries(entry -> {
+			String key = entry.getKey();
+			String value = JsonUtil.convertValue(entry.getValue(), String.class);
+			return Collections.singletonMap(key, value).entrySet().iterator().next();
+		});
+		// 3.2 序列化
+		ByteRecord byteRecord = objectMapRecord.serialize(RedisSerializer.string());
+		return redisTemplate.execute((RedisCallback<RecordId>) redis -> {
+			RedisStreamCommands commands = redis.streamCommands();
+			return commands.xAdd(byteRecord);
+		});
+	}
+
+	@Override
+	public Long delete(String name, String... recordIds) {
+		return streamOperations.delete(name, recordIds);
+	}
+
+	@Override
+	public Long delete(String name, RecordId... recordIds) {
+		return streamOperations.delete(name, recordIds);
+	}
+
+	@Override
+	public Long trim(String name, long count, boolean approximateTrimming) {
+		return streamOperations.trim(name, count, approximateTrimming);
 	}
 
 }

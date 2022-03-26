@@ -61,6 +61,7 @@ public class MicaRedisProperties {
 	@Getter
 	@Setter
 	public static class Stream {
+		public static final String PREFIX = MicaRedisProperties.PREFIX + "stream";
 		/**
 		 * 是否开启 stream
 		 */

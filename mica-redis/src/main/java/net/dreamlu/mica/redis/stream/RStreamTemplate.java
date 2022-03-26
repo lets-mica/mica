@@ -17,8 +17,10 @@
 package net.dreamlu.mica.redis.stream;
 
 import org.springframework.data.redis.connection.stream.MapRecord;
+import org.springframework.data.redis.connection.stream.ObjectRecord;
 import org.springframework.data.redis.connection.stream.Record;
 import org.springframework.data.redis.connection.stream.RecordId;
+import org.springframework.lang.Nullable;
 
 import java.util.Collections;
 import java.util.Map;
@@ -38,7 +40,7 @@ public interface RStreamTemplate {
 	 * @return 消息id
 	 */
 	default RecordId send(String name, Object value) {
-		return send(name, "payload", value);
+		return send(ObjectRecord.create(name, value));
 	}
 
 	/**
@@ -71,5 +73,59 @@ public interface RStreamTemplate {
 	 * @return 消息id
 	 */
 	RecordId send(Record<String, ?> record);
+
+	/**
+	 * 删除消息
+	 *
+	 * @param name      stream name
+	 * @param recordIds recordIds
+	 * @return Long
+	 */
+	@Nullable
+	Long delete(String name, String... recordIds);
+
+	/**
+	 * 删除消息
+	 *
+	 * @param name      stream name
+	 * @param recordIds recordIds
+	 * @return Long
+	 */
+	@Nullable
+	Long delete(String name, RecordId... recordIds);
+
+	/**
+	 * 删除消息
+	 *
+	 * @param record Record
+	 * @return Long
+	 */
+	@Nullable
+	default Long delete(Record<String, ?> record) {
+		return delete(record.getStream(), record.getId());
+	}
+
+	/**
+	 * 对流进行修剪，限制长度
+	 *
+	 * @param name  name
+	 * @param count count
+	 * @return Long
+	 */
+	@Nullable
+	default Long trim(String name, long count) {
+		return trim(name, count, false);
+	}
+
+	/**
+	 * 对流进行修剪，限制长度
+	 *
+	 * @param name                name
+	 * @param count               count
+	 * @param approximateTrimming
+	 * @return Long
+	 */
+	@Nullable
+	Long trim(String name, long count, boolean approximateTrimming);
 
 }

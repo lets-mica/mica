@@ -63,9 +63,18 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	 * @return 对象
 	 */
 	public static <T> T newInstance(String clazzStr) {
+		return newInstance(forName(clazzStr));
+	}
+
+	/**
+	 * forName
+	 *
+	 * @param clazzStr 类名
+	 * @return Class
+	 */
+	public static Class<?> forName(String clazzStr) {
 		try {
-			Class<?> clazz = ClassUtil.forName(clazzStr, null);
-			return newInstance(clazz);
+			return ClassUtil.forName(clazzStr, null);
 		} catch (ClassNotFoundException e) {
 			throw new ServiceException(e);
 		}
