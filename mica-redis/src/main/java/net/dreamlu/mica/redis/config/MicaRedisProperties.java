@@ -21,6 +21,8 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 
+import java.time.Duration;
+
 /**
  * redis 配置
  *
@@ -37,7 +39,14 @@ public class MicaRedisProperties {
 	 * 序列化方式
 	 */
 	private SerializerType serializerType = SerializerType.JSON;
+	/**
+	 * stream
+	 */
+	private Stream stream = new Stream();
 
+	/**
+	 * 序列化方式
+	 */
 	public enum SerializerType {
 		/**
 		 * json 序列化
@@ -48,4 +57,30 @@ public class MicaRedisProperties {
 		 */
 		JDK
 	}
+
+	@Getter
+	@Setter
+	public static class Stream {
+		/**
+		 * 是否开启 stream
+		 */
+		boolean enable = false;
+		/**
+		 * consumer group，默认：服务名 + 环境
+		 */
+		String consumerGroup;
+		/**
+		 * 消费者名称，默认：ip + 端口
+		 */
+		String consumerName;
+		/**
+		 * poll 批量大小
+		 */
+		Integer pollBatchSize;
+		/**
+		 * poll 超时时间
+		 */
+		Duration pollTimeout;
+	}
+
 }
