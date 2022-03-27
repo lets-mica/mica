@@ -48,7 +48,7 @@ import java.time.Duration;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(
 	prefix = MicaRedisProperties.Stream.PREFIX,
-	name = "enabled",
+	name = "enable",
 	havingValue = "true"
 )
 public class RedisStreamConfiguration {
