@@ -22,6 +22,7 @@ import org.springframework.lang.Nullable;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -563,6 +564,17 @@ public class DigestUtil {
 	 */
 	public static String hmacSha512Hex(final byte[] bytes, String key) {
 		return DigestUtil.encodeHex(hmacSha512(bytes, key));
+	}
+
+	/**
+	 * digest Hmac Hex
+	 *
+	 * @param algorithm 算法
+	 * @param text      text
+	 * @return digest as a hex string
+	 */
+	public static String digestHmacHex(String algorithm, String text, String key) {
+		return digestHmacHex(algorithm, text.getBytes(StandardCharsets.UTF_8), key);
 	}
 
 	/**
