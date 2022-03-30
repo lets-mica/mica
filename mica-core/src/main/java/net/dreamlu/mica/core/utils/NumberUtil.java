@@ -110,7 +110,7 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 	/**
 	 * All possible chars for representing a number as a String
 	 */
-	final static byte[] DIGITS = {
+	static final byte[] DIGITS = {
 		'0' , '1' , '2' , '3' , '4' , '5' ,
 		'6' , '7' , '8' , '9' , 'a' , 'b' ,
 		'c' , 'd' , 'e' , 'f' , 'g' , 'h' ,

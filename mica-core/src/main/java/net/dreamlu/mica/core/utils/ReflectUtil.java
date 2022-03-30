@@ -17,6 +17,7 @@
 package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.cglib.core.CodeGenerationException;
 import org.springframework.core.convert.Property;
@@ -69,7 +70,7 @@ public class ReflectUtil extends ReflectionUtils {
 	 */
 	public static PropertyDescriptor[] getPropertyDescriptors(Class type, boolean read, boolean write) {
 		try {
-			PropertyDescriptor[] all = BeanUtil.getPropertyDescriptors(type);
+			PropertyDescriptor[] all = BeanUtils.getPropertyDescriptors(type);
 			if (read && write) {
 				return all;
 			} else {
@@ -97,7 +98,7 @@ public class ReflectUtil extends ReflectionUtils {
 	 */
 	@Nullable
 	public static Property getProperty(Class<?> propertyType, String propertyName) {
-		PropertyDescriptor propertyDescriptor = BeanUtil.getPropertyDescriptor(propertyType, propertyName);
+		PropertyDescriptor propertyDescriptor = BeanUtils.getPropertyDescriptor(propertyType, propertyName);
 		if (propertyDescriptor == null) {
 			return null;
 		}

@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.core.compiler;
 
+import lombok.experimental.UtilityClass;
 import net.dreamlu.mica.core.utils.CharPool;
 import org.springframework.util.FastByteArrayOutputStream;
 
@@ -32,6 +33,7 @@ import java.util.Collections;
  *
  * @author L.cm
  */
+@UtilityClass
 public class InMemoryJavaCompiler {
 	/**
 	 * JavaCompiler
@@ -50,7 +52,7 @@ public class InMemoryJavaCompiler {
 		MemoryJavaFileObject file = new MemoryJavaFileObject(className, sourceCode);
 		CompilationTask task = getCompilationTask(file);
 
-		if (!task.call()) {
+		if (Boolean.FALSE.equals(task.call())) {
 			throw new IllegalArgumentException("Could not compile " + className + " with source code :\t" + sourceCode);
 		}
 

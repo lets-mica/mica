@@ -18,6 +18,7 @@ package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Objects;
 
@@ -76,7 +77,7 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	 * @return 数组是否为空
 	 */
 	public static boolean isNotEmpty(@Nullable Object[] array) {
-		return !ObjectUtil.isEmpty(array);
+		return !ObjectUtils.isEmpty(array);
 	}
 
 	/**
@@ -86,7 +87,7 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	 * @return 数组是否为空
 	 */
 	public static boolean isNotEmpty(@Nullable Object obj) {
-		return !ObjectUtil.isEmpty(obj);
+		return !ObjectUtils.isEmpty(obj);
 	}
 
 	/**

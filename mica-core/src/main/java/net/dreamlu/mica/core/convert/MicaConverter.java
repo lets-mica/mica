@@ -23,6 +23,7 @@ import net.dreamlu.mica.core.utils.*;
 import org.springframework.cglib.core.Converter;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.lang.Nullable;
+import org.springframework.util.ClassUtils;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -56,7 +57,7 @@ public class MicaConverter implements Converter {
 			return null;
 		}
 		// 类型一样，不需要转换
-		if (ClassUtil.isAssignableValue(target, value)) {
+		if (ClassUtils.isAssignableValue(target, value)) {
 			return value;
 		}
 		try {

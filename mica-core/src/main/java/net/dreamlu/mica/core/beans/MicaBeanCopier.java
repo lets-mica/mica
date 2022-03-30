@@ -140,15 +140,15 @@ public abstract class MicaBeanCopier {
 			Type sourceType = Type.getType(source);
 			Type targetType = Type.getType(target);
 			ClassEmitter ce = new ClassEmitter(v);
-			ce.begin_class(Constants.V1_2,
-				Constants.ACC_PUBLIC,
+			ce.begin_class(Opcodes.V1_2,
+				Opcodes.ACC_PUBLIC,
 				getClassName(),
 				BEAN_COPIER,
 				null,
 				Constants.SOURCE_FILE);
 
 			EmitUtils.null_constructor(ce);
-			CodeEmitter e = ce.begin_method(Constants.ACC_PUBLIC, COPY, null);
+			CodeEmitter e = ce.begin_method(Opcodes.ACC_PUBLIC, COPY, null);
 
 			// map 单独处理
 			if (Map.class.isAssignableFrom(source)) {
@@ -208,7 +208,7 @@ public abstract class MicaBeanCopier {
 				// nonNull Label
 				Label l0 = e.make_label();
 				// 判断类型是否一致，包括 包装类型
-				if (ClassUtil.isAssignable(setterPropertyType, getterPropertyType)) {
+				if (ClassUtils.isAssignable(setterPropertyType, getterPropertyType)) {
 					// 2018.12.27 by L.cm 支持链式 bean
 					e.load_local(targetLocal);
 					e.load_local(sourceLocal);

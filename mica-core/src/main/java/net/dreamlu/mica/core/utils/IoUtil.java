@@ -18,6 +18,7 @@ package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
+import org.springframework.util.StreamUtils;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -72,7 +73,7 @@ public class IoUtil extends org.springframework.util.StreamUtils {
 	 */
 	public static String readToString(@Nullable InputStream input, Charset charset) {
 		try {
-			return IoUtil.copyToString(input, charset);
+			return StreamUtils.copyToString(input, charset);
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		} finally {
@@ -82,7 +83,7 @@ public class IoUtil extends org.springframework.util.StreamUtils {
 
 	public static byte[] readToByteArray(@Nullable InputStream input) {
 		try {
-			return IoUtil.copyToByteArray(input);
+			return StreamUtils.copyToByteArray(input);
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		} finally {

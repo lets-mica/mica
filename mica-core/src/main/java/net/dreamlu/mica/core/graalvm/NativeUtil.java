@@ -1,5 +1,6 @@
 package net.dreamlu.mica.core.graalvm;
 
+import lombok.experimental.UtilityClass;
 import org.springframework.util.ClassUtils;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.util.ClassUtils;
  *
  * @author L.cm
  */
+@UtilityClass
 public class NativeUtil {
 	public static final String GENERATED_CLASS = "org.springframework.aot.StaticSpringFactories";
 

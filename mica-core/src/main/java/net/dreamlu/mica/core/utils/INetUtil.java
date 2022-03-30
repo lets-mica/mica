@@ -16,6 +16,9 @@
 
 package net.dreamlu.mica.core.utils;
 
+import lombok.experimental.UtilityClass;
+import org.springframework.util.StringUtils;
+
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
@@ -27,6 +30,7 @@ import java.util.Enumeration;
  *
  * @author L.cm
  */
+@UtilityClass
 public class INetUtil {
 	public static final String LOCAL_HOST = "127.0.0.1";
 
@@ -41,7 +45,7 @@ public class INetUtil {
 			InetAddress address = InetAddress.getLocalHost();
 			// force a best effort reverse DNS lookup
 			hostname = address.getHostName();
-			if (!StringUtil.hasText(hostname)) {
+			if (!StringUtils.hasText(hostname)) {
 				hostname = address.toString();
 			}
 		} catch (UnknownHostException ignore) {
@@ -61,7 +65,7 @@ public class INetUtil {
 			InetAddress address = INetUtil.getLocalHostLanAddress();
 			// force a best effort reverse DNS lookup
 			hostAddress = address.getHostAddress();
-			if (!StringUtil.hasText(hostAddress)) {
+			if (!StringUtils.hasText(hostAddress)) {
 				hostAddress = address.toString();
 			}
 		} catch (UnknownHostException ignore) {

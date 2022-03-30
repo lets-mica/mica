@@ -237,7 +237,7 @@ public class RsaUtil {
 	 * @return 加密后的内容
 	 */
 	public static String encryptByPrivateKeyToBase64(String base64PrivateKey, byte[] data) {
-		return Base64Util.encodeToString(encryptByPrivateKey(base64PrivateKey, data));
+		return Base64Utils.encodeToString(encryptByPrivateKey(base64PrivateKey, data));
 	}
 
 	/**

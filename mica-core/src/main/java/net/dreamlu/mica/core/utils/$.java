@@ -20,15 +20,19 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.experimental.UtilityClass;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.io.Resource;
 import org.springframework.lang.Nullable;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.util.UriUtils;
 
 import java.io.Closeable;
 import java.io.File;
@@ -291,7 +295,7 @@ public class $ {
 	 * @return 是否数组
 	 */
 	public static boolean isArray(@Nullable Object obj) {
-		return ObjectUtil.isArray(obj);
+		return ObjectUtils.isArray(obj);
 	}
 
 	/**
@@ -301,7 +305,7 @@ public class $ {
 	 * @return 数组是否为空
 	 */
 	public static boolean isEmpty(@Nullable Object obj) {
-		return ObjectUtil.isEmpty(obj);
+		return ObjectUtils.isEmpty(obj);
 	}
 
 	/**
@@ -311,7 +315,7 @@ public class $ {
 	 * @return 是否不为空
 	 */
 	public static boolean isNotEmpty(@Nullable Object obj) {
-		return !ObjectUtil.isEmpty(obj);
+		return !ObjectUtils.isEmpty(obj);
 	}
 
 	/**
@@ -321,7 +325,7 @@ public class $ {
 	 * @return 数组是否为空
 	 */
 	public static boolean isEmpty(@Nullable Object[] array) {
-		return ObjectUtil.isEmpty(array);
+		return ObjectUtils.isEmpty(array);
 	}
 
 	/**
@@ -414,7 +418,7 @@ public class $ {
 	 * @see java.util.Arrays#equals
 	 */
 	public static boolean equalsSafe(@Nullable Object o1, @Nullable Object o2) {
-		return ObjectUtil.nullSafeEquals(o1, o2);
+		return ObjectUtils.nullSafeEquals(o1, o2);
 	}
 
 	/**
@@ -480,7 +484,7 @@ public class $ {
 	 * @return {@code true} if found, {@code false} otherwise
 	 */
 	public static boolean contains(@Nullable Iterator<?> iterator, Object element) {
-		return CollectionUtil.contains(iterator, element);
+		return CollectionUtils.contains(iterator, element);
 	}
 
 	/**
@@ -491,7 +495,7 @@ public class $ {
 	 * @return {@code true} if found, {@code false} otherwise
 	 */
 	public static boolean contains(@Nullable Enumeration<?> enumeration, Object element) {
-		return CollectionUtil.contains(enumeration, element);
+		return CollectionUtils.contains(enumeration, element);
 	}
 
 	/**
@@ -817,7 +821,7 @@ public class $ {
 	 * @return 字符串数组
 	 */
 	public static String[] split(@Nullable String str, @Nullable String delimiter) {
-		return StringUtil.delimitedListToStringArray(str, delimiter);
+		return StringUtils.delimitedListToStringArray(str, delimiter);
 	}
 
 	/**
@@ -1582,7 +1586,6 @@ public class $ {
 		return FileUtil.readToByteArray(file);
 	}
 
-
 	/**
 	 * 拼接临时文件目录.
 	 *
@@ -1646,7 +1649,6 @@ public class $ {
 	 * @param object javaBean
 	 * @return jsonString json字符串
 	 */
-	@Nullable
 	public static byte[] toJsonAsBytes(@Nullable Object object) {
 		return JsonUtil.toJsonAsBytes(object);
 	}
@@ -1778,7 +1780,6 @@ public class $ {
 	 * @param <T>          泛型
 	 * @return 集合
 	 */
-	@Nullable
 	public static <T> List<T> readJsonAsList(@Nullable byte[] content, Class<T> elementClass) {
 		return JsonUtil.readList(content, elementClass);
 	}
@@ -1791,7 +1792,6 @@ public class $ {
 	 * @param <T>          泛型
 	 * @return 集合
 	 */
-	@Nullable
 	public static <T> List<T> readJsonAsList(@Nullable InputStream content, Class<T> elementClass) {
 		return JsonUtil.readList(content, elementClass);
 	}
@@ -1804,7 +1804,6 @@ public class $ {
 	 * @param <T>          泛型
 	 * @return 集合
 	 */
-	@Nullable
 	public static <T> List<T> readJsonAsList(@Nullable String content, Class<T> elementClass) {
 		return JsonUtil.readList(content, elementClass);
 	}
@@ -1819,7 +1818,6 @@ public class $ {
 	 * @param <V>        泛型
 	 * @return 集合
 	 */
-	@Nullable
 	public static <K, V> Map<K, V> readJsonAsMap(@Nullable byte[] content, Class<?> keyClass, Class<?> valueClass) {
 		return JsonUtil.readMap(content, keyClass, valueClass);
 	}
@@ -1834,7 +1832,6 @@ public class $ {
 	 * @param <V>        泛型
 	 * @return 集合
 	 */
-	@Nullable
 	public static <K, V> Map<K, V> readJsonAsMap(@Nullable InputStream content, Class<?> keyClass, Class<?> valueClass) {
 		return JsonUtil.readMap(content, keyClass, valueClass);
 	}
@@ -1849,7 +1846,6 @@ public class $ {
 	 * @param <V>        泛型
 	 * @return 集合
 	 */
-	@Nullable
 	public static <K, V> Map<K, V> readJsonAsMap(@Nullable String content, Class<?> keyClass, Class<?> valueClass) {
 		return JsonUtil.readMap(content, keyClass, valueClass);
 	}
@@ -1861,7 +1857,7 @@ public class $ {
 	 * @return the encoded String
 	 */
 	public static String urlEncode(String source) {
-		return UrlUtil.encode(source, Charsets.UTF_8);
+		return UriUtils.encode(source, Charsets.UTF_8);
 	}
 
 	/**
@@ -1872,7 +1868,7 @@ public class $ {
 	 * @return the encoded String
 	 */
 	public static String urlEncode(String source, Charset charset) {
-		return UrlUtil.encode(source, charset);
+		return UriUtils.encode(source, charset);
 	}
 
 	/**
@@ -1908,7 +1904,8 @@ public class $ {
 	 * @param date 时间
 	 * @return 格式化后的时间
 	 */
-	public static String formatDateTime(Date date) {
+	@Nullable
+	public static String formatDateTime(@Nullable Date date) {
 		return DateUtil.formatDateTime(date);
 	}
 
@@ -1918,7 +1915,8 @@ public class $ {
 	 * @param date 时间
 	 * @return 格式化后的时间
 	 */
-	public static String formatDate(Date date) {
+	@Nullable
+	public static String formatDate(@Nullable Date date) {
 		return DateUtil.formatDate(date);
 	}
 
@@ -1928,7 +1926,8 @@ public class $ {
 	 * @param date 时间
 	 * @return 格式化后的时间
 	 */
-	public static String formatTime(Date date) {
+	@Nullable
+	public static String formatTime(@Nullable Date date) {
 		return DateUtil.formatTime(date);
 	}
 
@@ -2204,7 +2203,7 @@ public class $ {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T newInstance(Class<?> clazz) {
-		return (T) BeanUtil.instantiateClass(clazz);
+		return (T) BeanUtils.instantiateClass(clazz);
 	}
 
 	/**

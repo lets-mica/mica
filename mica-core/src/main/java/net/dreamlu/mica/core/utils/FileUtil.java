@@ -18,10 +18,7 @@ package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.util.FileSystemUtils;
-import org.springframework.util.PatternMatchUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.util.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -48,7 +45,7 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	public static class TrueFilter implements FileFilter, Serializable {
 		private static final long serialVersionUID = -6420452043795072619L;
 
-		public final static TrueFilter TRUE = new TrueFilter();
+		public static final TrueFilter TRUE = new TrueFilter();
 
 		@Override
 		public boolean accept(File pathname) {
@@ -393,7 +390,7 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	 */
 	public static void toFile(InputStream in, final File file) {
 		try (OutputStream out = new FileOutputStream(file)) {
-			FileUtil.copy(in, out);
+			FileCopyUtils.copy(in, out);
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -427,7 +424,7 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 		}
 		final boolean rename = srcFile.renameTo(destFile);
 		if (!rename) {
-			FileUtil.copy(srcFile, destFile);
+			FileCopyUtils.copy(srcFile, destFile);
 			if (!srcFile.delete()) {
 				FileUtil.deleteQuietly(destFile);
 				throw new IOException("Failed to delete original file '" + srcFile + "' after copy to '" + destFile + "'");
@@ -457,6 +454,7 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 				FileSystemUtils.deleteRecursively(file);
 			}
 		} catch (final Exception ignored) {
+			// ignored
 		}
 
 		try {

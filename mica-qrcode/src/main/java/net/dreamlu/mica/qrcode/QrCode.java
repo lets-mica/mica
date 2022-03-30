@@ -28,6 +28,7 @@ import net.dreamlu.mica.core.utils.Base64Util;
 import net.dreamlu.mica.core.utils.CharPool;
 import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.core.utils.ImageUtil;
+import org.springframework.util.Base64Utils;
 
 import java.awt.*;
 import java.awt.color.ColorSpace;
@@ -375,7 +376,7 @@ public final class QrCode {
 	 * @return base64 字符串
 	 */
 	public String toBase64() {
-		return "data:image/png;base64," + Base64Util.encodeToString(toBytes());
+		return "data:image/png;base64," + Base64Utils.encodeToString(toBytes());
 	}
 
 	/**

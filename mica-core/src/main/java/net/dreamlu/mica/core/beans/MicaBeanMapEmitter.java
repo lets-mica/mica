@@ -19,7 +19,9 @@ package net.dreamlu.mica.core.beans;
 import net.dreamlu.mica.core.utils.ReflectUtil;
 import org.springframework.asm.ClassVisitor;
 import org.springframework.asm.Label;
+import org.springframework.asm.Opcodes;
 import org.springframework.asm.Type;
+import org.springframework.cglib.beans.BeanMap;
 import org.springframework.cglib.beans.FixedKeySet;
 import org.springframework.cglib.core.*;
 
@@ -47,7 +49,7 @@ class MicaBeanMapEmitter extends ClassEmitter {
 	public MicaBeanMapEmitter(ClassVisitor v, String className, Class type, int require) {
 		super(v);
 
-		begin_class(Constants.V1_2, Constants.ACC_PUBLIC, className, BEAN_MAP, null, Constants.SOURCE_FILE);
+		begin_class(Opcodes.V1_2, Opcodes.ACC_PUBLIC, className, BEAN_MAP, null, Constants.SOURCE_FILE);
 		EmitUtils.null_constructor(this);
 		EmitUtils.factory_method(this, NEW_INSTANCE);
 		generateConstructor();
@@ -61,8 +63,8 @@ class MicaBeanMapEmitter extends ClassEmitter {
 		if (require != 0) {
 			for (Iterator it = allProps.keySet().iterator(); it.hasNext(); ) {
 				String name = (String) it.next();
-				if ((((require & MicaBeanMap.REQUIRE_GETTER) != 0) && !getters.containsKey(name)) ||
-					(((require & MicaBeanMap.REQUIRE_SETTER) != 0) && !setters.containsKey(name))) {
+				if ((((require & BeanMap.REQUIRE_GETTER) != 0) && !getters.containsKey(name)) ||
+					(((require & BeanMap.REQUIRE_SETTER) != 0) && !setters.containsKey(name))) {
 					it.remove();
 					getters.remove(name);
 					setters.remove(name);
@@ -95,7 +97,7 @@ class MicaBeanMapEmitter extends ClassEmitter {
 	}
 
 	private void generateConstructor() {
-		CodeEmitter e = begin_method(Constants.ACC_PUBLIC, CSTRUCT_OBJECT, null);
+		CodeEmitter e = begin_method(Opcodes.ACC_PUBLIC, CSTRUCT_OBJECT, null);
 		e.load_this();
 		e.load_arg(0);
 		e.super_invoke_constructor(CSTRUCT_OBJECT);
@@ -104,7 +106,7 @@ class MicaBeanMapEmitter extends ClassEmitter {
 	}
 
 	private void generateGet(Class type, final Map<String, PropertyDescriptor> getters) {
-		final CodeEmitter e = begin_method(Constants.ACC_PUBLIC, BEAN_MAP_GET, null);
+		final CodeEmitter e = begin_method(Opcodes.ACC_PUBLIC, BEAN_MAP_GET, null);
 		e.load_arg(0);
 		e.checkcast(Type.getType(type));
 		e.load_arg(1);
@@ -129,7 +131,7 @@ class MicaBeanMapEmitter extends ClassEmitter {
 	}
 
 	private void generatePut(Class type, final Map<String, PropertyDescriptor> setters) {
-		final CodeEmitter e = begin_method(Constants.ACC_PUBLIC, BEAN_MAP_PUT, null);
+		final CodeEmitter e = begin_method(Opcodes.ACC_PUBLIC, BEAN_MAP_PUT, null);
 		e.load_arg(0);
 		e.checkcast(Type.getType(type));
 		e.load_arg(1);
@@ -168,7 +170,7 @@ class MicaBeanMapEmitter extends ClassEmitter {
 
 	private void generateKeySet(String[] allNames) {
 		// static initializer
-		declare_field(Constants.ACC_STATIC | Constants.ACC_PRIVATE, "keys", FIXED_KEY_SET, null);
+		declare_field(Opcodes.ACC_STATIC | Opcodes.ACC_PRIVATE, "keys", FIXED_KEY_SET, null);
 
 		CodeEmitter e = begin_static();
 		e.new_instance(FIXED_KEY_SET);
@@ -180,7 +182,7 @@ class MicaBeanMapEmitter extends ClassEmitter {
 		e.end_method();
 
 		// keySet
-		e = begin_method(Constants.ACC_PUBLIC, KEY_SET, null);
+		e = begin_method(Opcodes.ACC_PUBLIC, KEY_SET, null);
 		e.load_this();
 		e.getfield("keys");
 		e.return_value();
@@ -188,7 +190,7 @@ class MicaBeanMapEmitter extends ClassEmitter {
 	}
 
 	private void generateGetPropertyType(final Map allProps, String[] allNames) {
-		final CodeEmitter e = begin_method(Constants.ACC_PUBLIC, GET_PROPERTY_TYPE, null);
+		final CodeEmitter e = begin_method(Opcodes.ACC_PUBLIC, GET_PROPERTY_TYPE, null);
 		e.load_arg(0);
 		EmitUtils.string_switch(e, allNames, Constants.SWITCH_STYLE_HASH, new ObjectSwitchCallback() {
 			@Override

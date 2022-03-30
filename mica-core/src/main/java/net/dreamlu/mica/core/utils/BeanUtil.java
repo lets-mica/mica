@@ -22,12 +22,14 @@ import net.dreamlu.mica.core.beans.MicaBeanCopier;
 import net.dreamlu.mica.core.beans.MicaBeanMap;
 import net.dreamlu.mica.core.convert.MicaConverter;
 import net.dreamlu.mica.core.exception.ServiceException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.cglib.beans.BeanGenerator;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.FastByteArrayOutputStream;
 
 import java.io.IOException;
@@ -74,7 +76,7 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	 */
 	public static Class<?> forName(String clazzStr) {
 		try {
-			return ClassUtil.forName(clazzStr, null);
+			return ClassUtils.forName(clazzStr, null);
 		} catch (ClassNotFoundException e) {
 			throw new ServiceException(e);
 		}
@@ -382,7 +384,7 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 			return null;
 		}
 		T to = newInstance(targetClazz);
-		BeanUtil.copyProperties(source, to);
+		BeanUtils.copyProperties(source, to);
 		return to;
 	}
 

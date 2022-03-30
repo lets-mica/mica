@@ -17,6 +17,7 @@
 package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.util.Base64Utils;
 
 import java.nio.charset.Charset;
 
@@ -45,7 +46,7 @@ public class Base64Util extends org.springframework.util.Base64Utils {
 	 */
 	public static String encode(String value, Charset charset) {
 		byte[] val = value.getBytes(charset);
-		return new String(Base64Util.encode(val), charset);
+		return new String(Base64Utils.encode(val), charset);
 	}
 
 	/**
@@ -65,7 +66,7 @@ public class Base64Util extends org.springframework.util.Base64Utils {
 	 */
 	public static String encodeUrlSafe(String value, Charset charset) {
 		byte[] val = value.getBytes(charset);
-		return new String(Base64Util.encodeUrlSafe(val), charset);
+		return new String(Base64Utils.encodeUrlSafe(val), charset);
 	}
 
 	/**
@@ -85,7 +86,7 @@ public class Base64Util extends org.springframework.util.Base64Utils {
 	 */
 	public static String decode(String value, Charset charset) {
 		byte[] val = value.getBytes(charset);
-		byte[] decodedValue = Base64Util.decode(val);
+		byte[] decodedValue = Base64Utils.decode(val);
 		return new String(decodedValue, charset);
 	}
 
@@ -106,7 +107,7 @@ public class Base64Util extends org.springframework.util.Base64Utils {
 	 */
 	public static String decodeUrlSafe(String value, Charset charset) {
 		byte[] val = value.getBytes(charset);
-		byte[] decodedValue = Base64Util.decodeUrlSafe(val);
+		byte[] decodedValue = Base64Utils.decodeUrlSafe(val);
 		return new String(decodedValue, charset);
 	}
 }

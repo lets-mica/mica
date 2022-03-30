@@ -18,15 +18,10 @@ package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.util.PatternMatchUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.util.*;
 import org.springframework.web.util.HtmlUtils;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -41,7 +36,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	/**
 	 * 特殊字符正则，sql特殊字符和空白符
 	 */
-	private final static Pattern SPECIAL_CHARS_REGEX = Pattern.compile("[`'\"|/,;()-+*%#·•�　\\s]");
+	private static final Pattern SPECIAL_CHARS_REGEX = Pattern.compile("[`'\"|/,;()-+*%#·•�　\\s]");
 	/**
 	 * <p>The maximum size to which the padding constant(s) can expand.</p>
 	 */
@@ -98,7 +93,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @see Character#isWhitespace
 	 */
 	public static boolean isBlank(@Nullable final CharSequence cs) {
-		return !StringUtil.hasText(cs);
+		return !StringUtils.hasText(cs);
 	}
 
 	/**
@@ -117,7 +112,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @see Character#isWhitespace
 	 */
 	public static boolean isNotBlank(@Nullable final CharSequence cs) {
-		return StringUtil.hasText(cs);
+		return StringUtils.hasText(cs);
 	}
 
 	/**
@@ -127,7 +122,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return boolean
 	 */
 	public static boolean isAnyBlank(final CharSequence... css) {
-		if (ObjectUtil.isEmpty(css)) {
+		if (ObjectUtils.isEmpty(css)) {
 			return true;
 		}
 		return Stream.of(css).anyMatch(StringUtil::isBlank);
@@ -140,7 +135,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return boolean
 	 */
 	public static boolean isAnyBlank(Collection<CharSequence> css) {
-		if (CollectionUtil.isEmpty(css)) {
+		if (CollectionUtils.isEmpty(css)) {
 			return true;
 		}
 		return css.stream().anyMatch(StringUtil::isBlank);
@@ -153,7 +148,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return boolean
 	 */
 	public static boolean isNoneBlank(final CharSequence... css) {
-		if (ObjectUtil.isEmpty(css)) {
+		if (ObjectUtils.isEmpty(css)) {
 			return false;
 		}
 		return Stream.of(css).allMatch(StringUtil::isNotBlank);
@@ -166,7 +161,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return boolean
 	 */
 	public static boolean isNoneBlank(Collection<CharSequence> css) {
-		if (CollectionUtil.isEmpty(css)) {
+		if (CollectionUtils.isEmpty(css)) {
 			return false;
 		}
 		return css.stream().allMatch(StringUtil::isNotBlank);
@@ -179,7 +174,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return boolean
 	 */
 	public static boolean isAnyNotBlank(CharSequence... css) {
-		if (ObjectUtil.isEmpty(css)) {
+		if (ObjectUtils.isEmpty(css)) {
 			return false;
 		}
 		return Stream.of(css).anyMatch(StringUtil::isNotBlank);
@@ -192,7 +187,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return boolean
 	 */
 	public static boolean isAnyNotBlank(Collection<CharSequence> css) {
-		if (CollectionUtil.isEmpty(css)) {
+		if (CollectionUtils.isEmpty(css)) {
 			return false;
 		}
 		return css.stream().anyMatch(StringUtil::isNotBlank);
@@ -263,7 +258,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		for (int start, end; (start = message.indexOf(StringPool.DOLLAR_LEFT_BRACE, cursor)) != -1 && (end = message.indexOf(CharPool.RIGHT_BRACE, start)) != -1; ) {
 			sb.append(message, cursor, start);
 			String key = message.substring(start + 2, end);
-			Object value = params.get(StringUtil.trimWhitespace(key));
+			Object value = params.get(StringUtils.trimWhitespace(key));
 			sb.append(value == null ? StringPool.EMPTY : value);
 			cursor = end + 1;
 		}
@@ -330,7 +325,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return the delimited {@code String}
 	 */
 	public static String join(Collection<?> coll) {
-		return StringUtil.collectionToCommaDelimitedString(coll);
+		return StringUtils.collectionToCommaDelimitedString(coll);
 	}
 
 	/**
@@ -342,7 +337,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return the delimited {@code String}
 	 */
 	public static String join(Collection<?> coll, String delim) {
-		return StringUtil.collectionToDelimitedString(coll, delim);
+		return StringUtils.collectionToDelimitedString(coll, delim);
 	}
 
 	/**
@@ -354,7 +349,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return the delimited {@code String}
 	 */
 	public static String join(Object[] arr) {
-		return StringUtil.arrayToCommaDelimitedString(arr);
+		return StringUtils.arrayToCommaDelimitedString(arr);
 	}
 
 	/**
@@ -366,7 +361,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return the delimited {@code String}
 	 */
 	public static String join(Object[] arr, String delim) {
-		return StringUtil.arrayToDelimitedString(arr, delim);
+		return StringUtils.arrayToDelimitedString(arr, delim);
 	}
 
 	/**
@@ -377,7 +372,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return 字符串数组
 	 */
 	public static String[] split(@Nullable String str, @Nullable String delimiter) {
-		return StringUtil.delimitedListToStringArray(str, delimiter);
+		return StringUtils.delimitedListToStringArray(str, delimiter);
 	}
 
 	/**
@@ -388,7 +383,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return 字符串数组
 	 */
 	public static String[] splitTrim(@Nullable String str, @Nullable String delimiter) {
-		return StringUtil.delimitedListToStringArray(str, delimiter, " \t\n\n\f");
+		return StringUtils.delimitedListToStringArray(str, delimiter, " \t\n\n\f");
 	}
 
 	/**
@@ -722,7 +717,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		if (str == null) {
 			return null;
 		}
-		if (!StringUtil.hasLength(padStr)) {
+		if (!StringUtils.hasLength(padStr)) {
 			padStr = StringPool.SPACE;
 		}
 		final int padLen = padStr.length();

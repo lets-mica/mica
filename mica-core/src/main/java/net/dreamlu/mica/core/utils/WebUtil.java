@@ -116,7 +116,7 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 	@Nullable
 	public static HttpServletRequest getRequest() {
 		return Optional.ofNullable(RequestContextHolder.getRequestAttributes())
-			.map(x -> (ServletRequestAttributes) x)
+			.map(ServletRequestAttributes.class::cast)
 			.map(ServletRequestAttributes::getRequest)
 			.orElse(null);
 	}
@@ -129,7 +129,7 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 	@Nullable
 	public static HttpServletResponse getResponse() {
 		return Optional.ofNullable(RequestContextHolder.getRequestAttributes())
-			.map(x -> (ServletRequestAttributes) x)
+			.map(ServletRequestAttributes.class::cast)
 			.map(ServletRequestAttributes::getResponse)
 			.orElse(null);
 	}

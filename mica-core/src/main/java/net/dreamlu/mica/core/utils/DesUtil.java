@@ -18,6 +18,7 @@ package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
+import org.springframework.util.Base64Utils;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
@@ -96,7 +97,7 @@ public class DesUtil {
 	 * @return des hex
 	 */
 	public static String encryptToBase64(byte[] data, String password) {
-		return Base64Util.encodeToString(encrypt(data, password));
+		return Base64Utils.encodeToString(encrypt(data, password));
 	}
 
 	/**
@@ -123,7 +124,7 @@ public class DesUtil {
 	 * @return des context
 	 */
 	public static byte[] decryptFormBase64(byte[] data, String password) {
-		byte[] dataBytes = Base64Util.decode(data);
+		byte[] dataBytes = Base64Utils.decode(data);
 		return decrypt(dataBytes, password);
 	}
 
@@ -139,7 +140,7 @@ public class DesUtil {
 		if (StringUtil.isBlank(data)) {
 			return null;
 		}
-		byte[] dataBytes = Base64Util.decodeFromString(data);
+		byte[] dataBytes = Base64Utils.decodeFromString(data);
 		return new String(decrypt(dataBytes, password), Charsets.UTF_8);
 	}
 

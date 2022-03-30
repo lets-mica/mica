@@ -20,6 +20,8 @@ package net.dreamlu.mica.core.utils;
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -43,7 +45,7 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 	 * @return whether the given Collection is not empty
 	 */
 	public static boolean isNotEmpty(@Nullable Collection<?> collection) {
-		return !CollectionUtil.isEmpty(collection);
+		return !CollectionUtils.isEmpty(collection);
 	}
 
 	/**
@@ -54,7 +56,7 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 	 * @return whether the given Map is not empty
 	 */
 	public static boolean isNotEmpty(@Nullable Map<?, ?> map) {
-		return !CollectionUtil.isEmpty(map);
+		return !CollectionUtils.isEmpty(map);
 	}
 
 	/**
@@ -69,7 +71,7 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 		if (array == null) {
 			return false;
 		}
-		return Arrays.stream(array).anyMatch(x -> ObjectUtil.nullSafeEquals(x, element));
+		return Arrays.stream(array).anyMatch(x -> ObjectUtils.nullSafeEquals(x, element));
 	}
 
 	/**

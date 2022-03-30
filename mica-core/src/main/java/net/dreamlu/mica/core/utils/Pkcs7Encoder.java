@@ -1,5 +1,7 @@
 package net.dreamlu.mica.core.utils;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.Arrays;
 
 /**
@@ -9,6 +11,7 @@ import java.util.Arrays;
  *
  * @author L.cm
  */
+@UtilityClass
 public class Pkcs7Encoder {
 	/**
 	 * 默认为 16，保持跟其他语言的一致性

@@ -25,6 +25,7 @@
 package net.dreamlu.mica.core.utils;
 
 import org.springframework.lang.Nullable;
+import org.springframework.util.Base64Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
@@ -689,17 +690,17 @@ public class RsaHelper {
 	public String toXml(boolean convertToPublic) {
 		StringBuilder str = new StringBuilder();
 		str.append("<RSAKeyValue>");
-		str.append("<Modulus>").append(Base64Util.encodeToString(keyModulus)).append("</Modulus>");
-		str.append("<Exponent>").append(Base64Util.encodeToString(keyExponent)).append("</Exponent>");
+		str.append("<Modulus>").append(Base64Utils.encodeToString(keyModulus)).append("</Modulus>");
+		str.append("<Exponent>").append(Base64Utils.encodeToString(keyExponent)).append("</Exponent>");
 		if (this.keyD == null || convertToPublic) {
 			//NOOP
 		} else {
-			str.append("<P>").append(Base64Util.encodeToString(valP)).append("</P>");
-			str.append("<Q>").append(Base64Util.encodeToString(valQ)).append("</Q>");
-			str.append("<DP>").append(Base64Util.encodeToString(valDP)).append("</DP>");
-			str.append("<DQ>").append(Base64Util.encodeToString(valDQ)).append("</DQ>");
-			str.append("<InverseQ>").append(Base64Util.encodeToString(valInverseQ)).append("</InverseQ>");
-			str.append("<D>").append(Base64Util.encodeToString(keyD)).append("</D>");
+			str.append("<P>").append(Base64Utils.encodeToString(valP)).append("</P>");
+			str.append("<Q>").append(Base64Utils.encodeToString(valQ)).append("</Q>");
+			str.append("<DP>").append(Base64Utils.encodeToString(valDP)).append("</DP>");
+			str.append("<DQ>").append(Base64Utils.encodeToString(valDQ)).append("</DQ>");
+			str.append("<InverseQ>").append(Base64Utils.encodeToString(valInverseQ)).append("</InverseQ>");
+			str.append("<D>").append(Base64Utils.encodeToString(keyD)).append("</D>");
 		}
 		str.append("</RSAKeyValue>");
 		return str.toString();
