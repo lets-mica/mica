@@ -121,7 +121,7 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 		'G' , 'H' , 'I' , 'J' , 'K' , 'L' ,
 		'M' , 'N' , 'O' , 'P' , 'Q' , 'R' ,
 		'S' , 'T' , 'U' , 'V' , 'W' , 'X' ,
-		'Y' , 'Z'
+		'Y' , 'Z' , '_', '-'
 	};
 
 	/**
@@ -130,7 +130,7 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 	 * @return 短字符串
 	 */
 	public static String to62Str(long i) {
-		int radix = DIGITS.length;
+		int radix = 62;
 		byte[] buf = new byte[65];
 		int charPos = 64;
 		i = -i;

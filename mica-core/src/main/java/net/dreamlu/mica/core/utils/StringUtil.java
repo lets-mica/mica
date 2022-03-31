@@ -426,17 +426,35 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		long lsb = random.nextLong();
 		long msb = random.nextLong();
 		byte[] buf = new byte[32];
-		formatUnsignedLong(lsb, buf, 20, 12);
-		formatUnsignedLong(lsb >>> 48, buf, 16, 4);
-		formatUnsignedLong(msb, buf, 12, 4);
-		formatUnsignedLong(msb >>> 16, buf, 8, 4);
-		formatUnsignedLong(msb >>> 32, buf, 0, 8);
+		int radix = 1 << 4;
+		formatUnsignedLong(lsb, radix, buf, 20, 12);
+		formatUnsignedLong(lsb >>> 48, radix, buf, 16, 4);
+		formatUnsignedLong(msb, radix, buf, 12, 4);
+		formatUnsignedLong(msb >>> 16, radix, buf, 8, 4);
+		formatUnsignedLong(msb >>> 32, radix, buf, 0, 8);
 		return new String(buf, Charsets.UTF_8);
 	}
 
-	private static void formatUnsignedLong(long val, byte[] buf, int offset, int len) {
+	/**
+	 * 一个小巧、安全、URL友好、21 位的字符串ID生成器。
+	 *
+	 * @return NanoId
+	 */
+	public static String getNanoId() {
+		Random random = ThreadLocalRandom.current();
+		long lsb = random.nextLong();
+		long msb = random.nextLong();
+		byte[] buf = new byte[21];
+		int radix = 1 << 6;
+		formatUnsignedLong(lsb, radix, buf, 14, 7);
+		formatUnsignedLong(msb, radix, buf, 10, 4);
+		formatUnsignedLong(msb >>> 16, radix, buf, 6, 4);
+		formatUnsignedLong(msb >>> 32, radix, buf, 0, 6);
+		return new String(buf, Charsets.UTF_8);
+	}
+
+	private static void formatUnsignedLong(long val, int radix, byte[] buf, int offset, int len) {
 		int charPos = offset + len;
-		int radix = 1 << 4;
 		int mask = radix - 1;
 		do {
 			buf[--charPos] = NumberUtil.DIGITS[((int) val) & mask];
