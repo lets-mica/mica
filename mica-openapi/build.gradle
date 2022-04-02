@@ -1,0 +1,5 @@
+dependencies {
+    api "org.springdoc:springdoc-openapi-ui:${springdocVersion}"
+    api "com.github.xiaoymin:knife4j-springdoc-ui:${knife4jVersion}"
+    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+}
