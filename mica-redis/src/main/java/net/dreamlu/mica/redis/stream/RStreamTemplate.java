@@ -33,6 +33,11 @@ import java.util.Map;
 public interface RStreamTemplate {
 
 	/**
+	 * 自定义 pojo 类型 key
+	 */
+	String OBJECT_PAYLOAD_KEY = "@payload";
+
+	/**
 	 * 发布消息
 	 *
 	 * @param name  队列名

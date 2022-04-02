@@ -33,7 +33,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.stream.MapRecord;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.hash.Jackson2HashMapper;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer.StreamMessageListenerContainerOptions;
 import org.springframework.util.ErrorHandler;
@@ -55,9 +55,13 @@ public class RedisStreamConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public StreamMessageListenerContainerOptions<String, MapRecord<String, String, String>> streamMessageListenerContainerOptions(MicaRedisProperties properties,
+	public StreamMessageListenerContainerOptions<String, MapRecord<String, String, byte[]>> streamMessageListenerContainerOptions(MicaRedisProperties properties,
 																																  ObjectProvider<ErrorHandler> errorHandlerObjectProvider) {
-		StreamMessageListenerContainer.StreamMessageListenerContainerOptionsBuilder<String, MapRecord<String, String, String>> builder = StreamMessageListenerContainerOptions.builder();
+		StreamMessageListenerContainer.StreamMessageListenerContainerOptionsBuilder<String, MapRecord<String, String, byte[]>> builder = StreamMessageListenerContainerOptions
+			.builder()
+			.keySerializer(RedisSerializer.string())
+			.hashKeySerializer(RedisSerializer.string())
+			.hashValueSerializer(RedisSerializer.byteArray());
 		MicaRedisProperties.Stream streamProperties = properties.getStream();
 		// 批量大小
 		Integer pollBatchSize = streamProperties.getPollBatchSize();
@@ -77,15 +81,15 @@ public class RedisStreamConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public StreamMessageListenerContainer<String, MapRecord<String, String, String>> streamMessageListenerContainer(RedisConnectionFactory redisConnectionFactory,
-																													StreamMessageListenerContainerOptions<String, MapRecord<String, String, String>> streamMessageListenerContainerOptions) {
+	public StreamMessageListenerContainer<String, MapRecord<String, String, byte[]>> streamMessageListenerContainer(RedisConnectionFactory redisConnectionFactory,
+																													StreamMessageListenerContainerOptions<String, MapRecord<String, String, byte[]>> streamMessageListenerContainerOptions) {
 		// 根据配置对象创建监听容器
 		return StreamMessageListenerContainer.create(redisConnectionFactory, streamMessageListenerContainerOptions);
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
-	public RStreamListenerDetector streamListenerDetector(StreamMessageListenerContainer<String, MapRecord<String, String, String>> streamMessageListenerContainer,
+	public RStreamListenerDetector streamListenerDetector(StreamMessageListenerContainer<String, MapRecord<String, String, byte[]>> streamMessageListenerContainer,
 														  RedisTemplate<String, Object> redisTemplate,
 														  ObjectProvider<ServerProperties> serverPropertiesObjectProvider,
 														  MicaRedisProperties properties,
@@ -112,7 +116,7 @@ public class RedisStreamConfiguration {
 
 	@Bean
 	public RStreamTemplate streamTemplate(RedisTemplate<String, Object> redisTemplate) {
-		return new DefaultRStreamTemplate(redisTemplate, new Jackson2HashMapper(false));
+		return new DefaultRStreamTemplate(redisTemplate);
 	}
 
 }

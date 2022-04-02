@@ -33,6 +33,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -42,17 +43,15 @@ import java.util.Map;
  */
 @Slf4j
 public class RStreamListenerDetector implements BeanPostProcessor, InitializingBean {
-	private final StreamMessageListenerContainer<String, MapRecord<String, String, String>> streamMessageListenerContainer;
+	private final StreamMessageListenerContainer<String, MapRecord<String, String, byte[]>> streamMessageListenerContainer;
 	private final RedisTemplate<String, Object> redisTemplate;
-	private final ClassHashMapper classHashMapper;
 	private final String consumerGroup;
 	private final String consumerName;
 
-	public RStreamListenerDetector(StreamMessageListenerContainer<String, MapRecord<String, String, String>> streamMessageListenerContainer,
+	public RStreamListenerDetector(StreamMessageListenerContainer<String, MapRecord<String, String, byte[]>> streamMessageListenerContainer,
 								   RedisTemplate<String, Object> redisTemplate, String consumerGroup, String consumerName) {
 		this.streamMessageListenerContainer = streamMessageListenerContainer;
 		this.redisTemplate = redisTemplate;
-		this.classHashMapper = new ClassHashMapper();
 		this.consumerGroup = consumerGroup;
 		this.consumerName = consumerName;
 	}
@@ -124,7 +123,7 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 		}
 	}
 
-	private void invokeMethod(Object bean, Method method, MapRecord<String, String, String> mapRecord) {
+	private void invokeMethod(Object bean, Method method, MapRecord<String, String, byte[]> mapRecord) {
 		// 支持没有参数的方法
 		if (method.getParameterCount() == 0) {
 			ReflectUtil.invokeMethod(method, bean);
@@ -133,12 +132,18 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 		}
 	}
 
-	private Object getRecordValue(MapRecord<String, String, String> mapRecord) {
-		Map<String, String> messageValue = mapRecord.getValue();
-		if (messageValue.containsKey("@class")) {
-			return mapRecord.toObjectRecord(classHashMapper);
+	private Object getRecordValue(MapRecord<String, String, byte[]> mapRecord) {
+		Map<String, byte[]> messageValue = mapRecord.getValue();
+		if (messageValue.containsKey(RStreamTemplate.OBJECT_PAYLOAD_KEY)) {
+			byte[] payloads = messageValue.get(RStreamTemplate.OBJECT_PAYLOAD_KEY);
+			Object deserialize = redisTemplate.getValueSerializer().deserialize(payloads);
+			return ObjectRecord.create(mapRecord.getStream(), deserialize);
 		} else {
-			return mapRecord;
+			return mapRecord.mapEntries(entry -> {
+				String key = entry.getKey();
+				Object value = redisTemplate.getValueSerializer().deserialize(entry.getValue());
+				return Collections.singletonMap(key, value).entrySet().iterator().next();
+			});
 		}
 	}
 

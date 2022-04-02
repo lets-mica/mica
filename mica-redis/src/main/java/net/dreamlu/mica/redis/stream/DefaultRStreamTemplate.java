@@ -16,17 +16,15 @@
 
 package net.dreamlu.mica.redis.stream;
 
-import net.dreamlu.mica.core.utils.JsonUtil;
-import org.springframework.data.redis.connection.RedisStreamCommands;
-import org.springframework.data.redis.connection.stream.*;
-import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.data.redis.connection.stream.MapRecord;
+import org.springframework.data.redis.connection.stream.Record;
+import org.springframework.data.redis.connection.stream.RecordId;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StreamOperations;
 import org.springframework.data.redis.core.convert.RedisCustomConversions;
-import org.springframework.data.redis.hash.Jackson2HashMapper;
-import org.springframework.data.redis.serializer.RedisSerializer;
 
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -37,14 +35,10 @@ import java.util.Objects;
 @SuppressWarnings("unchecked")
 public class DefaultRStreamTemplate implements RStreamTemplate {
 	private static final RedisCustomConversions customConversions = new RedisCustomConversions();
-	private final RedisTemplate<String, Object> redisTemplate;
 	private final StreamOperations<String, String, Object> streamOperations;
-	private final Jackson2HashMapper hashMapper;
 
-	public DefaultRStreamTemplate(RedisTemplate<String, Object> redisTemplate, Jackson2HashMapper hashMapper) {
-		this.redisTemplate = redisTemplate;
+	public DefaultRStreamTemplate(RedisTemplate<String, Object> redisTemplate) {
 		this.streamOperations = redisTemplate.opsForStream();
-		this.hashMapper = hashMapper;
 	}
 
 	@Override
@@ -60,20 +54,11 @@ public class DefaultRStreamTemplate implements RStreamTemplate {
 		if (customConversions.isSimpleType(valueClass)) {
 			return streamOperations.add(record);
 		}
-		// 3. 自定义类型，手动序列化
-		ObjectRecord<String, Object> objectRecord = (ObjectRecord) record;
-		// 3.1 value 类型转换
-		MapRecord<String, String, String> objectMapRecord = objectRecord.toMapRecord(this.hashMapper).mapEntries(entry -> {
-			String key = entry.getKey();
-			String value = JsonUtil.convertValue(entry.getValue(), String.class);
-			return Collections.singletonMap(key, value).entrySet().iterator().next();
-		});
-		// 3.2 序列化
-		ByteRecord byteRecord = objectMapRecord.serialize(RedisSerializer.string());
-		return redisTemplate.execute((RedisCallback<RecordId>) redis -> {
-			RedisStreamCommands commands = redis.streamCommands();
-			return commands.xAdd(byteRecord);
-		});
+		// 3. 自定义类型处理
+		Map<String, Object> payload = new HashMap<>();
+		payload.put(RStreamTemplate.OBJECT_PAYLOAD_KEY, recordValue);
+		MapRecord<String, String, Object> mapRecord = MapRecord.create(stream, payload);
+		return streamOperations.add(mapRecord);
 	}
 
 	@Override
