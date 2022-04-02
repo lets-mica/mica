@@ -1,6 +1,14 @@
 # 变更记录
 
 ## 发行版本
+### v2.6.6 - 2022-04-02
+- :sparkles: mica-prometheus 添加 profile 标签，用于多环境。
+- :sparkles: mica-redis 添加 stream，默认关闭。
+- :sparkles: mica-core 完善 DigestUtil。
+- :sparkles: mica-core StringUtil 添加 getNanoId 21位的唯一Id，基于 java9+ uuid 算法，性能更加强悍。
+- :sparkles: 添加 mica-openapi 模块。
+- :arrow_up: spring boot 到 2.6.6
+
 ### v2.5.8 - 2021-12-30
 - :sparkles: mica-xss 添加一个使用场景。
 - :sparkles: JsonUtil 新增支持 java.io.Reader 转换操作 感谢 @caiqyxyx
