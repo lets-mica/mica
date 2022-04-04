@@ -25,6 +25,11 @@ compile("net.dreamlu:mica-redis:${version}")
 | mica.redis.key-expired-event.enable | false | 是否启用redis key 失效事件，默认：关闭 |
 | mica.redis.rate-limiter.enable | false | 是否开启 redis 分布式限流，默认：关闭 |
 | mica.redis.serializer-type | JSON | 序列化方式 JSON、JDK，需要自定义实现 `RedisSerializer` 即可，默认：JSON |
+| mica.redis.stream.enable | false | 是否开启 stream |
+| mica.redis.stream.consumer-group |  | consumer group，默认：服务名 + 环境 |
+| mica.redis.stream.consumer-name |  | 消费者名称，默认：ip + 端口 |
+| mica.redis.stream.poll-batch-size |  | poll 批量大小 |
+| mica.redis.stream.poll-timeout |  | poll 超时时间 |
 
 ## 使用文档
 
@@ -167,6 +172,164 @@ public void redisKeyExpiredEvent(RedisKeyExpiredEvent<Object> event) {
     System.out.println(redisKey);
 }
 ```
+
+### 4. 示例 redis stream 使用
+
+#### 4.1 发送
+```java
+@Autowired
+RStreamTemplate streamTemplate
+```
+
+方法：
+
+```java
+
+/**
+ * 发布消息
+ *
+ * @param name  队列名
+ * @param value 消息
+ * @return 消息id
+ */
+RecordId send(String name, Object value);
+
+/**
+ * 发布消息
+ *
+ * @param name  队列名
+ * @param key   消息key
+ * @param value 消息
+ * @return 消息id
+ */
+RecordId send(String name, String key, Object value);
+
+/**
+ * 批量发布
+ *
+ * @param name     队列名
+ * @param messages 消息
+ * @return 消息id
+ */
+RecordId send(String name, Map<String, Object> messages);
+
+/**
+ * 发送消息
+ *
+ * @param record Record
+ * @return 消息id
+ */
+RecordId send(Record<String, ?> record);
+
+/**
+ * 删除消息
+ *
+ * @param name      stream name
+ * @param recordIds recordIds
+ * @return Long
+ */
+@Nullable
+Long delete(String name, String... recordIds);
+
+/**
+ * 删除消息
+ *
+ * @param name      stream name
+ * @param recordIds recordIds
+ * @return Long
+ */
+@Nullable
+Long delete(String name, RecordId... recordIds);
+
+/**
+ * 删除消息
+ *
+ * @param record Record
+ * @return Long
+ */
+@Nullable
+Long delete(Record<String, ?> record);
+
+/**
+ * 对流进行修剪，限制长度
+ *
+ * @param name  name
+ * @param count count
+ * @return Long
+ */
+@Nullable
+Long trim(String name, long count);
+
+/**
+ * 对流进行修剪，限制长度
+ *
+ * @param name                name
+ * @param count               count
+ * @param approximateTrimming
+ * @return Long
+ */
+@Nullable
+Long trim(String name, long count, boolean approximateTrimming);
+```
+
+#### 4.2 监听
+
+```java
+@RStreamListener(name = "order")
+public void order(Record<String, OrderDto> record) {
+    // 业务逻辑
+}
+```
+
+`@RStreamListener` 注解属性：
+
+```java
+public @interface RStreamListener {
+
+	/**
+	 * Queue name
+	 *
+	 * @return String
+	 */
+	String name();
+
+	/**
+	 * consumer group，默认为服务名 + 环境
+	 *
+	 * @return String
+	 */
+	String group() default "";
+
+	/**
+	 * 消息方式，集群模式和广播模式，如果想让所有订阅者收到所有消息，广播是一个不错的选择。
+	 *
+	 * @return MessageModel
+	 */
+	MessageModel messageModel() default MessageModel.CLUSTERING;
+
+	/**
+	 * offsetModel，默认：LAST_CONSUMED
+	 *
+	 * <p>
+	 * 0-0 : 从开始的地方读。
+	 * $ ：表示从尾部开始消费，只接受新消息，当前 Stream 消息会全部忽略。
+	 * > : 读取所有新到达的元素，这些元素的id大于消费组使用的最后一个元素。
+	 * </p>
+	 *
+	 * @return ReadOffsetModel
+	 */
+	ReadOffsetModel offsetModel() default ReadOffsetModel.LAST_CONSUMED;
+
+	/**
+	 * 自动 ack
+	 *
+	 * @return boolean
+	 */
+	boolean autoAcknowledge() default false;
+
+}
+```
+
 
 ## 拓展链接
 - Redis windows 服务端：https://github.com/tporadowski/redis/releases
