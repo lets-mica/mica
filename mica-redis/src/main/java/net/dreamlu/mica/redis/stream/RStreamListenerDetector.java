@@ -76,7 +76,7 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 				// 消费模式
 				MessageModel messageModel = listener.messageModel();
 				if (MessageModel.BROADCASTING == messageModel) {
-					broadCast(streamOffset, bean, method);
+					broadCast(streamOffset, bean, method, listener.readRawBytes());
 				} else {
 					String groupId = StringUtil.isNotBlank(listener.group()) ? listener.group() : consumerGroup;
 					Consumer consumer = Consumer.from(groupId, consumerName);
@@ -89,10 +89,10 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 		return bean;
 	}
 
-	private void broadCast(StreamOffset<String> streamOffset, Object bean, Method method) {
+	private void broadCast(StreamOffset<String> streamOffset, Object bean, Method method, boolean isReadRawBytes) {
 		streamMessageListenerContainer.receive(streamOffset, (message) -> {
 			// MapBackedRecord
-			invokeMethod(bean, method, message);
+			invokeMethod(bean, method, message, isReadRawBytes);
 		});
 	}
 
@@ -102,7 +102,7 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 		StreamOperations<String, Object, Object> opsForStream = redisTemplate.opsForStream();
 		streamMessageListenerContainer.register(readRequest, (message) -> {
 			// MapBackedRecord
-			invokeMethod(bean, method, message);
+			invokeMethod(bean, method, message, listener.readRawBytes());
 			// ack
 			if (!autoAcknowledge) {
 				opsForStream.acknowledge(consumer.getGroup(), message);
@@ -123,10 +123,14 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 		}
 	}
 
-	private void invokeMethod(Object bean, Method method, MapRecord<String, String, byte[]> mapRecord) {
+	private void invokeMethod(Object bean, Method method, MapRecord<String, String, byte[]> mapRecord, boolean isReadRawBytes) {
 		// 支持没有参数的方法
 		if (method.getParameterCount() == 0) {
 			ReflectUtil.invokeMethod(method, bean);
+			return;
+		}
+		if (isReadRawBytes) {
+			ReflectUtil.invokeMethod(method, bean, mapRecord);
 		} else {
 			ReflectUtil.invokeMethod(method, bean, getRecordValue(mapRecord));
 		}

@@ -70,4 +70,11 @@ public @interface RStreamListener {
 	 */
 	boolean autoAcknowledge() default false;
 
+	/**
+	 * 读取原始的 bytes 数据
+	 *
+	 * @return boolean
+	 */
+	boolean readRawBytes() default false;
+
 }

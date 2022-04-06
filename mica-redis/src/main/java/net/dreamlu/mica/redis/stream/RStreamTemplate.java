@@ -61,6 +61,16 @@ public interface RStreamTemplate {
 	}
 
 	/**
+	 * 发布消息
+	 *
+	 * @param name 队列名
+	 * @param key  消息key
+	 * @param data 消息
+	 * @return 消息id
+	 */
+	RecordId send(String name, String key, byte[] data);
+
+	/**
 	 * 批量发布
 	 *
 	 * @param name     队列名
