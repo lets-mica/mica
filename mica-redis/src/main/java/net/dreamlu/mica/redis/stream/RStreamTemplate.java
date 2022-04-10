@@ -24,6 +24,7 @@ import org.springframework.lang.Nullable;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * 基于 redis Stream 的消息发布器
@@ -69,6 +70,20 @@ public interface RStreamTemplate {
 	 * @return 消息id
 	 */
 	RecordId send(String name, String key, byte[] data);
+
+	/**
+	 * 发布消息
+	 *
+	 * @param name   队列名
+	 * @param key    消息key
+	 * @param data   消息
+	 * @param mapper 消息转换
+	 * @param <T>    泛型
+	 * @return 消息id
+	 */
+	default <T> RecordId send(String name, String key, T data, Function<T, byte[]> mapper) {
+		return send(name, key, mapper.apply(data));
+	}
 
 	/**
 	 * 批量发布
