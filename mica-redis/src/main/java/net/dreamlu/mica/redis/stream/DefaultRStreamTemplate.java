@@ -37,9 +37,8 @@ import java.util.Objects;
  *
  * @author L.cm
  */
-@SuppressWarnings("unchecked")
 public class DefaultRStreamTemplate implements RStreamTemplate {
-	private static final RedisCustomConversions customConversions = new RedisCustomConversions();
+	private static final RedisCustomConversions CUSTOM_CONVERSIONS = new RedisCustomConversions();
 	private final RedisTemplate<String, Object> redisTemplate;
 	private final StreamOperations<String, String, Object> streamOperations;
 
@@ -58,7 +57,7 @@ public class DefaultRStreamTemplate implements RStreamTemplate {
 		Object recordValue = Objects.requireNonNull(record.getValue(), "RStreamTemplate send stream: " + stream + " value is null.");
 		Class<?> valueClass = recordValue.getClass();
 		// 2. 普通类型的 ObjectRecord
-		if (customConversions.isSimpleType(valueClass)) {
+		if (CUSTOM_CONVERSIONS.isSimpleType(valueClass)) {
 			return streamOperations.add(record);
 		}
 		// 3. 自定义类型处理
@@ -69,14 +68,14 @@ public class DefaultRStreamTemplate implements RStreamTemplate {
 	}
 
 	@Override
-	public RecordId send(String name, String key, byte[] data) {
+	public RecordId send(String name, String key, byte[] data, RedisStreamCommands.XAddOptions options) {
 		RedisSerializer<String> stringSerializer = StringRedisSerializer.UTF_8;
 		byte[] nameBytes = Objects.requireNonNull(stringSerializer.serialize(name), "redis stream name is null.");
 		byte[] keyBytes = Objects.requireNonNull(stringSerializer.serialize(key), "redis stream key is null.");
 		Map<byte[], byte[]> mapDate = Collections.singletonMap(keyBytes, data);
 		return redisTemplate.execute((RedisCallback<RecordId>) redis -> {
 			RedisStreamCommands streamCommands = redis.streamCommands();
-			return streamCommands.xAdd(MapRecord.create(nameBytes, mapDate));
+			return streamCommands.xAdd(MapRecord.create(nameBytes, mapDate), options);
 		});
 	}
 

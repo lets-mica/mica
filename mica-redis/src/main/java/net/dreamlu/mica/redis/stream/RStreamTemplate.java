@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.redis.stream;
 
+import org.springframework.data.redis.connection.RedisStreamCommands;
 import org.springframework.data.redis.connection.stream.MapRecord;
 import org.springframework.data.redis.connection.stream.ObjectRecord;
 import org.springframework.data.redis.connection.stream.Record;
@@ -69,7 +70,33 @@ public interface RStreamTemplate {
 	 * @param data 消息
 	 * @return 消息id
 	 */
-	RecordId send(String name, String key, byte[] data);
+	default RecordId send(String name, String key, byte[] data) {
+		return send(name, key, data, RedisStreamCommands.XAddOptions.none());
+	}
+
+	/**
+	 * 发布消息
+	 *
+	 * @param name   队列名
+	 * @param key    消息key
+	 * @param data   消息
+	 * @param maxLen 限制 stream 最大长度
+	 * @return 消息id
+	 */
+	default RecordId send(String name, String key, byte[] data, long maxLen) {
+		return send(name, key, data, RedisStreamCommands.XAddOptions.maxlen(maxLen));
+	}
+
+	/**
+	 * 发布消息
+	 *
+	 * @param name    队列名
+	 * @param key     消息key
+	 * @param data    消息
+	 * @param options XAddOptions
+	 * @return 消息id
+	 */
+	RecordId send(String name, String key, byte[] data, RedisStreamCommands.XAddOptions options);
 
 	/**
 	 * 发布消息
