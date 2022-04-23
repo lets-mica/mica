@@ -92,7 +92,7 @@ public class LoggingLogStashAppender implements ILoggingAppender {
 		logStashAppender.setContext(context);
 		logStashAppender.setEncoder(logstashEncoder(customFields));
 		logStashAppender.setName(ASYNC_LOG_STASH_APPENDER_NAME);
-		logStashAppender.setQueueSize(logStashProperties.getQueueSize());
+		logStashAppender.setRingBufferSize(logStashProperties.getRingBufferSize());
 		logStashAppender.start();
 		// 先删除，再添加
 		context.getLogger(Logger.ROOT_LOGGER_NAME).detachAppender(ASYNC_LOG_STASH_APPENDER_NAME);

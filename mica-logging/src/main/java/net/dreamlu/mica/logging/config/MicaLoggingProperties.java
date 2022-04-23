@@ -78,7 +78,7 @@ public class MicaLoggingProperties {
 		/**
 		 * logstash 队列大小
 		 */
-		private int queueSize = 512;
+		private int ringBufferSize = 512;
 	}
 
 	@Getter

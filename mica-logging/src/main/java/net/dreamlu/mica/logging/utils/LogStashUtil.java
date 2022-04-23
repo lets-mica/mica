@@ -50,7 +50,7 @@ public class LogStashUtil {
 		jsonProviders.addMessage(new MessageJsonProvider());
 		jsonProviders.addPattern(new LoggingEventPatternJsonProvider());
 		jsonProviders.addStackTrace(stackTraceJsonProvider());
-		jsonProviders.addThreadName(new ThreadNameJsonProvider());
+		jsonProviders.addThreadName(new LoggingEventThreadNameJsonProvider());
 		jsonProviders.addTimestamp(timestampJsonProvider());
 		jsonProviders.setContext(context);
 		return jsonProviders;
