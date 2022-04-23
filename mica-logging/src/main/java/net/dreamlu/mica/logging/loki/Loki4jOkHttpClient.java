@@ -25,6 +25,7 @@ import okhttp3.internal.Util;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Loki4j OkHttpClient
@@ -40,12 +41,20 @@ public class Loki4jOkHttpClient implements Loki4jHttpClient {
 
 	public Loki4jOkHttpClient(HttpConfig conf) {
 		this.conf = conf;
-		this.httpClient = new OkHttpClient();
+		this.httpClient = okHttpClientBuilder(conf);
 		this.mediaType = MediaType.get(conf.contentType);
-		this.requestBuilder = builderRequest(conf);
+		this.requestBuilder = requestBuilder(conf);
 	}
 
-	private static Request builderRequest(HttpConfig conf) {
+	private static OkHttpClient okHttpClientBuilder(HttpConfig conf) {
+		return new OkHttpClient.Builder()
+			.connectTimeout(conf.connectionTimeoutMs, TimeUnit.MICROSECONDS)
+			.writeTimeout(conf.requestTimeoutMs, TimeUnit.MICROSECONDS)
+			.readTimeout(conf.requestTimeoutMs, TimeUnit.MICROSECONDS)
+			.build();
+	}
+
+	private static Request requestBuilder(HttpConfig conf) {
 		Request.Builder request = new Request.Builder()
 			.url(conf.pushUrl)
 			.addHeader(HttpHeaders.CONTENT_TYPE, conf.contentType);
