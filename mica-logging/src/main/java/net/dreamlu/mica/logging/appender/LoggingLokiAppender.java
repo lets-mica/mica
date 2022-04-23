@@ -25,7 +25,7 @@ import net.dreamlu.mica.core.constant.MicaConstant;
 import net.dreamlu.mica.core.utils.CharPool;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.logging.config.MicaLoggingProperties;
-import net.dreamlu.mica.logging.loki.OkHttpSender;
+import net.dreamlu.mica.logging.loki.Loki4jOkHttpSender;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
@@ -71,8 +71,7 @@ public class LoggingLokiAppender implements ILoggingAppender {
 		}
 	}
 
-	private void addLokiAppender(LoggerContext context,
-								 MicaLoggingProperties.Loki properties) {
+	private void addLokiAppender(LoggerContext context, MicaLoggingProperties.Loki properties) {
 		Loki4jAppender lokiAppender = new Loki4jAppender();
 		lokiAppender.setName(APPENDER_NAME);
 		lokiAppender.setContext(context);
@@ -89,7 +88,7 @@ public class LoggingLokiAppender implements ILoggingAppender {
 		Loki4jEncoder loki4jEncoder = getFormat(context, properties);
 		lokiAppender.setFormat(loki4jEncoder);
 		// http
-		lokiAppender.setHttp(getSender(context, loki4jEncoder, properties));
+		lokiAppender.setHttp(getSender(properties));
 		lokiAppender.start();
 		// 先删除，再添加
 		context.getLogger(Logger.ROOT_LOGGER_NAME).detachAppender(APPENDER_NAME);
@@ -123,13 +122,11 @@ public class LoggingLokiAppender implements ILoggingAppender {
 		return loki4jEncoder;
 	}
 
-	private static HttpSender getSender(LoggerContext context,
-										Loki4jEncoder loki4jEncoder,
-										MicaLoggingProperties.Loki properties) {
+	private static HttpSender getSender(MicaLoggingProperties.Loki properties) {
 		MicaLoggingProperties.HttpSender httpSenderType = getHttpSender(properties);
 		AbstractHttpSender httpSender;
 		if (MicaLoggingProperties.HttpSender.OKHttp == httpSenderType) {
-			httpSender = new OkHttpSender();
+			httpSender = new Loki4jOkHttpSender();
 		} else if (MicaLoggingProperties.HttpSender.ApacheHttp == httpSenderType) {
 			httpSender = new ApacheHttpSender();
 		} else {
@@ -147,9 +144,6 @@ public class LoggingLokiAppender implements ILoggingAppender {
 			httpSender.setAuth(basicAuth);
 		}
 		httpSender.setTenantId(properties.getHttpTenantId());
-		httpSender.setContentType(loki4jEncoder.getContentType());
-		httpSender.setContext(context);
-		httpSender.start();
 		return httpSender;
 	}
 

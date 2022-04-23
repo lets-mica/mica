@@ -16,10 +16,10 @@
 
 package net.dreamlu.mica.logging.loki;
 
-import ch.qos.logback.core.joran.spi.NoAutoStart;
-import com.github.loki4j.common.HttpHeaders;
-import com.github.loki4j.common.LokiResponse;
-import com.github.loki4j.logback.AbstractHttpSender;
+import com.github.loki4j.client.http.HttpConfig;
+import com.github.loki4j.client.http.HttpHeaders;
+import com.github.loki4j.client.http.Loki4jHttpClient;
+import com.github.loki4j.client.http.LokiResponse;
 import okhttp3.*;
 import okhttp3.internal.Util;
 
@@ -27,42 +27,41 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
- * Loki sender that is backed by OkHttp
+ * Loki4j OkHttpClient
  *
  * @author L.cm
  */
-@NoAutoStart
-public class OkHttpSender extends AbstractHttpSender {
-	private OkHttpClient httpClient;
-	private MediaType mediaType;
-	/**
-	 * Buffer is needed for turning ByteBuffer into byte array
-	 * only if direct ByteBuffer arrived.
-	 */
+public class Loki4jOkHttpClient implements Loki4jHttpClient {
+	private final HttpConfig conf;
+	private final OkHttpClient httpClient;
+	private final MediaType mediaType;
+	private final Request requestBuilder;
 	private byte[] bodyBuffer = new byte[0];
 
-	@Override
-	public void start() {
-		super.start();
-		httpClient = new OkHttpClient();
-		mediaType = MediaType.get(contentType);
+	public Loki4jOkHttpClient(HttpConfig conf) {
+		this.conf = conf;
+		this.httpClient = new OkHttpClient();
+		this.mediaType = MediaType.get(conf.contentType);
+		this.requestBuilder = builderRequest(conf);
 	}
 
-	@Override
-	public void stop() {
-		super.stop();
-		httpClient.dispatcher().executorService().shutdown();
-		httpClient.connectionPool().evictAll();
-		Util.closeQuietly(httpClient.cache());
-	}
-
-	@Override
-	public LokiResponse send(ByteBuffer batch) {
+	private static Request builderRequest(HttpConfig conf) {
 		Request.Builder request = new Request.Builder()
-			.url(getUrl())
-			.addHeader(HttpHeaders.CONTENT_TYPE, contentType);
-		tenantId.ifPresent(tenant -> request.addHeader(HttpHeaders.X_SCOPE_ORGID, tenant));
-		basicAuthToken.ifPresent(token -> request.addHeader(HttpHeaders.AUTHORIZATION, "Basic " + token));
+			.url(conf.pushUrl)
+			.addHeader(HttpHeaders.CONTENT_TYPE, conf.contentType);
+		conf.tenantId.ifPresent(tenant -> request.addHeader(HttpHeaders.X_SCOPE_ORGID, tenant));
+		conf.basicAuthToken().ifPresent(token -> request.addHeader(HttpHeaders.AUTHORIZATION, "Basic " + token));
+		return request.build();
+	}
+
+	@Override
+	public HttpConfig getConfig() {
+		return this.conf;
+	}
+
+	@Override
+	public LokiResponse send(ByteBuffer batch) throws Exception {
+		Request.Builder request = requestBuilder.newBuilder();
 		if (batch.hasArray()) {
 			request.post(RequestBody.create(mediaType, batch.array(), batch.position(), batch.remaining()));
 		} else {
@@ -82,4 +81,10 @@ public class OkHttpSender extends AbstractHttpSender {
 		}
 	}
 
+	@Override
+	public void close() throws Exception {
+		httpClient.dispatcher().executorService().shutdown();
+		httpClient.connectionPool().evictAll();
+		Util.closeQuietly(httpClient.cache());
+	}
 }
