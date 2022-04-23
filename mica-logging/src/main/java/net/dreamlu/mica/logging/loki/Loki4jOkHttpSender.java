@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.logging.loki;
 
-import ch.qos.logback.core.joran.spi.NoAutoStart;
 import com.github.loki4j.client.http.HttpConfig;
 import com.github.loki4j.client.http.Loki4jHttpClient;
 import com.github.loki4j.logback.AbstractHttpSender;
@@ -28,7 +27,6 @@ import java.util.function.Function;
  *
  * @author L.cm
  */
-@NoAutoStart
 public class Loki4jOkHttpSender extends AbstractHttpSender {
 
 	@Override
