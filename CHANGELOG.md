@@ -1,6 +1,15 @@
 # 变更记录
 
 ## 发行版本
+### v2.6.7 - 2022-04-30
+- :sparkles: mica-logging 升级 logstash-logback-encoder 代码调整。
+- :sparkles: mica-logging 升级 loki-logback-appender 代码调整。
+- :sparkles: mica-core 添加 StreamUtil
+- :sparkles: mica-redis stream 添加 bytes 方便自定义处理
+- :memo: 完善 mica-redis stream 使用文档。
+- :arrow_up: spring boot 到 2.6.7
+- :arrow_up: spring cloud 到 2021.0.2
+
 ### v2.6.6 - 2022-04-02
 - :sparkles: mica-prometheus 添加 profile 标签，用于多环境。
 - :sparkles: mica-redis 添加 stream，默认关闭。
