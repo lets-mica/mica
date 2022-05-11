@@ -16,6 +16,8 @@
 
 package net.dreamlu.mica.core.tuple;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -70,7 +72,8 @@ public class Pair<L, R> {
 		}
 	}
 
-	public static <L, R> Pair<L, R> create(L left, R right) {
+	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+	public static <L, R> Pair<L, R> create(@JsonProperty("left") L left, @JsonProperty("right") R right) {
 		if (right == null && left == null) {
 			return empty();
 		} else {
