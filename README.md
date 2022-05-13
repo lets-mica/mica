@@ -95,13 +95,18 @@ LGPL 是 GPL 的一个为主要为类库使用设计的开源协议。和 GPL �
 
 感谢 `如梦技术 VIP` **小伙伴们**的鼎力支持，更多 **VIP** 信息详见：https://www.dreamlu.net/vip/index.html
 
+## 🍱 赞助计划
+mica 始于一份热爱，也得到不少朋友的认可，为了更好的发展，特推出赞助计划。**知识付费**，让你我走的更远！！！
+
+| 类型       | ￥   | 权益（永久）                        |
+| ---------- | ---- |-------------------------------|
+| 青铜赞助人 | 199  | mica 最佳使用范例 mica-less 权限系统源码。 |
+| 黄金赞助人 | 599  | 原如梦VIP，享受如梦技术原微服务相关资源。        |
+
+**注意：** 加微信 **DreamLuTech** 详聊。
+
 ## 📱 微信公众号
 
 ![如梦技术](docs/img/dreamlu-weixin.jpg)
 
 精彩内容每日推荐！！！
-
-## 🏗️ 贡献者
-![contributors](https://whnb.wang/contributors/596392912/mica)
-
-![Stargazers over time](https://whnb.wang/img/596392912/mica)
