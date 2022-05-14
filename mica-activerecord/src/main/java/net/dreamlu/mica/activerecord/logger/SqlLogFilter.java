@@ -113,6 +113,7 @@ public class SqlLogFilter extends FilterEventAdapter {
 			.anyMatch(pattern -> pattern.matcher(sql).matches());
 		if (!isSqlMatch) {
 			log.debug("sql:{} not match in SqlPatternList:{}", sql, properties.getShowSqlPatterns());
+			return;
 		}
 		int parametersSize = statement.getParametersSize();
 		List<Object> parameters = new ArrayList<>(parametersSize);
