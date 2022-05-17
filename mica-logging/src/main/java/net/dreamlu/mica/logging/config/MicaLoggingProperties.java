@@ -23,6 +23,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.util.ClassUtils;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * logging 配置
  *
@@ -75,6 +79,10 @@ public class MicaLoggingProperties {
 		 * 目标地址，默认： localhost:5000，示例： host1.domain.com,host2.domain.com:5560
 		 */
 		private String destinations = "localhost:5000";
+		/**
+		 * 自定义扩展字段
+		 */
+		private Map<String, Object> customFieldMap = new HashMap<>();
 		/**
 		 * logstash 队列大小
 		 */

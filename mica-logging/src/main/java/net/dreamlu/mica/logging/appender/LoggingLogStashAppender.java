@@ -52,6 +52,8 @@ public class LoggingLogStashAppender implements ILoggingAppender {
 		Map<String, Object> customFields = new HashMap<>(4);
 		customFields.put("appName", appName);
 		customFields.put("profile", profile);
+		// 3. 自定义配置的字段
+		customFields.putAll(properties.getLogstash().getCustomFieldMap());
 		this.customFieldsJson = JsonUtil.toJson(customFields);
 		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
 		this.start(context);
