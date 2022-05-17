@@ -68,11 +68,12 @@ spring:
 ```
 
 ### 配置项
-| 配置项                                 | 默认值    | 说明                                                         |
-| -------------------------------------- | --------- | ------------------------------------------------------------ |
-| mica.logging.logstash.enabled          | false     | 是否开启 logstash 日志收集，直接收集到 logstash              |
+| 配置项                                 | 默认值            | 说明                                                                 |
+| -------------------------------------- |----------------|--------------------------------------------------------------------|
+| mica.logging.logstash.enabled          | false          | 是否开启 logstash 日志收集，直接收集到 logstash                                  |
+| mica.logging.logstash.custom-field-map | {}             | 自定义字段 key、value 形式。                                                |
 | mica.logging.logstash.destinations     | localhost:5000 | 目标地址，默认： localhost:5000，示例： host1.domain.com,host2.domain.com:5560 |
-| mica.logging.logstash.ring-buffer-size | 512       | logstash 队列大小                                            |
+| mica.logging.logstash.ring-buffer-size | 512            | logstash 队列大小                                                      |
 
 ## loki 日志收集
 
