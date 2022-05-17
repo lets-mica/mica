@@ -84,7 +84,7 @@ spring:
 <dependency>
     <groupId>com.github.loki4j</groupId>
     <artifactId>loki-logback-appender-jdk8</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.2</version>
 </dependency>
 ```
 
@@ -94,7 +94,7 @@ spring:
 <dependency>
     <groupId>com.github.loki4j</groupId>
     <artifactId>loki-logback-appender</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.2</version>
 </dependency>
 ```
 
