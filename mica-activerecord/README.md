@@ -42,36 +42,37 @@ jfinal ActiveRecord 文档：https://jfinal.com/doc/5-1
 | spring.datasource.password |  | 数据库密码 |
 
 ### Druid
-| 配置项 | 默认值 | 说明 |
-| ----- | ------ | ------ |
-| mica.druid.url |  | 数据库地址 |
-| mica.druid.username |  | 数据库用户名 |
-| mica.druid.password |  | 数据库密码 |
-| mica.druid.show-sql | true | 打印可执行 sql，默认为 true |
-| mica.druid.connection-init-sql |  |  |
-| mica.druid.connection-properties |  |  |
-| mica.druid.default-transaction-isolation |  |  |
-| mica.druid.driver-class |  |  |
-| mica.druid.filters |  |  |
-| mica.druid.initial-size | 1 |  |
-| mica.druid.keep-alive |  |  |
-| mica.druid.log-abandoned | false |  |
-| mica.druid.max-active | 32 |  |
-| mica.druid.max-pool-prepared-statement-per-connection-size | -1 |  |
-| mica.druid.max-wait | -1 |  |
-| mica.druid.min-evictable-idle-time-millis | 1800000 |  |
-| mica.druid.min-idle | 10 |  |
-| mica.druid.public-key |  |  |
-| mica.druid.remove-abandoned | false |  |
-| mica.druid.remove-abandoned-timeout-millis | 300000 |  |
-| mica.druid.test-on-borrow | false |  |
-| mica.druid.test-on-return | false |  |
-| mica.druid.test-while-idle | true |  |
-| mica.druid.time-between-connect-error-millis | 30000 |  |
-| mica.druid.time-between-eviction-runs-millis | 60000 |  |
-| mica.druid.time-between-log-stats-millis |  |  |
-| mica.druid.validation-query | select 1 |  |
-| mica.druid.validation-query-timeout |  |  |
+| 配置项 | 默认值 | 说明                     |
+| ----- |----|------------------------|
+| mica.druid.url |    | 数据库地址                  |
+| mica.druid.username |    | 数据库用户名                 |
+| mica.druid.password |    | 数据库密码                  |
+| mica.druid.show-sql | true | 打印可执行 sql，默认为 true     |
+| mica.druid.show-sql-patterns | [] | 打印 sql 的正则，list 列表，例如：`.*t_user.*` |
+| mica.druid.connection-init-sql |    |                        |
+| mica.druid.connection-properties |    |                        |
+| mica.druid.default-transaction-isolation |    |                        |
+| mica.druid.driver-class |    |                        |
+| mica.druid.filters |    |                        |
+| mica.druid.initial-size | 1  |                        |
+| mica.druid.keep-alive |    |                        |
+| mica.druid.log-abandoned | false |                        |
+| mica.druid.max-active | 32 |                        |
+| mica.druid.max-pool-prepared-statement-per-connection-size | -1 |                        |
+| mica.druid.max-wait | -1 |                        |
+| mica.druid.min-evictable-idle-time-millis | 1800000 |                        |
+| mica.druid.min-idle | 10 |                        |
+| mica.druid.public-key |    |                        |
+| mica.druid.remove-abandoned | false |                        |
+| mica.druid.remove-abandoned-timeout-millis | 300000 |                        |
+| mica.druid.test-on-borrow | false |                        |
+| mica.druid.test-on-return | false |                        |
+| mica.druid.test-while-idle | true |                        |
+| mica.druid.time-between-connect-error-millis | 30000 |                        |
+| mica.druid.time-between-eviction-runs-millis | 60000 |                        |
+| mica.druid.time-between-log-stats-millis |    |                        |
+| mica.druid.validation-query | select 1 |                        |
+| mica.druid.validation-query-timeout |    |                        |
 
 ## 代码生成
 ```java

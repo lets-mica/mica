@@ -33,12 +33,13 @@ import java.sql.SQLException;
 import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * 打印可执行的 sql 日志
  *
  * <p>
- * 参考：https://jfinal.com/share/2204
+ * 参考：<a href="https://jfinal.com/share/2204">https://jfinal.com/share/2204</a>
  * </p>
  *
  * @author L.cm
@@ -48,6 +49,7 @@ import java.util.List;
 public class SqlLogFilter extends FilterEventAdapter {
 	private static final SQLUtils.FormatOption FORMAT_OPTION = new SQLUtils.FormatOption(false, false);
 	private final MicaDruidProperties properties;
+	private final List<Pattern> showSqlPatternList;
 
 	@Override
 	protected void statementExecuteBefore(StatementProxy statement, String sql) {
@@ -105,6 +107,12 @@ public class SqlLogFilter extends FilterEventAdapter {
 		String sql = statement.getBatchSql();
 		// sql 为空直接返回
 		if (StringUtils.isEmpty(sql)) {
+			return;
+		}
+		boolean isSqlMatch = showSqlPatternList.stream()
+			.anyMatch(pattern -> pattern.matcher(sql).matches());
+		if (!isSqlMatch) {
+			log.debug("sql:{} not match in SqlPatternList:{}", sql, properties.getShowSqlPatterns());
 			return;
 		}
 		int parametersSize = statement.getParametersSize();

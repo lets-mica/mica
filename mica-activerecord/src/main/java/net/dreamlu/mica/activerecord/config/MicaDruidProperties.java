@@ -21,6 +21,9 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * druid 连接池配置
  *
@@ -59,6 +62,15 @@ public class MicaDruidProperties {
 	private Integer timeBetweenLogStatsMillis = null;
 	private Boolean keepAlive = null;
 	private String filters;
+
+	/**
+	 * 是否打印 sql
+	 */
 	private boolean showSql = true;
+
+	/**
+	 * sql 打印正则过滤
+	 */
+	private List<String> showSqlPatterns = new ArrayList<>();
 
 }

@@ -49,6 +49,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * jfinal activerecord 配置
@@ -129,7 +131,10 @@ public class ActiveRecordConfiguration {
 		}
 		// 打印可执行sql
 		if (properties.isShowSql()) {
-			druidPlugin.addFilter(new SqlLogFilter(properties));
+			List<Pattern> showSqlPatternList = properties.getShowSqlPatterns().stream()
+				.map(Pattern::compile)
+				.collect(Collectors.toList());
+			druidPlugin.addFilter(new SqlLogFilter(properties, showSqlPatternList));
 		}
 		druidPlugin.start();
 		return druidPlugin;
