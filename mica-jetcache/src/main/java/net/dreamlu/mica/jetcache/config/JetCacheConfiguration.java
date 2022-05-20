@@ -27,19 +27,17 @@ import net.dreamlu.mica.jetcache.jackson.JacksonKeyConvertor;
 import net.dreamlu.mica.jetcache.jackson.JacksonValueDecoder;
 import net.dreamlu.mica.jetcache.jackson.JacksonValueEncoder;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * jetcache 配置
  *
  * @author L.cm
  */
-@Configuration(proxyBeanMethods = false)
-@AutoConfigureBefore(JetCacheAutoConfiguration.class)
+@AutoConfiguration(before = JetCacheAutoConfiguration.class)
 public class JetCacheConfiguration implements InitializingBean {
 	private ObjectMapper cacheMapper;
 

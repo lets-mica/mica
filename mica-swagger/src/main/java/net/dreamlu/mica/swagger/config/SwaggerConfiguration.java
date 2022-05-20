@@ -22,12 +22,12 @@ import net.dreamlu.mica.swagger.config.MicaSwaggerProperties.Authorization;
 import net.dreamlu.mica.swagger.config.MicaSwaggerProperties.GrantTypes;
 import net.dreamlu.mica.swagger.config.MicaSwaggerProperties.Oauth2;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.lang.Nullable;
 import org.springframework.util.AntPathMatcher;
@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
  *
  * @author L.cm
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @ConditionalOnClass(Docket.class)
 @EnableConfigurationProperties(MicaSwaggerProperties.class)
 @ConditionalOnProperty(prefix = MicaSwaggerProperties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)

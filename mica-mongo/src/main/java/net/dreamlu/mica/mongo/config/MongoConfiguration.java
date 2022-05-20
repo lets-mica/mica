@@ -18,8 +18,8 @@ package net.dreamlu.mica.mongo.config;
 
 import net.dreamlu.mica.mongo.converter.DBObjectToJsonNodeConverter;
 import net.dreamlu.mica.mongo.converter.JsonNodeToDocumentConverter;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 
@@ -31,7 +31,7 @@ import java.util.List;
  *
  * @author L.cm
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 public class MongoConfiguration {
 
 	@Bean

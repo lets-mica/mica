@@ -18,10 +18,10 @@ package net.dreamlu.mica.redis.config;
 
 import net.dreamlu.mica.redis.ratelimiter.RedisRateLimiterAspect;
 import net.dreamlu.mica.redis.ratelimiter.RedisRateLimiterClient;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -36,7 +36,7 @@ import java.util.List;
  *
  * @author L.cm
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @ConditionalOnProperty(value = "mica.redis.rate-limiter.enable")
 public class RateLimiterAutoConfiguration {
 

@@ -24,11 +24,11 @@ import net.dreamlu.mica.redis.stream.DefaultRStreamTemplate;
 import net.dreamlu.mica.redis.stream.RStreamListenerDetector;
 import net.dreamlu.mica.redis.stream.RStreamTemplate;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.stream.MapRecord;
@@ -45,7 +45,7 @@ import java.time.Duration;
  *
  * @author L.cm
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @ConditionalOnProperty(
 	prefix = MicaRedisProperties.Stream.PREFIX,
 	name = "enable",

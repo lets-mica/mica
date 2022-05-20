@@ -19,13 +19,13 @@ package net.dreamlu.mica.jobs.config;
 import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.jobs.properties.XxlJobClientProperties;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -44,7 +44,7 @@ import static net.dreamlu.mica.jobs.properties.XxlJobClientProperties.XxlJobExec
  * @author L.cm
  */
 @Slf4j
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @EnableConfigurationProperties(XxlJobClientProperties.class)
 @ConditionalOnProperty(
 	prefix = XxlJobClientProperties.PREFIX,

@@ -21,6 +21,7 @@ import net.dreamlu.mica.logging.appender.*;
 import net.dreamlu.mica.logging.listener.LogbackLoggerContextListener;
 import net.dreamlu.mica.logging.listener.LoggingStartedEventListener;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -45,8 +46,8 @@ import java.util.Objects;
  *
  * @author L.cm
  */
+@AutoConfiguration
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(MicaLoggingProperties.class)
 public class MicaLoggingConfiguration {
 

@@ -20,11 +20,11 @@ import com.alicp.jetcache.anno.support.GlobalCacheConfig;
 import com.alicp.jetcache.support.DefaultMetricsManager;
 import io.micrometer.core.instrument.MeterRegistry;
 import net.dreamlu.mica.jetcache.metrics.JetCacheMonitorManager;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author L.cm
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @ConditionalOnClass(MeterRegistry.class)
 @ConditionalOnProperty(
 	prefix = JetCacheMetricsProperties.PREFIX,
