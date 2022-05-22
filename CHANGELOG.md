@@ -1,6 +1,12 @@
 # 变更记录
 
 ## 发行版本
+### v2.6.8 - 2022-05-22
+- :sparkles: mica-logging 支持自定义 Logstash 字段配置。
+- :sparkles: mica-activerecord SqlLogFilter 支持正则表达式过滤要打印的 sql。
+- :sparkles: mica-core Pair 支持 jackson 序列化。
+- :arrow_up: Upgrading dependencies.
+
 ### v2.6.7 - 2022-04-30
 - :sparkles: mica-logging 升级 logstash-logback-encoder 代码调整。
 - :sparkles: mica-logging 升级 loki-logback-appender 代码调整。
