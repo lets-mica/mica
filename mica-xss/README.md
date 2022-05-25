@@ -69,3 +69,7 @@ public class MyXssCleaner implements XssCleaner {
 
 }
 ```
+
+## mica-xss 不生效？？？
+1. Spring 5.0 (Spring boot 2.0) 开始项目里有继承 `WebMvcConfigurerAdapter`、`WebMvcConfigurationSupport` 的要改成实现 `WebMvcConfigurer`。
+2. 排查是否自定义了 Jackson ObjectMapper bean 或者是自定义了 String 字符串序列化。
