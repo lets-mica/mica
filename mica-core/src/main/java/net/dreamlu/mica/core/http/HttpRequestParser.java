@@ -88,9 +88,7 @@ public class HttpRequestParser {
 			if (line == null) {
 				break;
 			}
-			if (!line.isEmpty()) {
-				bodyBuilder.append(line);
-			}
+			bodyBuilder.append(line);
 		}
 		// 处理 body
 		String body = bodyBuilder.toString();
