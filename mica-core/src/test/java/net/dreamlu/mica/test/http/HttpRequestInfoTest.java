@@ -31,7 +31,8 @@ public class HttpRequestInfoTest {
 
 	@Test
 	public void test() {
-		String text = "POST http://{{host}}/api/v1/mqtt/publish?a=123\n" +
+		String text =
+			"POST http://{{host}}/api/v1/mqtt/publish?a=123\n" +
 			"Content-Type: application/json\n" +
 			"Authorization: Basic {{username}} {{password}}\n" +
 			"\n" +

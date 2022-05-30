@@ -17,6 +17,7 @@
 package net.dreamlu.mica.core.http;
 
 import lombok.experimental.UtilityClass;
+import net.dreamlu.mica.core.utils.Exceptions;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class HttpRequestParser {
 			 BufferedReader reader = new BufferedReader(stringReader)) {
 			return httpParser(reader);
 		} catch (IOException e) {
-			throw new IllegalArgumentException(e);
+			throw Exceptions.unchecked(e);
 		}
 	}
 
