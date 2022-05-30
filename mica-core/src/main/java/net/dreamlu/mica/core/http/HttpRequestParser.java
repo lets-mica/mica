@@ -38,16 +38,15 @@ public class HttpRequestParser {
 	 * @return HttpRequest
 	 */
 	public static HttpRequestInfo parser(String httpText) {
-		try {
-			return httpTextParser(httpText);
+		try (StringReader stringReader = new StringReader(httpText);
+			 BufferedReader reader = new BufferedReader(stringReader)) {
+			return httpParser(reader);
 		} catch (IOException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
 
-	private static HttpRequestInfo httpTextParser(String httpText) throws IOException {
-		StringReader stringReader = new StringReader(httpText);
-		BufferedReader reader = new BufferedReader(stringReader);
+	private static HttpRequestInfo httpParser(BufferedReader reader) throws IOException {
 		// RequestLine
 		String line = reader.readLine();
 		if (line == null) {
@@ -89,10 +88,9 @@ public class HttpRequestParser {
 			if (line == null) {
 				break;
 			}
-			if (line.isEmpty()) {
-				continue;
+			if (!line.isEmpty()) {
+				bodyBuilder.append(line);
 			}
-			bodyBuilder.append(line);
 		}
 		// 处理 body
 		String body = bodyBuilder.toString();
