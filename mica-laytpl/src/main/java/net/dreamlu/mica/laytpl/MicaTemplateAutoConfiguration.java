@@ -16,16 +16,16 @@
 
 package net.dreamlu.mica.laytpl;
 
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * laytpl 自动化配置
  *
  * @author L.cm
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @EnableConfigurationProperties(MicaLayTplProperties.class)
 public class MicaTemplateAutoConfiguration {
 

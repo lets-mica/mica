@@ -19,13 +19,13 @@ package net.dreamlu.mica.xss.config;
 import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.spring.SpringContextUtil;
 import net.dreamlu.mica.xss.core.*;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -37,8 +37,8 @@ import java.util.List;
  *
  * @author L.cm
  */
+@AutoConfiguration
 @RequiredArgsConstructor
-@Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(MicaXssProperties.class)
 @ConditionalOnProperty(
 	prefix = MicaXssProperties.PREFIX,

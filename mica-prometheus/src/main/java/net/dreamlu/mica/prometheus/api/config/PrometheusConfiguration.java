@@ -18,6 +18,7 @@ package net.dreamlu.mica.prometheus.api.config;
 
 import net.dreamlu.mica.prometheus.api.core.PrometheusApi;
 import net.dreamlu.mica.prometheus.api.core.ReactivePrometheusApi;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.client.ConditionalOnDiscoveryEnabled;
@@ -26,7 +27,6 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 /**
@@ -34,10 +34,10 @@ import org.springframework.core.env.Environment;
  *
  * @author L.cm
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 public class PrometheusConfiguration {
 
-	@Configuration(proxyBeanMethods = false)
+	@AutoConfiguration
 	@ConditionalOnBean(DiscoveryClient.class)
 	@ConditionalOnDiscoveryEnabled
 	// @ConditionalOnBlockingDiscoveryEnabled
@@ -55,7 +55,7 @@ public class PrometheusConfiguration {
 
 	}
 
-	@Configuration(proxyBeanMethods = false)
+	@AutoConfiguration
 	@ConditionalOnBean(ReactiveDiscoveryClient.class)
 	@ConditionalOnDiscoveryEnabled
 	@ConditionalOnReactiveDiscoveryEnabled

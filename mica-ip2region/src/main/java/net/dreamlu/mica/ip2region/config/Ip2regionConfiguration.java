@@ -18,9 +18,9 @@ package net.dreamlu.mica.ip2region.config;
 
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher;
 import net.dreamlu.mica.ip2region.impl.Ip2regionSearcherImpl;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.nativex.hint.NativeHint;
 import org.springframework.nativex.hint.ResourceHint;
@@ -30,7 +30,7 @@ import org.springframework.nativex.hint.ResourceHint;
  *
  * @author L.cm
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @EnableConfigurationProperties(Ip2regionProperties.class)
 @NativeHint(resources = @ResourceHint(patterns = "^ip2region/ip2region.db"))
 public class Ip2regionConfiguration {

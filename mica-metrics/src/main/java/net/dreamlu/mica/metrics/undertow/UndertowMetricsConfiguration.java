@@ -18,12 +18,11 @@ package net.dreamlu.mica.metrics.undertow;
 
 import io.undertow.Undertow;
 import io.undertow.UndertowOptions;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration;
 import org.springframework.boot.web.embedded.undertow.UndertowBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 
 /**
@@ -31,9 +30,8 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author L.cm
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration(before = ServletWebServerFactoryAutoConfiguration.class)
 @ConditionalOnClass(Undertow.class)
-@AutoConfigureBefore(ServletWebServerFactoryAutoConfiguration.class)
 public class UndertowMetricsConfiguration {
 
 	@Bean

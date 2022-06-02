@@ -19,9 +19,9 @@ package net.dreamlu.mica.lite.launch;
 import net.dreamlu.mica.core.constant.MicaConstant;
 import net.dreamlu.mica.core.log.LogPrintStream;
 import net.dreamlu.mica.core.utils.SystemUtil;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.web.context.WebServerApplicationContext;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -37,7 +37,7 @@ import java.util.stream.Stream;
  *
  * @author L.cm
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 public class StartedEventListener {
 
 	@Async

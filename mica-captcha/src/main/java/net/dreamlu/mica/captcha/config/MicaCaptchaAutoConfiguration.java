@@ -20,11 +20,11 @@ import net.dreamlu.mica.captcha.cache.ICaptchaCache;
 import net.dreamlu.mica.captcha.core.Captcha;
 import net.dreamlu.mica.captcha.service.CaptchaServiceImpl;
 import net.dreamlu.mica.captcha.service.ICaptchaService;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.nativex.hint.NativeHint;
 import org.springframework.nativex.hint.ResourceHint;
 
@@ -33,7 +33,7 @@ import org.springframework.nativex.hint.ResourceHint;
  *
  * @author L.cm
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @ConditionalOnProperty(
 	prefix = MicaCaptchaProperties.PREFIX,
 	name = "enabled",

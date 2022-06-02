@@ -16,15 +16,15 @@
 
 package net.dreamlu.mica.lite.upload;
 
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * 文件上传配置
  *
  * @author L.cm
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @EnableConfigurationProperties(MicaUploadProperties.class)
 public class MicaUploadConfiguration {
 

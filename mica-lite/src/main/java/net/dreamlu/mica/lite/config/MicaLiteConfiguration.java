@@ -17,16 +17,16 @@
 package net.dreamlu.mica.lite.config;
 
 import net.dreamlu.mica.core.spring.SpringContextUtil;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * mica lite 配置
  *
  * @author L.cm
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 public class MicaLiteConfiguration {
 
 	@Bean
