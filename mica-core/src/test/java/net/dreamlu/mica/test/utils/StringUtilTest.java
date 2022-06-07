@@ -63,4 +63,11 @@ public class StringUtilTest {
 		String s1 = StringUtil.cleanText(" 123123;123\t1\n2|3,1231`'' ");
 		Assert.assertEquals(s1, "1231231231231231");
 	}
+
+	@Test
+	public void testNanoId() {
+		String nanoId62 = StringUtil.getNanoId62();
+		Assert.assertNotNull(nanoId62);
+	}
+
 }

@@ -21,7 +21,10 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.*;
 import org.springframework.web.util.HtmlUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -436,16 +439,29 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
-	 * 一个小巧、安全、URL友好、21 位的字符串ID生成器。
+	 * 一个小巧、安全、URL友好、21 位的字符串ID生成器。包含数字、大写、小写字母、_、-
 	 *
 	 * @return NanoId
 	 */
 	public static String getNanoId() {
+		return getNanoId(true);
+	}
+
+	/**
+	 * 一个小巧、安全、URL友好、21 位的字符串ID生成器，62 进制，只包含数字、大写、小写字母
+	 *
+	 * @return NanoId
+	 */
+	public static String getNanoId62() {
+		return getNanoId(false);
+	}
+
+	private static String getNanoId(boolean radix64) {
 		Random random = ThreadLocalRandom.current();
 		long lsb = random.nextLong();
 		long msb = random.nextLong();
 		byte[] buf = new byte[21];
-		int radix = 1 << 6;
+		int radix = radix64 ? 64 : 62;
 		formatUnsignedLong(lsb, radix, buf, 14, 7);
 		formatUnsignedLong(msb, radix, buf, 10, 4);
 		formatUnsignedLong(msb >>> 16, radix, buf, 6, 4);
