@@ -133,6 +133,20 @@ public class MicaRedisCache {
 	}
 
 	/**
+	 * 存放 key value 对到 redis
+	 * 如果 key 已经存在， SETNX 命令将返回 false， 即不执行任何操作，
+	 *
+	 * @param key   缓存key
+	 * @param value 缓存value
+	 * @return 如果设置成功则为 {@literal true}, 如果 key 已存在则为 {@literal false}.
+	 * @see <a href="https://redis.io/commands/set">Redis Documentation: set</a>
+	 */
+	@Nullable
+	public Boolean setNx(String key, Object value, long time, TimeUnit unit) {
+		return valueOps.setIfAbsent(key, value, time, unit);
+	}
+
+	/**
 	 * 返回 key 所关联的 value 值
 	 * 如果 key 不存在那么返回特殊值 nil 。
 	 */
