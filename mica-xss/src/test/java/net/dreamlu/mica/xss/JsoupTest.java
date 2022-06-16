@@ -26,7 +26,7 @@ public class JsoupTest {
 		String escapedText = Jsoup.clean(html, "", XssUtil.WHITE_LIST, settings);
 		// 3. 反转义
 		String text = Entities.unescape(escapedText);
-		Assert.assertEquals(text, "&&&&&&");
+		Assert.assertEquals("&&&&&&", text);
 	}
 
 }

@@ -16,9 +16,6 @@
 
 package net.dreamlu.mica.xss.core;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.spring.SpringContextUtil;
 import net.dreamlu.mica.xss.config.MicaXssProperties;
@@ -32,15 +29,10 @@ import java.io.IOException;
  * @author L.cm
  */
 @Slf4j
-public class XssCleanDeserializer extends JsonDeserializer<String> {
+public class XssCleanDeserializer extends XssCleanDeserializerBase {
 
 	@Override
-	public String deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
-		// XSS filter
-		String text = p.getValueAsString();
-		if (text == null) {
-			return null;
-		}
+	public String clean(String text) throws IOException {
 		// 读取 xss 配置
 		MicaXssProperties properties = SpringContextUtil.getBean(MicaXssProperties.class);
 		if (properties == null) {
