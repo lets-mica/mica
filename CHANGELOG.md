@@ -4,7 +4,7 @@
 ### v2.7.1 - 2022-06-25
 - :sparkles: mica-redis setNX 添加超时时间支持，感谢 github `@lay-g`
 - :sparkles: mica-redis 添加 setnx 命令支持，感谢 github `@lay-g`
-- :sparkles: mica-xss 完善，数据类型符合时抛出异常，github #46
+- :sparkles: mica-xss 完善，数据类型不符合时抛出异常，github #46
 - :sparkles: mica-core 添加只包含数字和字母的 NanoId StringUtil#getNanoId62()
 - :sparkles: mica-core 完善 AesUtil，添加同 mysql 通用的加密解密。
 - :sparkles: mica-core 添加 http 解析，规则同 idea http。
