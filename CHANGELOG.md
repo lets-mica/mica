@@ -1,6 +1,16 @@
 # 变更记录
 
 ## 发行版本
+### v2.7.1 - 2022-06-25
+- :sparkles: mica-redis setNX 添加超时时间支持，感谢 github `@lay-g`
+- :sparkles: mica-redis 添加 setnx 命令支持，感谢 github `@lay-g`
+- :sparkles: mica-xss 完善，数据类型符合时抛出异常，github #46
+- :sparkles: mica-core 添加只包含数字和字母的 NanoId StringUtil#getNanoId62()
+- :sparkles: mica-core 完善 AesUtil，添加同 mysql 通用的加密解密。
+- :sparkles: mica-core 添加 http 解析，规则同 idea http。
+- :memo: 添加 mica-xss 不生效排查步骤。
+- :arrow_up: spring boot 到 2.7.1
+
 ### v2.6.8 - 2022-05-22
 - :sparkles: mica-logging 支持自定义 Logstash 字段配置。
 - :sparkles: mica-activerecord SqlLogFilter 支持正则表达式过滤要打印的 sql。
