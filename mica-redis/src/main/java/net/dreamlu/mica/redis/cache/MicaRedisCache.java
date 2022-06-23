@@ -19,6 +19,7 @@ package net.dreamlu.mica.redis.cache;
 import lombok.Getter;
 import net.dreamlu.mica.core.utils.CollectionUtil;
 import net.dreamlu.mica.core.utils.JsonUtil;
+import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.lang.Nullable;
@@ -490,6 +491,7 @@ public class MicaRedisCache {
 
 	/**
 	 * 返回集合中元素的数量。
+	 *
 	 * @param key redis key
 	 * @return 数量
 	 */
@@ -1293,6 +1295,53 @@ public class MicaRedisCache {
 	@Nullable
 	public Double zScore(String key, Object member) {
 		return zSetOps.score(key, member);
+	}
+
+	/**
+	 * redis publish
+	 *
+	 * @param channel channel
+	 * @param message message
+	 * @param mapper  mapper
+	 * @param <T>     泛型标记
+	 * @return Long
+	 */
+	@Nullable
+	public <T> Long publish(String channel, T message, Function<T, byte[]> mapper) {
+		return redisTemplate.execute((RedisCallback<Long>) redis -> {
+			byte[] channelBytes = keySerialize(channel);
+			return redis.publish(channelBytes, mapper.apply(message));
+		});
+	}
+
+	/**
+	 * redis subscribe
+	 *
+	 * @param channel  channel
+	 * @param listener MessageListener
+	 */
+	@Nullable
+	public void subscribe(String channel, MessageListener listener) {
+		redisTemplate.execute((RedisCallback<Void>) redis -> {
+			byte[] channelBytes = keySerialize(channel);
+			redis.subscribe(listener, channelBytes);
+			return null;
+		});
+	}
+
+	/**
+	 * redis pSubscribe
+	 *
+	 * @param pattern  pattern
+	 * @param listener MessageListener
+	 */
+	@Nullable
+	public void pSubscribe(String pattern, MessageListener listener) {
+		redisTemplate.execute((RedisCallback<Void>) redis -> {
+			byte[] patternBytes = keySerialize(pattern);
+			redis.pSubscribe(listener, patternBytes);
+			return null;
+		});
 	}
 
 	/**
