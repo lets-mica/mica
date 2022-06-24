@@ -440,6 +440,21 @@ public class JsonUtil {
 	}
 
 	/**
+	 * 封装参数化类型，用来构造复杂的泛型
+	 *
+	 * <p>
+	 * 例如： Map.class, String.class, String.class 对应 Map[String, String]
+	 * </p>
+	 *
+	 * @param parametrized   泛型参数化
+	 * @param parameterTypes 泛型参数类型
+	 * @return JavaType
+	 */
+	public static JavaType getParametricType(Class<?> parametrized, JavaType... parameterTypes) {
+		return getInstance().getTypeFactory().constructParametricType(parametrized, parameterTypes);
+	}
+
+	/**
 	 * 读取集合
 	 *
 	 * @param content      bytes
