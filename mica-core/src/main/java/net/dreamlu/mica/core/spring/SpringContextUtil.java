@@ -86,6 +86,10 @@ public class SpringContextUtil implements ApplicationContextAware {
 	}
 
 	public static void publishEvent(ApplicationEvent event) {
+		publishEvent((Object) event);
+	}
+
+	public static void publishEvent(Object event) {
 		if (context == null) {
 			return;
 		}
