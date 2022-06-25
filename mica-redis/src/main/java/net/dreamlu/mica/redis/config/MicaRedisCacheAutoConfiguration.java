@@ -18,17 +18,15 @@ package net.dreamlu.mica.redis.config;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
@@ -38,6 +36,7 @@ import org.springframework.lang.Nullable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 扩展redis-cache支持注解cacheName添加超时时间
@@ -46,8 +45,7 @@ import java.util.Map;
  * @author L.cm
  */
 @EnableCaching
-@AutoConfiguration(before = RedisAutoConfiguration.class)
-@ConditionalOnBean(RedisConnectionFactory.class)
+@AutoConfiguration(before = CacheAutoConfiguration.class)
 @EnableConfigurationProperties(CacheProperties.class)
 public class MicaRedisCacheAutoConfiguration {
 
@@ -71,8 +69,10 @@ public class MicaRedisCacheAutoConfiguration {
 	}
 
 	@Primary
-	@Bean("redisCacheManager")
-	public RedisCacheManager redisCacheManager(RedisConnectionFactory connectionFactory) {
+	@Bean("cacheResolver")
+	public CacheManager redisCacheManager(ObjectProvider<RedisConnectionFactory> connectionFactoryObjectProvider) {
+		RedisConnectionFactory connectionFactory = connectionFactoryObjectProvider.getIfAvailable();
+		Objects.requireNonNull(connectionFactory, "Bean RedisConnectionFactory is null.");
 		RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory);
 		RedisCacheConfiguration cacheConfiguration = this.determineConfiguration();
 		List<String> cacheNames = this.cacheProperties.getCacheNames();

@@ -21,6 +21,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.CaffeineSpec;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizer;
 import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
@@ -45,9 +46,8 @@ import java.util.stream.Collectors;
  */
 @EnableCaching
 @EnableConfigurationProperties(CacheProperties.class)
-@ConditionalOnMissingBean(CacheManager.class)
 @ConditionalOnClass({Caffeine.class, CaffeineCacheManager.class})
-@AutoConfiguration(beforeName = "org.springframework.boot.autoconfigure.cache.CaffeineCacheConfiguration")
+@AutoConfiguration(before = CacheAutoConfiguration.class)
 public class CaffeineAutoCacheConfiguration {
 
 	@Bean
@@ -56,7 +56,7 @@ public class CaffeineAutoCacheConfiguration {
 		return new CacheManagerCustomizers(customizers.orderedStream().collect(Collectors.toList()));
 	}
 
-	@Bean
+	@Bean("cacheResolver")
 	public CacheManager cacheManager(CacheProperties cacheProperties,
 									 CacheManagerCustomizers customizers,
 									 ObjectProvider<Caffeine<Object, Object>> caffeine,
@@ -71,8 +71,8 @@ public class CaffeineAutoCacheConfiguration {
 	}
 
 	private static CaffeineAutoCacheManager createCacheManager(CacheProperties cacheProperties,
-														ObjectProvider<Caffeine<Object, Object>> caffeine, ObjectProvider<CaffeineSpec> caffeineSpec,
-														ObjectProvider<CacheLoader<Object, Object>> cacheLoader) {
+															   ObjectProvider<Caffeine<Object, Object>> caffeine, ObjectProvider<CaffeineSpec> caffeineSpec,
+															   ObjectProvider<CacheLoader<Object, Object>> cacheLoader) {
 		CaffeineAutoCacheManager cacheManager = new CaffeineAutoCacheManager();
 		setCacheBuilder(cacheProperties, caffeineSpec.getIfAvailable(), caffeine.getIfAvailable(), cacheManager);
 		cacheLoader.ifAvailable(cacheManager::setCacheLoader);
@@ -80,9 +80,9 @@ public class CaffeineAutoCacheConfiguration {
 	}
 
 	private static void setCacheBuilder(CacheProperties cacheProperties,
-								 @Nullable CaffeineSpec caffeineSpec,
-								 @Nullable Caffeine<Object, Object> caffeine,
-								 CaffeineCacheManager cacheManager) {
+										@Nullable CaffeineSpec caffeineSpec,
+										@Nullable Caffeine<Object, Object> caffeine,
+										CaffeineCacheManager cacheManager) {
 		String specification = cacheProperties.getCaffeine().getSpec();
 		if (StringUtils.hasText(specification)) {
 			cacheManager.setCacheSpecification(specification);

@@ -3,4 +3,5 @@ dependencies {
     api "com.github.ben-manes.caffeine:caffeine"
     api "org.springframework.boot:spring-boot-starter-cache"
     annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
