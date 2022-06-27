@@ -41,7 +41,7 @@ compile("net.dreamlu:mica-ip2region:${version}")
 
 Gitee：https://gitee.com/lionsoul/ip2region
 
-一般我们都会同步更新 `ip2region.db` 文件，不需要手动配置。
+一般我们都会同步更新 `ip2region.xdb` 文件，不需要手动配置。
 
 ## 使用文档
 
@@ -71,59 +71,10 @@ IpInfo memorySearch(long ip);
  */
 @Nullable
 IpInfo memorySearch(String ip);
-
-/**
- * ip 位置 搜索
- *
- * @param ptr ptr
- * @return 位置
- */
-@Nullable
-IpInfo getByIndexPtr(long ptr);
-
-/**
- * ip 位置 搜索
- *
- * @param ip ip
- * @return 位置
- */
-@Nullable
-IpInfo btreeSearch(long ip);
-
-/**
- * ip 位置 搜索
- *
- * @param ip ip
- * @return 位置
- */
-@Nullable
-IpInfo btreeSearch(String ip);
-
-/**
- * ip 位置 搜索
- *
- * @param ip ip
- * @return 位置
- */
-@Nullable
-IpInfo binarySearch(long ip);
-
-/**
- * ip 位置 搜索
- *
- * @param ip ip
- * @return 位置
- */
-@Nullable
-IpInfo binarySearch(String ip);
 ```
 
 ### IpInfo 上的属性和方法：
 ```java
-/**
- * 城市id
- */
-private Integer cityId;
 /**
  * 国家
  */
@@ -144,11 +95,6 @@ private String city;
  * 运营商
  */
 private String isp;
-/**
- * region ptr in the db file
- */
-private int dataPtr;
-
 /**
  * 拼接完整的地址
  *

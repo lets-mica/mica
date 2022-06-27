@@ -47,51 +47,6 @@ public interface Ip2regionSearcher {
 	IpInfo memorySearch(String ip);
 
 	/**
-	 * ip 位置 搜索
-	 *
-	 * @param ptr ptr
-	 * @return 位置
-	 */
-	@Nullable
-	IpInfo getByIndexPtr(long ptr);
-
-	/**
-	 * ip 位置 搜索
-	 *
-	 * @param ip ip
-	 * @return 位置
-	 */
-	@Nullable
-	IpInfo btreeSearch(long ip);
-
-	/**
-	 * ip 位置 搜索
-	 *
-	 * @param ip ip
-	 * @return 位置
-	 */
-	@Nullable
-	IpInfo btreeSearch(String ip);
-
-	/**
-	 * ip 位置 搜索
-	 *
-	 * @param ip ip
-	 * @return 位置
-	 */
-	@Nullable
-	IpInfo binarySearch(long ip);
-
-	/**
-	 * ip 位置 搜索
-	 *
-	 * @param ip ip
-	 * @return 位置
-	 */
-	@Nullable
-	IpInfo binarySearch(String ip);
-
-	/**
 	 * 读取 ipInfo 中的信息
 	 *
 	 * @param ip       ip

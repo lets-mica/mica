@@ -40,7 +40,7 @@ public class Ip2regionTest {
 
 	@Test
 	public void test2() {
-		IpInfo ipInfo = searcher.btreeSearch("127.0.0.1");
+		IpInfo ipInfo = searcher.memorySearch("127.0.0.1");
 		Assert.assertNotNull(ipInfo);
 	}
 

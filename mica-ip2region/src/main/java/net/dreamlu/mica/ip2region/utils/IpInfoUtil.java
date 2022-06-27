@@ -17,7 +17,6 @@
 package net.dreamlu.mica.ip2region.utils;
 
 import net.dreamlu.mica.core.utils.StringPool;
-import net.dreamlu.mica.ip2region.core.DataBlock;
 import net.dreamlu.mica.ip2region.core.IpInfo;
 import org.springframework.lang.Nullable;
 
@@ -36,19 +35,15 @@ public class IpInfoUtil {
 	/**
 	 * 将 DataBlock 转化为 IpInfo
 	 *
-	 * @param dataBlock DataBlock
+	 * @param region region
 	 * @return IpInfo
 	 */
 	@Nullable
-	public static IpInfo toIpInfo(@Nullable DataBlock dataBlock) {
-		if (dataBlock == null) {
+	public static IpInfo toIpInfo(@Nullable String region) {
+		if (region == null) {
 			return null;
 		}
 		IpInfo ipInfo = new IpInfo();
-		int cityId = dataBlock.getCityId();
-		ipInfo.setCityId(cityId == 0 ? null : cityId);
-		ipInfo.setDataPtr(dataBlock.getDataPtr());
-		String region = dataBlock.getRegion();
 		String[] splitInfos = SPLIT_PATTERN.split(region);
 		// 补齐5位
 		if (splitInfos.length < 5) {

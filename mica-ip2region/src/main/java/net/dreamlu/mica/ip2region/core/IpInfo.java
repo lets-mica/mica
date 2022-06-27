@@ -34,10 +34,6 @@ import java.util.Set;
 public class IpInfo implements Serializable {
 
 	/**
-	 * 城市id
-	 */
-	private Integer cityId;
-	/**
 	 * 国家
 	 */
 	private String country;
@@ -57,10 +53,7 @@ public class IpInfo implements Serializable {
 	 * 运营商
 	 */
 	private String isp;
-	/**
-	 * region ptr in the db file
-	 */
-	private int dataPtr;
+
 	/**
 	 * 拼接完整的地址
 	 *
@@ -75,6 +68,7 @@ public class IpInfo implements Serializable {
 		regionSet.removeIf(Objects::isNull);
 		return StringUtil.join(regionSet, StringPool.EMPTY);
 	}
+
 	/**
 	 * 拼接完整的地址
 	 *
@@ -90,4 +84,5 @@ public class IpInfo implements Serializable {
 		regionSet.removeIf(Objects::isNull);
 		return StringUtil.join(regionSet, StringPool.SPACE);
 	}
+
 }
