@@ -394,6 +394,16 @@ public class JsonUtil {
 	}
 
 	/**
+	 * clazz 获取 JavaType
+	 *
+	 * @param clazz Class
+	 * @return MapType
+	 */
+	public static JavaType getType(Class<?> clazz) {
+		return getInstance().getTypeFactory().constructType(clazz);
+	}
+
+	/**
 	 * 封装 map type，keyClass String
 	 *
 	 * @param valueClass value 类型
