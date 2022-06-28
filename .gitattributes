@@ -19,3 +19,4 @@
 *.ttf binary
 *.jar binary
 *.db binary
+*.xdb binary
