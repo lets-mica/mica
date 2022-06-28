@@ -18,7 +18,7 @@ compile("net.dreamlu:mica-spider:${version}")
 
 ## 使用文档
 
-注意：清先阅读 `mica-http` 部分文档。
+注意：请先阅读 `mica-http` 部分文档。
 
 ### DomMapper 工具
 
