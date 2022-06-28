@@ -32,7 +32,7 @@ import org.springframework.nativex.hint.ResourceHint;
  */
 @AutoConfiguration
 @EnableConfigurationProperties(Ip2regionProperties.class)
-@NativeHint(resources = @ResourceHint(patterns = "^ip2region/ip2region.db"))
+@NativeHint(resources = @ResourceHint(patterns = "^ip2region/ip2region.xdb"))
 public class Ip2regionConfiguration {
 
 	@Bean
