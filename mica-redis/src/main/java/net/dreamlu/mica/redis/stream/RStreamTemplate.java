@@ -179,10 +179,42 @@ public interface RStreamTemplate {
 	 *
 	 * @param name                name
 	 * @param count               count
-	 * @param approximateTrimming
+	 * @param approximateTrimming approximateTrimming
 	 * @return Long
 	 */
 	@Nullable
 	Long trim(String name, long count, boolean approximateTrimming);
+
+	/**
+	 * 手动 ack
+	 *
+	 * @param name      name
+	 * @param group     group
+	 * @param recordIds recordIds
+	 * @return Long
+	 */
+	@Nullable
+	Long acknowledge(String name, String group, String... recordIds);
+
+	/**
+	 * 手动 ack
+	 *
+	 * @param name      name
+	 * @param group     group
+	 * @param recordIds recordIds
+	 * @return Long
+	 */
+	@Nullable
+	Long acknowledge(String name, String group, RecordId... recordIds);
+
+	/**
+	 * 手动 ack
+	 *
+	 * @param group  group
+	 * @param record record
+	 * @return Long
+	 */
+	@Nullable
+	Long acknowledge(String group, Record<String, ?> record);
 
 }

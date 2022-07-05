@@ -94,4 +94,19 @@ public class DefaultRStreamTemplate implements RStreamTemplate {
 		return streamOperations.trim(name, count, approximateTrimming);
 	}
 
+	@Override
+	public Long acknowledge(String name, String group, String... recordIds) {
+		return streamOperations.acknowledge(name, group, recordIds);
+	}
+
+	@Override
+	public Long acknowledge(String name, String group, RecordId... recordIds) {
+		return streamOperations.acknowledge(name, group, recordIds);
+	}
+
+	@Override
+	public Long acknowledge(String group, Record<String, ?> record) {
+		return streamOperations.acknowledge(group, record);
+	}
+
 }
