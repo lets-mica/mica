@@ -1,6 +1,9 @@
 # 变更记录
 
 ## 发行版本
+### v2.7.1.1 - 2022-06-27
+- :sparkles: 升级 ip2region
+
 ### v2.7.1.0 - 2022-06-25
 - :sparkles: 更新 mica-ip2region db文件，感谢 `@lishangbu`
 - :sparkles: mica-core SpringContextUtil 添加支持Object类型的事件发布，感谢 `@lishangbu`
