@@ -141,7 +141,7 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 		if (messageValue.containsKey(RStreamTemplate.OBJECT_PAYLOAD_KEY)) {
 			byte[] payloads = messageValue.get(RStreamTemplate.OBJECT_PAYLOAD_KEY);
 			Object deserialize = redisTemplate.getValueSerializer().deserialize(payloads);
-			return ObjectRecord.create(mapRecord.getStream(), deserialize);
+			return ObjectRecord.create(mapRecord.getStream(), deserialize).withId(mapRecord.getId());
 		} else {
 			return mapRecord.mapEntries(entry -> {
 				String key = entry.getKey();
