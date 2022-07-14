@@ -29,8 +29,6 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.scripting.support.ResourceScriptSource;
 
-import java.util.List;
-
 /**
  * 基于 redis 的分布式限流自动配置
  *
@@ -40,11 +38,10 @@ import java.util.List;
 @ConditionalOnProperty(value = "mica.redis.rate-limiter.enable")
 public class RateLimiterAutoConfiguration {
 
-	@SuppressWarnings("unchecked")
-	private RedisScript<List<Long>> redisRateLimiterScript() {
-		DefaultRedisScript redisScript = new DefaultRedisScript<>();
+	private RedisScript<Long> redisRateLimiterScript() {
+		DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
 		redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("META-INF/scripts/mica_rate_limiter.lua")));
-		redisScript.setResultType(List.class);
+		redisScript.setResultType(Long.class);
 		return redisScript;
 	}
 
@@ -52,7 +49,7 @@ public class RateLimiterAutoConfiguration {
 	@ConditionalOnMissingBean
 	public RedisRateLimiterClient redisRateLimiter(StringRedisTemplate redisTemplate,
 												   Environment environment) {
-		RedisScript<List<Long>> redisRateLimiterScript = redisRateLimiterScript();
+		RedisScript<Long> redisRateLimiterScript = redisRateLimiterScript();
 		return new RedisRateLimiterClient(redisTemplate, redisRateLimiterScript, environment);
 	}
 
