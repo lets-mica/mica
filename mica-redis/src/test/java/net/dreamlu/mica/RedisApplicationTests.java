@@ -14,7 +14,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(properties = {
 	"spring.application.name=mica-redis-test",
-	"mica.redis.stream.enable=true"
+	"mica.redis.stream.enable=true",
+	"mica.redis.rate-limiter.enable=true"
 })
 public class RedisApplicationTests {
 
@@ -50,6 +51,8 @@ public class RedisApplicationTests {
 
 //	@Autowired
 //	private RStreamTemplate streamTemplate;
+//	@Autowired
+//	private RateLimiterClient rateLimiterClient;
 
 	@Test
 	public void contextLoads() {
@@ -59,6 +62,7 @@ public class RedisApplicationTests {
 //		user.setName("哈哈哈");
 //		user.setTime(new Date());
 //		streamTemplate.send("bytes", "abc", JsonUtil.toJsonAsBytes(user));
+//		rateLimiterClient.isAllowed("test:1", 1, 10, TimeUnit.SECONDS);
 	}
 
 }

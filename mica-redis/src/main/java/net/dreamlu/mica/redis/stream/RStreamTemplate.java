@@ -104,6 +104,35 @@ public interface RStreamTemplate {
 	 * @param name   队列名
 	 * @param key    消息key
 	 * @param data   消息
+	 * @param mapper mapper
+	 * @param <T>    泛型
+	 * @return 消息id
+	 */
+	default <T> RecordId send(String name, String key, T data, Function<T, byte[]> mapper, long maxLen) {
+		return send(name, key, mapper.apply(data), maxLen);
+	}
+
+	/**
+	 * 发布消息
+	 *
+	 * @param name    队列名
+	 * @param key     消息key
+	 * @param data    消息
+	 * @param mapper  mapper
+	 * @param options XAddOptions
+	 * @param <T>     泛型
+	 * @return 消息id
+	 */
+	default <T> RecordId send(String name, String key, T data, Function<T, byte[]> mapper, RedisStreamCommands.XAddOptions options) {
+		return send(name, key, mapper.apply(data), options);
+	}
+
+	/**
+	 * 发布消息
+	 *
+	 * @param name   队列名
+	 * @param key    消息key
+	 * @param data   消息
 	 * @param mapper 消息转换
 	 * @param <T>    泛型
 	 * @return 消息id
