@@ -66,6 +66,24 @@ public class JsonUtil {
 	}
 
 	/**
+	 * 将对象序列化成 json 字符串，格式美化
+	 *
+	 * @param object javaBean
+	 * @return jsonString json字符串
+	 */
+	@Nullable
+	public static String toPrettyJson(@Nullable Object object) {
+		if (object == null) {
+			return null;
+		}
+		try {
+			return getInstance().writerWithDefaultPrettyPrinter().writeValueAsString(object);
+		} catch (JsonProcessingException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
 	 * 将对象序列化成 json byte 数组
 	 *
 	 * @param object javaBean
