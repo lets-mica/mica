@@ -18,9 +18,9 @@ compile("net.dreamlu:mica-ip2region:${version}")
 
 ## 配置说明（已经内置，可忽略）
 
-| 配置项                           | 默认值                            | 说明                                |
-| ------------------------------- | -------------------------------- | ---------------------------------- |
-| mica.ip2region.db-file-location | classpath:ip2region/ip2region.db | ip2region.db 文件的地址，默认内置的文件 | 
+| 配置项                           | 默认值                               | 说明                          |
+| ------------------------------- |-----------------------------------|-----------------------------|
+| mica.ip2region.db-file-location | classpath:ip2region/ip2region.xdb | ip2region.xdb 文件的地址，默认内置的文件 | 
 
 **maven 自定义 ip2region.db 注意事项:**
 
@@ -31,7 +31,7 @@ compile("net.dreamlu:mica-ip2region:${version}")
 	<artifactId>maven-resources-plugin</artifactId>
 	<configuration>
 		<nonFilteredFileExtensions>
-			<nonFilteredFileExtension>db</nonFilteredFileExtension>
+			<nonFilteredFileExtension>xdb</nonFilteredFileExtension>
 		</nonFilteredFileExtensions>
 	</configuration>
 </plugin>
