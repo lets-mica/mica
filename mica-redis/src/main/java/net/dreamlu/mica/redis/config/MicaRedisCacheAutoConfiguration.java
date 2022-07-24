@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.redis.config;
 
+import net.dreamlu.mica.core.utils.CharPool;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
@@ -95,23 +96,21 @@ public class MicaRedisCacheAutoConfiguration {
 		} else {
 			CacheProperties.Redis redisProperties = this.cacheProperties.getRedis();
 			RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig();
+			// 设置默认缓存名分割符号为 :
+			config.computePrefixWith(name -> name + CharPool.COLON);
 			config = config.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer));
 			if (redisProperties.getTimeToLive() != null) {
 				config = config.entryTtl(redisProperties.getTimeToLive());
 			}
-
 			if (redisProperties.getKeyPrefix() != null) {
 				config = config.prefixCacheNameWith(redisProperties.getKeyPrefix());
 			}
-
 			if (!redisProperties.isCacheNullValues()) {
 				config = config.disableCachingNullValues();
 			}
-
 			if (!redisProperties.isUseKeyPrefix()) {
 				config = config.disableKeyPrefix();
 			}
-
 			return config;
 		}
 	}
