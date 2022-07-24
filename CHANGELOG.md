@@ -6,7 +6,7 @@
 - :sparkles: mica-core JsonUtil 添加 toPrettyJson 感谢 `@老古` 反馈。
 - :sparkles: mica-core JsonUtil 添加 getType。
 - :sparkles: mica-redis 设置默认缓存名分割符号为 “:”。
-- :sparkles: mica-redis stream add 方法完善，方便现在 stream 长度。
+- :sparkles: mica-redis stream add 方法完善，方便限制 stream 长度。
 - :sparkles: mica-redis incrBy, decrBy新增Duration过期时间单位，感谢 `@BlackR` pr。
 - :sparkles: update mica-spider/README.md. 感谢 `@BlackR` pr
 - :bug: 修复 git 修改 xdb 文件，导致单元测试失败。
