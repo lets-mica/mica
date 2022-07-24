@@ -20,9 +20,9 @@ public class DesensitizationUtilTest {
 		String middle2 = DesensitizationUtil.middle("1");
 		String middle3 = DesensitizationUtil.middle("12");
 		String middle4 = DesensitizationUtil.middle("123");
-		Assert.assertEquals(middle2, "*");
-		Assert.assertEquals(middle3, "**");
-		Assert.assertEquals(middle4, "1*3");
+		Assert.assertEquals("*", middle2);
+		Assert.assertEquals("**", middle3);
+		Assert.assertEquals("1*3", middle4);
 	}
 
 	@Test

@@ -61,7 +61,7 @@ public class StringUtilTest {
 		Assert.assertNull(s);
 
 		String s1 = StringUtil.cleanText(" 123123;123\t1\n2|3,1231`'' ");
-		Assert.assertEquals(s1, "1231231231231231");
+		Assert.assertEquals("1231231231231231", s1);
 	}
 
 	@Test

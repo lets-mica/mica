@@ -27,17 +27,17 @@ public class XPathTest {
 
 		XmlHelper xmlHelper = XmlHelper.safe(xml);
 		String title1 = xmlHelper.getString("//book[1]/title");
-		Assert.assertEquals(title1, "Harry Potter");
+		Assert.assertEquals("Harry Potter", title1);
 
 		String titleLang = xmlHelper.getString("//book[2]/title/@lang");
-		Assert.assertEquals(titleLang, "eng");
+		Assert.assertEquals("eng", titleLang);
 
 		Number price1 = xmlHelper.getNumber("//book[1]/price");
 		System.out.println(price1.doubleValue());
 
 		Node node = xmlHelper.getNode("//book[2]/title");
 		String titleLang2 = xmlHelper.getString(node, "@lang");
-		Assert.assertEquals(titleLang2, "eng");
+		Assert.assertEquals("eng", titleLang2);
 
 		Assert.assertEquals(titleLang, titleLang2);
 

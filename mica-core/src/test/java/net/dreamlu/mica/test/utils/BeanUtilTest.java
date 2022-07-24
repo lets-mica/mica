@@ -31,7 +31,7 @@ public class BeanUtilTest {
 		System.out.println(user);
 
 		Object name = BeanUtil.getProperty(user, "name");
-		Assert.assertEquals(name, "张三");
+		Assert.assertEquals("张三", name);
 	}
 
 	@Test
@@ -45,7 +45,7 @@ public class BeanUtilTest {
 		User1 user = BeanUtil.copyWithConvert(map, User1.class);
 
 		System.out.println(user);
-		Assert.assertEquals(user.getId(), "1");
+		Assert.assertEquals("1", user.getId());
 	}
 
 	@Test
@@ -60,7 +60,7 @@ public class BeanUtilTest {
 		User1 user = BeanUtil.copyWithConvert(map, User1.class);
 
 		System.out.println(user);
-		Assert.assertEquals(user.getIdInt().intValue(), 123);
+		Assert.assertEquals(123, user.getIdInt().intValue());
 	}
 
 	@Test

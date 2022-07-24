@@ -32,7 +32,7 @@ public class JsonNodeTest {
 
 		R<?> r = JsonUtil.getInstance().convertValue(jsonNode, R.class);
 
-		Assert.assertEquals(r.getCode(), 1);
+		Assert.assertEquals(1, r.getCode());
 	}
 
 	@Test

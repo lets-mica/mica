@@ -1,5 +1,6 @@
 package net.dreamlu.mica.test.utils;
 
+import net.dreamlu.mica.core.utils.ThreadUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,12 +19,8 @@ public class CompletableFutureTest {
 		CompletableFuture<String> future = new CompletableFuture<>();
 		String value = "123";
 		new Thread(() -> {
-			try {
-				Thread.sleep(1000);
-				future.complete(value);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			ThreadUtil.sleep(1000);
+			future.complete(value);
 		}).start();
 		Assert.assertEquals(value, future.join());
 	}
