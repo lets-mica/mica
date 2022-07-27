@@ -56,8 +56,8 @@ public class RedisApplicationTests {
 //	private RStreamTemplate streamTemplate;
 //	@Autowired
 //	private RateLimiterClient rateLimiterClient;
-	@Autowired
-	private MicaRedisCache micaRedisCache;
+//	@Autowired
+//	private MicaRedisCache micaRedisCache;
 
 	@Test
 	public void contextLoads() {
@@ -68,8 +68,8 @@ public class RedisApplicationTests {
 //		user.setTime(new Date());
 //		streamTemplate.send("bytes", "abc", JsonUtil.toJsonAsBytes(user));
 //		rateLimiterClient.isAllowed("test:1", 1, 10, TimeUnit.SECONDS);
-		Long bitCount = micaRedisCache.bitCount("mykey", 0, 1, RedisCommand.BitMapModel.BYTE);
-		System.out.println(bitCount);
+//		Long bitCount = micaRedisCache.bitCount("mykey", 0, 1, RedisCommand.BitMapModel.BYTE);
+//		System.out.println(bitCount);
 	}
 
 }
