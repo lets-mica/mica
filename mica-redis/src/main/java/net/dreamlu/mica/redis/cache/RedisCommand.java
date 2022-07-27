@@ -2,6 +2,8 @@ package net.dreamlu.mica.redis.cache;
 
 /**
  * redis常量
+ *
+ * @author BlackR
  */
 public class RedisCommand {
 

@@ -1373,7 +1373,7 @@ public class MicaRedisCache {
 	/**
 	 * 位图统计个数
 	 *
-	 * @param key  key
+	 * @param key key
 	 * @return 位图统计个数
 	 */
 	@Nullable
@@ -1384,13 +1384,13 @@ public class MicaRedisCache {
 	/**
 	 * 位图统计个数，start，end可以使用负数：比如 -1 表示最后一个位，而 -2 表示倒数第二个位等。
 	 *
-	 * @param key  key
+	 * @param key   key
 	 * @param start start
-	 * @param end end
+	 * @param end   end
 	 * @return 位图统计个数
 	 */
 	@Nullable
-	public Long bitCount(String key, Long start, Long end) {
+	public Long bitCount(String key, long start, long end) {
 		return redisTemplate.execute((RedisCallback<Long>) redis -> redis.bitCount(keySerialize(key), start, end));
 	}
 
@@ -1398,30 +1398,25 @@ public class MicaRedisCache {
 	 * 位图统计个数
 	 * 注意：<a href="https://redis.io/commands/bitcount/#History">model 需要 redis 版本 7.0以上</a>
 	 *
-	 * @param key  key
+	 * @param key   key
 	 * @param start start
-	 * @param end end
+	 * @param end   end
 	 * @param model model
 	 * @return 位图统计个数
 	 */
 	@Nullable
-	public Long bitCount(String key, Long start, Long end, RedisCommand.BitMapModel model) {
-		return redisTemplate.execute((RedisCallback<Long>) redis -> {
-			Object execute = redis.execute(RedisCommand.BITCOUNT, key.getBytes(StandardCharsets.UTF_8),
-				String.valueOf(start).getBytes(StandardCharsets.UTF_8),
-				String.valueOf(end).getBytes(StandardCharsets.UTF_8),
-				model.name().getBytes(StandardCharsets.UTF_8));
-			if (execute == null) {
-				return 0L;
-			}
-			return (Long) execute;
-		});
+	public Long bitCount(String key, long start, long end, RedisCommand.BitMapModel model) {
+		return redisTemplate.execute((RedisCallback<Long>) redis ->
+			(Long) redis.execute(RedisCommand.BITCOUNT, keySerialize(key),
+				keySerialize(Long.toString(start)), keySerialize(Long.toString(end)),
+				keySerialize(model.name()))
+		);
 	}
 
 	/**
 	 * 获取/操作存储在给定键处的不同位宽和任意非（必要）对齐偏移量的特定整数字段。
 	 *
-	 * @param key key
+	 * @param key      key
 	 * @param commands commands
 	 * @return 子命令的相应结果
 	 */
@@ -1438,7 +1433,7 @@ public class MicaRedisCache {
 	 * @return offset 位置
 	 */
 	@Nullable
-	public Long bitPos(String key, Boolean bit) {
+	public Long bitPos(String key, boolean bit) {
 		return redisTemplate.execute((RedisCallback<Long>) redis -> redis.bitPos(keySerialize(key), bit));
 	}
 
@@ -1450,32 +1445,32 @@ public class MicaRedisCache {
 	 * @return offset 位置
 	 */
 	@Nullable
-	public Long bitPos(String key, Boolean bit, Range<Long> range) {
+	public Long bitPos(String key, boolean bit, Range<Long> range) {
 		return redisTemplate.execute((RedisCallback<Long>) redis -> redis.bitPos(keySerialize(key), bit, range));
 	}
 
 	/**
 	 * 获取第 offset 位的值（offset 从 0 开始算）
 	 *
-	 * @param key key
+	 * @param key    key
 	 * @param offset offset
 	 * @return 第 offset 位的值
 	 */
 	@Nullable
-	public Boolean getBit(String key, Long offset) {
+	public Boolean getBit(String key, long offset) {
 		return redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.getBit(keySerialize(key), offset));
 	}
 
 	/**
 	 * 设置第 offset 位的值（offset 从 0 开始算）
 	 *
-	 * @param key key
+	 * @param key    key
 	 * @param offset offset
-	 * @param value value
+	 * @param value  value
 	 * @return 第 offset 位的值
 	 */
 	@Nullable
-	public Boolean setBit(String key, Long offset, Boolean value) {
+	public Boolean setBit(String key, long offset, boolean value) {
 		return redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.setBit(keySerialize(key), offset, value));
 	}
 

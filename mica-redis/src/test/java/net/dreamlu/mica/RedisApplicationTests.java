@@ -1,7 +1,10 @@
 package net.dreamlu.mica;
 
+import net.dreamlu.mica.redis.cache.MicaRedisCache;
+import net.dreamlu.mica.redis.cache.RedisCommand;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -53,6 +56,8 @@ public class RedisApplicationTests {
 //	private RStreamTemplate streamTemplate;
 //	@Autowired
 //	private RateLimiterClient rateLimiterClient;
+	@Autowired
+	private MicaRedisCache micaRedisCache;
 
 	@Test
 	public void contextLoads() {
@@ -63,6 +68,8 @@ public class RedisApplicationTests {
 //		user.setTime(new Date());
 //		streamTemplate.send("bytes", "abc", JsonUtil.toJsonAsBytes(user));
 //		rateLimiterClient.isAllowed("test:1", 1, 10, TimeUnit.SECONDS);
+		Long bitCount = micaRedisCache.bitCount("mykey", 0, 1, RedisCommand.BitMapModel.BYTE);
+		System.out.println(bitCount);
 	}
 
 }
