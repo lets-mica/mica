@@ -17,6 +17,7 @@
 package net.dreamlu.mica.core.utils;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriUtils;
 
 /**
@@ -44,6 +45,6 @@ public class UrlUtil extends org.springframework.web.util.UriUtils {
 	 * @return decoded String
 	 */
 	public static String decode(String source) {
-		return UriUtils.decode(source, Charsets.UTF_8);
+		return StringUtils.uriDecode(source, Charsets.UTF_8);
 	}
 }
