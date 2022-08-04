@@ -60,7 +60,7 @@ public class SwaggerConfiguration {
 	@Bean
 	public Docket docket(Environment environment,
 						 MicaSwaggerProperties properties,
-						 ObjectProvider<List<SwaggerCustomizer>> swaggerCustomizersProvider) {
+						 ObjectProvider<SwaggerCustomizer> customizerObjectProvider) {
 		// 1. 组名为应用名
 		String appName = environment.getProperty("spring.application.name");
 		Docket docket = new Docket(DocumentationType.SWAGGER_2)
@@ -83,7 +83,7 @@ public class SwaggerConfiguration {
 			docket.securityContexts(Collections.singletonList(oauth2SecurityContext(oauth2)));
 		}
 		// 4. 自定义 customizer 配置
-		swaggerCustomizersProvider.ifAvailable(customizers -> customizers.forEach(customizer -> customizer.customize(docket)));
+		customizerObjectProvider.orderedStream().forEach(customizer -> customizer.customize(docket));
 		return docket;
 	}
 

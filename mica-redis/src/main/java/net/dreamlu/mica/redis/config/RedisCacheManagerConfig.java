@@ -23,7 +23,7 @@ import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * CacheManagerCustomizers 配置
@@ -36,7 +36,7 @@ public class RedisCacheManagerConfig {
 
 	@Bean
 	public CacheManagerCustomizers cacheManagerCustomizers(
-		ObjectProvider<List<CacheManagerCustomizer<?>>> customizers) {
-		return new CacheManagerCustomizers(customizers.getIfAvailable());
+		ObjectProvider<CacheManagerCustomizer<?>> customizerObjectProvider) {
+		return new CacheManagerCustomizers(customizerObjectProvider.orderedStream().collect(Collectors.toList()));
 	}
 }

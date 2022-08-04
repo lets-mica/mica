@@ -36,10 +36,10 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.ClassUtils;
 
 import java.lang.annotation.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * logging 日志配置
@@ -57,8 +57,8 @@ public class MicaLoggingConfiguration {
 	}
 
 	@Bean
-	public LogbackLoggerContextListener logbackLoggerContextListener(ObjectProvider<List<ILoggingAppender>> provider) {
-		List<ILoggingAppender> loggingAppenderList = provider.getIfAvailable(ArrayList::new);
+	public LogbackLoggerContextListener logbackLoggerContextListener(ObjectProvider<ILoggingAppender> loggingAppenderObjectProvider) {
+		List<ILoggingAppender> loggingAppenderList = loggingAppenderObjectProvider.orderedStream().collect(Collectors.toList());
 		return new LogbackLoggerContextListener(loggingAppenderList);
 	}
 

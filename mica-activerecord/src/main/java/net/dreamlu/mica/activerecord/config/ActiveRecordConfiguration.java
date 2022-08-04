@@ -145,7 +145,7 @@ public class ActiveRecordConfiguration {
 												 Environment environment,
 												 ResourceLoader resourceLoader,
 												 MicaActiveRecordProperties properties,
-												 ObjectProvider<List<ActiveRecordPluginCustomizer>> arpCustomizerProvider) {
+												 ObjectProvider<ActiveRecordPluginCustomizer> customizerObjectProvider) {
 		String modelPackage = properties.getModelPackage();
 		Assert.hasText(modelPackage, "mica.activerecord.model-package is blank.");
 		ActiveRecordPlugin arp = new ActiveRecordPlugin(dataSourceProvider);
@@ -165,7 +165,7 @@ public class ActiveRecordConfiguration {
 			scanTable(arp, environment, resourceLoader, modelPackage);
 		}
 		// arp 自定义配置 bean
-		arpCustomizerProvider.ifAvailable(customizers -> customizers.forEach(customizer -> customizer.customize(arp)));
+		customizerObjectProvider.orderedStream().forEach(customizer -> customizer.customize(arp));
 		arp.start();
 		return arp;
 	}
