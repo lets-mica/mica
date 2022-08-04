@@ -17,6 +17,7 @@
 package net.dreamlu.mica.redis.config;
 
 import net.dreamlu.mica.core.utils.CharPool;
+import net.dreamlu.mica.core.utils.StringPool;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
@@ -96,8 +97,8 @@ public class MicaRedisCacheAutoConfiguration {
 		} else {
 			CacheProperties.Redis redisProperties = this.cacheProperties.getRedis();
 			RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig();
-			// 设置默认缓存名分割符号为 :
-			config.computePrefixWith(name -> name + CharPool.COLON);
+			// 设置默认缓存名分割符号为 “:”，如果已经带 “:” 则不设置。
+			config = config.computePrefixWith(name -> name.endsWith(StringPool.COLON) ? name : name + CharPool.COLON);
 			config = config.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer));
 			if (redisProperties.getTimeToLive() != null) {
 				config = config.entryTtl(redisProperties.getTimeToLive());
