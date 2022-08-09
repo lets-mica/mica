@@ -20,8 +20,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
+import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.redis.cache.MicaRedisCache;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
@@ -51,15 +51,14 @@ public class RedisTemplateConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean(RedisSerializer.class)
-	public RedisSerializer<Object> redisSerializer(MicaRedisProperties properties,
-												   ObjectProvider<ObjectMapper> objectProvider) {
+	public RedisSerializer<Object> redisSerializer(MicaRedisProperties properties) {
 		MicaRedisProperties.SerializerType serializerType = properties.getSerializerType();
 		if (MicaRedisProperties.SerializerType.JDK == serializerType) {
 			ClassLoader classLoader = this.getClass().getClassLoader();
 			return new JdkSerializationRedisSerializer(classLoader);
 		}
 		// jackson findAndRegisterModules，use copy
-		ObjectMapper objectMapper = objectProvider.getIfAvailable(ObjectMapper::new).copy();
+		ObjectMapper objectMapper = JsonUtil.getInstance().copy();
 		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 		// findAndRegisterModules
 		objectMapper.findAndRegisterModules();
