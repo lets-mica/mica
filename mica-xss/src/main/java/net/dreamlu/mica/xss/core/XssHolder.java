@@ -16,22 +16,36 @@
 
 package net.dreamlu.mica.xss.core;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * 利用 ThreadLocal 缓存线程间的数据
  *
  * @author L.cm
  */
-class XssHolder {
+@UtilityClass
+public class XssHolder {
 	private static final ThreadLocal<Boolean> TL = new ThreadLocal<>();
 
+	/**
+	 * 是否开启
+	 *
+	 * @return boolean
+	 */
 	public static boolean isEnabled() {
 		return Boolean.TRUE.equals(TL.get());
 	}
 
-	public static void setEnable() {
+	/**
+	 * 标记为开启
+	 */
+	static void setEnable() {
 		TL.set(Boolean.TRUE);
 	}
 
+	/**
+	 * 关闭 xss 清理
+	 */
 	public static void remove() {
 		TL.remove();
 	}
