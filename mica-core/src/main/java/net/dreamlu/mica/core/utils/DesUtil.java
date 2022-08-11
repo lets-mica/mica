@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Base64Utils;
 
@@ -30,7 +29,6 @@ import java.util.Objects;
  *
  * @author L.cm
  */
-@UtilityClass
 public class DesUtil {
 	/**
 	 * 数字签名，密钥算法

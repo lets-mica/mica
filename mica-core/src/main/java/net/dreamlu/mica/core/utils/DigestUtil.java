@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 
 import javax.crypto.Mac;
@@ -32,7 +31,6 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author L.cm
  */
-@UtilityClass
 public class DigestUtil {
 
 	/**

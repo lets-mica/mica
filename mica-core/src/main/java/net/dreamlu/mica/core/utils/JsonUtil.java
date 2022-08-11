@@ -27,7 +27,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import com.fasterxml.jackson.databind.type.MapType;
-import lombok.experimental.UtilityClass;
 import net.dreamlu.mica.core.function.CheckedConsumer;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
@@ -44,7 +43,6 @@ import java.util.*;
  *
  * @author L.cm
  */
-@UtilityClass
 public class JsonUtil {
 
 	/**

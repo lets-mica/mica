@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
@@ -36,7 +35,6 @@ import java.lang.reflect.Method;
  *
  * @author L.cm
  */
-@UtilityClass
 public class ClassUtil extends org.springframework.util.ClassUtils {
 	private static final ParameterNameDiscoverer PARAMETER_NAME_DISCOVERER = new DefaultParameterNameDiscoverer();
 

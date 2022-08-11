@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 
 import java.nio.charset.Charset;
@@ -26,7 +25,6 @@ import java.nio.charset.Charset;
  *
  * @author L.cm
  */
-@UtilityClass
 public class HexUtil {
 	public static final Charset DEFAULT_CHARSET = Charsets.UTF_8;
 	private static final byte[] DIGITS_LOWER = new byte[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};

@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.core.io.*;
 import org.springframework.util.Assert;
 
@@ -27,7 +26,6 @@ import java.io.IOException;
  *
  * @author L.cm
  */
-@UtilityClass
 public class ResourceUtil extends org.springframework.util.ResourceUtils {
 	public static final String HTTP_REGEX = "^https?:.+$";
 	public static final String FTP_URL_PREFIX = "ftp:";

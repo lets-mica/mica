@@ -19,7 +19,6 @@ package net.dreamlu.mica.core.utils;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import lombok.experimental.UtilityClass;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.core.MethodParameter;
@@ -59,7 +58,6 @@ import java.util.function.Supplier;
  *
  * @author L.cm
  */
-@UtilityClass
 public class $ {
 
 	/**

@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.cglib.core.CodeGenerationException;
@@ -37,7 +36,6 @@ import java.util.List;
  *
  * @author L.cm
  */
-@UtilityClass
 public class ReflectUtil extends ReflectionUtils {
 
 	/**

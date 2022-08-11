@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
 
 import java.net.InetAddress;
@@ -30,7 +29,6 @@ import java.util.Enumeration;
  *
  * @author L.cm
  */
-@UtilityClass
 public class INetUtil {
 	public static final String LOCAL_HOST = "127.0.0.1";
 

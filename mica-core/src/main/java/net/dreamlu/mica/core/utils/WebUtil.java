@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
@@ -39,7 +38,6 @@ import java.util.function.Predicate;
  * @author L.cm
  */
 @Slf4j
-@UtilityClass
 public class WebUtil extends org.springframework.web.util.WebUtils {
 
 	/**

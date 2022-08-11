@@ -16,8 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
-
 import java.util.*;
 import java.util.Spliterators.AbstractSpliterator;
 import java.util.function.*;
@@ -31,7 +29,6 @@ import static java.util.Objects.requireNonNull;
  *
  * @author Guava
  */
-@UtilityClass
 public class StreamUtil {
 
 	/**

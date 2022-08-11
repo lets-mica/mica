@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.compiler;
 
-import lombok.experimental.UtilityClass;
 import net.dreamlu.mica.core.utils.CharPool;
 import org.springframework.util.FastByteArrayOutputStream;
 
@@ -33,7 +32,6 @@ import java.util.Collections;
  *
  * @author L.cm
  */
-@UtilityClass
 public class InMemoryJavaCompiler {
 	/**
 	 * JavaCompiler

@@ -17,8 +17,6 @@
 package net.dreamlu.mica.core.utils;
 
 
-import lombok.experimental.UtilityClass;
-
 import java.lang.management.ManagementFactory;
 import java.time.Duration;
 import java.time.Instant;
@@ -29,7 +27,6 @@ import java.util.List;
  *
  * @author L.cm
  */
-@UtilityClass
 public class RuntimeUtil {
 	private static volatile int pId = -1;
 	private static final int CPU_NUM = Runtime.getRuntime().availableProcessors();

@@ -24,7 +24,6 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import net.dreamlu.mica.core.utils.Base64Util;
 import net.dreamlu.mica.core.utils.CharPool;
 import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.core.utils.ImageUtil;
@@ -49,7 +48,7 @@ import java.util.Map;
  * @author ywjno(ywjno.dev @ gmail.com)
  * @author L.cm
  */
-public final class QrCode {
+public class QrCode {
 
 	/**
 	 * 二维码内容

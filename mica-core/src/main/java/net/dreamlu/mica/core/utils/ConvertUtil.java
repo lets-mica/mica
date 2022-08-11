@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import net.dreamlu.mica.core.convert.MicaConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.support.GenericConversionService;
@@ -28,7 +27,6 @@ import org.springframework.util.ClassUtils;
  *
  * @author L.cm
  */
-@UtilityClass
 @SuppressWarnings("unchecked")
 public class ConvertUtil {
 

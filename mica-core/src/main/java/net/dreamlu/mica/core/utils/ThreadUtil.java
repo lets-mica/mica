@@ -16,8 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
-
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -25,7 +23,6 @@ import java.util.concurrent.TimeUnit;
  *
  * @author L.cm
  */
-@UtilityClass
 public class ThreadUtil {
 
 	/**

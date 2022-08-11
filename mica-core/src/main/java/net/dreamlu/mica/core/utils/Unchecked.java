@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import net.dreamlu.mica.core.function.*;
 
 import java.util.Comparator;
@@ -37,7 +36,6 @@ import java.util.function.Supplier;
  *
  * @author L.cm
  */
-@UtilityClass
 public class Unchecked {
 
 	/**

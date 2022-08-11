@@ -17,7 +17,6 @@
 package net.dreamlu.mica.core.utils;
 
 
-import lombok.experimental.UtilityClass;
 import net.dreamlu.mica.core.beans.MicaBeanCopier;
 import net.dreamlu.mica.core.beans.MicaBeanMap;
 import net.dreamlu.mica.core.convert.MicaConverter;
@@ -42,7 +41,6 @@ import java.util.*;
  *
  * @author L.cm
  */
-@UtilityClass
 public class BeanUtil extends org.springframework.beans.BeanUtils {
 
 	/**

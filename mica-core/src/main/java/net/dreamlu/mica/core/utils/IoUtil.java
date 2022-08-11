@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StreamUtils;
 
@@ -28,7 +27,6 @@ import java.nio.charset.Charset;
  *
  * @author L.cm
  */
-@UtilityClass
 public class IoUtil extends org.springframework.util.StreamUtils {
 
 	/**

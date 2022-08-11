@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import net.dreamlu.mica.core.io.FastStringPrintWriter;
 
 import java.lang.reflect.InvocationTargetException;
@@ -27,7 +26,6 @@ import java.lang.reflect.UndeclaredThrowableException;
  *
  * @author L.cm
  */
-@UtilityClass
 public class Exceptions {
 
 	/**

@@ -16,8 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
-
 import java.security.SecureRandom;
 import java.util.Random;
 
@@ -26,17 +24,16 @@ import java.util.Random;
  *
  * @author L.cm
  */
-@UtilityClass
-public class Holder {
+public interface Holder {
 
 	/**
 	 * RANDOM
 	 */
-	public static final Random RANDOM = new Random();
+	Random RANDOM = new Random();
 
 	/**
 	 * SECURE_RANDOM
 	 */
-	public static final SecureRandom SECURE_RANDOM = new SecureRandom();
+	SecureRandom SECURE_RANDOM = new SecureRandom();
 
 }

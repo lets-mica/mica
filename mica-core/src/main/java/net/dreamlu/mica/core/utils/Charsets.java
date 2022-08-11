@@ -16,8 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
-
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -26,7 +24,6 @@ import java.nio.charset.StandardCharsets;
  *
  * @author L.cm
  */
-@UtilityClass
 public class Charsets {
 
 	/**

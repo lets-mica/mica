@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 import org.springframework.util.*;
 import org.springframework.web.util.HtmlUtils;
@@ -34,7 +33,6 @@ import java.util.stream.Stream;
  *
  * @author L.cm
  */
-@UtilityClass
 public class StringUtil extends org.springframework.util.StringUtils {
 	/**
 	 * 特殊字符正则，sql特殊字符和空白符

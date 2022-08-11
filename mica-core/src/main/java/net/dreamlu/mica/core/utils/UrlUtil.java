@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriUtils;
 
@@ -25,7 +24,6 @@ import org.springframework.web.util.UriUtils;
  *
  * @author L.cm
  */
-@UtilityClass
 public class UrlUtil extends org.springframework.web.util.UriUtils {
 
 	/**

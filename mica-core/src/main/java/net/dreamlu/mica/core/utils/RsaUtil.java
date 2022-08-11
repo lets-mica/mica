@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import net.dreamlu.mica.core.tuple.KeyPair;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Base64Utils;
@@ -37,7 +36,6 @@ import java.util.Objects;
  *
  * @author L.cm
  */
-@UtilityClass
 public class RsaUtil {
 	/**
 	 * 数字签名，密钥算法

@@ -26,7 +26,6 @@ import ch.qos.logback.core.FileAppender;
 import ch.qos.logback.core.rolling.RollingPolicy;
 import ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy;
 import ch.qos.logback.core.util.FileSize;
-import lombok.experimental.UtilityClass;
 import net.dreamlu.mica.core.utils.SystemUtil;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.logging.logback.LogbackLoggingSystemProperties;
@@ -39,7 +38,6 @@ import org.springframework.boot.logging.logback.LogbackLoggingSystemProperties;
  * @author jhipster
  * @author L.cm
  */
-@UtilityClass
 public class LoggingUtil {
 	public static final String DEFAULT_LOG_DIR = "logs";
 	public static final String LOG_FILE_ALL = "all.log";

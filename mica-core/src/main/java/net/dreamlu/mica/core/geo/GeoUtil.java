@@ -1,7 +1,5 @@
 package net.dreamlu.mica.core.geo;
 
-import lombok.experimental.UtilityClass;
-
 /**
  * 位置工具类
  *
@@ -11,7 +9,6 @@ import lombok.experimental.UtilityClass;
  *
  * @author L.cm
  */
-@UtilityClass
 public class GeoUtil {
 	/**
 	 * 地球的半径 (m)

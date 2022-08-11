@@ -18,7 +18,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 
 import java.util.HashMap;
@@ -39,7 +38,6 @@ import java.util.function.Supplier;
  * @author zhouhao
  * @since 2.0
  */
-@UtilityClass
 @SuppressWarnings("unchecked")
 public class ThreadLocalUtil {
 	private static final ThreadLocal<Map<String, Object>> LOCAL = ThreadLocal.withInitial(HashMap::new);

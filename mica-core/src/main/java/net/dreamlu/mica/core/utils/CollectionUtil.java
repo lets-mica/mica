@@ -17,7 +17,6 @@
 package net.dreamlu.mica.core.utils;
 
 
-import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -33,7 +32,6 @@ import java.util.stream.Collectors;
  *
  * @author L.cm
  */
-@UtilityClass
 @SuppressWarnings("unchecked")
 public class CollectionUtil extends org.springframework.util.CollectionUtils {
 

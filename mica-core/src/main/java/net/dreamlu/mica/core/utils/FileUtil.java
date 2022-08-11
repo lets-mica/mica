@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 import org.springframework.util.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +33,6 @@ import java.util.List;
  *
  * @author L.cm
  */
-@UtilityClass
 public class FileUtil extends org.springframework.util.FileCopyUtils {
 
 	/**

@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.util.Base64Utils;
 
 import java.nio.charset.Charset;
@@ -26,7 +25,6 @@ import java.nio.charset.Charset;
  *
  * @author L.cm
  */
-@UtilityClass
 public class Base64Util extends org.springframework.util.Base64Utils {
 
 	/**

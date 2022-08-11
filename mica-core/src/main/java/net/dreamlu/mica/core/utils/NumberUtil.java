@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 
 /**
@@ -24,7 +23,6 @@ import org.springframework.lang.Nullable;
  *
  * @author L.cm
  */
-@UtilityClass
 public class NumberUtil extends org.springframework.util.NumberUtils {
 
 	/**

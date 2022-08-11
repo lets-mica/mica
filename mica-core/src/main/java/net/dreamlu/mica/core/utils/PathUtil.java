@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.util.UriUtils;
@@ -29,7 +28,6 @@ import java.net.URL;
  *
  * @author L.cm
  */
-@UtilityClass
 public class PathUtil {
 
 	/**

@@ -1,6 +1,5 @@
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 
 import java.util.Objects;
@@ -10,7 +9,6 @@ import java.util.Objects;
  *
  * @author L.cm
  */
-@UtilityClass
 public class SystemUtil {
 	/**
 	 * 代码部署于 linux 上，工作默认为 mac 和 Windows

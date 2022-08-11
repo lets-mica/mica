@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 
 import java.time.*;
@@ -33,7 +32,6 @@ import static java.time.temporal.ChronoField.*;
  *
  * @author L.cm
  */
-@UtilityClass
 public class DateUtil {
 	public static final String PATTERN_DATETIME = DatePattern.NORM_DATETIME_PATTERN;
 	public static final String PATTERN_DATE = DatePattern.NORM_DATE_PATTERN;

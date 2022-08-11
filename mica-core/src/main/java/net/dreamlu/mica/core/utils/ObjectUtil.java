@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 
@@ -27,7 +26,6 @@ import java.util.Objects;
  *
  * @author L.cm
  */
-@UtilityClass
 public class ObjectUtil extends org.springframework.util.ObjectUtils {
 
 	/**

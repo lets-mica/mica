@@ -17,7 +17,6 @@
 package net.dreamlu.mica.core.utils;
 
 
-import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 
 import java.util.Arrays;
@@ -28,7 +27,6 @@ import java.util.Arrays;
  * @author Katrel（同事）
  * @author L.cm
  */
-@UtilityClass
 public class DesensitizationUtil {
 
 	/**

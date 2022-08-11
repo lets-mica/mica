@@ -16,14 +16,11 @@
 
 package net.dreamlu.mica.xss.core;
 
-import lombok.experimental.UtilityClass;
-
 /**
  * 利用 ThreadLocal 缓存线程间的数据
  *
  * @author L.cm
  */
-@UtilityClass
 public class XssHolder {
 	private static final ThreadLocal<Boolean> TL = new ThreadLocal<>();
 

@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.captcha.core;
 
-import lombok.experimental.UtilityClass;
 import net.dreamlu.mica.core.utils.StringPool;
 import org.springframework.boot.convert.DurationStyle;
 
@@ -30,7 +29,6 @@ import java.util.Random;
  *
  * @author L.cm
  */
-@UtilityClass
 public class CaptchaUtil {
 
 	/**

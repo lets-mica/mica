@@ -16,8 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
-
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
@@ -30,7 +28,6 @@ import java.net.URL;
  *
  * @author L.cm
  */
-@UtilityClass
 public class ImageUtil {
 
 	/**

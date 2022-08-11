@@ -1,6 +1,5 @@
 package net.dreamlu.mica.core.utils;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.Base64Utils;
@@ -22,7 +21,6 @@ import java.util.function.Function;
  *
  * @author L.cm
  */
-@UtilityClass
 public class AesUtil {
 	public static final Charset DEFAULT_CHARSET = Charsets.UTF_8;
 

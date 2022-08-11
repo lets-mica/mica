@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.http;
 
-import lombok.experimental.UtilityClass;
 import net.dreamlu.mica.core.utils.Exceptions;
 
 import java.io.BufferedReader;
@@ -29,7 +28,6 @@ import java.util.StringTokenizer;
  *
  * @author L.cm
  */
-@UtilityClass
 public class HttpRequestParser {
 
 	/**
