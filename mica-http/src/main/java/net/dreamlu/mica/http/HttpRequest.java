@@ -212,12 +212,12 @@ public class HttpRequest {
 	}
 
 	public HttpRequest bodyString(String body) {
-		this.requestBody = RequestBody.create(APPLICATION_JSON, body);
+		this.requestBody = RequestBody.create (body, APPLICATION_JSON);
 		return this;
 	}
 
 	public HttpRequest bodyString(MediaType contentType, String body) {
-		this.requestBody = RequestBody.create(contentType, body);
+		this.requestBody = RequestBody.create(body, contentType);
 		return this;
 	}
 

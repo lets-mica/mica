@@ -72,14 +72,14 @@ public class Loki4jOkHttpClient implements Loki4jHttpClient {
 	public LokiResponse send(ByteBuffer batch) throws Exception {
 		Request.Builder request = requestBuilder.newBuilder();
 		if (batch.hasArray()) {
-			request.post(RequestBody.create(mediaType, batch.array(), batch.position(), batch.remaining()));
+			request.post(RequestBody.create(batch.array(), mediaType, batch.position(), batch.remaining()));
 		} else {
 			int len = batch.remaining();
 			if (len > bodyBuffer.length) {
 				bodyBuffer = new byte[len];
 			}
 			batch.get(bodyBuffer, 0, len);
-			request.post(RequestBody.create(mediaType, bodyBuffer, 0, len));
+			request.post(RequestBody.create(bodyBuffer, mediaType,  0, len));
 		}
 		Call call = httpClient.newCall(request.build());
 		try (Response response = call.execute()) {
@@ -94,6 +94,9 @@ public class Loki4jOkHttpClient implements Loki4jHttpClient {
 	public void close() throws Exception {
 		httpClient.dispatcher().executorService().shutdown();
 		httpClient.connectionPool().evictAll();
-		Util.closeQuietly(httpClient.cache());
+		Cache cache = httpClient.cache();
+		if (cache != null) {
+			Util.closeQuietly(cache);
+		}
 	}
 }
