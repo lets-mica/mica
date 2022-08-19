@@ -2,6 +2,16 @@
 
 ## 发行版本
 
+### v2.7.3 - 2022-08-21
+- :sparkles: mica-core 统一去除 @UtilityClass，方便继承。
+- :sparkles: mica-xss 放开 XssHolder，方便自定义处理。
+- :sparkles: ObjectProvider<List> 统一替换成 ObjectProvider orderedStream() [#14467](https://github.com/spring-projects/spring-boot/issues/14467) 
+- :sparkles: mica-redis Jackson 改为 JsonUtil.getInstance() 避免受 web 影响。
+- :sparkles: mica-redis 添加对 bitmap 支持。感谢 `@BlackR` 贡献。
+- :sparkles: mica-redis 限流 lua 脚本优化，更好支持阿里 redis，感谢 `@火炎焱燚` 反馈。
+- :bug: mica-redis 修复设置默认缓存名分割符号为 “:” 没生效。
+- :arrow_up: 升级 okhttp 到 4.x
+
 ### v2.7.2 - 2022-07-24
 - :sparkles: mica-core JsonUtil 添加 toPrettyJson 感谢 `@老古` 反馈。
 - :sparkles: mica-core JsonUtil 添加 getType。
