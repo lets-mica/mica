@@ -71,13 +71,13 @@ public class SwaggerConfiguration {
 			.paths(PathSelectors.any())
 			.build();
 		// 2. 如果开启 apiKey 认证
-		if (properties.getAuthorization().getEnabled()) {
+		if (properties.getAuthorization().isEnabled()) {
 			Authorization authorization = properties.getAuthorization();
 			docket.securitySchemes(Collections.singletonList(apiKey(authorization)));
 			docket.securityContexts(Collections.singletonList(apiKeySecurityContext(authorization)));
 		}
 		// 3. 如果开启 oauth2 认证
-		if (properties.getOauth2().getEnabled()) {
+		if (properties.getOauth2().isEnabled()) {
 			Oauth2 oauth2 = properties.getOauth2();
 			docket.securitySchemes(Collections.singletonList(oauth2(oauth2)));
 			docket.securityContexts(Collections.singletonList(oauth2SecurityContext(oauth2)));
@@ -100,7 +100,7 @@ public class SwaggerConfiguration {
 	 *
 	 * @return {ApiKey}
 	 */
-	private ApiKey apiKey(Authorization authorization) {
+	private static ApiKey apiKey(Authorization authorization) {
 		return new ApiKey(authorization.getName(), authorization.getKeyName(), ApiKeyVehicle.HEADER.getValue());
 	}
 
@@ -110,7 +110,7 @@ public class SwaggerConfiguration {
 	 *
 	 * @return {SecurityContext}
 	 */
-	private SecurityContext apiKeySecurityContext(Authorization authorization) {
+	private static SecurityContext apiKeySecurityContext(Authorization authorization) {
 		final AntPathMatcher matcher = new AntPathMatcher();
 		final List<String> pathPatterns = new ArrayList<>(authorization.getPathPatterns());
 		if (pathPatterns.isEmpty()) {
@@ -130,7 +130,7 @@ public class SwaggerConfiguration {
 	 *
 	 * @return {List<SecurityReference>}
 	 */
-	private List<SecurityReference> apiKeyAuth(Authorization authorization) {
+	private static List<SecurityReference> apiKeyAuth(Authorization authorization) {
 		AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
 		authorizationScopes[0] = new AuthorizationScope("global", "accessEverything");
 		return Collections.singletonList(SecurityReference.builder()
@@ -138,7 +138,7 @@ public class SwaggerConfiguration {
 			.scopes(authorizationScopes).build());
 	}
 
-	private OAuth oauth2(Oauth2 oauth2) {
+	private static OAuth oauth2(Oauth2 oauth2) {
 		GrantTypes grantTypes = oauth2.getGrantType();
 		GrantType grantType = null;
 		// 授权码模式
@@ -167,7 +167,7 @@ public class SwaggerConfiguration {
 			.build();
 	}
 
-	private SecurityContext oauth2SecurityContext(Oauth2 oauth2) {
+	private static SecurityContext oauth2SecurityContext(Oauth2 oauth2) {
 		List<AuthorizationScope> scopes = new ArrayList<>();
 		List<AuthorizationScope> oauth2Scopes = oauth2.getScopes();
 		for (AuthorizationScope oauth2Scope : oauth2Scopes) {
@@ -188,7 +188,7 @@ public class SwaggerConfiguration {
 			.build();
 	}
 
-	private ApiInfo apiInfo(@Nullable String appName, MicaSwaggerProperties properties) {
+	private static ApiInfo apiInfo(@Nullable String appName, MicaSwaggerProperties properties) {
 		String defaultName = (appName == null ? "" : appName) + "服务";
 		String title = Optional.ofNullable(properties.getTitle())
 			.orElse(defaultName);
@@ -202,7 +202,7 @@ public class SwaggerConfiguration {
 			.build();
 	}
 
-	private List<RequestParameter> globalHeaders(MicaSwaggerProperties properties) {
+	private static List<RequestParameter> globalHeaders(MicaSwaggerProperties properties) {
 		return properties.getHeaders().stream()
 			.map(header ->
 				new RequestParameterBuilder()

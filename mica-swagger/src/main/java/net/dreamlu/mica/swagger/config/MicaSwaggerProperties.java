@@ -87,7 +87,7 @@ public class MicaSwaggerProperties {
 		/**
 		 * 开启Authorization，默认：false
 		 */
-		private Boolean enabled = false;
+		private boolean enabled = false;
 		/**
 		 * 鉴权策略ID，对应 SecurityReferences ID，默认：Authorization
 		 */
@@ -111,7 +111,7 @@ public class MicaSwaggerProperties {
 		/**
 		 * 开启Oauth2，默认：false
 		 */
-		private Boolean enabled = false;
+		private boolean enabled = false;
 		/**
 		 * oath2 名称，默认：oauth2
 		 */
