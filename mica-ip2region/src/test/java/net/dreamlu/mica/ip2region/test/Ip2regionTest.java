@@ -5,9 +5,9 @@ import net.dreamlu.mica.ip2region.config.Ip2regionProperties;
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher;
 import net.dreamlu.mica.ip2region.core.IpInfo;
 import net.dreamlu.mica.ip2region.impl.Ip2regionSearcherImpl;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -15,10 +15,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  *
  * @author L.cm
  */
-public class Ip2regionTest {
+class Ip2regionTest {
 	private Ip2regionSearcher searcher;
 
-	@Before
+	@BeforeEach
 	public void setup() throws Exception {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		Ip2regionConfiguration configuration = new Ip2regionConfiguration();
@@ -27,7 +27,7 @@ public class Ip2regionTest {
 	}
 
 	@Test
-	public void getRegion() throws Exception {
+	void getRegion() throws Exception {
 		System.out.println(searcher.memorySearch("220.248.12.158"));
 		System.out.println(searcher.memorySearch("222.240.36.135"));
 		System.out.println(searcher.memorySearch("172.30.13.97"));
@@ -39,9 +39,9 @@ public class Ip2regionTest {
 	}
 
 	@Test
-	public void test2() {
+	void test2() {
 		IpInfo ipInfo = searcher.memorySearch("127.0.0.1");
-		Assert.assertNotNull(ipInfo);
+		Assertions.assertNotNull(ipInfo);
 	}
 
 }

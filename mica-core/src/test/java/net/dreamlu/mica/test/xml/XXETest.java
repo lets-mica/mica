@@ -1,25 +1,28 @@
 package net.dreamlu.mica.test.xml;
 
 import net.dreamlu.mica.core.utils.XmlHelper;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXParseException;
 
-public class XXETest {
+class XXETest {
 
-	@Test(expected = SAXParseException.class)
-	public void test1() {
-		String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-			"   <!DOCTYPE c [\n" +
-			"       <!ENTITY file SYSTEM \"file:///etc/passwd\">\n" +
-			"   ]>\n" +
-			"   <c>&file;</c>";
+	@Test
+	void test1() {
+		Assertions.assertThrows(SAXParseException.class, () -> {
+			String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+				"   <!DOCTYPE c [\n" +
+				"       <!ENTITY file SYSTEM \"file:///etc/passwd\">\n" +
+				"   ]>\n" +
+				"   <c>&file;</c>";
 
-		XmlHelper helper = XmlHelper.safe(xml);
-		System.out.println(helper.getString("c"));
+			XmlHelper helper = XmlHelper.safe(xml);
+			System.out.println(helper.getString("c"));
+		});
 	}
 
 	@Test
-	public void test2() {
+	void test2() {
 		String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
 			"   <!DOCTYPE c [\n" +
 			"       <!ENTITY file SYSTEM \"file:///etc/passwd\">\n" +

@@ -7,10 +7,11 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.xss.core.XssCleanDeserializer;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 @Slf4j
-public class JsonDeserializerTest {
+class JsonDeserializerTest {
 
 	@Data
 	static class DemoBean {
@@ -21,19 +22,21 @@ public class JsonDeserializerTest {
 		private Integer isRead;
 	}
 
-	@Test(expected = MismatchedInputException.class)
-	public void test() throws JsonProcessingException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		DemoBean demoBean = objectMapper.readValue("{\n"
-			+ "    \"pageNum\": 1,\n"
-			+ "    \"pageSize\": 15,\n"
-			+ " \n"
-			+ "    \"createDate\":[\"12\"],\n"
-			+ "       \"system\": \"1\",\n"
-			+ "       \"isRead\": 1,\n"
-			+ "    \"issue\": \"qweqweq\"\n"
-			+ "}", DemoBean.class);
-		log.info("demoBean:{}", demoBean);
+	@Test
+	void test() throws JsonProcessingException {
+		Assertions.assertThrows(MismatchedInputException.class, () -> {
+			ObjectMapper objectMapper = new ObjectMapper();
+			DemoBean demoBean = objectMapper.readValue("{\n"
+				+ "    \"pageNum\": 1,\n"
+				+ "    \"pageSize\": 15,\n"
+				+ " \n"
+				+ "    \"createDate\":[\"12\"],\n"
+				+ "       \"system\": \"1\",\n"
+				+ "       \"isRead\": 1,\n"
+				+ "    \"issue\": \"qweqweq\"\n"
+				+ "}", DemoBean.class);
+			log.info("demoBean:{}", demoBean);
+		});
 	}
 
 }

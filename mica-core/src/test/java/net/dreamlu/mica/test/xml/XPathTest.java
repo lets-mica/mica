@@ -1,17 +1,17 @@
 package net.dreamlu.mica.test.xml;
 
 import net.dreamlu.mica.core.utils.XmlHelper;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Node;
 
 /**
  * Created by L.cm on 2016/5/13.
  */
-public class XPathTest {
+class XPathTest {
 
 	@Test
-	public void test001() {
+	void test001() {
 		String xml =
 			"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n" +
 				"<bookstore>\n" +
@@ -27,19 +27,19 @@ public class XPathTest {
 
 		XmlHelper xmlHelper = XmlHelper.safe(xml);
 		String title1 = xmlHelper.getString("//book[1]/title");
-		Assert.assertEquals("Harry Potter", title1);
+		Assertions.assertEquals("Harry Potter", title1);
 
 		String titleLang = xmlHelper.getString("//book[2]/title/@lang");
-		Assert.assertEquals("eng", titleLang);
+		Assertions.assertEquals("eng", titleLang);
 
 		Number price1 = xmlHelper.getNumber("//book[1]/price");
 		System.out.println(price1.doubleValue());
 
 		Node node = xmlHelper.getNode("//book[2]/title");
 		String titleLang2 = xmlHelper.getString(node, "@lang");
-		Assert.assertEquals("eng", titleLang2);
+		Assertions.assertEquals("eng", titleLang2);
 
-		Assert.assertEquals(titleLang, titleLang2);
+		Assertions.assertEquals(titleLang, titleLang2);
 
 		boolean isEn = xmlHelper.getBoolean("//book[1]/title/@lang=\"eng\"");
 		System.out.println(isEn);

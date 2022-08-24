@@ -2,7 +2,8 @@ package net.dreamlu.mica.test.utils;
 
 import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.core.utils.JsonUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -11,15 +12,19 @@ import java.io.IOException;
  *
  * @author L.cm
  */
-public class ExceptionsTest {
+class ExceptionsTest {
 
-	@Test(expected = IOException.class)
-	public void testIOException() {
-		throw Exceptions.unchecked(new IOException());
+	@Test
+	void testIOException() {
+		Assertions.assertThrows(IOException.class, () -> {
+			throw Exceptions.unchecked(new IOException());
+		});
 	}
 
-	@Test(expected = IOException.class)
-	public void testJson() {
-		JsonUtil.readValue("`12123`", Object.class);
+	@Test
+	void testJson() {
+		Assertions.assertThrows(IOException.class, () -> {
+			JsonUtil.readValue("`12123`", Object.class);
+		});
 	}
 }

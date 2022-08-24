@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.mongo.utils.JsonNodeInfo;
 import net.dreamlu.mica.mongo.utils.MongoJsonUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,10 +16,10 @@ import java.util.List;
  *
  * @author L.cm
  */
-public class MongoJsonUtilsTest {
+class MongoJsonUtilsTest {
 
 	@Test
-	public void test() {
+	void test() {
 		String json = "{\n" +
 			"    \"id\": \"1\",\n" +
 			"    \"accountId\": 12345678,\n" +
@@ -65,7 +65,7 @@ public class MongoJsonUtilsTest {
 			System.out.println(x.getLeafNode());
 		});
 
-		Assert.assertTrue(!jsonNodeInfoList.isEmpty());
+		Assertions.assertTrue(!jsonNodeInfoList.isEmpty());
 
 		List<String> xs = Arrays.asList("system_sound", "sound_volume", "sound_from_seat_test1");
 		MongoJsonUtils.buildNode((ObjectNode) jsonNode, xs);

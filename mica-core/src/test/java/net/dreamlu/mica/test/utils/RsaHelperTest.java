@@ -4,7 +4,7 @@ import lombok.SneakyThrows;
 import net.dreamlu.mica.core.tuple.KeyPair;
 import net.dreamlu.mica.core.utils.RsaHelper;
 import net.dreamlu.mica.core.utils.RsaUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.crypto.Cipher;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +16,7 @@ import java.util.Base64;
  * @author caiqy
  * @date 2020/8/4 14:30
  */
-public class RsaHelperTest {
+class RsaHelperTest {
 
 	public static final String PKCS1_PUBLIC_KEY = "-----BEGIN RSA PUBLIC KEY-----\n" +
 		"MIGJAoGBAKWQ0tiGaZYixh70pYoYqPRIhQcosSkhv6PED+jEbKd1AGSJQW+w4GDV\n" +

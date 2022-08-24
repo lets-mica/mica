@@ -18,20 +18,23 @@ package net.dreamlu;
 
 import net.dreamlu.mica.http.HttpRequest;
 import net.dreamlu.mica.http.LogLevel;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class HttpRequestProxyTest {
+class HttpRequestProxyTest {
 
-	@Test(expected = IOException.class)
-	public void test1() {
-		// 代理都不可用
-		HttpRequest.get("https://www.baidu.com")
-			.useConsoleLog(LogLevel.BASIC)
-			.retry()
-			.proxySelector(new MicaProxySelector())
-			.execute()
-			.asString();
+	@Test
+	void test1() {
+		Assertions.assertThrows(IOException.class, () -> {
+			// 代理都不可用
+			HttpRequest.get("https://www.baidu.com")
+				.useConsoleLog(LogLevel.BASIC)
+				.retry()
+				.proxySelector(new MicaProxySelector())
+				.execute()
+				.asString();
+		});
 	}
 }

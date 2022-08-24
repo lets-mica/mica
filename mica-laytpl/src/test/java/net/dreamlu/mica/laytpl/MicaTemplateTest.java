@@ -16,9 +16,9 @@
 
 package net.dreamlu.mica.laytpl;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -29,11 +29,11 @@ import java.util.Map;
  *
  * @author L.cm
  */
-public class MicaTemplateTest {
+class MicaTemplateTest {
 
 	private MicaTemplate micaTemplate;
 
-	@Before
+	@BeforeEach
 	public void setup() throws Exception {
 		MicaLayTplProperties properties = new MicaLayTplProperties();
 		micaTemplate = new MicaTemplate(properties, new FmtFunc(properties));
@@ -41,16 +41,16 @@ public class MicaTemplateTest {
 	}
 
 	@Test
-	public void test1() {
+	void test1() {
 		Map<String, Object> data = new HashMap<>();
 		data.put("title", "mica");
 
 		String html = micaTemplate.render("<h3>{{ d.title }}</h3>", data);
-		Assert.assertEquals(html, "<h3>mica</h3>");
+		Assertions.assertEquals(html, "<h3>mica</h3>");
 	}
 
 	@Test
-	public void test2() {
+	void test2() {
 		String html =
 			"{{#\n" +
 			"console.log();\n" +
@@ -66,9 +66,9 @@ public class MicaTemplateTest {
 	}
 
 	@Test
-	public void test3() {
+	void test3() {
 		String html = "{{!#1+1!}}";
 		String render = micaTemplate.render(html);
-		Assert.assertEquals(render, "#1+1");
+		Assertions.assertEquals(render, "#1+1");
 	}
 }

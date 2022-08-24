@@ -1,16 +1,16 @@
 package net.dreamlu.mica.test.utils;
 
 import net.dreamlu.mica.core.utils.NumberUtil;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-public class NumberTest {
+class NumberTest {
 
 	@Test
-	public void testTo62String() {
+	void testTo62String() {
 		long ms = 1551320493447L;
 		String string = NumberUtil.to62Str(ms);
-		Assert.assertEquals("rjkOH7p", string);
+		Assertions.assertEquals("rjkOH7p", string);
 	}
 
 }

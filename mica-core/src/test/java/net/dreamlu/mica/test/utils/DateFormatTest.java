@@ -2,8 +2,8 @@ package net.dreamlu.mica.test.utils;
 
 import net.dreamlu.mica.core.utils.DateUtil;
 import net.dreamlu.mica.core.utils.Unchecked;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,13 +19,13 @@ import java.util.concurrent.TimeUnit;
  *
  * @author L.cm
  */
-public class DateFormatTest {
+class DateFormatTest {
 	private static String dateStr = "2018-06-22T10:00:00";
 	private static String pattern = "yyyy-MM-dd'T'HH:mm:ss";
 	private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(pattern);
 
 	@Test
-	public void test1() throws InterruptedException {
+	void test1() throws InterruptedException {
 		Set<String> dateSet = new TreeSet<>();
 		ExecutorService executorService = Executors.newFixedThreadPool(10);
 		Runnable task = Unchecked.runnable(() -> {
@@ -38,11 +38,11 @@ public class DateFormatTest {
 		}
 
 		executorService.awaitTermination(100, TimeUnit.MILLISECONDS);
-		Assert.assertEquals(1, dateSet.size());
+		Assertions.assertEquals(1, dateSet.size());
 	}
 
 	@Test
-	public void test2() throws InterruptedException {
+	void test2() throws InterruptedException {
 		Set<String> dateSet = new TreeSet<>();
 		ExecutorService executorService = Executors.newFixedThreadPool(10);
 		Runnable task = Unchecked.runnable(() -> {
@@ -55,7 +55,7 @@ public class DateFormatTest {
 		}
 
 		executorService.awaitTermination(100, TimeUnit.MILLISECONDS);
-		Assert.assertTrue(dateSet.size() > 0);
+		Assertions.assertTrue(dateSet.size() > 0);
 	}
 
 	private static String parseDate1(String dateStr) {

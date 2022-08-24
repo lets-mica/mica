@@ -19,18 +19,18 @@ package net.dreamlu.mica.test.http;
 
 import net.dreamlu.mica.core.http.HttpRequestInfo;
 import net.dreamlu.mica.core.http.HttpRequestParser;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * HttpRequestInfo 测试
  *
  * @author L.cm
  */
-public class HttpRequestInfoTest {
+class HttpRequestInfoTest {
 
 	@Test
-	public void test() {
+	void test() {
 		String text =
 			"POST http://{{host}}/api/v1/mqtt/publish?a=123\n" +
 			"Content-Type: application/json\n" +
@@ -44,7 +44,7 @@ public class HttpRequestInfoTest {
 			"    \"clientId\":\"example\"\n" +
 			"}";
 		HttpRequestInfo request = HttpRequestParser.parser(text);
-		Assert.assertEquals("POST", request.getMethod());
+		Assertions.assertEquals("POST", request.getMethod());
 	}
 
 }

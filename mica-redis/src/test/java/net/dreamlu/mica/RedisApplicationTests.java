@@ -1,26 +1,20 @@
 package net.dreamlu.mica;
 
-import net.dreamlu.mica.redis.cache.MicaRedisCache;
-import net.dreamlu.mica.redis.cache.RedisCommand;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * redis 测试
  *
  * @author L.cm
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest(properties = {
 	"spring.application.name=mica-redis-test",
 	"mica.redis.stream.enable=true",
 	"mica.redis.rate-limiter.enable=true"
 })
-public class RedisApplicationTests {
+class RedisApplicationTests {
 
 	@SpringBootApplication
 	public static class App {
@@ -60,7 +54,7 @@ public class RedisApplicationTests {
 //	private MicaRedisCache micaRedisCache;
 
 	@Test
-	public void contextLoads() {
+	void contextLoads() {
 //		User user = new User();
 //		user.setId("123");
 //		user.setAge(32);

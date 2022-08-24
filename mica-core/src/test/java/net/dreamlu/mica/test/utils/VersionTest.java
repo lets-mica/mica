@@ -1,12 +1,12 @@
 package net.dreamlu.mica.test.utils;
 
 import net.dreamlu.mica.core.utils.Version;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class VersionTest {
+class VersionTest {
 
 	@Test
-	public void test() {
+	void test() {
 		Version.of(null).incomplete().eq(null);
 	}
 

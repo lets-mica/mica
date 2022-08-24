@@ -1,20 +1,17 @@
 package net.dreamlu.mica.caffeine.test;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(properties = {
 	"spring.application.name=mica-caffeine-test"
 })
-public class CaffeineTest {
+class CaffeineTest {
 
 	@SpringBootApplication
 	public static class App {
@@ -25,10 +22,10 @@ public class CaffeineTest {
 	private CacheManager cacheManager;
 
 	@Test
-	public void contextLoads() {
-		Assert.assertNotNull(cacheManager);
+	void contextLoads() {
+		Assertions.assertNotNull(cacheManager);
 		Cache cache = cacheManager.getCache("test#5m");
-		Assert.assertNotNull(cache);
+		Assertions.assertNotNull(cache);
 	}
 
 }

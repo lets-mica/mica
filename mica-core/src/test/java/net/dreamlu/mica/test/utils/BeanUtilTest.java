@@ -2,8 +2,8 @@ package net.dreamlu.mica.test.utils;
 
 import net.dreamlu.mica.core.utils.BeanProperty;
 import net.dreamlu.mica.core.utils.BeanUtil;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.cglib.core.DebuggingClassWriter;
 
 import java.time.LocalDateTime;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class BeanUtilTest {
 
 	@Test
-	public void test1() {
+	void test1() {
 		Map<String, Object> map = new HashMap<>();
 		map.put("id", 1);
 		map.put("name", "张三");
@@ -31,11 +31,11 @@ public class BeanUtilTest {
 		System.out.println(user);
 
 		Object name = BeanUtil.getProperty(user, "name");
-		Assert.assertEquals("张三", name);
+		Assertions.assertEquals("张三", name);
 	}
 
 	@Test
-	public void test2() {
+	void test2() {
 		Map<String, Object> map = new HashMap<>();
 		map.put("id", 1);
 		map.put("name", "张三");
@@ -45,11 +45,11 @@ public class BeanUtilTest {
 		User1 user = BeanUtil.copyWithConvert(map, User1.class);
 
 		System.out.println(user);
-		Assert.assertEquals("1", user.getId());
+		Assertions.assertEquals("1", user.getId());
 	}
 
 	@Test
-	public void test3() {
+	void test3() {
 		Map<String, String> map = new HashMap<>();
 		map.put("id", "1");
 		map.put("idInt", "123");
@@ -60,11 +60,11 @@ public class BeanUtilTest {
 		User1 user = BeanUtil.copyWithConvert(map, User1.class);
 
 		System.out.println(user);
-		Assert.assertEquals(123, user.getIdInt().intValue());
+		Assertions.assertEquals(123, user.getIdInt().intValue());
 	}
 
 	@Test
-	public void test4() {
+	void test4() {
 		User1 user1 = new User1();
 		user1.setId("1");
 		user1.setName("张三");
@@ -79,12 +79,12 @@ public class BeanUtilTest {
 		BeanUtil.copy(user1, user);
 		System.out.println(user);
 
-		Assert.assertNull(user.getId());
-		Assert.assertEquals("张三", user.getName());
+		Assertions.assertNull(user.getId());
+		Assertions.assertEquals("张三", user.getName());
 	}
 
 	@Test
-	public void test5() {
+	void test5() {
 		List<User1> list = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
 			User1 user1 = new User1();
@@ -99,7 +99,7 @@ public class BeanUtilTest {
 	}
 
 	@Test
-	public void test6() {
+	void test6() {
 		User user = new User();
 		user.setXx("123123");
 		user.setPhoto("www.dreamlu.net/img/1");
@@ -109,7 +109,7 @@ public class BeanUtilTest {
 	}
 
 	@Test
-	public void test7() {
+	void test7() {
 		User user = new User();
 		user.setXx("123123");
 		user.setPhoto("www.dreamlu.net/img/1");

@@ -1,8 +1,8 @@
 package net.dreamlu.mica.qrcode;
 
 import net.dreamlu.mica.core.utils.Charsets;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -10,14 +10,14 @@ import java.awt.image.BufferedImage;
 /**
  * qrcode 测试
  */
-public class QrCodeTest {
+class QrCodeTest {
 
 	@Test
-	public void test1() {
+	void test1() {
 		String text = "恭喜发财";
 		BufferedImage bufferedImage = QrCode.form(text).toImage();
 		String read = QrCode.read(bufferedImage);
-		Assert.assertEquals(text, read);
+		Assertions.assertEquals(text, read);
 	}
 
 	public static void main(String[] args) {

@@ -1,7 +1,7 @@
 package net.dreamlu.mica.laytpl;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -11,10 +11,10 @@ import java.util.Map;
 /**
  * 解析 jsonp
  */
-public class JsonpTest {
+class JsonpTest {
 
 	@Test
-	public void test() throws ScriptException {
+	void test() throws ScriptException {
 		String jsonp = "/**/callback( {\"client_id\":\"123\",\"openid\":\"123\",\"unionid\":\"123\"} )";
 
 		String jsFun = "function callback(json) { return json };";
@@ -25,9 +25,9 @@ public class JsonpTest {
 		engine.eval(jsFun);
 
 		Map json = (Map) engine.eval(jsonp);
-		Assert.assertEquals("123", json.get("client_id"));
-		Assert.assertEquals("123", json.get("openid"));
-		Assert.assertEquals("123", json.get("unionid"));
+		Assertions.assertEquals("123", json.get("client_id"));
+		Assertions.assertEquals("123", json.get("openid"));
+		Assertions.assertEquals("123", json.get("unionid"));
 	}
 
 }
