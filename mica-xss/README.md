@@ -22,15 +22,15 @@ compile("net.dreamlu:mica-xss:${version}")
 ```
 
 ## 配置
-| 配置项                         | 默认值 | 说明                                        |
-| ------------------------------ | ------ | ----------------------------------------- |
-| mica.xss.enabled               | true   | 开启xss                                   |
-| mica.xss.trim-text             | true   | 【全局】是否去除文本首尾空格                  |
-| mica.xss.mode                  | clear  | 模式：clear 清理（默认），escape 转义        |
-| mica.xss.pretty-print          | false  | `clear 专用` prettyPrint，默认关闭： 保留换行  |
-| mica.xss.enable-escape         | false  | `clear 专用` 转义，默认关闭                   |
-| mica.xss.path-patterns         | `/**`  | 拦截的路由，例如: `/api/order/**`             |
-| mica.xss.path-exclude-patterns |        | 放行的路由，默认为空                           |
+| 配置项                         | 默认值 | 说明                                             |
+| ------------------------------ | ------ |------------------------------------------------|
+| mica.xss.enabled               | true   | 开启xss                                          |
+| mica.xss.trim-text             | true   | 【全局】是否去除文本首尾空格                                 |
+| mica.xss.mode                  | clear  | 模式：clear 清理（默认）、escape 转义、validate 校验（3.7.4新增） |
+| mica.xss.pretty-print          | false  | `clear 专用` prettyPrint，默认关闭： 保留换行              |
+| mica.xss.enable-escape         | false  | `clear 专用` 转义，默认关闭                             |
+| mica.xss.path-patterns         | `/**`  | 拦截的路由，例如: `/api/order/**`                      |
+| mica.xss.path-exclude-patterns |        | 放行的路由，默认为空                                     |
 
 ## 注解
 可以使用 `@XssCleanIgnore` 注解对方法和类级别进行忽略。
@@ -67,6 +67,23 @@ public class MyXssCleaner implements XssCleaner {
 		return Entities.unescape(escapedText);
 	}
 
+}
+```
+
+## 校验模式
+
+校验模式会抛出异常，可以使用 Spring boot 的全局异常处理。
+
+| 模式    | 抛出的异常                                    |
+| ------- | --------------------------------------------- |
+| jackson | HttpMessageNotReadableException               |
+| form    | MethodArgumentConversionNotSupportedException |
+
+**获取 XssException**
+```java
+Throwable rootCause = NestedExceptionUtils.getRootCause(e);
+if (rootCause instanceof XssException) {
+    // xss 的异常
 }
 ```
 

@@ -24,7 +24,7 @@ import lombok.Getter;
  * @author L.cm
  */
 @Getter
-public class FromXssException extends IllegalArgumentException implements XssException {
+public class FromXssException extends IllegalStateException implements XssException {
 	private final String input;
 
 	public FromXssException(String input, String message) {

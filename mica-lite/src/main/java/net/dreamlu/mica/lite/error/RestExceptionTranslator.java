@@ -39,6 +39,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentConversionNotSupportedException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -116,6 +117,13 @@ public class RestExceptionTranslator {
 	@ExceptionHandler(HttpMessageConversionException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public R<Object> handleError(HttpMessageConversionException e) {
+		log.error("消息不能读取,转换异常:{}", e.getMessage());
+		return R.fail(SystemCode.MSG_NOT_READABLE);
+	}
+
+	@ExceptionHandler(MethodArgumentConversionNotSupportedException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public R<Object> handleError(MethodArgumentConversionNotSupportedException e) {
 		log.error("消息不能读取,转换异常:{}", e.getMessage());
 		return R.fail(SystemCode.MSG_NOT_READABLE);
 	}
