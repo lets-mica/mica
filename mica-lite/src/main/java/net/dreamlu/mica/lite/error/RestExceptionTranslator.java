@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -109,7 +110,14 @@ public class RestExceptionTranslator {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public R<Object> handleError(HttpMessageNotReadableException e) {
 		log.error("消息不能读取:{}", e.getMessage());
-		return R.fail(SystemCode.MSG_NOT_READABLE, e.getMessage());
+		return R.fail(SystemCode.MSG_NOT_READABLE);
+	}
+
+	@ExceptionHandler(HttpMessageConversionException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public R<Object> handleError(HttpMessageConversionException e) {
+		log.error("消息不能读取,转换异常:{}", e.getMessage());
+		return R.fail(SystemCode.MSG_NOT_READABLE);
 	}
 
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)

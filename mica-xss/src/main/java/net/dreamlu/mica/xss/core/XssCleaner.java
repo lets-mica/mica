@@ -32,7 +32,18 @@ public interface XssCleaner {
 	 * @param html html
 	 * @return 清理后的数据
 	 */
-	String clean(String html);
+	default String clean(String html) {
+		return clean(html, XssType.FORM);
+	}
+
+	/**
+	 * 清理 html
+	 *
+	 * @param html html
+	 * @param type XssType
+	 * @return 清理后的数据
+	 */
+	String clean(String html, XssType type);
 
 	/**
 	 * 判断输入是否安全

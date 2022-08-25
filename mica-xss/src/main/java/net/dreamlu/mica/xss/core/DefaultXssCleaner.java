@@ -47,7 +47,7 @@ public class DefaultXssCleaner implements XssCleaner {
 	}
 
 	@Override
-	public String clean(String bodyHtml) {
+	public String clean(String bodyHtml, XssType type) {
 		// 1. 为空直接返回
 		if (StringUtil.isBlank(bodyHtml)) {
 			return bodyHtml;
@@ -61,7 +61,7 @@ public class DefaultXssCleaner implements XssCleaner {
 			if (Jsoup.isValid(bodyHtml, XssUtil.WHITE_LIST)) {
 				return bodyHtml;
 			}
-			throw new XssException("Xss validate exception, input value:" + bodyHtml);
+			throw type.getXssException(bodyHtml, "Xss validate fail, input value:" + HtmlUtils.htmlEscape(bodyHtml));
 		} else {
 			// 4. 清理后的 html
 			String escapedHtml = Jsoup.clean(bodyHtml, "", XssUtil.WHITE_LIST, getOutputSettings(properties));

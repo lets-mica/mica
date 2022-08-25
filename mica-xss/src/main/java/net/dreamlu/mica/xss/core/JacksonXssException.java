@@ -16,25 +16,22 @@
 
 package net.dreamlu.mica.xss.core;
 
+import lombok.Getter;
+
+import java.io.IOException;
+
 /**
- * xss 异常，校验模式抛出
+ * xss jackson 异常
  *
  * @author L.cm
  */
-public interface XssException {
+@Getter
+public class JacksonXssException extends IOException implements XssException {
+	private final String input;
 
-	/**
-	 * 输入的数据
-	 *
-	 * @return 数据
-	 */
-	String getInput();
-
-	/**
-	 * 获取异常的消息
-	 *
-	 * @return 消息
-	 */
-	String getMessage();
+	public JacksonXssException(String input, String message) {
+		super(message);
+		this.input = input;
+	}
 
 }

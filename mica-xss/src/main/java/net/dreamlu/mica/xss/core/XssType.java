@@ -16,25 +16,40 @@
 
 package net.dreamlu.mica.xss.core;
 
+import net.dreamlu.mica.core.utils.Exceptions;
+
 /**
- * xss 异常，校验模式抛出
- *
- * @author L.cm
+ * xss 数据处理类型
  */
-public interface XssException {
+public enum XssType {
 
 	/**
-	 * 输入的数据
-	 *
-	 * @return 数据
+	 * 表单
 	 */
-	String getInput();
+	FORM() {
+		@Override
+		public RuntimeException getXssException(String input, String message) {
+			return new FromXssException(input, message);
+		}
+	},
 
 	/**
-	 * 获取异常的消息
-	 *
-	 * @return 消息
+	 * body json
 	 */
-	String getMessage();
+	JACKSON() {
+		@Override
+		public RuntimeException getXssException(String input, String message) {
+			return Exceptions.unchecked(new JacksonXssException(input, message));
+		}
+	};
+
+	/**
+	 * 获取 xss 异常
+	 *
+	 * @param input   input
+	 * @param message message
+	 * @return XssException
+	 */
+	public abstract RuntimeException getXssException(String input, String message);
 
 }
