@@ -61,7 +61,7 @@ public class DefaultXssCleaner implements XssCleaner {
 			if (Jsoup.isValid(bodyHtml, XssUtil.WHITE_LIST)) {
 				return bodyHtml;
 			}
-			throw type.getXssException(bodyHtml, "Xss validate fail, input value:" + HtmlUtils.htmlEscape(bodyHtml));
+			throw type.getXssException(bodyHtml, "Xss validate fail, input value:" + bodyHtml);
 		} else {
 			// 4. 清理后的 html
 			String escapedHtml = Jsoup.clean(bodyHtml, "", XssUtil.WHITE_LIST, getOutputSettings(properties));
