@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.xss.core;
 
-import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.Charsets;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.xss.config.MicaXssProperties;
@@ -25,7 +24,6 @@ import net.dreamlu.mica.xss.utils.XssUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Entities;
-import org.jsoup.safety.Cleaner;
 import org.springframework.web.util.HtmlUtils;
 
 /**
@@ -33,9 +31,20 @@ import org.springframework.web.util.HtmlUtils;
  *
  * @author L.cm
  */
-@RequiredArgsConstructor
 public class DefaultXssCleaner implements XssCleaner {
 	private final MicaXssProperties properties;
+
+	public DefaultXssCleaner(MicaXssProperties properties) {
+		this.properties = properties;
+	}
+
+	private static Document.OutputSettings getOutputSettings(MicaXssProperties properties) {
+		return new Document.OutputSettings()
+			// 2. 转义，没找到关闭的方法，目前这个规则最少
+			.escapeMode(Entities.EscapeMode.xhtml)
+			// 3. 保留换行
+			.prettyPrint(properties.isPrettyPrint());
+	}
 
 	@Override
 	public String clean(String bodyHtml) {
@@ -47,19 +56,15 @@ public class DefaultXssCleaner implements XssCleaner {
 		if (Mode.escape == mode) {
 			// html 转义
 			return HtmlUtils.htmlEscape(bodyHtml, Charsets.UTF_8_NAME);
+		} else if (Mode.validate == mode) {
+			// 校验
+			if (Jsoup.isValid(bodyHtml, XssUtil.WHITE_LIST)) {
+				return bodyHtml;
+			}
+			throw new XssException("Xss validate exception, input value:" + bodyHtml);
 		} else {
-			// jsoup html 清理
-			Document.OutputSettings outputSettings = new Document.OutputSettings()
-				// 2. 转义，没找到关闭的方法，目前这个规则最少
-				.escapeMode(Entities.EscapeMode.xhtml)
-				// 3. 保留换行
-				.prettyPrint(properties.isPrettyPrint());
-			Document dirty = Jsoup.parseBodyFragment(bodyHtml, "");
-			Cleaner cleaner = new Cleaner(XssUtil.WHITE_LIST);
-			Document clean = cleaner.clean(dirty);
-			clean.outputSettings(outputSettings);
 			// 4. 清理后的 html
-			String escapedHtml = clean.body().html();
+			String escapedHtml = Jsoup.clean(bodyHtml, "", XssUtil.WHITE_LIST, getOutputSettings(properties));
 			if (properties.isEnableEscape()) {
 				return escapedHtml;
 			}

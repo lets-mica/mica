@@ -73,7 +73,11 @@ public class MicaXssProperties {
 		/**
 		 * 转义
 		 */
-		escape;
+		escape,
+		/**
+		 * 校验，抛出异常
+		 */
+		validate;
 	}
 
 }

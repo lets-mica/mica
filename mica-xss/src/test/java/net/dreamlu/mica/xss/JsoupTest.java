@@ -29,4 +29,11 @@ class JsoupTest {
 		Assertions.assertEquals("&&&&&&", text);
 	}
 
+	@Test
+	void test2() {
+		String html = "&&&&&&<script>哈哈哈</script>";
+		boolean valid = Jsoup.isValid(html, XssUtil.WHITE_LIST);
+		Assertions.assertFalse(valid);
+	}
+
 }
