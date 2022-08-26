@@ -55,6 +55,14 @@ class RedisApplicationTests {
 
 	@Test
 	void contextLoads() {
+//		List<String> test = new ArrayList<>();
+//		test.add("test1");
+//		test.add("test1");
+//		micaRedisCache.lPush("test1", 123, 123);
+//		micaRedisCache.lPush("test1", test);
+//		micaRedisCache.lPush("test2", Arrays.asList("123", "456"));
+//		micaRedisCache.hmGet("test1", 123);
+//		micaRedisCache.hmGet("test1", test);
 //		User user = new User();
 //		user.setId("123");
 //		user.setAge(32);

@@ -64,7 +64,7 @@ public class MicaRedisCache {
 	 * @param cacheKey 缓存key
 	 * @param value    缓存value
 	 */
-	public void set(CacheKey cacheKey, Object value) {
+	public <T> void set(CacheKey cacheKey, T value) {
 		String key = cacheKey.getKey();
 		Duration expire = cacheKey.getExpire();
 		if (expire == null) {
@@ -77,7 +77,7 @@ public class MicaRedisCache {
 	/**
 	 * 存放 key value 对到 redis。
 	 */
-	public void set(String key, Object value) {
+	public <T> void set(String key, T value) {
 		valueOps.set(key, value);
 	}
 
@@ -96,7 +96,7 @@ public class MicaRedisCache {
 	 * 存放 key value 对到 redis，并将 key 的生存时间设为 seconds (以秒为单位)。
 	 * 如果 key 已经存在， SETEX 命令将覆写旧值。
 	 */
-	public void setEx(String key, Object value, Duration timeout) {
+	public <T> void setEx(String key, T value, Duration timeout) {
 		valueOps.set(key, value, timeout);
 	}
 
@@ -104,7 +104,7 @@ public class MicaRedisCache {
 	 * 存放 key value 对到 redis，并将 key 的生存时间设为 seconds (以秒为单位)。
 	 * 如果 key 已经存在， SETEX 命令将覆写旧值。
 	 */
-	public void setEx(String key, Object value, Long seconds) {
+	public <T> void setEx(String key, T value, Long seconds) {
 		valueOps.set(key, value, seconds, TimeUnit.SECONDS);
 	}
 
@@ -117,7 +117,7 @@ public class MicaRedisCache {
 	 * @param unit    must not be {@literal null}.
 	 * @see <a href="https://redis.io/commands/setex">Redis Documentation: SETEX</a>
 	 */
-	public void setEx(String key, Object value, long timeout, TimeUnit unit) {
+	public <T> void setEx(String key, T value, long timeout, TimeUnit unit) {
 		valueOps.set(key, value, timeout, unit);
 	}
 
@@ -131,7 +131,7 @@ public class MicaRedisCache {
 	 * @see <a href="https://redis.io/commands/setnx">Redis Documentation: SETNX</a>
 	 */
 	@Nullable
-	public Boolean setNx(String key, Object value) {
+	public <T> Boolean setNx(String key, T value) {
 		return valueOps.setIfAbsent(key, value);
 	}
 
@@ -145,7 +145,7 @@ public class MicaRedisCache {
 	 * @see <a href="https://redis.io/commands/set">Redis Documentation: set</a>
 	 */
 	@Nullable
-	public Boolean setNx(String key, Object value, long time, TimeUnit unit) {
+	public <T> Boolean setNx(String key, T value, long time, TimeUnit unit) {
 		return valueOps.setIfAbsent(key, value, time, unit);
 	}
 
@@ -770,7 +770,7 @@ public class MicaRedisCache {
 	 * 当 key 存在但不是字符串类型时，返回一个错误。
 	 */
 	@Nullable
-	public <T> T getSet(String key, Object value) {
+	public <T> T getSet(String key, T value) {
 		return (T) valueOps.getAndSet(key, value);
 	}
 
@@ -810,7 +810,7 @@ public class MicaRedisCache {
 	 * 如果 key 不存在，一个新的哈希表被创建并进行 HSET 操作。
 	 * 如果域 field 已经存在于哈希表中，旧值将被覆盖。
 	 */
-	public void hSet(String key, Object field, Object value) {
+	public <F, V> void hSet(String key, F field, V value) {
 		hashOps.put(key, field, value);
 	}
 
@@ -819,7 +819,7 @@ public class MicaRedisCache {
 	 * 此命令会覆盖哈希表中已存在的域。
 	 * 如果 key 不存在，一个空哈希表被创建并执行 HMSET 操作。
 	 */
-	public void hMset(String key, Map<Object, Object> hash) {
+	public <F, V> void hMset(String key, Map<F, V> hash) {
 		hashOps.putAll(key, hash);
 	}
 
@@ -836,7 +836,7 @@ public class MicaRedisCache {
 	 * 如果给定的域不存在于哈希表，那么返回一个 nil 值。
 	 * 因为不存在的 key 被当作一个空哈希表来处理，所以对一个不存在的 key 进行 HMGET 操作将返回一个只带有 nil 值的表。
 	 */
-	public List hmGet(String key, Object... fields) {
+	public <F, V> List<V> hmGet(String key, F... fields) {
 		return hmGet(key, Arrays.asList(fields));
 	}
 
@@ -845,8 +845,8 @@ public class MicaRedisCache {
 	 * 如果给定的域不存在于哈希表，那么返回一个 nil 值。
 	 * 因为不存在的 key 被当作一个空哈希表来处理，所以对一个不存在的 key 进行 HMGET 操作将返回一个只带有 nil 值的表。
 	 */
-	public List hmGet(String key, Collection<Object> hashKeys) {
-		return hashOps.multiGet(key, hashKeys);
+	public <F, V> List<V> hmGet(String key, Collection<F> hashKeys) {
+		return (List<V>) hashOps.multiGet(key, (Collection<Object>) hashKeys);
 	}
 
 	/**
@@ -957,7 +957,7 @@ public class MicaRedisCache {
 	 * 当 key 存在但不是列表类型时，返回一个错误。
 	 */
 	@Nullable
-	public Long lPush(String key, Object value) {
+	public <T> Long lPush(String key, T value) {
 		return listOps.leftPush(key, value);
 	}
 
@@ -970,7 +970,7 @@ public class MicaRedisCache {
 	 * 当 key 存在但不是列表类型时，返回一个错误。
 	 */
 	@Nullable
-	public Long lPush(String key, Object... values) {
+	public <T> Long lPush(String key, T... values) {
 		return listOps.leftPushAll(key, values);
 	}
 
@@ -983,7 +983,7 @@ public class MicaRedisCache {
 	 * 当 key 存在但不是列表类型时，返回一个错误。
 	 */
 	@Nullable
-	public Long lPush(String key, Collection<Object> values) {
+	public <T> Long lPush(String key, Collection<T> values) {
 		return listOps.leftPushAll(key, values);
 	}
 
@@ -1051,7 +1051,7 @@ public class MicaRedisCache {
 	 * 当 key 存在但不是列表类型时，返回一个错误。
 	 */
 	@Nullable
-	public Long rPush(String key, Object value) {
+	public <T> Long rPush(String key, T value) {
 		return listOps.rightPush(key, value);
 	}
 
@@ -1064,7 +1064,7 @@ public class MicaRedisCache {
 	 * 当 key 存在但不是列表类型时，返回一个错误。
 	 */
 	@Nullable
-	public Long rPush(String key, Object... values) {
+	public <T> Long rPush(String key, T... values) {
 		return listOps.rightPushAll(key, values);
 	}
 
@@ -1077,7 +1077,7 @@ public class MicaRedisCache {
 	 * 当 key 存在但不是列表类型时，返回一个错误。
 	 */
 	@Nullable
-	public Long rPush(String key, Collection<Object> values) {
+	public <T> Long rPush(String key, Collection<T> values) {
 		return listOps.rightPushAll(key, values);
 	}
 
@@ -1097,7 +1097,7 @@ public class MicaRedisCache {
 	 * 当 key 不是集合类型时，返回一个错误。
 	 */
 	@Nullable
-	public Long sAdd(String key, Object... members) {
+	public <T> Long sAdd(String key, T... members) {
 		return setOps.add(key, members);
 	}
 
@@ -1123,7 +1123,7 @@ public class MicaRedisCache {
 	 * 判断 member 元素是否集合 key 的成员。
 	 */
 	@Nullable
-	public Boolean sIsMember(String key, Object member) {
+	public <T> Boolean sIsMember(String key, T member) {
 		return setOps.isMember(key, member);
 	}
 
@@ -1167,7 +1167,7 @@ public class MicaRedisCache {
 	 * 移除集合 key 中的一个或多个 member 元素，不存在的 member 元素会被忽略。
 	 */
 	@Nullable
-	public Long sRem(String key, Object... members) {
+	public <T> Long sRem(String key, T... members) {
 		return setOps.remove(key, members);
 	}
 
@@ -1213,7 +1213,7 @@ public class MicaRedisCache {
 	 * 并通过重新插入这个 member 元素，来保证该 member 在正确的位置上。
 	 */
 	@Nullable
-	public Boolean zAdd(String key, Object member, double score) {
+	public <T> Boolean zAdd(String key, T member, double score) {
 		return zSetOps.add(key, member, score);
 	}
 
@@ -1223,7 +1223,7 @@ public class MicaRedisCache {
 	 * 并通过重新插入这个 member 元素，来保证该 member 在正确的位置上。
 	 */
 	@Nullable
-	public Long zAdd(String key, Map<Object, Double> scoreMembers) {
+	public <T> Long zAdd(String key, Map<T, Double> scoreMembers) {
 		Set<ZSetOperations.TypedTuple<Object>> tuples = new HashSet<>();
 		scoreMembers.forEach((k, v) -> tuples.add(new DefaultTypedTuple<>(k, v)));
 		return zSetOps.add(key, tuples);
@@ -1250,7 +1250,7 @@ public class MicaRedisCache {
 	 * 为有序集 key 的成员 member 的 score 值加上增量 increment 。
 	 */
 	@Nullable
-	public Double zIncrBy(String key, Object member, double score) {
+	public <T> Double zIncrBy(String key, T member, double score) {
 		return zSetOps.incrementScore(key, member, score);
 	}
 
@@ -1291,7 +1291,7 @@ public class MicaRedisCache {
 	 * 使用 ZREVRANK 命令可以获得成员按 score 值递减(从大到小)排列的排名。
 	 */
 	@Nullable
-	public Long zRank(String key, Object member) {
+	public <T> Long zRank(String key, T member) {
 		return zSetOps.rank(key, member);
 	}
 
@@ -1301,7 +1301,7 @@ public class MicaRedisCache {
 	 * 使用 ZRANK 命令可以获得成员按 score 值递增(从小到大)排列的排名。
 	 */
 	@Nullable
-	public Long zRevrank(String key, Object member) {
+	public <T> Long zRevrank(String key, T member) {
 		return zSetOps.reverseRank(key, member);
 	}
 
@@ -1310,7 +1310,7 @@ public class MicaRedisCache {
 	 * 当 key 存在但不是有序集类型时，返回一个错误。
 	 */
 	@Nullable
-	public Long zRem(String key, Object... members) {
+	public <T> Long zRem(String key, T... members) {
 		return zSetOps.remove(key, members);
 	}
 
@@ -1319,7 +1319,7 @@ public class MicaRedisCache {
 	 * 如果 member 元素不是有序集 key 的成员，或 key 不存在，返回 nil 。
 	 */
 	@Nullable
-	public Double zScore(String key, Object member) {
+	public <T> Double zScore(String key, T member) {
 		return zSetOps.score(key, member);
 	}
 
