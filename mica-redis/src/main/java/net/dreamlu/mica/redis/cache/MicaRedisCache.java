@@ -59,6 +59,16 @@ public class MicaRedisCache {
 	}
 
 	/**
+	 * 方便多 redis 数据源使用
+	 *
+	 * @param redisTemplate RedisTemplate
+	 * @return MicaRedisCache
+	 */
+	public static MicaRedisCache use(RedisTemplate<String, Object> redisTemplate) {
+		return new MicaRedisCache(redisTemplate);
+	}
+
+	/**
 	 * 设置缓存
 	 *
 	 * @param cacheKey 缓存key
