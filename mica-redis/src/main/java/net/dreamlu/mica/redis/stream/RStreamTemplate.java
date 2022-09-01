@@ -21,6 +21,7 @@ import org.springframework.data.redis.connection.stream.MapRecord;
 import org.springframework.data.redis.connection.stream.ObjectRecord;
 import org.springframework.data.redis.connection.stream.Record;
 import org.springframework.data.redis.connection.stream.RecordId;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.lang.Nullable;
 
 import java.util.Collections;
@@ -38,6 +39,16 @@ public interface RStreamTemplate {
 	 * 自定义 pojo 类型 key
 	 */
 	String OBJECT_PAYLOAD_KEY = "@payload";
+
+	/**
+	 * 方便多 redis 数据源使用
+	 *
+	 * @param redisTemplate RedisTemplate
+	 * @return MicaRedisCache
+	 */
+	static RStreamTemplate use(RedisTemplate<String, Object> redisTemplate) {
+		return new DefaultRStreamTemplate(redisTemplate);
+	}
 
 	/**
 	 * 发布消息
