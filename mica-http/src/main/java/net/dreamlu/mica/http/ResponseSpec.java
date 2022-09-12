@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * 相应接口
+ * 响应接口
  *
  * @author L.cm
  */
