@@ -17,11 +17,13 @@
 package net.dreamlu.mica.jetcache.metrics;
 
 import com.alicp.jetcache.Cache;
+import com.alicp.jetcache.CacheManager;
 import com.alicp.jetcache.CacheUtil;
 import com.alicp.jetcache.MultiLevelCache;
-import com.alicp.jetcache.anno.support.CacheMonitorManager;
 import com.alicp.jetcache.support.DefaultCacheMonitor;
 import com.alicp.jetcache.support.DefaultMetricsManager;
+import com.alicp.jetcache.template.CacheMonitorInstaller;
+import com.alicp.jetcache.template.QuickConfig;
 import io.micrometer.core.instrument.FunctionCounter;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -35,7 +37,7 @@ import org.springframework.lang.Nullable;
  * @author L.cm
  */
 @SuppressWarnings("unchecked")
-public class JetCacheMonitorManager implements CacheMonitorManager, InitializingBean, DisposableBean {
+public class JetCacheMonitorManager implements CacheMonitorInstaller, InitializingBean, DisposableBean {
 	/**
 	 * Prefix used for all jetcache metric names.
 	 */
@@ -63,8 +65,12 @@ public class JetCacheMonitorManager implements CacheMonitorManager, Initializing
 	}
 
 	@Override
-	public void addMonitors(String area, String cacheName, Cache cache) {
+	public void addMonitors(CacheManager cacheManager, Cache cache, QuickConfig quickConfig) {
+		if (defaultMetricsManager == null) {
+			return;
+		}
 		cache = CacheUtil.getAbstractCache(cache);
+		String cacheName = quickConfig.getName();
 		if (cache instanceof MultiLevelCache) {
 			MultiLevelCache mc = (MultiLevelCache) cache;
 			if (mc.caches().length == 2) {
@@ -80,17 +86,13 @@ public class JetCacheMonitorManager implements CacheMonitorManager, Initializing
 				DefaultCacheMonitor remoteMonitor = new DefaultCacheMonitor(cacheName + "_remote");
 				remote.config().getMonitors().add(remoteMonitor);
 				registerMeters(meterRegistry, remoteCacheName, remoteMonitor);
-				if (defaultMetricsManager != null) {
-					defaultMetricsManager.add(localMonitor, remoteMonitor);
-				}
+				defaultMetricsManager.add(localMonitor, remoteMonitor);
 			}
 		}
 		DefaultCacheMonitor monitor = new DefaultCacheMonitor(cacheName);
 		cache.config().getMonitors().add(monitor);
 		registerMeters(meterRegistry, cacheName, monitor);
-		if (defaultMetricsManager != null) {
-			defaultMetricsManager.add(monitor);
-		}
+		defaultMetricsManager.add(monitor);
 	}
 
 	@Override

@@ -6,14 +6,14 @@ ext {
     javaVersion = JavaVersion.VERSION_1_8
     springBootVersion = "2.7.3"
     springNativeVersion = "0.10.6"
-    springCloudVersion = "2021.0.3"
+    springCloudVersion = "2021.0.4"
     micaAutoVersion = "2.3.1"
     micaWeiXinVersion = "2.1.2"
     knife4jVersion = "3.0.3"
-    springdocVersion = "1.6.9"
+    springdocVersion = "1.6.11"
     swaggerVersion = "1.5.22"
-    swagger3xVersion = "2.2.0"
-    druidVersion = "1.2.11"
+    swagger3xVersion = "2.2.2"
+    druidVersion = "1.2.12"
     okhttpVersion = "4.10.0"
     jsoupVersion = "1.15.3"
     xxlJobVersion = "2.3.1"
@@ -22,8 +22,8 @@ ext {
     logstashVersion = "7.2"
     lokiLogbackAppender = "1.3.2"
     zxingVersion = "3.5.0"
-    jetCacheVersion = "2.6.7"
-    jfinalVersion = "5.0.0"
+    jetCacheVersion = "2.7.0"
+    jfinalVersion = "5.0.3"
 }
 
 configure(subprojects) {
