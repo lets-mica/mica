@@ -2,6 +2,16 @@
 
 ## 发行版本
 
+### v2.7.4 - 2022-09-25
+- :sparkles: mica-redis 方便多 redis 数据源使用。
+- :sparkles: mica-xss 优化异常提示。
+- :sparkles: mica-xss 增加校验 mode，提示异常
+- :sparkles: 升级使用 junit5
+- :sparkles: 开源之夏 mica-openapi 完成 #I5539K
+- :memo: 描述错误，感谢 `@iacker` pr
+- :bug: mica-redis 修复 lPush list 参数问题。
+- :arrow_up: 依赖升级
+
 ### v2.7.3 - 2022-08-21
 - :sparkles: mica-core 统一去除 @UtilityClass，方便继承。
 - :sparkles: mica-xss 放开 XssHolder，方便自定义处理。
