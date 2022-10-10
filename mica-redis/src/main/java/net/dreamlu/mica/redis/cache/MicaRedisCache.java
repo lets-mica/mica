@@ -1200,6 +1200,15 @@ public class MicaRedisCache {
 	}
 
 	/**
+	 * 返回多个集合的并集，多个集合由 keys 指定
+	 * 不存在的 key 被视为空集。
+	 */
+	@Nullable
+	public <T> Set<T> sUnion(Collection<String> keys) {
+		return (Set<T>) setOps.union(keys);
+	}
+
+	/**
 	 * 返回一个集合的全部成员，该集合是所有给定集合之间的差集。
 	 * 不存在的 key 被视为空集。
 	 */
