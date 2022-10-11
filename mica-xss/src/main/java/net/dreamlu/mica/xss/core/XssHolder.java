@@ -16,13 +16,17 @@
 
 package net.dreamlu.mica.xss.core;
 
+import org.springframework.util.ObjectUtils;
+
+import java.util.Objects;
+
 /**
  * 利用 ThreadLocal 缓存线程间的数据
  *
  * @author L.cm
  */
 public class XssHolder {
-	private static final ThreadLocal<Boolean> TL = new ThreadLocal<>();
+	private static final ThreadLocal<XssCleanIgnore> TL = new ThreadLocal<>();
 
 	/**
 	 * 是否开启
@@ -30,14 +34,29 @@ public class XssHolder {
 	 * @return boolean
 	 */
 	public static boolean isEnabled() {
-		return Boolean.TRUE.equals(TL.get());
+		return Objects.isNull(TL.get());
+	}
+
+	/**
+	 * 判断是否被忽略
+	 *
+	 * @return XssCleanIgnore
+	 */
+	static boolean isIgnore(String name) {
+		XssCleanIgnore cleanIgnore = TL.get();
+		if (cleanIgnore == null) {
+			return false;
+		}
+		String[] ignoreArray = cleanIgnore.value();
+		// 指定忽略的属性
+		return ObjectUtils.containsElement(ignoreArray, name);
 	}
 
 	/**
 	 * 标记为开启
 	 */
-	static void setEnable() {
-		TL.set(Boolean.TRUE);
+	static void setIgnore(XssCleanIgnore xssCleanIgnore) {
+		TL.set(xssCleanIgnore);
 	}
 
 	/**

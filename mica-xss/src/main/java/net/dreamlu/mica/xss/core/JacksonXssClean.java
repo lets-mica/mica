@@ -36,13 +36,13 @@ public class JacksonXssClean extends XssCleanDeserializerBase {
 
 	@Override
 	public String clean(String name, String text) throws IOException {
-		if (XssHolder.isEnabled()) {
-			String value = xssCleaner.clean(XssUtil.trim(text, properties.isTrimText()));
-			log.debug("Json property value:{} cleaned up by mica-xss, current value is:{}.", text, value);
-			return value;
-		} else {
+		// 判断是否忽略
+		if (XssHolder.isIgnore(name)) {
 			return XssUtil.trim(text, properties.isTrimText());
 		}
+		String value = xssCleaner.clean(XssUtil.trim(text, properties.isTrimText()));
+		log.debug("Json property name:{} value:{} cleaned up by mica-xss, current value is:{}.", name, text, value);
+		return value;
 	}
 
 }
