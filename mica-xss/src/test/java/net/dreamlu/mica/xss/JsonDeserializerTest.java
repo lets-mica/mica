@@ -22,6 +22,14 @@ class JsonDeserializerTest {
 		private Integer isRead;
 	}
 
+	@Data
+	static class TypeBean {
+		@JsonDeserialize(using = XssCleanDeserializer.class)
+		private String pageNum;
+		@JsonDeserialize(using = XssCleanDeserializer.class)
+		private String pageSize;
+	}
+
 	@Test
 	void test() throws JsonProcessingException {
 		Assertions.assertThrows(MismatchedInputException.class, () -> {
@@ -37,6 +45,16 @@ class JsonDeserializerTest {
 				+ "}", DemoBean.class);
 			log.info("demoBean:{}", demoBean);
 		});
+	}
+
+	@Test
+	void testType() throws JsonProcessingException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		TypeBean typeBean = objectMapper.readValue("{\n"
+			+ "    \"pageNum\": 1,\n"
+			+ "    \"pageSize\": 15\n"
+			+ "}", TypeBean.class);
+		log.info("demoBean:{}", typeBean);
 	}
 
 }

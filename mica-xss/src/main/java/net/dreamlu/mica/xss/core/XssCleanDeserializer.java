@@ -32,7 +32,7 @@ import java.io.IOException;
 public class XssCleanDeserializer extends XssCleanDeserializerBase {
 
 	@Override
-	public String clean(String text) throws IOException {
+	public String clean(String name, String text) throws IOException {
 		// 读取 xss 配置
 		MicaXssProperties properties = SpringContextUtil.getBean(MicaXssProperties.class);
 		if (properties == null) {
@@ -44,7 +44,7 @@ public class XssCleanDeserializer extends XssCleanDeserializerBase {
 			return XssUtil.trim(text, properties.isTrimText());
 		}
 		String value = xssCleaner.clean(XssUtil.trim(text, properties.isTrimText()));
-		log.debug("Json property value:{} cleaned up by mica-xss, current value is:{}.", text, value);
+		log.debug("Json property name:{} value:{} cleaned up by mica-xss, current value is:{}.", name, text, value);
 		return value;
 	}
 

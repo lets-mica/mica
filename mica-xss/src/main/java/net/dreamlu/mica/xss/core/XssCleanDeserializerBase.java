@@ -33,25 +33,33 @@ public abstract class XssCleanDeserializerBase extends JsonDeserializer<String> 
 
 	@Override
 	public String deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
+		// json 字段名
+		String name = p.getCurrentName();
+		// 字符串类型
+		if (p.hasToken(JsonToken.VALUE_STRING)) {
+			String text = p.getText();
+			if (text == null) {
+				return null;
+			}
+			return clean(name, text);
+		}
 		JsonToken jsonToken = p.getCurrentToken();
-		if (JsonToken.VALUE_STRING != jsonToken) {
-			throw MismatchedInputException.from(p, String.class, "mica-xss: can't deserialize value of type java.lang.String from " + jsonToken);
+		if (jsonToken.isScalarValue()) {
+			String text = p.getValueAsString();
+			if (text != null) {
+				return text;
+			}
 		}
-		// 解析字符串
-		String text = p.getValueAsString();
-		if (text == null) {
-			return null;
-		}
-		// xss 配置
-		return this.clean(text);
+		throw MismatchedInputException.from(p, String.class, "mica-xss: can't deserialize json name:" + name + " value of type java.lang.String from " + jsonToken);
 	}
 
 	/**
 	 * 清理 xss
 	 *
-	 * @param text text
+	 * @param name  json name
+	 * @param value json value
 	 * @return String
 	 */
-	public abstract String clean(String text) throws IOException;
+	public abstract String clean(String name, String value) throws IOException;
 
 }
