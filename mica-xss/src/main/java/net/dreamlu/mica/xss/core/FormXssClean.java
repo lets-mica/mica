@@ -70,7 +70,7 @@ public class FormXssClean {
 			if (text == null) {
 				setValue(null);
 			} else if (XssHolder.isEnabled()) {
-				String value = xssCleaner.clean(XssUtil.trim(text, properties.isTrimText()));
+				String value = xssCleaner.clean(XssUtil.trim(text, properties.isTrimText()), XssType.FORM);
 				setValue(value);
 				log.debug("Request parameter value:{} cleaned up by mica-xss, current value is:{}.", text, value);
 			} else {

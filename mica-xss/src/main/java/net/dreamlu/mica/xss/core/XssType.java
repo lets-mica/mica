@@ -28,7 +28,7 @@ public enum XssType {
 	 */
 	FORM() {
 		@Override
-		public RuntimeException getXssException(String input, String message) {
+		public RuntimeException getXssException(String name, String input, String message) {
 			return new FromXssException(input, message);
 		}
 	},
@@ -38,18 +38,19 @@ public enum XssType {
 	 */
 	JACKSON() {
 		@Override
-		public RuntimeException getXssException(String input, String message) {
-			return Exceptions.unchecked(new JacksonXssException(input, message));
+		public RuntimeException getXssException(String name, String input, String message) {
+			return Exceptions.unchecked(new JacksonXssException(name, input, message));
 		}
 	};
 
 	/**
 	 * 获取 xss 异常
 	 *
+	 * @param name    属性名
 	 * @param input   input
 	 * @param message message
 	 * @return XssException
 	 */
-	public abstract RuntimeException getXssException(String input, String message);
+	public abstract RuntimeException getXssException(String name, String input, String message);
 
 }

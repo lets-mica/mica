@@ -29,21 +29,23 @@ public interface XssCleaner {
 	/**
 	 * 清理 html
 	 *
-	 * @param html html
+	 * @param value 属性值
+	 * @param type  XssType
 	 * @return 清理后的数据
 	 */
-	default String clean(String html) {
-		return clean(html, XssType.FORM);
+	default String clean(String value, XssType type) {
+		return clean(null, value, type);
 	}
 
 	/**
 	 * 清理 html
 	 *
-	 * @param html html
-	 * @param type XssType
+	 * @param name  属性名
+	 * @param value 属性值
+	 * @param type  XssType
 	 * @return 清理后的数据
 	 */
-	String clean(String html, XssType type);
+	String clean(String name, String value, XssType type);
 
 	/**
 	 * 判断输入是否安全

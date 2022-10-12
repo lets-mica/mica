@@ -43,7 +43,7 @@ public class XssCleanDeserializer extends XssCleanDeserializerBase {
 		if (xssCleaner == null) {
 			return XssUtil.trim(text, properties.isTrimText());
 		}
-		String value = xssCleaner.clean(XssUtil.trim(text, properties.isTrimText()));
+		String value = xssCleaner.clean(name, XssUtil.trim(text, properties.isTrimText()), XssType.JACKSON);
 		log.debug("Json property name:{} value:{} cleaned up by mica-xss, current value is:{}.", name, text, value);
 		return value;
 	}

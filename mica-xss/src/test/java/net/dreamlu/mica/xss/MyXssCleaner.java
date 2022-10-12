@@ -10,7 +10,7 @@ import org.jsoup.nodes.Entities;
 public class MyXssCleaner implements XssCleaner {
 
 	@Override
-	public String clean(String html, XssType type) {
+	public String clean(String name, String html, XssType type) {
 		Document.OutputSettings settings = new Document.OutputSettings()
 			// 1. 转义用最少的规则，没找到关闭的方法
 			.escapeMode(Entities.EscapeMode.xhtml)

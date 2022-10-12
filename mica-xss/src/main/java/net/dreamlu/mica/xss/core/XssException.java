@@ -24,6 +24,15 @@ package net.dreamlu.mica.xss.core;
 public interface XssException {
 
 	/**
+	 * 属性名，目前仅 body json 支持，form 表单不支持
+	 *
+	 * @return 属性名
+	 */
+	default String getName() {
+		return null;
+	}
+
+	/**
 	 * 输入的数据
 	 *
 	 * @return 数据
