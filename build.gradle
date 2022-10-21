@@ -52,8 +52,6 @@ configure(subprojects - project(":mica-bom")) {
 
     repositories {
         mavenLocal()
-        maven { url "https://repo.spring.io/release" }
-        maven { url "https://repo.spring.io/milestone" }
         mavenCentral()
     }
 
