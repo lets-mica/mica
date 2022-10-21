@@ -2,10 +2,11 @@
 
 ## 发行版本
 
-### v2.7.5 - 2022-10-23
+### v2.7.5 - 2022-10-21
 - :sparkles: mica-xss `@XssCleanIgnore` 注解添加 `value()` 数组，支持忽略 json body 字段名。感谢 `冷冷（pig开源）`提出的需求。
 - :sparkles: mica-redis `hash` 便捷取并集，感谢 `@just-cloud (zqf)` pr
 - :bug: mica-xss json int、bool 等基础类型映射到字符串时的类型问题。感谢 `@有请岁月` 反馈。
+- :arrow_up: 依赖升级
 
 ### v2.7.4 - 2022-09-25
 - :sparkles: mica-redis 方便多 redis 数据源使用。
