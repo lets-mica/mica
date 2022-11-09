@@ -85,6 +85,30 @@ public class MicaRedisCache {
 	}
 
 	/**
+	 * 存放 key value 对到 redis，用于自定义序列化的方式
+	 *
+	 * @param cacheKey redis cacheKey
+	 * @param mapper   序列化转换
+	 * @param <T>      泛型
+	 */
+	public <T> void set(CacheKey cacheKey, T value, Function<T, byte[]> mapper) {
+		redisTemplate.execute((RedisCallback<Boolean>) redis -> {
+			byte[] rawKey = keySerialize(cacheKey.getKey());
+			Duration timeout = cacheKey.getExpire();
+			byte[] rawValue = mapper.apply(value);
+			if (timeout == null) {
+				return redis.set(rawKey, rawValue);
+			} else {
+				if (TimeoutUtils.hasMillis(timeout)) {
+					return redis.setEx(rawKey, TimeoutUtils.toSeconds(timeout.toMillis(), TimeUnit.MILLISECONDS), rawValue);
+				} else {
+					return redis.setEx(rawKey, TimeoutUtils.toSeconds(timeout.getSeconds(), TimeUnit.SECONDS), rawValue);
+				}
+			}
+		});
+	}
+
+	/**
 	 * 存放 key value 对到 redis。
 	 */
 	public <T> void set(String key, T value) {
@@ -246,7 +270,7 @@ public class MicaRedisCache {
 		if (value == null) {
 			return null;
 		}
-		this.set(key, value);
+		this.set(key, value, JsonUtil::toJsonAsBytes);
 		return value;
 	}
 
@@ -310,7 +334,7 @@ public class MicaRedisCache {
 		if (value == null) {
 			return null;
 		}
-		this.set(cacheKey, value);
+		this.set(cacheKey, value, JsonUtil::toJsonAsBytes);
 		return value;
 	}
 
