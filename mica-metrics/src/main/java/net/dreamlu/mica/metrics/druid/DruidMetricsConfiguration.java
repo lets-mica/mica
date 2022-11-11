@@ -45,7 +45,7 @@ import java.util.Map;
 	after = {MetricsAutoConfiguration.class, DataSourceAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class}
 )
 @ConditionalOnClass({DruidDataSource.class, MeterRegistry.class})
-@ConditionalOnBean({DruidDataSource.class, MeterRegistry.class})
+@ConditionalOnBean({DataSource.class, MeterRegistry.class})
 public class DruidMetricsConfiguration {
 	private static final String DATASOURCE_SUFFIX = "dataSource";
 
@@ -72,9 +72,12 @@ public class DruidMetricsConfiguration {
 		Map<String, DruidDataSource> druidDataSourceMap = new HashMap<>(2);
 		dataSourceMap.forEach((name, dataSource) -> {
 			// 保证连接池数据和 DataSourcePoolMetadataProvider 的一致
-			druidDataSourceMap.put(getDataSourceName(name), DataSourceUnwrapper.unwrap(dataSource, DruidDataSource.class));
+			DruidDataSource druidDataSource = DataSourceUnwrapper.unwrap(dataSource, DruidDataSource.class);
+			if (druidDataSource != null) {
+				druidDataSourceMap.put(getDataSourceName(name), druidDataSource);
+			}
 		});
-		return new DruidMetrics(druidDataSourceMap);
+		return druidDataSourceMap.isEmpty() ? null : new DruidMetrics(druidDataSourceMap);
 	}
 
 	/**
