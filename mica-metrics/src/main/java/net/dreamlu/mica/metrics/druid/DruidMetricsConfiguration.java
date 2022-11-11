@@ -18,10 +18,15 @@ package net.dreamlu.mica.metrics.druid;
 
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.jdbc.DataSourceUnwrapper;
 import org.springframework.boot.jdbc.metadata.DataSourcePoolMetadataProvider;
 import org.springframework.context.annotation.Bean;
@@ -36,8 +41,11 @@ import java.util.Map;
  *
  * @author L.cm
  */
-@AutoConfiguration
-@ConditionalOnClass(DruidDataSource.class)
+@AutoConfiguration(
+	after = {MetricsAutoConfiguration.class, DataSourceAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class}
+)
+@ConditionalOnClass({DruidDataSource.class, MeterRegistry.class})
+@ConditionalOnBean({DruidDataSource.class, MeterRegistry.class})
 public class DruidMetricsConfiguration {
 	private static final String DATASOURCE_SUFFIX = "dataSource";
 

@@ -1,12 +1,12 @@
 plugins {
-    id "org.sonarqube" version "3.0"
+    id "org.sonarqube" version "3.4.0.2513"
 }
 
 ext {
     javaVersion = JavaVersion.VERSION_1_8
     springBootVersion = "2.7.5"
     springNativeVersion = "0.10.6"
-    springCloudVersion = "2021.0.4"
+    springCloudVersion = "2021.0.5"
     micaAutoVersion = "2.3.1"
     micaWeiXinVersion = "2.1.2"
     knife4jVersion = "3.0.3"

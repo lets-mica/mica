@@ -35,7 +35,7 @@ public class SentinelMetricsExtension implements MetricExtension {
 	/**
 	 * Prefix used for all Sentinel metric names.
 	 */
-	public static final String SENTINEL_METRIC_NAME_PREFIX = "undertow";
+	public static final String SENTINEL_METRIC_NAME_PREFIX = "sentinel";
 	/**
 	 * Metric name
 	 */
@@ -46,7 +46,7 @@ public class SentinelMetricsExtension implements MetricExtension {
 	public static final String REQUESTS_LATENCY_SECONDS = SENTINEL_METRIC_NAME_PREFIX + ".requests.latency.seconds";
 	public static final String CURRENT_THREADS 			= SENTINEL_METRIC_NAME_PREFIX + ".current.threads";
 	public static final String DEFAULT_TAT_NAME 		= "resource";
-	private final AtomicLong CURRENT_THREAD_COUNT = new AtomicLong(0);
+	private static final AtomicLong CURRENT_THREAD_COUNT = new AtomicLong(0);
 
 	@Override
 	public void addPass(String resource, int n, Object... args) {
