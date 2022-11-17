@@ -11,6 +11,8 @@ class NumberTest {
 		long ms = 1551320493447L;
 		String string = NumberUtil.to62Str(ms);
 		Assertions.assertEquals("rjkOH7p", string);
+		long l = NumberUtil.form62Str(string);
+		Assertions.assertEquals(ms, l);
 	}
 
 }

@@ -109,21 +109,22 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 	 * All possible chars for representing a number as a String
 	 */
 	static final byte[] DIGITS = {
-		'0' , '1' , '2' , '3' , '4' , '5' ,
-		'6' , '7' , '8' , '9' , 'a' , 'b' ,
-		'c' , 'd' , 'e' , 'f' , 'g' , 'h' ,
-		'i' , 'j' , 'k' , 'l' , 'm' , 'n' ,
-		'o' , 'p' , 'q' , 'r' , 's' , 't' ,
-		'u' , 'v' , 'w' , 'x' , 'y' , 'z' ,
-		'A' , 'B' , 'C' , 'D' , 'E' , 'F' ,
-		'G' , 'H' , 'I' , 'J' , 'K' , 'L' ,
-		'M' , 'N' , 'O' , 'P' , 'Q' , 'R' ,
-		'S' , 'T' , 'U' , 'V' , 'W' , 'X' ,
-		'Y' , 'Z' , '_', '-'
+		'0', '1', '2', '3', '4', '5',
+		'6', '7', '8', '9', 'a', 'b',
+		'c', 'd', 'e', 'f', 'g', 'h',
+		'i', 'j', 'k', 'l', 'm', 'n',
+		'o', 'p', 'q', 'r', 's', 't',
+		'u', 'v', 'w', 'x', 'y', 'z',
+		'A', 'B', 'C', 'D', 'E', 'F',
+		'G', 'H', 'I', 'J', 'K', 'L',
+		'M', 'N', 'O', 'P', 'Q', 'R',
+		'S', 'T', 'U', 'V', 'W', 'X',
+		'Y', 'Z', '_', '-'
 	};
 
 	/**
 	 * 将 long 转短字符串 为 62 进制
+	 *
 	 * @param i 数字
 	 * @return 短字符串
 	 */
@@ -133,11 +134,39 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 		int charPos = 64;
 		i = -i;
 		while (i <= -radix) {
-			buf[charPos--] = DIGITS[(int)(-(i % radix))];
+			buf[charPos--] = DIGITS[(int) (-(i % radix))];
 			i = i / radix;
 		}
-		buf[charPos] = DIGITS[(int)(-i)];
+		buf[charPos] = DIGITS[(int) (-i)];
 		return new String(buf, charPos, (65 - charPos), Charsets.UTF_8);
+	}
+
+	/**
+	 * 将 62 进制字符串转为数字
+	 *
+	 * @param s 字符串
+	 * @return 短字符串
+	 */
+	public static long form62Str(String s) {
+		byte[] bytes = s.getBytes(Charsets.UTF_8);
+		byte b;
+		int idx;
+		long res = 0;
+		int len = bytes.length;
+		int lenIdx = len - 1;
+		for (int i = 0; i < len; i++) {
+			b = bytes[i];
+			// 将字符转换为对应的数字
+			if (b >= 'A' && b <= 'Z') {
+				idx = b - 29;
+			} else if (b >= 'a' && b <= 'z') {
+				idx = b - 87;
+			} else {
+				idx = b - 48;
+			}
+			res += idx * Math.pow(62, lenIdx - i);
+		}
+		return res;
 	}
 
 }
