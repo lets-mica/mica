@@ -145,7 +145,7 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 	 * 将 62 进制字符串转为数字
 	 *
 	 * @param s 字符串
-	 * @return 短字符串
+	 * @return 数字
 	 */
 	public static long form62Str(String s) {
 		byte[] bytes = s.getBytes(Charsets.UTF_8);
