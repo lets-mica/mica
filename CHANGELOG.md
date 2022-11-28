@@ -2,7 +2,7 @@
 
 ## 发行版本
 
-### v2.7.6 - 2022-11-25
+### v2.7.6 - 2022-11-28
 - :sparkles: mica-core NumberUtil 调整 62 进制转十进制
 - :sparkles: mica-redis 添加 redis set 带自定义序列化方法，方便使用
 - :bug: mica-metrics 使用 HikariCP 并且有 druid jar 时报错问题，修复 #I60O8C
