@@ -36,6 +36,9 @@ public class JacksonXssClean extends XssCleanDeserializerBase {
 
 	@Override
 	public String clean(String name, String text) throws IOException {
+		if (text == null) {
+			return null;
+		}
 		// 判断是否忽略
 		if (XssHolder.isIgnore(name)) {
 			return XssUtil.trim(text, properties.isTrimText());

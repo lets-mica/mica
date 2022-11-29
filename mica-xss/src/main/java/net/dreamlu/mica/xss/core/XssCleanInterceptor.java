@@ -16,14 +16,13 @@
 
 package net.dreamlu.mica.xss.core;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.ClassUtil;
 import net.dreamlu.mica.xss.config.MicaXssProperties;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * xss 处理拦截器

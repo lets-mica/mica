@@ -33,6 +33,9 @@ public class XssCleanDeserializer extends XssCleanDeserializerBase {
 
 	@Override
 	public String clean(String name, String text) throws IOException {
+		if (text == null) {
+			return null;
+		}
 		// 读取 xss 配置
 		MicaXssProperties properties = SpringContextUtil.getBean(MicaXssProperties.class);
 		if (properties == null) {

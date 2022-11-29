@@ -1,5 +1,7 @@
 package net.dreamlu.mica.lite.error;
 
+import jakarta.servlet.Servlet;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.context.DefaultMicaContext;
 import net.dreamlu.mica.core.context.IMicaContext;
@@ -21,9 +23,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.DispatcherServlet;
-
-import javax.servlet.Servlet;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * mica 未知异常转译和发送，方便监听，对未知异常统一处理。Order 排序优先级低

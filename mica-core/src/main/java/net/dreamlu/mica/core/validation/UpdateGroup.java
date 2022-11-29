@@ -16,7 +16,7 @@
 
 package net.dreamlu.mica.core.validation;
 
-import javax.validation.groups.Default;
+import jakarta.validation.groups.Default;
 
 /**
  * Validated Update group.

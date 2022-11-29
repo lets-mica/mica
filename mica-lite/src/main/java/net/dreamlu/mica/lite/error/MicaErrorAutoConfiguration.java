@@ -17,6 +17,7 @@
 package net.dreamlu.mica.lite.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.Servlet;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -30,8 +31,6 @@ import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.DispatcherServlet;
-
-import javax.servlet.Servlet;
 
 /**
  * 统一异常处理

@@ -4,7 +4,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.springframework.boot:spring-boot-starter-web"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
-    compileOnly "javax.validation:validation-api"
+    compileOnly "jakarta.validation:jakarta.validation-api"
     compileOnly "org.springframework.cloud:spring-cloud-context"
     compileOnly "net.dreamlu:mica-auto:${micaAutoVersion}"
     annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"

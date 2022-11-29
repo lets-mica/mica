@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.core.validation;
+package net.dreamlu.mica.captcha.config;
 
-import jakarta.validation.groups.Default;
+
+import net.dreamlu.mica.auto.annotation.AotRuntimeHintsRegistrar;
+import org.springframework.aot.hint.RuntimeHints;
+import org.springframework.aot.hint.RuntimeHintsRegistrar;
 
 /**
- * Validated Get group.
+ * mica-captcha native 支持
  *
  * @author L.cm
  */
-public interface GetGroup extends Default {
+@AotRuntimeHintsRegistrar
+class MicaCaptchaRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
+
+	@Override
+	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+		hints.resources().registerPattern("^fonts/.*.ttf");
+	}
 
 }

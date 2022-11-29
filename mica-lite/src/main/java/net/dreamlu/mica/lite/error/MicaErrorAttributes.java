@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.lite.error;
 
+import jakarta.servlet.RequestDispatcher;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.exception.ServiceException;
 import net.dreamlu.mica.core.result.R;
@@ -28,7 +29,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.RequestDispatcher;
 import java.util.Map;
 import java.util.Optional;
 
@@ -54,8 +54,8 @@ public class MicaErrorAttributes extends DefaultErrorAttributes {
 		Throwable error = getError(webRequest);
 		log.error("URL:{} error status:{}", requestUrl, status, error);
 		R<Object> result;
-		if (error instanceof ServiceException) {
-			result = ((ServiceException) error).getResult();
+		if (error instanceof ServiceException serviceException) {
+			result = serviceException.getResult();
 			result = Optional.ofNullable(result).orElse(R.fail(SystemCode.FAILURE));
 		} else {
 			result = R.fail(SystemCode.FAILURE, "System error status:" + status);

@@ -259,7 +259,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		for (int start, end; (start = message.indexOf(StringPool.DOLLAR_LEFT_BRACE, cursor)) != -1 && (end = message.indexOf(CharPool.RIGHT_BRACE, start)) != -1; ) {
 			sb.append(message, cursor, start);
 			String key = message.substring(start + 2, end);
-			Object value = params.get(StringUtils.trimWhitespace(key));
+			Object value = params.get(key.trim());
 			sb.append(value == null ? StringPool.EMPTY : value);
 			cursor = end + 1;
 		}

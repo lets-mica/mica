@@ -5,7 +5,6 @@ import net.dreamlu.mica.test.utils.BeanCopyUtilTest;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.cglib.core.Converter;
 import org.springframework.cglib.core.DebuggingClassWriter;
-import org.springframework.cglib.core.Predicate;
 import org.springframework.cglib.core.SpringNamingPolicy;
 
 public class BeanTest {
@@ -42,13 +41,7 @@ public class BeanTest {
 		gen.setTarget(UserVO.class);
 		gen.setUseConverter(false);
 		gen.setContextClass(BeanCopier.class);
-		gen.setNamingPolicy(new SpringNamingPolicy() {
-			@Override
-			public String getClassName(String prefix, String source, Object key, Predicate names) {
-				// 保证 生成的 copy 类和 ContextClass 在一个包
-				return super.getClassName(BeanCopier.class.getName(), source, key, names);
-			}
-		});
+		gen.setNamingPolicy(SpringNamingPolicy.INSTANCE);
 		gen.setClassLoader(UserVO.class.getClassLoader());
 		BeanCopier beanCopier = gen.create();
 
