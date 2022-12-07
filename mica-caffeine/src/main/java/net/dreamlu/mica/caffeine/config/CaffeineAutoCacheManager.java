@@ -40,7 +40,7 @@ public class CaffeineAutoCacheManager extends CaffeineCacheManager {
 
 	static {
 		CACHE_LOADER_FIELD = Objects.requireNonNull(ReflectionUtils.findField(CaffeineCacheManager.class, "cacheLoader"));
-		CACHE_LOADER_FIELD.setAccessible(true);
+		ReflectionUtils.makeAccessible(CACHE_LOADER_FIELD);
 	}
 
 	@Nullable

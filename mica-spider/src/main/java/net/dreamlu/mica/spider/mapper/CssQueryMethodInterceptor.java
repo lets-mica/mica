@@ -179,8 +179,8 @@ public class CssQueryMethodInterceptor implements MethodInterceptor {
 
 	private String getText(Element element) {
 		return element.childNodes().stream()
-			.filter(node -> node instanceof TextNode)
-			.map(node -> (TextNode) node)
+			.filter(TextNode.class::isInstance)
+			.map(TextNode.class::cast)
 			.map(TextNode::text)
 			.collect(Collectors.joining());
 	}

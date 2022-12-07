@@ -31,7 +31,7 @@ class MicaCaptchaRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 
 	@Override
 	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
-		hints.resources().registerPattern("^fonts/.*.ttf");
+		hints.resources().registerPattern("fonts/*.ttf");
 	}
 
 }
