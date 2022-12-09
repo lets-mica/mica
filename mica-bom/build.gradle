@@ -39,7 +39,7 @@ dependencyManagement {
         // commons
         dependency "com.google.code.findbugs:jsr305:${findbugsVersion}"
         dependency "io.swagger:swagger-annotations:${swaggerVersion}"
-        dependency "io.swagger.core.v3:swagger-annotations:${swagger3xVersion}"
+        dependency "io.swagger.core.v3:swagger-annotations-jakarta:${swagger3xVersion}"
         dependency "com.github.xiaoymin:knife4j-spring-boot-starter:${knife4jVersion}"
         dependency "com.squareup.okhttp3:okhttp:${okhttpVersion}"
         dependency "com.squareup.okhttp3:logging-interceptor:${okhttpVersion}"

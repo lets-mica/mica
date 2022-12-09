@@ -5,13 +5,13 @@ plugins {
 ext {
     javaVersion = JavaVersion.VERSION_17
     springBootVersion = "3.0.0"
-    springCloudVersion = "2021.0.5"
+    springCloudVersion = "2022.0.0-RC3"
     micaAutoVersion = "3.0.0"
     micaWeiXinVersion = "2.1.2"
     knife4jVersion = "3.0.3"
-    springdocVersion = "1.6.13"
-    swaggerVersion = "1.5.22"
-    swagger3xVersion = "2.2.4"
+    springdocVersion = "2.0.0"
+    swaggerVersion = "1.6.9"
+    swagger3xVersion = "2.2.7"
     druidVersion = "1.2.15"
     okhttpVersion = "4.10.0"
     jsoupVersion = "1.15.3"
