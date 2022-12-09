@@ -31,18 +31,18 @@ class HttpRequestInfoTest {
 
 	@Test
 	void test() {
-		String text =
-			"POST http://{{host}}/api/v1/mqtt/publish?a=123\n" +
-			"Content-Type: application/json\n" +
-			"Authorization: Basic {{username}} {{password}}\n" +
-			"\n" +
-			"{\n" +
-			"    \"topic\":\"a/b/c\",\n" +
-			"    \"payload\":\"Hello World\",\n" +
-			"    \"qos\":1,\n" +
-			"    \"retain\":false,\n" +
-			"    \"clientId\":\"example\"\n" +
-			"}";
+		String text = """
+				POST https://{{host}}/api/v1/mqtt/publish?a=123
+				Content-Type: application/json
+				Authorization: Basic {{username}} {{password}}
+
+				{
+				    "topic":"a/b/c",
+				    "payload":"Hello World",
+				    "qos":1,
+				    "retain":false,
+				    "clientId":"example"
+				}""";
 		HttpRequestInfo request = HttpRequestParser.parser(text);
 		Assertions.assertEquals("POST", request.getMethod());
 	}

@@ -20,41 +20,43 @@ class MongoJsonUtilsTest {
 
 	@Test
 	void test() {
-		String json = "{\n" +
-			"    \"id\": \"1\",\n" +
-			"    \"accountId\": 12345678,\n" +
-			"    \"testModel\": \"test\",\n" +
-			"    \"type\": \"sys-setting\",\n" +
-			"    \"settings\": {\n" +
-			"        \"system_sound\": {\n" +
-			"            \"sound_volume\": {\n" +
-			"                \"sound_from_seat\": {\n" +
-			"                    \"value\": \"10\",\n" +
-			"                    \"version\": 123\n" +
-			"                },\n" +
-			"                \"sound_from_seat_test\": {\n" +
-			"                    \"value\": \"10\",\n" +
-			"                    \"version\": 123\n" +
-			"                }\n" +
-			"            },\n" +
-			"            \"sound_volume_test\": {\n" +
-			"                \"sound_from_seat\": {\n" +
-			"                    \"value\": \"10\",\n" +
-			"                    \"version\": 123\n" +
-			"                }\n" +
-			"            }\n" +
-			"        },\n" +
-			"        \"class1\": {\n" +
-			"            \"class2\": {\n" +
-			"                \"item\": {\n" +
-			"                    \"value\": \"10\",\n" +
-			"                    \"version\": 123\n" +
-			"                }\n" +
-			"            }\n" +
-			"        }\n" +
-			"    },\n" +
-			"    \"createTime\": \"2018-12-19 18:00:00\"\n" +
-			"}\n";
+		String json = """
+			{
+			    "id": "1",
+			    "accountId": 12345678,
+			    "testModel": "test",
+			    "type": "sys-setting",
+			    "settings": {
+			        "system_sound": {
+			            "sound_volume": {
+			                "sound_from_seat": {
+			                    "value": "10",
+			                    "version": 123
+			                },
+			                "sound_from_seat_test": {
+			                    "value": "10",
+			                    "version": 123
+			                }
+			            },
+			            "sound_volume_test": {
+			                "sound_from_seat": {
+			                    "value": "10",
+			                    "version": 123
+			                }
+			            }
+			        },
+			        "class1": {
+			            "class2": {
+			                "item": {
+			                    "value": "10",
+			                    "version": 123
+			                }
+			            }
+			        }
+			    },
+			    "createTime": "2018-12-19 18:00:00"
+			}
+			""";
 
 		JsonNode jsonNode = JsonUtil.readTree(json).at("/settings");
 

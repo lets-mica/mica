@@ -190,6 +190,6 @@ public class HttpResponse implements ResponseSpec, Closeable {
 
 	@Override
 	public void close() throws IOException {
-		Util.closeQuietly(this.body);
+		Util.closeQuietly(this.response);
 	}
 }

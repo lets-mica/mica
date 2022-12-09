@@ -34,15 +34,15 @@ class JsonDeserializerTest {
 	void test() throws JsonProcessingException {
 		Assertions.assertThrows(MismatchedInputException.class, () -> {
 			ObjectMapper objectMapper = new ObjectMapper();
-			DemoBean demoBean = objectMapper.readValue("{\n"
-				+ "    \"pageNum\": 1,\n"
-				+ "    \"pageSize\": 15,\n"
-				+ " \n"
-				+ "    \"createDate\":[\"12\"],\n"
-				+ "       \"system\": \"1\",\n"
-				+ "       \"isRead\": 1,\n"
-				+ "    \"issue\": \"qweqweq\"\n"
-				+ "}", DemoBean.class);
+			DemoBean demoBean = objectMapper.readValue("""
+				{
+				    "pageNum": 1,
+				    "pageSize": 15,
+				    "createDate":["12"],
+				       "system": "1",
+				       "isRead": 1,
+				    "issue": "qweqweq"
+				}""", DemoBean.class);
 			log.info("demoBean:{}", demoBean);
 		});
 	}
@@ -50,10 +50,11 @@ class JsonDeserializerTest {
 	@Test
 	void testType() throws JsonProcessingException {
 		ObjectMapper objectMapper = new ObjectMapper();
-		TypeBean typeBean = objectMapper.readValue("{\n"
-			+ "    \"pageNum\": 1,\n"
-			+ "    \"pageSize\": 15\n"
-			+ "}", TypeBean.class);
+		TypeBean typeBean = objectMapper.readValue("""
+			{
+			    "pageNum": 1,
+			    "pageSize": 15
+			}""", TypeBean.class);
 		log.info("demoBean:{}", typeBean);
 	}
 

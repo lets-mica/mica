@@ -68,11 +68,11 @@ public class FmtFunc {
 		if (object instanceof Number) {
 			DecimalFormat decimalFormat = new DecimalFormat(pattern);
 			return decimalFormat.format(object);
-		} else if (object instanceof Date) {
-			return DateUtil.format((Date) object, pattern);
-		} else if (object instanceof TemporalAccessor) {
+		} else if (object instanceof Date date) {
+			return DateUtil.format(date, pattern);
+		} else if (object instanceof TemporalAccessor accessor) {
 			DateTimeFormatter df = DateTimeFormatter.ofPattern(pattern);
-			return df.format((TemporalAccessor) object);
+			return df.format(accessor);
 		}
 		throw new MicaTplException("未支持的对象格式" + object);
 	}

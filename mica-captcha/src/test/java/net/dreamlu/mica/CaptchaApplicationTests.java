@@ -11,10 +11,10 @@ import org.springframework.test.context.ActiveProfiles;
  */
 @SpringBootTest(classes = Void.class)
 @ActiveProfiles("dev")
-public class CaptchaApplicationTests {
+class CaptchaApplicationTests {
 
 	@Test
-	public void contextLoads() {
+	void contextLoads() {
 
 	}
 

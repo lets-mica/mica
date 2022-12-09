@@ -12,18 +12,18 @@ class XPathTest {
 
 	@Test
 	void test001() {
-		String xml =
-			"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n" +
-				"<bookstore>\n" +
-				"<book>\n" +
-				"<title lang=\"xxx\">Harry Potter</title>\n" +
-				"<price>29.99</price>\n" +
-				"</book>\n" +
-				"<book>\n" +
-				"<title lang=\"eng\">Learning XML</title>\n" +
-				"<price>39.95</price>\n" +
-				"</book>\n" +
-				"</bookstore>";
+		String xml = """
+				<?xml version="1.0" encoding="ISO-8859-1"?>
+				<bookstore>
+				<book>
+				<title lang="xxx">Harry Potter</title>
+				<price>29.99</price>
+				</book>
+				<book>
+				<title lang="eng">Learning XML</title>
+				<price>39.95</price>
+				</book>
+				</bookstore>""";
 
 		XmlHelper xmlHelper = XmlHelper.safe(xml);
 		String title1 = xmlHelper.getString("//book[1]/title");

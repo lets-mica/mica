@@ -114,8 +114,8 @@ public class MicaTemplate implements ApplicationContextAware, InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		final ScriptEngineManager engineManager = new ScriptEngineManager();
-		final ScriptEngine engine = engineManager.getEngineByMimeType("text/javascript");
-		Bindings bindings = engine.createBindings();
+		this.engine = engineManager.getEngineByMimeType("text/javascript");
+		Bindings bindings = this.engine.createBindings();
 		Map<String, String> config = new HashMap<>(4);
 		config.put("open", tplProperties.getOpen());
 		config.put("close", tplProperties.getClose());
@@ -123,9 +123,8 @@ public class MicaTemplate implements ApplicationContextAware, InitializingBean {
 		bindings.put("fmt", fmtFunc);
 		bindings.put("mica", new JsContext(applicationContext));
 		bindings.put("_config", config);
-		engine.setBindings(bindings, ScriptContext.GLOBAL_SCOPE);
-		engine.eval(JsLayTpl.LAY_TPL_JS, bindings);
-		this.engine = engine;
+		this.engine.setBindings(bindings, ScriptContext.GLOBAL_SCOPE);
+		this.engine.eval(JsLayTpl.LAY_TPL_JS, bindings);
 		this.engine.eval("console.log('MicaTpl init, laytpl version:{}', laytpl.v);");
 	}
 

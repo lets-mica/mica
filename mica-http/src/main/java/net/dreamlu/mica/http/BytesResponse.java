@@ -192,7 +192,7 @@ public class BytesResponse implements ResponseSpec, Closeable {
 
 	@Override
 	public void close() throws IOException {
-		Util.closeQuietly(response.body());
+		Util.closeQuietly(response);
 	}
 
 }

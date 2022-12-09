@@ -44,7 +44,7 @@ public class ReflectUtil extends ReflectionUtils {
 	 * @param type 类
 	 * @return PropertyDescriptor数组
 	 */
-	public static PropertyDescriptor[] getBeanGetters(Class type) {
+	public static PropertyDescriptor[] getBeanGetters(Class<?> type) {
 		return getPropertyDescriptors(type, true, false);
 	}
 
@@ -54,7 +54,7 @@ public class ReflectUtil extends ReflectionUtils {
 	 * @param type 类
 	 * @return PropertyDescriptor数组
 	 */
-	public static PropertyDescriptor[] getBeanSetters(Class type) {
+	public static PropertyDescriptor[] getBeanSetters(Class<?> type) {
 		return getPropertyDescriptors(type, false, true);
 	}
 

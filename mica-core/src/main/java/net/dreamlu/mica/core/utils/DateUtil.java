@@ -150,8 +150,8 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date plusAtUtc(Date date, TemporalAmount amount) {
-		Objects.requireNonNull(date, "The date must not be null");
-		Instant instant = date.toInstant()
+		Instant instant = Objects.requireNonNull(date, "The date must not be null")
+			.toInstant()
 			.atZone(ZoneOffset.UTC)
 			.plus(amount)
 			.toInstant();
@@ -166,8 +166,8 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date plus(Date date, TemporalAmount amount) {
-		Objects.requireNonNull(date, "The date must not be null");
-		Instant instant = date.toInstant()
+		Instant instant = Objects.requireNonNull(date, "The date must not be null")
+			.toInstant()
 			.plus(amount);
 		return Date.from(instant);
 	}
@@ -279,8 +279,8 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date minusAtUtc(Date date, TemporalAmount amount) {
-		Objects.requireNonNull(date, "The date must not be null");
-		Instant instant = date.toInstant()
+		Instant instant = Objects.requireNonNull(date, "The date must not be null")
+			.toInstant()
 			.atZone(ZoneOffset.UTC)
 			.minus(amount)
 			.toInstant();
@@ -295,8 +295,8 @@ public class DateUtil {
 	 * @return 设置后的时间
 	 */
 	public static Date minus(Date date, TemporalAmount amount) {
-		Objects.requireNonNull(date, "The date must not be null");
-		Instant instant = date.toInstant()
+		Instant instant = Objects.requireNonNull(date, "The date must not be null")
+			.toInstant()
 			.minus(amount);
 		return Date.from(instant);
 	}

@@ -41,6 +41,7 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 	 * @author L.cm
 	 */
 	public static class TrueFilter implements FileFilter, Serializable {
+		@Serial
 		private static final long serialVersionUID = -6420452043795072619L;
 
 		public static final TrueFilter TRUE = new TrueFilter();

@@ -30,7 +30,6 @@ import reactor.core.publisher.Flux;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * prometheus http sd
@@ -61,7 +60,7 @@ public class ReactivePrometheusApi {
 				// 2. 服务名
 				String serviceId = instanceGrouped.key();
 				labels.put("__meta_prometheus_job", serviceId);
-				return instanceGrouped.collect(Collectors.toList()).map(targets -> new TargetGroup(targets, labels));
+				return instanceGrouped.collectList().map(targets -> new TargetGroup(targets, labels));
 			});
 	}
 

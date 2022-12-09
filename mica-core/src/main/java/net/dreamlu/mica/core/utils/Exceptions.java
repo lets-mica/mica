@@ -35,16 +35,16 @@ public class Exceptions {
 	 * @return {RuntimeException}
 	 */
 	public static RuntimeException unchecked(Throwable e) {
-		if (e instanceof Error) {
-			throw (Error) e;
+		if (e instanceof Error error) {
+			throw error;
 		} else if (e instanceof IllegalAccessException ||
 			e instanceof IllegalArgumentException ||
 			e instanceof NoSuchMethodException) {
 			return new IllegalArgumentException(e);
-		} else if (e instanceof InvocationTargetException) {
-			return Exceptions.runtime(((InvocationTargetException) e).getTargetException());
-		} else if (e instanceof RuntimeException) {
-			return (RuntimeException) e;
+		} else if (e instanceof InvocationTargetException exception) {
+			return Exceptions.runtime(exception.getTargetException());
+		} else if (e instanceof RuntimeException exception) {
+			return exception;
 		} else if (e instanceof InterruptedException) {
 			Thread.currentThread().interrupt();
 		}
@@ -73,10 +73,10 @@ public class Exceptions {
 	public static Throwable unwrap(Throwable wrapped) {
 		Throwable unwrapped = wrapped;
 		while (true) {
-			if (unwrapped instanceof InvocationTargetException) {
-				unwrapped = ((InvocationTargetException) unwrapped).getTargetException();
-			} else if (unwrapped instanceof UndeclaredThrowableException) {
-				unwrapped = ((UndeclaredThrowableException) unwrapped).getUndeclaredThrowable();
+			if (unwrapped instanceof InvocationTargetException exception) {
+				unwrapped = exception.getTargetException();
+			} else if (unwrapped instanceof UndeclaredThrowableException exception) {
+				unwrapped = exception.getUndeclaredThrowable();
 			} else {
 				return unwrapped;
 			}

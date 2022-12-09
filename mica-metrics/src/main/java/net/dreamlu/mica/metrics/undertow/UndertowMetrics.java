@@ -106,8 +106,8 @@ public class UndertowMetrics implements ApplicationListener<ApplicationStartedEv
 		List<Undertow.ListenerInfo> listenerInfoList = undertow.getListenerInfo();
 		listenerInfoList.forEach(listenerInfo -> registerConnectorStatistics(registry, listenerInfo));
 		// 如果是 web 监控，添加 session 指标
-		if (undertowWebServer instanceof UndertowServletWebServer) {
-			SessionManagerStatistics statistics = ((UndertowServletWebServer) undertowWebServer).getDeploymentManager()
+		if (undertowWebServer instanceof UndertowServletWebServer webServer) {
+			SessionManagerStatistics statistics = webServer.getDeploymentManager()
 				.getDeployment()
 				.getSessionManager()
 				.getStatistics();
@@ -247,15 +247,15 @@ public class UndertowMetrics implements ApplicationListener<ApplicationStartedEv
 
 	private static UndertowWebServer findUndertowWebServer(ConfigurableApplicationContext applicationContext) {
 		WebServer webServer;
-		if (applicationContext instanceof ReactiveWebServerApplicationContext) {
-			webServer = ((ReactiveWebServerApplicationContext) applicationContext).getWebServer();
-		} else if (applicationContext instanceof ServletWebServerApplicationContext) {
-			webServer = ((ServletWebServerApplicationContext) applicationContext).getWebServer();
+		if (applicationContext instanceof ReactiveWebServerApplicationContext context) {
+			webServer = context.getWebServer();
+		} else if (applicationContext instanceof ServletWebServerApplicationContext context) {
+			webServer = context.getWebServer();
 		} else {
 			return null;
 		}
-		if (webServer instanceof UndertowWebServer) {
-			return (UndertowWebServer) webServer;
+		if (webServer instanceof UndertowWebServer server) {
+			return server;
 		}
 		return null;
 	}

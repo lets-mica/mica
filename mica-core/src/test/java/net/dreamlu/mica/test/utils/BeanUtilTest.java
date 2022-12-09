@@ -24,7 +24,9 @@ public class BeanUtilTest {
 		User user = BeanUtil.toBean(map, User.class);
 		System.out.println(user);
 
-		Object userx = BeanUtil.generator(User.class, new BeanProperty("xxxx", Boolean.class));
+		BeanProperty property = new BeanProperty("xxxx", Boolean.class);
+
+		Object userx = BeanUtil.generator(User.class, property);
 		System.out.println(userx);
 
 		BeanUtil.setProperty(user, "xx", "xx");

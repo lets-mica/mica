@@ -50,7 +50,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * jfinal activerecord 配置
@@ -133,7 +132,7 @@ public class ActiveRecordConfiguration {
 		if (properties.isShowSql()) {
 			List<Pattern> showSqlPatternList = properties.getShowSqlPatterns().stream()
 				.map(Pattern::compile)
-				.collect(Collectors.toList());
+				.toList();
 			druidPlugin.addFilter(new SqlLogFilter(properties, showSqlPatternList));
 		}
 		druidPlugin.start();

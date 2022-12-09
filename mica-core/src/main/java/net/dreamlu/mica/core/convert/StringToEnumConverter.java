@@ -106,15 +106,13 @@ public class StringToEnumConverter implements ConditionalGenericConverter {
 	@Nullable
 	private static Object invoke(Class<?> clazz, AccessibleObject accessibleObject, String value)
 		throws IllegalAccessException, InvocationTargetException, InstantiationException {
-		if (accessibleObject instanceof Constructor) {
-			Constructor constructor = (Constructor) accessibleObject;
+		if (accessibleObject instanceof Constructor constructor) {
 			Class<?> paramType = constructor.getParameterTypes()[0];
 			// 类型转换
 			Object object = ConvertUtil.convert(value, paramType);
 			return constructor.newInstance(object);
 		}
-		if (accessibleObject instanceof Method) {
-			Method method = (Method) accessibleObject;
+		if (accessibleObject instanceof Method method) {
 			Class<?> paramType = method.getParameterTypes()[0];
 			// 类型转换
 			Object object = ConvertUtil.convert(value, paramType);

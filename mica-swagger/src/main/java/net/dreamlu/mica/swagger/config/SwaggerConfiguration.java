@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Swagger2配置
@@ -211,7 +210,7 @@ public class SwaggerConfiguration {
 					.description(header.getDescription())
 					.required(header.isRequired())
 					.build())
-			.collect(Collectors.toList());
+			.toList();
 	}
 
 }

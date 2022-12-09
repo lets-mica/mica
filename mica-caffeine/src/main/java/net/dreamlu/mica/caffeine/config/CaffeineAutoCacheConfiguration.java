@@ -37,7 +37,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Caffeine auto cache configuration.
@@ -53,7 +52,7 @@ public class CaffeineAutoCacheConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public CacheManagerCustomizers cacheManagerCustomizers(ObjectProvider<CacheManagerCustomizer<?>> customizers) {
-		return new CacheManagerCustomizers(customizers.orderedStream().collect(Collectors.toList()));
+		return new CacheManagerCustomizers(customizers.orderedStream().toList());
 	}
 
 	@Bean("cacheResolver")

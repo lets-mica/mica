@@ -16,17 +16,10 @@
 
 package net.dreamlu.mica.core.utils;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
 /**
  * Bean属性
  *
  * @author L.cm
  */
-@Getter
-@RequiredArgsConstructor
-public class BeanProperty {
-	private final String name;
-	private final Class<?> type;
+public record BeanProperty(String name, Class<?> type) {
 }

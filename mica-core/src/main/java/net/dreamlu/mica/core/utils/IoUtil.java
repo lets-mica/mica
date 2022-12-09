@@ -38,9 +38,9 @@ public class IoUtil extends org.springframework.util.StreamUtils {
 		if (closeable == null) {
 			return;
 		}
-		if (closeable instanceof Flushable) {
+		if (closeable instanceof Flushable flushable) {
 			try {
-				((Flushable) closeable).flush();
+				flushable.flush();
 			} catch (IOException ignored) {
 				// ignore
 			}

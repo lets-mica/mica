@@ -20,6 +20,7 @@ import org.springframework.util.Assert;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -29,6 +30,7 @@ import java.io.Serializable;
  */
 public class SuffixFileFilter implements FileFilter, Serializable {
 
+	@Serial
 	private static final long serialVersionUID = -3389157631240246157L;
 
 	private final String[] suffixes;

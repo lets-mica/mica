@@ -71,17 +71,16 @@ public class JetCacheMonitorManager implements CacheMonitorInstaller, Initializi
 		}
 		cache = CacheUtil.getAbstractCache(cache);
 		String cacheName = quickConfig.getName();
-		if (cache instanceof MultiLevelCache) {
-			MultiLevelCache mc = (MultiLevelCache) cache;
+		if (cache instanceof MultiLevelCache<?, ?> mc) {
 			if (mc.caches().length == 2) {
 				// local cache
-				Cache local = mc.caches()[0];
+				Cache<?, ?> local = mc.caches()[0];
 				String localCacheName = cacheName + "_local";
 				DefaultCacheMonitor localMonitor = new DefaultCacheMonitor(localCacheName);
 				local.config().getMonitors().add(localMonitor);
 				registerMeters(meterRegistry, localCacheName, localMonitor);
 				// remote cache
-				Cache remote = mc.caches()[1];
+				Cache<?, ?> remote = mc.caches()[1];
 				String remoteCacheName = cacheName + "_remote";
 				DefaultCacheMonitor remoteMonitor = new DefaultCacheMonitor(cacheName + "_remote");
 				remote.config().getMonitors().add(remoteMonitor);

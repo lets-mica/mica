@@ -34,6 +34,7 @@ import org.springframework.util.ObjectUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.io.Serial;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.*;
@@ -914,6 +915,7 @@ public class JsonUtil {
 	}
 
 	private static class JacksonObjectMapper extends ObjectMapper {
+		@Serial
 		private static final long serialVersionUID = 4288193147502386170L;
 
 		private static final Locale CHINA = Locale.CHINA;

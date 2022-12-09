@@ -39,7 +39,6 @@ import java.lang.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * logging 日志配置
@@ -58,7 +57,7 @@ public class MicaLoggingConfiguration {
 
 	@Bean
 	public LogbackLoggerContextListener logbackLoggerContextListener(ObjectProvider<ILoggingAppender> loggingAppenderObjectProvider) {
-		List<ILoggingAppender> loggingAppenderList = loggingAppenderObjectProvider.orderedStream().collect(Collectors.toList());
+		List<ILoggingAppender> loggingAppenderList = loggingAppenderObjectProvider.orderedStream().toList();
 		return new LogbackLoggerContextListener(loggingAppenderList);
 	}
 

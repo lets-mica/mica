@@ -10,11 +10,12 @@ class XXETest {
 	@Test
 	void test1() {
 		Assertions.assertThrows(SAXParseException.class, () -> {
-			String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-				"   <!DOCTYPE c [\n" +
-				"       <!ENTITY file SYSTEM \"file:///etc/passwd\">\n" +
-				"   ]>\n" +
-				"   <c>&file;</c>";
+			String xml = """
+				<?xml version="1.0" encoding="utf-8"?>
+				<!DOCTYPE c [
+				   <!ENTITY file SYSTEM "file:///etc/passwd">
+				]>
+				<c>&file;</c>""";
 
 			XmlHelper helper = XmlHelper.safe(xml);
 			System.out.println(helper.getString("c"));
@@ -23,11 +24,12 @@ class XXETest {
 
 	@Test
 	void test2() {
-		String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-			"   <!DOCTYPE c [\n" +
-			"       <!ENTITY file SYSTEM \"file:///etc/passwd\">\n" +
-			"   ]>\n" +
-			"   <c>&file;</c>";
+		String xml = """
+			<?xml version="1.0" encoding="utf-8"?>
+			<!DOCTYPE c [
+			   <!ENTITY file SYSTEM "file:///etc/passwd">
+			]>
+			<c>&file;</c>""";
 
 		// 注意：windows 下找不到文件会报错
 		try {

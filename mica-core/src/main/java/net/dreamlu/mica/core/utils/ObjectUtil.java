@@ -154,8 +154,8 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 		if (null == object) {
 			return defaultValue;
 		}
-		if (object instanceof CharSequence) {
-			return ((CharSequence) object).toString();
+		if (object instanceof CharSequence cs) {
+			return cs.toString();
 		}
 		return String.valueOf(object);
 	}
@@ -178,11 +178,11 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	 * @return int
 	 */
 	public static int toInt(@Nullable Object object, int defaultValue) {
-		if (object instanceof Number) {
-			return ((Number) object).intValue();
+		if (object instanceof Number number) {
+			return number.intValue();
 		}
-		if (object instanceof CharSequence) {
-			String value = ((CharSequence) object).toString();
+		if (object instanceof CharSequence cs) {
+			String value = cs.toString();
 			try {
 				return Integer.parseInt(value);
 			} catch (final NumberFormatException nfe) {
@@ -209,11 +209,11 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	 * @return long
 	 */
 	public static long toLong(@Nullable Object object, long defaultValue) {
-		if (object instanceof Number) {
-			return ((Number) object).longValue();
+		if (object instanceof Number number) {
+			return number.longValue();
 		}
-		if (object instanceof CharSequence) {
-			String value = ((CharSequence) object).toString();
+		if (object instanceof CharSequence cs) {
+			String value = cs.toString();
 			try {
 				return Long.parseLong(value);
 			} catch (final NumberFormatException nfe) {
@@ -241,11 +241,11 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	 * @return 结果
 	 */
 	public static float toFloat(@Nullable Object object, float defaultValue) {
-		if (object instanceof Number) {
-			return ((Number) object).floatValue();
+		if (object instanceof Number number) {
+			return number.floatValue();
 		}
-		if (object instanceof CharSequence) {
-			String value = ((CharSequence) object).toString();
+		if (object instanceof CharSequence cs) {
+			String value = cs.toString();
 			try {
 				return Float.parseFloat(value);
 			} catch (NumberFormatException nfe) {
@@ -273,11 +273,11 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	 * @return 结果
 	 */
 	public static double toDouble(@Nullable Object object, double defaultValue) {
-		if (object instanceof Number) {
-			return ((Number) object).doubleValue();
+		if (object instanceof Number number) {
+			return number.doubleValue();
 		}
-		if (object instanceof CharSequence) {
-			String value = ((CharSequence) object).toString();
+		if (object instanceof CharSequence cs) {
+			String value = cs.toString();
 			try {
 				return Double.parseDouble(value);
 			} catch (NumberFormatException nfe) {
@@ -305,11 +305,11 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	 * @return 结果
 	 */
 	public static byte toByte(@Nullable Object object, byte defaultValue) {
-		if (object instanceof Number) {
-			return ((Number) object).byteValue();
+		if (object instanceof Number number) {
+			return number.byteValue();
 		}
-		if (object instanceof CharSequence) {
-			String value = ((CharSequence) object).toString();
+		if (object instanceof CharSequence cs) {
+			String value = cs.toString();
 			try {
 				return Byte.parseByte(value);
 			} catch (NumberFormatException nfe) {
@@ -337,11 +337,11 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	 * @return 结果
 	 */
 	public static short toShort(@Nullable Object object, short defaultValue) {
-		if (object instanceof Number) {
-			return ((Number) object).byteValue();
+		if (object instanceof Number number) {
+			return number.byteValue();
 		}
-		if (object instanceof CharSequence) {
-			String value = ((CharSequence) object).toString();
+		if (object instanceof CharSequence cs) {
+			String value = cs.toString();
 			try {
 				return Short.parseShort(value);
 			} catch (NumberFormatException nfe) {
@@ -371,10 +371,10 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	 */
 	@Nullable
 	public static Boolean toBoolean(@Nullable Object object, @Nullable Boolean defaultValue) {
-		if (object instanceof Boolean) {
-			return (Boolean) object;
-		} else if (object instanceof CharSequence) {
-			String value = ((CharSequence) object).toString();
+		if (object instanceof Boolean bool) {
+			return bool;
+		} else if (object instanceof CharSequence cs) {
+			String value = cs.toString();
 			if (StringPool.TRUE.equalsIgnoreCase(value) ||
 				StringPool.Y.equalsIgnoreCase(value) ||
 				StringPool.YES.equalsIgnoreCase(value) ||

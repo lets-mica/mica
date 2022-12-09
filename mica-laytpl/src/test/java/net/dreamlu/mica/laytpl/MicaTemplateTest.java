@@ -46,19 +46,19 @@ class MicaTemplateTest {
 		data.put("title", "mica");
 
 		String html = micaTemplate.render("<h3>{{ d.title }}</h3>", data);
-		Assertions.assertEquals(html, "<h3>mica</h3>");
+		Assertions.assertEquals("<h3>mica</h3>", html);
 	}
 
 	@Test
 	void test2() {
-		String html =
-			"{{#\n" +
-			"console.log();\n" +
-			"console.log(\"im {}\", \"L.cm\");\n" +
-			"console.error(\"hi im {}\", \"L.cm\");\n" +
-			"console.log(fmt.format( d.date ));\n" +
-			"console.log(\"laytpl version:{}\", laytpl.v);\n" +
-			"}}";
+		String html = """
+				{{#
+				console.log();
+				console.log("im {}", "L.cm");
+				console.error("hi im {}", "L.cm");
+				console.log(fmt.format( d.date ));
+				console.log("laytpl version:{}", laytpl.v);
+				}}""";
 
 		Map<String, Object> data = new HashMap<>();
 		data.put("date", new Date());
@@ -69,6 +69,6 @@ class MicaTemplateTest {
 	void test3() {
 		String html = "{{!#1+1!}}";
 		String render = micaTemplate.render(html);
-		Assertions.assertEquals(render, "#1+1");
+		Assertions.assertEquals("#1+1", render);
 	}
 }

@@ -119,7 +119,7 @@ public class CollectionUtil extends org.springframework.util.CollectionUtils {
 	 */
 	@SafeVarargs
 	public static <E> List<E> ofImmutableList(E... es) {
-		return Arrays.stream(Objects.requireNonNull(es, "args es is null.")).collect(Collectors.toList());
+		return Arrays.stream(Objects.requireNonNull(es, "args es is null.")).toList();
 	}
 
 	/**
