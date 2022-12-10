@@ -32,6 +32,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -47,6 +48,7 @@ import java.util.List;
 @EnableConfigurationProperties(CacheProperties.class)
 @ConditionalOnClass({Caffeine.class, CaffeineCacheManager.class})
 @AutoConfiguration(before = CacheAutoConfiguration.class)
+@ImportRuntimeHints(CaffeineAutoCacheRuntimeHintsRegistrar.class)
 public class CaffeineAutoCacheConfiguration {
 
 	@Bean

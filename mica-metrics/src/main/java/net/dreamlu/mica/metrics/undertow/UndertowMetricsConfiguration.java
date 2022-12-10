@@ -23,6 +23,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration;
 import org.springframework.boot.web.embedded.undertow.UndertowBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ImportRuntimeHints;
 
 
 /**
@@ -32,6 +33,7 @@ import org.springframework.context.annotation.Bean;
  */
 @AutoConfiguration(before = ServletWebServerFactoryAutoConfiguration.class)
 @ConditionalOnClass(Undertow.class)
+@ImportRuntimeHints(UndertowRuntimeHintsRegistrar.class)
 public class UndertowMetricsConfiguration {
 
 	@Bean

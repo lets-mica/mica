@@ -63,7 +63,7 @@ public class SpringCacheCaptchaCache implements ICaptchaCache, InitializingBean 
 	public void afterPropertiesSet() throws Exception {
 		String cacheName = properties.getCacheName();
 		Cache cache = cacheManager.getCache(cacheName);
-		Objects.requireNonNull(cache, "mica-captcha spring cache name " + cacheName + " is null.");
+		Objects.requireNonNull(cache, () -> "mica-captcha spring cache name " + cacheName + " is null.");
 	}
 
 }

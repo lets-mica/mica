@@ -54,7 +54,7 @@ public class DefaultRStreamTemplate implements RStreamTemplate {
 			return streamOperations.add(record);
 		}
 		String stream = Objects.requireNonNull(record.getStream(), "RStreamTemplate send stream name is null.");
-		Object recordValue = Objects.requireNonNull(record.getValue(), "RStreamTemplate send stream: " + stream + " value is null.");
+		Object recordValue = Objects.requireNonNull(record.getValue(), () -> "RStreamTemplate send stream: " + stream + " value is null.");
 		Class<?> valueClass = recordValue.getClass();
 		// 2. 普通类型的 ObjectRecord
 		if (CUSTOM_CONVERSIONS.isSimpleType(valueClass)) {

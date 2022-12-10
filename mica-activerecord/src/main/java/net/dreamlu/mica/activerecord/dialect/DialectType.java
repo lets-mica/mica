@@ -25,15 +25,15 @@ public enum DialectType {
 	Druid;
 
 	public Dialect getDialect() {
-		switch (this) {
-			case Mysql: return new MysqlDialect();
-			case Oracle: return new OracleDialect();
-			case Sqlite3: return new Sqlite3Dialect();
-			case Postgre: return new PostgreSqlDialect();
-			case SqlServer: return new SqlServerDialect();
-			case Ansi: return new AnsiSqlDialect();
-			default: return new DruidSqlDialect();
-		}
+		return switch (this) {
+			case Mysql -> new MysqlDialect();
+			case Oracle -> new OracleDialect();
+			case Sqlite3 -> new Sqlite3Dialect();
+			case Postgre -> new PostgreSqlDialect();
+			case SqlServer -> new SqlServerDialect();
+			case Ansi -> new AnsiSqlDialect();
+			default -> new DruidSqlDialect();
+		};
 	}
 
 }
