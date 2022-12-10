@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.ip2region.config;
 
-import net.dreamlu.mica.auto.annotation.AotRuntimeHintsRegistrar;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 
@@ -25,7 +24,6 @@ import org.springframework.aot.hint.RuntimeHintsRegistrar;
  *
  * @author L.cm
  */
-@AotRuntimeHintsRegistrar
 class Ip2regionRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 
 	@Override

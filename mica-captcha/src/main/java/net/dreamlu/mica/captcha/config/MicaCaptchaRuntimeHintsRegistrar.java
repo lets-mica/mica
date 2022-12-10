@@ -17,7 +17,6 @@
 package net.dreamlu.mica.captcha.config;
 
 
-import net.dreamlu.mica.auto.annotation.AotRuntimeHintsRegistrar;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 
@@ -26,7 +25,6 @@ import org.springframework.aot.hint.RuntimeHintsRegistrar;
  *
  * @author L.cm
  */
-@AotRuntimeHintsRegistrar
 class MicaCaptchaRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 
 	@Override
