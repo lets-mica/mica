@@ -76,6 +76,8 @@ configure(subprojects - project(":mica-bom")) {
         testImplementation "org.junit.jupiter:junit-jupiter"
     }
 
+    compileJava.options.compilerArgs.add '-parameters'
+    compileTestJava.options.compilerArgs.add '-parameters'
     compileJava.dependsOn(processResources)
 }
 
