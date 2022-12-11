@@ -2,6 +2,14 @@
 
 ## 发行版本
 
+### v3.0.0 - 2022-12-11
+- :sparkles: gradle 添加 `-parameters` 编译参数
+- :sparkles: 部分模块扩展 RuntimeHints 支持 AOT
+- :sparkles: mica-ip2region 更新 `ip2region.xdb`
+- :sparkles: 代码优化，升级到高版本 jdk 语法
+- :arrow_up: 升级到 java17
+- :arrow_up: 升级到 Spring boot3
+
 ### v2.7.6 - 2022-11-28
 - :sparkles: mica-core NumberUtil 调整 62 进制转十进制
 - :sparkles: mica-redis 添加 redis set 带自定义序列化方法，方便使用
