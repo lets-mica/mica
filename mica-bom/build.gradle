@@ -1,53 +1,60 @@
-buildscript {
-    repositories {
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url "https://repo.spring.io/plugins-release" }
-    }
-    dependencies {
-        classpath "io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE"
-    }
-}
-
-apply plugin: "io.spring.dependency-management"
+apply plugin: "java-platform"
 apply from: "${rootProject.projectDir}/gradle/publish-bom.gradle"
 
-dependencyManagement {
-    dependencies {
-        // mica
-        dependency "net.dreamlu:mica-auto:${micaAutoVersion}"
-        dependency "net.dreamlu:mica-weixin:${micaWeiXinVersion}"
-        dependency "net.dreamlu:mica-core:${VERSION}"
-        dependency "net.dreamlu:mica-http:${VERSION}"
-        dependency "net.dreamlu:mica-spider:${VERSION}"
-        dependency "net.dreamlu:mica-laytpl:${VERSION}"
-        dependency "net.dreamlu:mica-swagger:${VERSION}"
-        dependency "net.dreamlu:mica-openapi:${VERSION}"
-        dependency "net.dreamlu:mica-captcha:${VERSION}"
-        dependency "net.dreamlu:mica-jobs:${VERSION}"
-        dependency "net.dreamlu:mica-mongo:${VERSION}"
-        dependency "net.dreamlu:mica-redis:${VERSION}"
-        dependency "net.dreamlu:mica-ip2region:${VERSION}"
-        dependency "net.dreamlu:mica-xss:${VERSION}"
-        dependency "net.dreamlu:mica-metrics:${VERSION}"
-        dependency "net.dreamlu:mica-caffeine:${VERSION}"
-        dependency "net.dreamlu:mica-logging:${VERSION}"
-        dependency "net.dreamlu:mica-qrcode:${VERSION}"
-        dependency "net.dreamlu:mica-jetcache:${VERSION}"
-        dependency "net.dreamlu:mica-lite:${VERSION}"
-        dependency "net.dreamlu:mica-activerecord:${VERSION}"
-        dependency "net.dreamlu:mica-prometheus:${VERSION}"
+javaPlatform {
+    allowDependencies()
+}
+
+ext {
+    springBootVersion = "3.0.0"
+    springCloudVersion = "2022.0.0-RC3"
+    micaAutoVersion = "3.0.0"
+    micaWeiXinVersion = "3.0.0"
+    knife4jVersion = "3.0.3"
+    springdocVersion = "2.0.0"
+    swaggerVersion = "1.6.9"
+    swagger3xVersion = "2.2.7"
+    druidVersion = "1.2.15"
+    okhttpVersion = "4.10.0"
+    jsoupVersion = "1.15.3"
+    xxlJobVersion = "2.3.1"
+    lombokVersion = "1.18.24"
+    findbugsVersion = "3.0.2"
+    logstashVersion = "7.2"
+    lokiLogbackAppender = "1.3.2"
+    zxingVersion = "3.5.1"
+    jetCacheVersion = "2.7.1"
+    jfinalVersion = "5.0.4"
+}
+
+dependencies {
+    api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+    api platform("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
+    constraints {
+        api "net.dreamlu:mica-auto:$micaAutoVersion"
+        api "net.dreamlu:mica-weixin:$micaWeiXinVersion"
+
+        //mica
+        parent.commons.forEach { api it }
         // commons
-        dependency "com.google.code.findbugs:jsr305:${findbugsVersion}"
-        dependency "io.swagger:swagger-annotations:${swaggerVersion}"
-        dependency "io.swagger.core.v3:swagger-annotations-jakarta:${swagger3xVersion}"
-        dependency "com.github.xiaoymin:knife4j-spring-boot-starter:${knife4jVersion}"
-        dependency "com.squareup.okhttp3:okhttp:${okhttpVersion}"
-        dependency "com.squareup.okhttp3:logging-interceptor:${okhttpVersion}"
-        dependency "org.jsoup:jsoup:${jsoupVersion}"
-        dependency "org.projectlombok:lombok:${lombokVersion}"
-        dependency "com.alibaba:druid:${druidVersion}"
-        dependency "com.alibaba:druid-spring-boot-starter:${druidVersion}"
-        dependency "net.logstash.logback:logstash-logback-encoder:${logstashVersion}"
-        dependency "com.google.zxing:javase:${zxingVersion}"
+        api "com.google.code.findbugs:jsr305:$findbugsVersion"
+        api "io.swagger:swagger-annotations:$swaggerVersion"
+        api "io.swagger.core.v3:swagger-annotations:$swagger3xVersion"
+        api "io.swagger.core.v3:swagger-annotations-jakarta:$swagger3xVersion"
+        api "com.github.xiaoymin:knife4j-spring-boot-starter:$knife4jVersion"
+        api "com.squareup.okhttp3:okhttp:$okhttpVersion"
+        api "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+        api "org.jsoup:jsoup:$jsoupVersion"
+        api "org.projectlombok:lombok:$lombokVersion"
+        api "com.alibaba:druid:$druidVersion"
+        api "com.alibaba:druid-spring-boot-starter:$druidVersion"
+        api "net.logstash.logback:logstash-logback-encoder:$logstashVersion"
+        api "com.google.zxing:javase:$zxingVersion"
+        api "org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocVersion"
+        api "com.github.xiaoymin:knife4j-springdoc-ui:$knife4jVersion"
+        api "com.jfinal:activerecord:$jfinalVersion"
+        api "com.xuxueli:xxl-job-core:$xxlJobVersion"
+        api "com.alicp.jetcache:jetcache-autoconfigure:$jetCacheVersion"
+        api "com.github.loki4j:loki-logback-appender-jdk8:$lokiLogbackAppender"
     }
 }

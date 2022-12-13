@@ -3,10 +3,10 @@ dependencies {
     api "com.fasterxml.jackson.core:jackson-databind"
     compileOnly "org.springframework:spring-web"
     compileOnly "jakarta.validation:jakarta.validation-api"
-    compileOnly "io.swagger:swagger-annotations:${swaggerVersion}"
-    compileOnly "io.swagger.core.v3:swagger-annotations:${swagger3xVersion}"
-    compileOnly "net.dreamlu:mica-auto:${micaAutoVersion}"
-    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+    compileOnly "io.swagger:swagger-annotations"
+    compileOnly "io.swagger.core.v3:swagger-annotations"
+    compileOnly "net.dreamlu:mica-auto"
+    annotationProcessor "net.dreamlu:mica-auto"
     testCompileOnly "org.springframework:spring-context"
 }
 
