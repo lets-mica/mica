@@ -1,5 +1,5 @@
 dependencies {
     api project(":mica-http")
-    api "org.jsoup:jsoup:${jsoupVersion}"
+    api "org.jsoup:jsoup"
     api "org.springframework:spring-context"
 }
