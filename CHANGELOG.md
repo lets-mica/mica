@@ -2,6 +2,13 @@
 
 ## 发行版本
 
+### v3.0.1 - 2022-12-23
+- :sparkles: 代码优化，升级到高版本 jdk 语法
+- :sparkles: 优化 gradle 参数，开启缓存和并行处理
+- :sparkles: gradle 版本控制重构，感谢 `@livk-cloud` pr
+- :arrow_up: 升级到 Spring boot 3.0.1
+- :arrow_up: 升级到 Spring cloud 2022.0.0
+
 ### v3.0.0 - 2022-12-11
 - :sparkles: gradle 添加 `-parameters` 编译参数
 - :sparkles: 部分模块扩展 RuntimeHints 支持 AOT
