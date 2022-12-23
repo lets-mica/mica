@@ -1,31 +1,16 @@
 apply plugin: "java-platform"
+apply from: "${rootProject.projectDir}/gradle/version.gradle"
 apply from: "${rootProject.projectDir}/gradle/publish-bom.gradle"
 
 javaPlatform {
     allowDependencies()
 }
 
-ext {
-    micaAutoVersion = "3.0.0"
-    micaWeiXinVersion = "3.0.0"
-    knife4jVersion = "3.0.3"
-    swaggerVersion = "1.6.9"
-    swagger3xVersion = "2.2.7"
-    druidVersion = "1.2.15"
-    okhttpVersion = "4.10.0"
-    jsoupVersion = "1.15.3"
-    lombokVersion = "1.18.24"
-    findbugsVersion = "3.0.2"
-    logstashVersion = "7.2"
-    zxingVersion = "3.5.1"
-}
-
 dependencies {
     constraints {
         api "net.dreamlu:mica-auto:$micaAutoVersion"
         api "net.dreamlu:mica-weixin:$micaWeiXinVersion"
-
-        //mica
+        // mica
         parent.commons.forEach { api it }
         // commons
         api "com.google.code.findbugs:jsr305:$findbugsVersion"

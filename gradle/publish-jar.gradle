@@ -54,10 +54,16 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-
             artifact sourcesJar
             artifact javadocJar
-
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
             pom {
                 name = POM_NAME
                 description = POM_DESCRIPTION
