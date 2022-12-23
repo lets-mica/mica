@@ -48,13 +48,13 @@ public class R<T> implements Serializable {
 	private static final long serialVersionUID = -1160662278280275915L;
 
 	@ApiModelProperty(value = "code值", required = true)
-	@Schema(description = "code值", requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "code值")
 	private int code;
 	@ApiModelProperty(value = "是否成功", required = true)
-	@Schema(description = "是否成功", requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "是否成功")
 	private boolean success;
 	@ApiModelProperty(value = "消息", required = true)
-	@Schema(description = "消息", requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "消息")
 	private String msg;
 	@ApiModelProperty("返回对象")
 	@Schema(description = "返回对象")

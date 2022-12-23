@@ -6,7 +6,7 @@ ext {
     knife4jVersion = "3.0.3"
     swaggerVersion = "1.6.9"
     swagger3xVersion = "2.2.7"
-    springdocVersion = "2.0.0"
+    springdocVersion = "2.0.2"
     druidVersion = "1.2.15"
     okhttpVersion = "4.10.0"
     jsoupVersion = "1.15.3"
