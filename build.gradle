@@ -5,7 +5,6 @@ plugins {
 
 ext {
     javaVersion = JavaVersion.VERSION_17
-
     bom = Set.of(project(":mica-bom"))
     platform = Set.of(project(":mica-platform"))
     commons = (subprojects - bom - platform)

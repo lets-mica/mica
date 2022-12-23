@@ -5,8 +5,8 @@ javaPlatform {
 }
 
 ext {
-    springBootVersion = "3.0.0"
-    springCloudVersion = "2022.0.0-RC3"
+    springBootVersion = "3.0.1"
+    springCloudVersion = "2022.0.0"
     knife4jVersion = "3.0.3"
     springdocVersion = "2.0.0"
     swagger3xVersion = "2.2.7"
