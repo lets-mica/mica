@@ -3,6 +3,6 @@ dependencies {
     api "org.springframework.cloud:spring-cloud-commons"
     compileOnly "org.springframework:spring-web"
     compileOnly "org.springframework:spring-webflux"
-    compileOnly "net.dreamlu:mica-auto:${micaAutoVersion}"
-    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+    compileOnly "net.dreamlu:mica-auto"
+    annotationProcessor "net.dreamlu:mica-auto"
 }

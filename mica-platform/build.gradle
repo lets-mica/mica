@@ -1,0 +1,32 @@
+apply plugin: "java-platform"
+
+javaPlatform {
+    allowDependencies()
+}
+
+ext {
+    springBootVersion = "3.0.0"
+    springCloudVersion = "2022.0.0-RC3"
+    knife4jVersion = "3.0.3"
+    springdocVersion = "2.0.0"
+    swagger3xVersion = "2.2.7"
+    xxlJobVersion = "2.3.1"
+    lokiLogbackAppender = "1.3.2"
+    jetCacheVersion = "2.7.1"
+    jfinalVersion = "5.0.4"
+}
+
+dependencies {
+    api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+    api platform("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
+    api platform(project(":mica-bom"))
+    constraints {
+        api "io.swagger.core.v3:swagger-annotations:$swagger3xVersion"
+        api "org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocVersion"
+        api "com.github.xiaoymin:knife4j-springdoc-ui:$knife4jVersion"
+        api "com.jfinal:activerecord:$jfinalVersion"
+        api "com.xuxueli:xxl-job-core:$xxlJobVersion"
+        api "com.alicp.jetcache:jetcache-autoconfigure:$jetCacheVersion"
+        api "com.github.loki4j:loki-logback-appender-jdk8:$lokiLogbackAppender"
+    }
+}

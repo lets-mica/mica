@@ -4,6 +4,6 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-webflux"
     compileOnly "org.springframework.cloud:spring-cloud-context"
-    compileOnly "net.dreamlu:mica-auto:${micaAutoVersion}"
-    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+    compileOnly "net.dreamlu:mica-auto"
+    annotationProcessor "net.dreamlu:mica-auto"
 }

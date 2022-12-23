@@ -1,31 +1,17 @@
 plugins {
+    id "base"
     id "org.sonarqube" version "3.4.0.2513"
 }
 
 ext {
     javaVersion = JavaVersion.VERSION_17
-    springBootVersion = "3.0.0"
-    springCloudVersion = "2022.0.0-RC3"
-    micaAutoVersion = "3.0.0"
-    micaWeiXinVersion = "3.0.0"
-    knife4jVersion = "3.0.3"
-    springdocVersion = "2.0.0"
-    swaggerVersion = "1.6.9"
-    swagger3xVersion = "2.2.7"
-    druidVersion = "1.2.15"
-    okhttpVersion = "4.10.0"
-    jsoupVersion = "1.15.3"
-    xxlJobVersion = "2.3.1"
-    lombokVersion = "1.18.24"
-    findbugsVersion = "3.0.2"
-    logstashVersion = "7.2"
-    lokiLogbackAppender = "1.3.2"
-    zxingVersion = "3.5.1"
-    jetCacheVersion = "2.7.1"
-    jfinalVersion = "5.0.4"
+
+    bom = Set.of(project(":mica-bom"))
+    platform = Set.of(project(":mica-platform"))
+    commons = (subprojects - bom - platform)
 }
 
-configure(subprojects) {
+subprojects {
     group = GROUPID
     version = VERSION
     apply plugin: 'signing'
@@ -39,7 +25,7 @@ configure(subprojects) {
 }
 
 apply from: "${rootProject.projectDir}/gradle/quality.gradle"
-configure(subprojects - project(":mica-bom")) {
+configure(commons) {
     apply plugin: "java-library"
     apply from: "${rootProject.projectDir}/gradle/publish-jar.gradle"
     sourceCompatibility = "$javaVersion"
@@ -56,21 +42,31 @@ configure(subprojects - project(":mica-bom")) {
         mavenCentral()
     }
 
+    configurations {
+        management {
+            canBeConsumed = false
+            canBeResolved = false
+            visible = false
+        }
+        compileClasspath.extendsFrom(management)
+        testCompileClasspath.extendsFrom(management)
+        runtimeClasspath.extendsFrom(management)
+        testRuntimeClasspath.extendsFrom(management)
+        annotationProcessor.extendsFrom(management)
+        testAnnotationProcessor.extendsFrom(management)
+    }
+
     dependencies {
         // import BOM.
-        implementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
-        implementation platform("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
+        management platform(project(":mica-platform"))
         compileOnly "org.slf4j:slf4j-api"
         compileOnly "jakarta.servlet:jakarta.servlet-api"
-        compileOnly "org.projectlombok:lombok:$lombokVersion"
-        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
-        testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
-        // swagger 暂时有问题 https://github.com/springfox/springfox/issues/2763
-//        annotationProcessor "org.springframework:spring-context-indexer:${springVersion}"
-        // JSR-305 only used for non-required meta-annotations
-        compileOnly "com.google.code.findbugs:jsr305:$findbugsVersion"
-        testCompileOnly "com.google.code.findbugs:jsr305:$findbugsVersion"
-        testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+        compileOnly "org.projectlombok:lombok"
+        annotationProcessor "org.projectlombok:lombok"
+        testAnnotationProcessor "org.projectlombok:lombok"
+        compileOnly "com.google.code.findbugs:jsr305"
+        testCompileOnly "com.google.code.findbugs:jsr305"
+        testCompileOnly "org.projectlombok:lombok"
         testCompileOnly "org.springframework:spring-test"
         testImplementation "org.slf4j:slf4j-api"
         testImplementation "org.junit.jupiter:junit-jupiter"
