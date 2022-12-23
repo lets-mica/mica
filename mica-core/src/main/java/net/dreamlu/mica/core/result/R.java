@@ -26,6 +26,7 @@ import lombok.ToString;
 import net.dreamlu.mica.core.exception.ServiceException;
 import org.springframework.lang.Nullable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -43,16 +44,17 @@ import java.util.function.Predicate;
 @Schema(description = "返回信息")
 @NoArgsConstructor
 public class R<T> implements Serializable {
+	@Serial
 	private static final long serialVersionUID = -1160662278280275915L;
 
 	@ApiModelProperty(value = "code值", required = true)
-	@Schema(description = "code值", required = true)
+	@Schema(description = "code值", requiredMode = Schema.RequiredMode.REQUIRED)
 	private int code;
 	@ApiModelProperty(value = "是否成功", required = true)
-	@Schema(description = "是否成功", required = true)
+	@Schema(description = "是否成功", requiredMode = Schema.RequiredMode.REQUIRED)
 	private boolean success;
 	@ApiModelProperty(value = "消息", required = true)
-	@Schema(description = "消息", required = true)
+	@Schema(description = "消息", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String msg;
 	@ApiModelProperty("返回对象")
 	@Schema(description = "返回对象")

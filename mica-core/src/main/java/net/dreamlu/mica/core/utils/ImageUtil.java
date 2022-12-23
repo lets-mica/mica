@@ -155,7 +155,7 @@ public class ImageUtil {
 	 *
 	 * @param im         RenderedImage to be written.
 	 * @param formatName a String containing the informal name of the format.
-	 * @return false if no appropriate writer is found.
+	 * @return byte array.
 	 */
 	public static byte[] writeAsBytes(RenderedImage im, String formatName) {
 		try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
@@ -173,7 +173,7 @@ public class ImageUtil {
 	 *
 	 * @param im         RenderedImage to be written.
 	 * @param formatName a String containing the informal name of the format.
-	 * @return false if no appropriate writer is found.
+	 * @return byte array input stream.
 	 */
 	public static ByteArrayInputStream writeAsStream(RenderedImage im, String formatName) {
 		return new ByteArrayInputStream(writeAsBytes(im, formatName));

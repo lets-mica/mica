@@ -54,7 +54,7 @@ public class StreamUtil {
 	 * otherwise returns an empty stream.
 	 */
 	public static <T> Stream<T> stream(Optional<T> optional) {
-		return optional.map(Stream::of).orElseGet(Stream::empty);
+		return optional.stream();
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class StreamUtil {
 	 * <p><b>Java 9 users:</b> use {@code optional.stream()} instead.
 	 */
 	public static IntStream stream(OptionalInt optional) {
-		return optional.isPresent() ? IntStream.of(optional.getAsInt()) : IntStream.empty();
+		return optional.stream();
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class StreamUtil {
 	 * <p><b>Java 9 users:</b> use {@code optional.stream()} instead.
 	 */
 	public static LongStream stream(OptionalLong optional) {
-		return optional.isPresent() ? LongStream.of(optional.getAsLong()) : LongStream.empty();
+		return optional.stream();
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class StreamUtil {
 	 * <p><b>Java 9 users:</b> use {@code optional.stream()} instead.
 	 */
 	public static DoubleStream stream(OptionalDouble optional) {
-		return optional.isPresent() ? DoubleStream.of(optional.getAsDouble()) : DoubleStream.empty();
+		return optional.stream();
 	}
 
 	/**
@@ -181,14 +181,7 @@ public class StreamUtil {
 	}
 
 	// Use this carefully - it doesn't implement value semantics
-	private static class TemporaryPair<A, B> {
-		final A a;
-		final B b;
-
-		TemporaryPair(A a, B b) {
-			this.a = a;
-			this.b = b;
-		}
+	private record TemporaryPair<A, B>(A a, B b) {
 	}
 
 	/**

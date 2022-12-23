@@ -859,7 +859,7 @@ public class DateUtil {
 	/**
 	 * 支持日期、时间、时间日期格式转换成 Instant
 	 */
-	private static final TemporalQuery<Instant> INSTANT_QUERY = new TemporalQuery<Instant>() {
+	private static final TemporalQuery<Instant> INSTANT_QUERY = new TemporalQuery<>() {
 
 		@Nullable
 		@Override

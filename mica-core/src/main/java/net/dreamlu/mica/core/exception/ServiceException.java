@@ -20,12 +20,15 @@ import net.dreamlu.mica.core.result.IResultCode;
 import net.dreamlu.mica.core.result.R;
 import org.springframework.lang.Nullable;
 
+import java.io.Serial;
+
 /**
  * 业务异常
  *
  * @author L.cm
  */
 public class ServiceException extends RuntimeException {
+	@Serial
 	private static final long serialVersionUID = 2359767895161832954L;
 
 	@Nullable

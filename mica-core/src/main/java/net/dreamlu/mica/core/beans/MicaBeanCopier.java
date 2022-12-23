@@ -85,7 +85,7 @@ public abstract class MicaBeanCopier {
 	 * @param to to Bean
 	 * @param converter Converter
 	 */
-	abstract public void copy(Object from, Object to, @Nullable Converter converter);
+	public abstract void copy(Object from, Object to, @Nullable Converter converter);
 
 	public static class Generator extends AbstractClassGenerator {
 		private static final Source SOURCE = new Source(MicaBeanCopier.class.getName());

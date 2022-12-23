@@ -39,6 +39,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.EnumMap;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -89,7 +90,7 @@ public class QrCode {
 	/**
 	 * 提供给编码器额外的参数
 	 */
-	private final Hashtable<EncodeHintType, Object> hints;
+	private final Map<EncodeHintType, Object> hints;
 	/**
 	 * 需要添加的图片
 	 */
@@ -170,26 +171,26 @@ public class QrCode {
 	 */
 	public QrCode errorCorrectionLevel(ErrorCorrectionLevel errorCorrectionLevel) {
 		switch (errorCorrectionLevel) {
-			case L:
+			case L -> {
 				this.errorCorrectionLevel = errorCorrectionLevel;
 				this.errorCorrectionLevelValue = 0.07;
-				break;
-			case M:
+			}
+			case M -> {
 				this.errorCorrectionLevel = errorCorrectionLevel;
 				this.errorCorrectionLevelValue = 0.15;
-				break;
-			case Q:
+			}
+			case Q -> {
 				this.errorCorrectionLevel = errorCorrectionLevel;
 				this.errorCorrectionLevelValue = 0.25;
-				break;
-			case H:
+			}
+			case H -> {
 				this.errorCorrectionLevel = errorCorrectionLevel;
 				this.errorCorrectionLevelValue = 0.3;
-				break;
-			default:
+			}
+			default -> {
 				this.errorCorrectionLevel = ErrorCorrectionLevel.M;
 				this.errorCorrectionLevelValue = 0.15;
-				break;
+			}
 		}
 		return this;
 	}
@@ -275,7 +276,7 @@ public class QrCode {
 	 *
 	 * @return 提供给编码器额外的参数
 	 */
-	public Hashtable<EncodeHintType, ?> getHints() {
+	public Map<EncodeHintType, ?> getHints() {
 		hints.clear();
 		hints.put(EncodeHintType.ERROR_CORRECTION, this.errorCorrectionLevel);
 		hints.put(EncodeHintType.CHARACTER_SET, this.encode);
@@ -510,7 +511,7 @@ public class QrCode {
 	 * @return QRCode 中的内容
 	 */
 	public static String read(BufferedImage qrCodeImage, Charset encode) {
-		Map<DecodeHintType, Object> hints = new Hashtable<>();
+		Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
 		hints.put(DecodeHintType.CHARACTER_SET, encode);
 		return read(qrCodeImage, hints);
 	}
