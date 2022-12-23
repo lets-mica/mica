@@ -40,7 +40,7 @@ import java.util.function.Supplier;
  * @author L.cm
  */
 @Getter
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "deprecation"})
 public class MicaRedisCache {
 	private final RedisTemplate<String, Object> redisTemplate;
 	private final ValueOperations<String, Object> valueOps;
