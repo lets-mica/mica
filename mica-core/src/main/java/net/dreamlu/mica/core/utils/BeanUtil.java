@@ -188,7 +188,7 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 	 * @return T
 	 */
 	@Nullable
-	public static <T> T copy(@Nullable Object source, Class sourceClazz, Class<T> targetClazz) {
+	public static <T> T copy(@Nullable Object source, Class<?> sourceClazz, Class<T> targetClazz) {
 		if (source == null) {
 			return null;
 		}

@@ -1940,10 +1940,10 @@ public class $ {
 		if (object instanceof Number) {
 			DecimalFormat decimalFormat = new DecimalFormat(pattern);
 			return decimalFormat.format(object);
-		} else if (object instanceof Date) {
-			return DateUtil.format((Date) object, pattern);
-		} else if (object instanceof TemporalAccessor) {
-			return DateUtil.format((TemporalAccessor) object, pattern);
+		} else if (object instanceof Date date) {
+			return DateUtil.format(date, pattern);
+		} else if (object instanceof TemporalAccessor accessor) {
+			return DateUtil.format(accessor, pattern);
 		}
 		throw new IllegalArgumentException("未支持的对象:" + object + ",格式:" + object);
 	}

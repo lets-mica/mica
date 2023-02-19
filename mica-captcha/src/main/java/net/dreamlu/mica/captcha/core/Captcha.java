@@ -43,7 +43,8 @@ public class Captcha implements ICaptcha {
 	/**
 	 * 默认的验证码大小，暂时不支持外部设置，因为字体大小是写死的，后期会加自动计算
 	 */
-	private static final int WIDTH = 130, HEIGHT = 48;
+	private static final int WIDTH = 130;
+	private static final int HEIGHT = 48;
 	private static final String[] FONT_NAMES = new String[]{"001.ttf", "002.ttf", "003.ttf", "004.ttf"};
 	private BackgroundDraw backgroundDraw;
 	private CaptchaDraw captchaDraw;

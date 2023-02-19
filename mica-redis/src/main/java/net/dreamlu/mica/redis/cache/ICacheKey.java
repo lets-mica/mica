@@ -16,9 +16,9 @@
 
 package net.dreamlu.mica.redis.cache;
 
-import net.dreamlu.mica.core.utils.ObjectUtil;
 import net.dreamlu.mica.core.utils.StringPool;
 import net.dreamlu.mica.core.utils.StringUtil;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Nullable;
 import java.time.Duration;
@@ -56,7 +56,7 @@ public interface ICacheKey {
 	default String getKeyStr(Object... suffix) {
 		String prefix = this.getPrefix();
 		// 拼接参数
-		if (ObjectUtil.isEmpty(suffix)) {
+		if (ObjectUtils.isEmpty(suffix)) {
 			return prefix;
 		}
 		return prefix.concat(StringUtil.join(suffix, StringPool.COLON));
