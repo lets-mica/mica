@@ -32,7 +32,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 @Slf4j
 @Order
 @RestControllerAdvice
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @ConditionalOnClass({Servlet.class, DispatcherServlet.class})
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class MicaExceptionTranslator {

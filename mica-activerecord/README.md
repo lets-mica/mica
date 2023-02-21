@@ -111,7 +111,7 @@ public class CodeGeneratorTest {
 
 ## 示例：自定义 jFinal ActiveRecord Plugin 配置
 ```java
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 public class MicaArpCustomConfiguration {
 
 	@Bean

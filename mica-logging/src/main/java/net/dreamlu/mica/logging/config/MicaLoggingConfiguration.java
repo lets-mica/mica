@@ -61,7 +61,7 @@ public class MicaLoggingConfiguration {
 		return new LogbackLoggerContextListener(loggingAppenderList);
 	}
 
-	@Configuration(proxyBeanMethods = false)
+	@AutoConfiguration
 	@ConditionalOnAppender(Appender.FILE)
 	public static class LoggingFileConfiguration {
 
@@ -72,7 +72,7 @@ public class MicaLoggingConfiguration {
 		}
 	}
 
-	@Configuration(proxyBeanMethods = false)
+	@AutoConfiguration
 	@ConditionalOnAppender(Appender.FILE_JSON)
 	public static class LoggingJsonFileConfiguration {
 
@@ -83,7 +83,7 @@ public class MicaLoggingConfiguration {
 		}
 	}
 
-	@Configuration(proxyBeanMethods = false)
+	@AutoConfiguration
 	@ConditionalOnAppender(Appender.LOG_STASH)
 	public static class LoggingLogStashConfiguration {
 
@@ -94,7 +94,7 @@ public class MicaLoggingConfiguration {
 		}
 	}
 
-	@Configuration(proxyBeanMethods = false)
+	@AutoConfiguration
 	@ConditionalOnAppender(Appender.LOKI)
 	public static class LoggingLokiConfiguration {
 

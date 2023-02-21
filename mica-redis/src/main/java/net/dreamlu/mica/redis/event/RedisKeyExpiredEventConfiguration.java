@@ -29,7 +29,7 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
  *
  * @author L.cm
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @ConditionalOnProperty(value = "mica.redis.key-expired-event.enable")
 public class RedisKeyExpiredEventConfiguration {
 
