@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @Order
 @RestControllerAdvice
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @ConditionalOnClass({Servlet.class, DispatcherServlet.class})
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class MicaExceptionTranslator {

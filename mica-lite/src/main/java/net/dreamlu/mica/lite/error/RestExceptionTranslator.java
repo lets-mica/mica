@@ -58,7 +58,7 @@ import java.util.Set;
  */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @RestControllerAdvice
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class RestExceptionTranslator {
