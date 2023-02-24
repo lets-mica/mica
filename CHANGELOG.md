@@ -2,6 +2,11 @@
 
 ## 发行版本
 
+### v3.0.3 - 2023-02-26
+- :sparkles: 使用 `@AutoConfiguration` 优化代码
+- :hammer: 添加发版脚本，方便发布到中央库
+- :arrow_up: 依赖升级
+
 ### v3.0.1 - 2022-12-23
 - :sparkles: 代码优化，升级到高版本 jdk 语法
 - :sparkles: 优化 gradle 参数，开启缓存和并行处理
@@ -16,6 +21,13 @@
 - :sparkles: 代码优化，升级到高版本 jdk 语法
 - :arrow_up: 升级到 java17
 - :arrow_up: 升级到 Spring boot3
+
+### v2.7.9 - 2023-02-24
+- :sparkles: mica-ip2region 更新 ip2region.xdb
+- :sparkles: 添加发布脚本
+- :sparkles: 优化 gradle 参数，开启并发。
+- :sparkles: 使用 `@AutoConfiguration` 优化代码。
+- :arrow_up: 依赖升级
 
 ### v2.7.6 - 2022-11-28
 - :sparkles: mica-core NumberUtil 调整 62 进制转十进制
