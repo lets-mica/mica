@@ -6,7 +6,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     compileOnly "org.springframework.cloud:spring-cloud-context"
     compileOnly "net.dreamlu:mica-auto"
-    testImplementation "mysql:mysql-connector-java"
+    testImplementation "com.mysql:mysql-connector-j"
     annotationProcessor "net.dreamlu:mica-auto"
 }
 
