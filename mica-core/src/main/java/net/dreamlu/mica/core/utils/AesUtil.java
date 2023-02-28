@@ -2,7 +2,6 @@ package net.dreamlu.mica.core.utils;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-import org.springframework.util.Base64Utils;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -62,11 +61,11 @@ public class AesUtil {
 	}
 
 	public static String encryptToBase64(String content, String aesTextKey) {
-		return Base64Utils.encodeToString(encrypt(content, aesTextKey));
+		return Base64Util.encodeToString(encrypt(content, aesTextKey));
 	}
 
 	public static String encryptToBase64(byte[] content, String aesTextKey) {
-		return Base64Utils.encodeToString(encrypt(content, aesTextKey));
+		return Base64Util.encodeToString(encrypt(content, aesTextKey));
 	}
 
 	public static byte[] encrypt(String content, String aesTextKey) {
@@ -120,7 +119,7 @@ public class AesUtil {
 	}
 
 	public static byte[] decryptFormBase64(byte[] content, String aesTextKey) {
-		return decrypt(Base64Utils.decode(content), aesTextKey);
+		return decrypt(Base64Util.decode(content), aesTextKey);
 	}
 
 	public static String decryptToString(byte[] content, String aesTextKey) {
