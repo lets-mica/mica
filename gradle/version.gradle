@@ -1,5 +1,5 @@
 ext {
-    springBootVersion = "3.0.3"
+    springBootVersion = "3.0.4"
     springCloudVersion = "2022.0.1"
     micaAutoVersion = "3.0.1"
     micaWeiXinVersion = "3.0.0"

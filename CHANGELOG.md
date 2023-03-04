@@ -2,6 +2,9 @@
 
 ## 发行版本
 
+## v3.0.4 - 2023-03-01
+- :arrow_up: 升级到 Spring boot 3.0.4
+
 ### v3.0.3 - 2023-03-01
 - :sparkles: 优化 `Base64Util`
 - :sparkles: 使用 `@AutoConfiguration` 优化代码
