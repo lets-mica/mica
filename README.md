@@ -90,6 +90,10 @@ LGPL 是 GPL 的一个为主要为类库使用设计的开源协议。和 GPL �
 - `JustAuth` 史上最全的整合第三方登录的开源库: [https://github.com/zhangyd-c/JustAuth](https://github.com/zhangyd-c/JustAuth)
 - `spring-boot-demo` 深度学习并实战 spring boot 的项目: [https://github.com/xkcoding/spring-boot-demo](https://github.com/xkcoding/spring-boot-demo)
 
+## 🍱 赞助商
+
+[![业界领先的单点登录](docs/img/maxkey.png)](http://www.maxkey.top/?from=mica-mqtt)
+
 ## 💚 鸣谢
 感谢 JetBrains 提供的免费开源 License：
 
