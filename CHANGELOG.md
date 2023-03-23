@@ -2,6 +2,11 @@
 
 ## 发行版本
 
+### v2.7.10 - 2023-03-23
+- :sparkles: 优化 Base64Util
+- :sparkles: 完善 HexUtil 工具类
+- :arrow_up: 依赖升级
+
 ### v2.7.9 - 2023-02-24
 - :sparkles: mica-ip2region 更新 ip2region.xdb
 - :sparkles: 添加发布脚本
