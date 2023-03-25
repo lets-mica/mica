@@ -2,6 +2,10 @@
 
 ## 发行版本
 
+## v3.0.5 - 2023-03-25
+- :sparkles: 完善 HexUtil 工具类
+- :arrow_up: 依赖升级，升级到安全版的 Spring boot。
+
 ## v3.0.4 - 2023-03-01
 - :arrow_up: 升级到 Spring boot 3.0.4
 
@@ -25,6 +29,11 @@
 - :sparkles: 代码优化，升级到高版本 jdk 语法
 - :arrow_up: 升级到 java17
 - :arrow_up: 升级到 Spring boot3
+
+### v2.7.10 - 2023-03-23
+- :sparkles: 优化 Base64Util
+- :sparkles: 完善 HexUtil 工具类
+- :arrow_up: 依赖升级
 
 ### v2.7.9 - 2023-02-24
 - :sparkles: mica-ip2region 更新 ip2region.xdb
