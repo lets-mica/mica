@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -60,6 +61,15 @@ public class Exchange {
 			return func.apply(response);
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
+		}
+	}
+
+	@Nullable
+	public <R> R onResponse(Function<ResponseSpec, R> func, BiFunction<Request, IOException, R> errFunc) {
+		try (HttpResponse response = new HttpResponse(call.execute())) {
+			return func.apply(response);
+		} catch (IOException e) {
+			return errFunc.apply(call.request(), e);
 		}
 	}
 

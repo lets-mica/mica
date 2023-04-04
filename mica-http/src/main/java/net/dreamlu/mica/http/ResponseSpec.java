@@ -29,7 +29,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * 响应接口
@@ -85,6 +88,24 @@ public interface ResponseSpec {
 	Headers headers();
 
 	/**
+	 * Returns the Headers value.
+	 *
+	 * @return Headers value
+	 */
+	default String header(String name) {
+		return this.headers().get(name);
+	}
+
+	/**
+	 * Returns the Headers value.
+	 *
+	 * @return Headers value
+	 */
+	default <T> T header(Function<Headers, T> consumer) {
+		return consumer.apply(this.headers());
+	}
+
+	/**
 	 * Headers Consumer.
 	 *
 	 * @param consumer Consumer
@@ -101,6 +122,34 @@ public interface ResponseSpec {
 	 * @return Cookie List
 	 */
 	List<Cookie> cookies();
+
+	/**
+	 * Returns the Cookie value.
+	 *
+	 * @return Cookie
+	 */
+	default Cookie cookie(String name) {
+		for (Cookie cookie : cookies()) {
+			if (cookie.name().equals(name)) {
+				return cookie;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the Cookie value.
+	 *
+	 * @return Cookie
+	 */
+	default Cookie cookie(Predicate<Cookie> predicate) {
+		for (Cookie cookie : cookies()) {
+			if (predicate.test(cookie)) {
+				return cookie;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * 读取消费 cookie
