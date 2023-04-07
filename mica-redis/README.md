@@ -330,6 +330,28 @@ public @interface RStreamListener {
 }
 ```
 
+### 5. 示例 redis pubsub 使用
+
+#### 5.1 发布
+```java
+@Autowired
+RPubSubPublisher pubSubPublisher;
+
+/**
+ * 测试发送
+ */
+public void test(OrderDto message) {
+    pubSubPublisher.publish("test", message);
+}
+```
+
+#### 5.2 监听
+```java
+@RPubSubListener(name = "test")
+public void test(RPubSubEvent<OrderDto> event) {
+// 业务逻辑
+}
+```
 
 ## 拓展链接
 - Redis windows 服务端：https://github.com/tporadowski/redis/releases
