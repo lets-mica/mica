@@ -1,6 +1,6 @@
 tasks.whenTaskAdded { task ->
     if (task.name.contains('signMavenJavaPublication')) {
-        task.enabled = new File(project.property('signing.secretKeyRingFile') as String).isFile()
+        task.enabled = isMavenSignTaskEnabled()
     }
 }
 
@@ -43,6 +43,12 @@ publishing {
     }
 
     signing {
+        if (hasMavenGpgPrivateKey) {
+            def signingKeyId = project.property('signing.keyId') as String
+            def signingPassword = project.property("signing.password") as String
+            def signingKey = getMavenGpgPrivateKey()
+            useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+        }
         sign publishing.publications.mavenJava
     }
 }
