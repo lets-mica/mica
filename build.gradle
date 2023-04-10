@@ -104,6 +104,6 @@ def hasMavenGpgPrivateKey() {
 }
 
 def isMavenSignTaskEnabled() {
-    return hasMavenGpgPrivateKey ?:
+    return hasMavenGpgPrivateKey() ?:
         new File(project.property('signing.secretKeyRingFile') as String).isFile()
 }
