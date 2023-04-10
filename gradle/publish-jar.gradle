@@ -99,7 +99,7 @@ publishing {
     }
 
     signing {
-        if (hasMavenGpgPrivateKey) {
+        if (hasMavenGpgPrivateKey()) {
             def signingKeyId = project.property('signing.keyId') as String
             def signingPassword = project.property("signing.password") as String
             def signingKey = getMavenGpgPrivateKey()
