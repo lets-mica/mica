@@ -2,6 +2,10 @@
 
 ## 发行版本
 
+### v2.7.11 - 2023-04-23
+- :sparkles: mica-redis 添加对 pub sub 的简单封装
+- :bug: mica-xss 修复 `@XssCleanIgnore` 注解判断
+
 ### v2.7.10 - 2023-03-23
 - :sparkles: 优化 Base64Util
 - :sparkles: 完善 HexUtil 工具类
