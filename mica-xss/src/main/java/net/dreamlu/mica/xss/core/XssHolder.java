@@ -48,7 +48,11 @@ public class XssHolder {
 			return false;
 		}
 		String[] ignoreArray = cleanIgnore.value();
-		// 指定忽略的属性
+		// 1. 如果没有设置忽略的字段
+		if (ignoreArray.length == 0) {
+			return true;
+		}
+		// 2. 指定忽略的属性
 		return ObjectUtils.containsElement(ignoreArray, name);
 	}
 
