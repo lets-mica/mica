@@ -75,7 +75,7 @@ public class Searcher {
 		String[] ipParts = ip.split("\\.");
 		if (ipParts.length == 4) {
 			return search(checkIpAdder(ipParts));
-		} else if (ipParts.length == 6) {
+		} else if (ip.contains(":")) {
 			// TODO L.cm ipv6 处理
 			return null;
 		} else {
