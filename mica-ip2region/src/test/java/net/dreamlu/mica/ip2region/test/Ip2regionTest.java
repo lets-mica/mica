@@ -39,6 +39,17 @@ class Ip2regionTest {
 	}
 
 	@Test
+	void getRegionV6() throws Exception {
+		System.out.println(searcher.memorySearch("::ffff:1111:2222"));
+		System.out.println(searcher.memorySearch("2001:db8::ffff:1111:2222"));
+		System.out.println(searcher.memorySearch("::1"));
+		System.out.println(searcher.memorySearch("2406:840:20::1"));
+		System.out.println(searcher.memorySearch("2c0f:feb0:a::"));
+		System.out.println(searcher.memorySearch("240e:109:8047::"));
+		System.out.println(searcher.memorySearch("1111:1111:1111::1111"));
+	}
+
+	@Test
 	void test2() {
 		IpInfo ipInfo = searcher.memorySearch("127.0.0.1");
 		Assertions.assertNotNull(ipInfo);

@@ -71,16 +71,8 @@ public class Searcher {
 		return ioCount;
 	}
 
-	public String search(String ip) throws IOException {
-		String[] ipParts = ip.split("\\.");
-		if (ipParts.length == 4) {
-			return search(checkIpAdder(ipParts));
-		} else if (ip.contains(":")) {
-			// TODO L.cm ipv6 处理
-			return null;
-		} else {
-			throw new IllegalArgumentException("invalid ip address `" + ip + "`");
-		}
+	public String search(String[] ipParts) throws IOException {
+		return search(getIpAdder(ipParts));
 	}
 
 	public String search(long ip) throws IOException {
@@ -246,7 +238,7 @@ public class Searcher {
 	 * @param ipParts ip part 数组
 	 * @return ip long
 	 */
-	private static long checkIpAdder(String[] ipParts) {
+	public static long getIpAdder(String[] ipParts) {
 		long ipAdder = 0;
 		for (int i = 0; i < ipParts.length; i++) {
 			int val = Integer.parseInt(ipParts[i]);
