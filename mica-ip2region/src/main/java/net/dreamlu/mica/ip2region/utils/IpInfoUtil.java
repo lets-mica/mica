@@ -31,6 +31,17 @@ import java.util.regex.Pattern;
  */
 public class IpInfoUtil {
 	private static final Pattern SPLIT_PATTERN = Pattern.compile("\\|");
+	private static final Pattern DOT_PATTERN = Pattern.compile("\\.");
+	private static final Pattern T_PATTERN = Pattern.compile("\\t");
+
+	/**
+	 * 获取 ip v4 part
+	 *
+	 * @return 是否 ipv4
+	 */
+	public static String[] getIpV4Part(String ip) {
+		return DOT_PATTERN.split(ip);
+	}
 
 	/**
 	 * 将 DataBlock 转化为 IpInfo
@@ -44,16 +55,39 @@ public class IpInfoUtil {
 			return null;
 		}
 		IpInfo ipInfo = new IpInfo();
-		String[] splitInfos = SPLIT_PATTERN.split(region);
+		String[] splitInfoArr = SPLIT_PATTERN.split(region);
 		// 补齐5位
-		if (splitInfos.length < 5) {
-			splitInfos = Arrays.copyOf(splitInfos, 5);
+		if (splitInfoArr.length < 5) {
+			splitInfoArr = Arrays.copyOf(splitInfoArr, 5);
 		}
-		ipInfo.setCountry(filterZero(splitInfos[0]));
-		ipInfo.setRegion(filterZero(splitInfos[1]));
-		ipInfo.setProvince(filterZero(splitInfos[2]));
-		ipInfo.setCity(filterZero(splitInfos[3]));
-		ipInfo.setIsp(filterZero(splitInfos[4]));
+		ipInfo.setCountry(filterZero(splitInfoArr[0]));
+		ipInfo.setRegion(filterZero(splitInfoArr[1]));
+		ipInfo.setProvince(filterZero(splitInfoArr[2]));
+		ipInfo.setCity(filterZero(splitInfoArr[3]));
+		ipInfo.setIsp(filterZero(splitInfoArr[4]));
+		return ipInfo;
+	}
+
+	/**
+	 * 将 ipv6 地区转化为 IpInfo
+	 *
+	 * @param ipRecord ipRecord
+	 * @return IpInfo
+	 */
+	@Nullable
+	public static IpInfo toIpV6Info(String[] ipRecord) {
+		IpInfo ipInfo = new IpInfo();
+		String info1 = ipRecord[0];
+		String[] splitInfoArr = T_PATTERN.split(info1);
+		// 补齐5位
+		if (splitInfoArr.length < 4) {
+			splitInfoArr = Arrays.copyOf(splitInfoArr, 4);
+		}
+		ipInfo.setCountry(splitInfoArr[0]);
+		ipInfo.setProvince(splitInfoArr[1]);
+		ipInfo.setCity(splitInfoArr[2]);
+		ipInfo.setRegion(splitInfoArr[3]);
+		ipInfo.setIsp(ipRecord[1]);
 		return ipInfo;
 	}
 

@@ -38,4 +38,9 @@ public class Ip2regionProperties {
 	 */
 	private String dbFileLocation = "classpath:ip2region/ip2region.xdb";
 
+	/**
+	 * ipv6wry.db 文件路径
+	 */
+	private String ipv6dbFileLocation = "classpath:ip2region/ipv6wry.db";
+
 }
