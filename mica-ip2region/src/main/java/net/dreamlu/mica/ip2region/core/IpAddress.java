@@ -16,9 +16,6 @@
 
 package net.dreamlu.mica.ip2region.core;
 
-import jdk.internal.misc.Unsafe;
-import jdk.internal.util.ArraysSupport;
-
 /**
  * 基于 zxipdb-java 简化改
  *
@@ -28,9 +25,9 @@ public class IpAddress {
     private byte[] mIp;
 
     public IpAddress(String ip) {
-        mIp = textToNumericFormatV4(ip);
+		mIp = textToNumericFormatV6(ip);
         if (mIp == null) {
-            mIp = textToNumericFormatV6(ip);
+			mIp = textToNumericFormatV4(ip);
         }
         if (mIp == null) {
             throw new IllegalArgumentException("invalid ip address `" + ip + "`");
