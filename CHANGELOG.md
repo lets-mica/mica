@@ -4,6 +4,7 @@
 
 ### v2.7.11 - 2023-04-23
 - :sparkles: mica-redis 添加对 pub sub 的简单封装
+- :sparkles: mica-ip2region 支持 ipv6
 - :bug: mica-xss 修复 `@XssCleanIgnore` 注解判断
 
 ### v2.7.10 - 2023-03-23
