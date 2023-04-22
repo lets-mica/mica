@@ -94,16 +94,3 @@ def getRepositoryUsername() {
 def getRepositoryPassword() {
     return System.getenv('NEXUS_OSS_PASS_WORD') ?: NEXUS_OSS_PASS_WORD
 }
-
-def getMavenGpgPrivateKey() {
-    return System.getenv('MAVEN_GPG_PRIVATE_KEY')
-}
-
-def hasMavenGpgPrivateKey() {
-    return System.getenv().containsKey('MAVEN_GPG_PRIVATE_KEY')
-}
-
-def isMavenSignTaskEnabled() {
-    return hasMavenGpgPrivateKey() ?:
-        new File(project.property('signing.secretKeyRingFile') as String).isFile()
-}
