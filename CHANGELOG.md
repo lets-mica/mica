@@ -2,6 +2,12 @@
 
 ## 发行版本
 
+### v3.0.6 - 2023-04-23
+- :sparkles: mica-redis 添加对 pub sub 的简单封装
+- :sparkles: mica-ip2region 支持 ipv6
+- :sparkles: mica-http 优化
+- :bug: mica-xss 修复 `@XssCleanIgnore` 注解判断
+
 ## v3.0.5 - 2023-03-25
 - :sparkles: 完善 HexUtil 工具类
 - :arrow_up: 依赖升级，升级到安全版的 Spring boot。
@@ -29,6 +35,12 @@
 - :sparkles: 代码优化，升级到高版本 jdk 语法
 - :arrow_up: 升级到 java17
 - :arrow_up: 升级到 Spring boot3
+
+### v2.7.11 - 2023-04-23
+- :sparkles: mica-redis 添加对 pub sub 的简单封装
+- :sparkles: mica-ip2region 支持 ipv6
+- :sparkles: mica-http 优化
+- :bug: mica-xss 修复 `@XssCleanIgnore` 注解判断
 
 ### v2.7.10 - 2023-03-23
 - :sparkles: 优化 Base64Util
