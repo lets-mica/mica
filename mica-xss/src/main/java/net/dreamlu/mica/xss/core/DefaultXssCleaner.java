@@ -53,10 +53,10 @@ public class DefaultXssCleaner implements XssCleaner {
 			return bodyHtml;
 		}
 		Mode mode = properties.getMode();
-		if (Mode.escape == mode) {
+		if (Mode.ESCAPE == mode) {
 			// html 转义
 			return HtmlUtils.htmlEscape(bodyHtml, Charsets.UTF_8_NAME);
-		} else if (Mode.validate == mode) {
+		} else if (Mode.VALIDATE == mode) {
 			// 校验
 			if (Jsoup.isValid(bodyHtml, XssUtil.WHITE_LIST)) {
 				return bodyHtml;
