@@ -88,6 +88,7 @@ public class MicaRedisCache {
 	 * 存放 key value 对到 redis，用于自定义序列化的方式
 	 *
 	 * @param cacheKey redis cacheKey
+	 * @param value    value
 	 * @param mapper   序列化转换
 	 * @param <T>      泛型
 	 */
@@ -109,6 +110,17 @@ public class MicaRedisCache {
 	}
 
 	/**
+	 * 存放 key value 对到 redis，采用 json 序列化
+	 *
+	 * @param cacheKey redis cacheKey
+	 * @param value    value
+	 * @param <T>      泛型
+	 */
+	public <T> void setByJsonSer(CacheKey cacheKey, T value) {
+		set(cacheKey, value, JsonUtil::toJsonAsBytes);
+	}
+
+	/**
 	 * 存放 key value 对到 redis。
 	 */
 	public <T> void set(String key, T value) {
@@ -124,6 +136,17 @@ public class MicaRedisCache {
 	 */
 	public <T> void set(String key, T value, Function<T, byte[]> mapper) {
 		redisTemplate.execute((RedisCallback<Object>) redis -> redis.set(keySerialize(key), mapper.apply(value)));
+	}
+
+	/**
+	 * 存放 key value 对到 redis，采用 json 序列化
+	 *
+	 * @param cacheKey redis cacheKey
+	 * @param value    value
+	 * @param <T>      泛型
+	 */
+	public <T> void setByJsonSer(String cacheKey, T value) {
+		set(cacheKey, value, JsonUtil::toJsonAsBytes);
 	}
 
 	/**
