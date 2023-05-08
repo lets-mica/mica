@@ -47,7 +47,11 @@ public class MicaXssProperties {
 	/**
 	 * 模式：clear 清理（默认），escape 转义
 	 */
-	private Mode mode = Mode.clear;
+	private Mode mode = Mode.CLEAR;
+	/**
+	 * 忽略响应
+	 */
+	private boolean ignoreResponse = true;
 	/**
 	 * [clear 专用] prettyPrint，默认关闭： 保留换行
 	 */
@@ -69,15 +73,15 @@ public class MicaXssProperties {
 		/**
 		 * 清理
 		 */
-		clear,
+		CLEAR,
 		/**
 		 * 转义
 		 */
-		escape,
+		ESCAPE,
 		/**
 		 * 校验，抛出异常
 		 */
-		validate;
+		VALIDATE;
 	}
 
 }

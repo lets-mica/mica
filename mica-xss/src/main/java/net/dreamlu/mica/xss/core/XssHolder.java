@@ -26,7 +26,7 @@ import java.util.Objects;
  * @author L.cm
  */
 public class XssHolder {
-	private static final ThreadLocal<XssCleanIgnore> TL = new ThreadLocal<>();
+	private static final ThreadLocal<XssCleanIgnoreInfo> TL = new ThreadLocal<>();
 
 	/**
 	 * 是否开启
@@ -43,11 +43,11 @@ public class XssHolder {
 	 * @return XssCleanIgnore
 	 */
 	static boolean isIgnore(String name) {
-		XssCleanIgnore cleanIgnore = TL.get();
-		if (cleanIgnore == null) {
+		XssCleanIgnoreInfo ignoreInfo = TL.get();
+		if (ignoreInfo == null) {
 			return false;
 		}
-		String[] ignoreArray = cleanIgnore.value();
+		String[] ignoreArray = ignoreInfo.getParams();
 		// 1. 如果没有设置忽略的字段
 		if (ignoreArray.length == 0) {
 			return true;
@@ -59,7 +59,7 @@ public class XssHolder {
 	/**
 	 * 标记为开启
 	 */
-	static void setIgnore(XssCleanIgnore xssCleanIgnore) {
+	static void setIgnore(XssCleanIgnoreInfo xssCleanIgnore) {
 		TL.set(xssCleanIgnore);
 	}
 
