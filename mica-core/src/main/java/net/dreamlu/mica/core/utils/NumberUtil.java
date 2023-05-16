@@ -148,23 +148,22 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 	 * @return 数字
 	 */
 	public static long form62Str(String s) {
-		byte[] bytes = s.getBytes(Charsets.UTF_8);
-		byte b;
+		char c;
 		int idx;
 		long res = 0;
-		int len = bytes.length;
+		int len = s.length();
 		int lenIdx = len - 1;
 		for (int i = 0; i < len; i++) {
-			b = bytes[i];
+			c = s.charAt(i);
 			// 将字符转换为对应的数字
-			if (b >= 'A' && b <= 'Z') {
-				idx = b - 29;
-			} else if (b >= 'a' && b <= 'z') {
-				idx = b - 87;
+			if (c >= 'A' && c <= 'Z') {
+				idx = c - 29;
+			} else if (c >= 'a' && c <= 'z') {
+				idx = c - 87;
 			} else {
-				idx = b - 48;
+				idx = c - 48;
 			}
-			res += idx * Math.pow(62, lenIdx - i);
+			res += (long) (idx * StrictMath.pow(62, lenIdx - i));
 		}
 		return res;
 	}
