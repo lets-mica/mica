@@ -148,13 +148,14 @@ public class NumberUtil extends org.springframework.util.NumberUtils {
 	 * @return 数字
 	 */
 	public static long form62Str(String s) {
+		char[] chars = s.toCharArray();
 		char c;
 		int idx;
 		long res = 0;
-		int len = s.length();
+		int len = chars.length;
 		int lenIdx = len - 1;
 		for (int i = 0; i < len; i++) {
-			c = s.charAt(i);
+			c = chars[i];
 			// 将字符转换为对应的数字
 			if (c >= 'A' && c <= 'Z') {
 				idx = c - 29;
