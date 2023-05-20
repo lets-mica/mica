@@ -49,10 +49,6 @@ public class MicaXssProperties {
 	 */
 	private Mode mode = Mode.CLEAR;
 	/**
-	 * 忽略响应
-	 */
-	private boolean ignoreResponse = true;
-	/**
 	 * [clear 专用] prettyPrint，默认关闭： 保留换行
 	 */
 	private boolean prettyPrint = false;
@@ -81,7 +77,7 @@ public class MicaXssProperties {
 		/**
 		 * 校验，抛出异常
 		 */
-		VALIDATE;
+		VALIDATE
 	}
 
 }
