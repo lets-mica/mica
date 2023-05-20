@@ -23,7 +23,6 @@ import net.dreamlu.mica.core.utils.ClassUtil;
 import net.dreamlu.mica.xss.config.MicaXssProperties;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * xss 处理拦截器
@@ -48,16 +47,9 @@ public class XssCleanInterceptor implements AsyncHandlerInterceptor {
 		HandlerMethod handlerMethod = (HandlerMethod) handler;
 		XssCleanIgnore xssCleanIgnore = ClassUtil.getAnnotation(handlerMethod, XssCleanIgnore.class);
 		if (xssCleanIgnore != null) {
-			XssHolder.setIgnore(XssCleanIgnoreInfo.from(xssCleanIgnore));
+			XssHolder.setIgnore(xssCleanIgnore);
 		}
 		return true;
-	}
-
-	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-		if (xssProperties.isIgnoreResponse()) {
-			XssHolder.setIgnore(XssCleanIgnoreInfo.INSTANCE);
-		}
 	}
 
 	@Override
