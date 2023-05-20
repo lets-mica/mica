@@ -2,6 +2,10 @@
 
 ## 发行版本
 
+### v3.0.7 - 2023-05-20
+- :sparkles: mica-redis 完善 MicaRedisCache，添加 `setByJsonSer` 方法。
+- :bug: mica-core 修复 NumberUtil form62Str 转回不准的问题，感谢 `@Just do it` 反馈。
+
 ### v3.0.6 - 2023-04-23
 - :sparkles: mica-redis 添加对 pub sub 的简单封装
 - :sparkles: mica-ip2region 支持 ipv6
@@ -35,6 +39,10 @@
 - :sparkles: 代码优化，升级到高版本 jdk 语法
 - :arrow_up: 升级到 java17
 - :arrow_up: 升级到 Spring boot3
+
+### v2.7.12 - 2023-05-20
+- :sparkles: mica-redis 完善 MicaRedisCache，添加 `setByJsonSer` 方法。
+- :bug: mica-core 修复 NumberUtil form62Str 转回不准的问题，感谢 `@Just do it` 反馈。
 
 ### v2.7.11 - 2023-04-23
 - :sparkles: mica-redis 添加对 pub sub 的简单封装
