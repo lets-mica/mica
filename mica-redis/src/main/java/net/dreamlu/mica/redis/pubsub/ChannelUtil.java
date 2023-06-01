@@ -18,6 +18,9 @@ package net.dreamlu.mica.redis.pubsub;
 
 import lombok.experimental.UtilityClass;
 import net.dreamlu.mica.core.utils.CharPool;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.PatternTopic;
+import org.springframework.data.redis.listener.Topic;
 
 /**
  * channel 工具类
@@ -26,6 +29,16 @@ import net.dreamlu.mica.core.utils.CharPool;
  */
 @UtilityClass
 class ChannelUtil {
+
+	/**
+	 * 获取 pub sub topic
+	 *
+	 * @param channel channel
+	 * @return Topic
+	 */
+	public static Topic getTopic(String channel) {
+		return isPattern(channel) ? new PatternTopic(channel) : new ChannelTopic(channel);
+	}
 
 	/**
 	 * 判断是否为模糊话题，*、? 和 [...]

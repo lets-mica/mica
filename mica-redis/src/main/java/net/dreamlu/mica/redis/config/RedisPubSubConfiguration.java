@@ -21,7 +21,10 @@ import net.dreamlu.mica.redis.pubsub.RPubSubPublisher;
 import net.dreamlu.mica.redis.pubsub.RPubSubListenerDetector;
 import net.dreamlu.mica.redis.pubsub.RedisPubSubPublisher;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
 /**
@@ -33,15 +36,23 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 public class RedisPubSubConfiguration {
 
 	@Bean
+	@ConditionalOnMissingBean
+	public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory connectionFactory) {
+		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+		container.setConnectionFactory(connectionFactory);
+		return container;
+	}
+
+	@Bean
 	public RPubSubPublisher topicEventPublisher(MicaRedisCache redisCache,
 												RedisSerializer<Object> redisSerializer) {
 		return new RedisPubSubPublisher(redisCache, redisSerializer);
 	}
 
 	@Bean
-	public RPubSubListenerDetector topicListenerDetector(MicaRedisCache redisCache,
+	public RPubSubListenerDetector topicListenerDetector(RedisMessageListenerContainer redisMessageListenerContainer,
 														 RedisSerializer<Object> redisSerializer) {
-		return new RPubSubListenerDetector(redisCache, redisSerializer);
+		return new RPubSubListenerDetector(redisMessageListenerContainer, redisSerializer);
 	}
 
 }

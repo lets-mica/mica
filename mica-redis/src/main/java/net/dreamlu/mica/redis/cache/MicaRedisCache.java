@@ -21,7 +21,6 @@ import net.dreamlu.mica.core.utils.CollectionUtil;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import org.springframework.data.domain.Range;
 import org.springframework.data.redis.connection.BitFieldSubCommands;
-import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.lang.Nullable;
@@ -1403,36 +1402,6 @@ public class MicaRedisCache {
 		return redisTemplate.execute((RedisCallback<Long>) redis -> {
 			byte[] channelBytes = keySerialize(channel);
 			return redis.publish(channelBytes, mapper.apply(message));
-		});
-	}
-
-	/**
-	 * redis subscribe
-	 *
-	 * @param channel  channel
-	 * @param listener MessageListener
-	 */
-	@Nullable
-	public void subscribe(String channel, MessageListener listener) {
-		redisTemplate.execute((RedisCallback<Void>) redis -> {
-			byte[] channelBytes = keySerialize(channel);
-			redis.subscribe(listener, channelBytes);
-			return null;
-		});
-	}
-
-	/**
-	 * redis pSubscribe
-	 *
-	 * @param pattern  pattern
-	 * @param listener MessageListener
-	 */
-	@Nullable
-	public void pSubscribe(String pattern, MessageListener listener) {
-		redisTemplate.execute((RedisCallback<Void>) redis -> {
-			byte[] patternBytes = keySerialize(pattern);
-			redis.pSubscribe(listener, patternBytes);
-			return null;
 		});
 	}
 

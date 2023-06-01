@@ -19,10 +19,11 @@ package net.dreamlu.mica.redis.pubsub;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.utils.ReflectUtil;
-import net.dreamlu.mica.redis.cache.MicaRedisCache;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.Topic;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
@@ -38,7 +39,7 @@ import java.lang.reflect.Method;
 @Slf4j
 @RequiredArgsConstructor
 public class RPubSubListenerDetector implements BeanPostProcessor {
-	private final MicaRedisCache redisCache;
+	private final RedisMessageListenerContainer redisMessageListenerContainer;
 	private final RedisSerializer<Object> redisSerializer;
 
 	@Override
@@ -57,18 +58,12 @@ public class RPubSubListenerDetector implements BeanPostProcessor {
 					throw new IllegalArgumentException("@RPubSubListener on method " + method + " parameter count must less or equal to 1.");
 				}
 				// 精准模式和模糊匹配模式
-				if (ChannelUtil.isPattern(channel)) {
-					redisCache.pSubscribe(channel, (message, pattern) -> {
-						String messageChannel = new String(message.getChannel());
-						Object body = redisSerializer.deserialize(message.getBody());
-						invokeMethod(bean, method, paramCount, new RPubSubEvent<>(channel, messageChannel, body));
-					});
-				} else {
-					redisCache.subscribe(channel, (message, pattern) -> {
-						Object body = redisSerializer.deserialize(message.getBody());
-						invokeMethod(bean, method, paramCount, new RPubSubEvent<>(null, channel, body));
-					});
-				}
+				Topic topic = ChannelUtil.getTopic(channel);
+				redisMessageListenerContainer.addMessageListener((message, pattern) -> {
+					String messageChannel = new String(message.getChannel());
+					Object body = redisSerializer.deserialize(message.getBody());
+					invokeMethod(bean, method, paramCount, new RPubSubEvent<>(channel, messageChannel, body));
+				}, topic);
 			}
 		}, ReflectionUtils.USER_DECLARED_METHODS);
 		return bean;
