@@ -1,0 +1,37 @@
+name: Publish Snapshot 2.7.x
+
+on:
+  push:
+    branches: [ 2.7.x ]
+  pull_request:
+    branches: [ 2.7.x ]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+          - name: Set up Apache Maven Central
+          uses: actions/setup-java@v2
+          with:
+            distribution: 'temurin'
+            java-version: 8
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew publishSnapshot
+        env:
+          NEXUS_OSS_USER_NAME: ${{ secrets.OSS_NAME }}
+          NEXUS_OSS_PASS_WORD: ${{ secrets.OSS_PWD }}
+      - name: Cleanup Gradle Cache
+        run: |
+          rm -f ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f ~/.gradle/caches/modules-2/gc.properties
