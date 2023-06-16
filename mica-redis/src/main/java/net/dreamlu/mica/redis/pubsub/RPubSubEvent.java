@@ -19,6 +19,7 @@ package net.dreamlu.mica.redis.pubsub;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 /**
  * 基于 redis pub sub 事件对象
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
  * @author L.cm
  */
 @Getter
+@ToString
 @RequiredArgsConstructor
 public class RPubSubEvent<M> {
 	/**
