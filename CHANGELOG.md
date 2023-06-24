@@ -2,6 +2,11 @@
 
 ## 发行版本
 
+### v3.0.8 - 2023-06-24
+- :sparkles: mica-ip2region 升级 `ip2region.xdb`
+- :sparkles: mica-redis pub、sub 应该使用 `RedisMessageListenerContainer` 进行订阅
+- :sparkles: mica-redis 优化 `RPubSubEvent`
+
 ### v3.0.7 - 2023-05-20
 - :sparkles: mica-redis 完善 MicaRedisCache，添加 `setByJsonSer` 方法。
 - :bug: mica-core 修复 NumberUtil form62Str 转回不准的问题，感谢 `@Just do it` 反馈。
