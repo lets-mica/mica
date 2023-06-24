@@ -25,8 +25,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.nativex.hint.NativeHint;
-import org.springframework.nativex.hint.ResourceHint;
 
 /**
  * 验证码自动配置
@@ -41,7 +39,6 @@ import org.springframework.nativex.hint.ResourceHint;
 	matchIfMissing = true
 )
 @EnableConfigurationProperties(MicaCaptchaProperties.class)
-@NativeHint(resources = @ResourceHint(patterns = "^fonts/.*.ttf"))
 public class MicaCaptchaAutoConfiguration {
 
 	@Bean
