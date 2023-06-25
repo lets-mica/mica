@@ -2,7 +2,7 @@
 
 ## 发行版本
 
-### v2.7.12 - 2023-06-24
+### v2.7.13 - 2023-06-24
 - :sparkles: mica-ip2region 升级 `ip2region.xdb`
 - :sparkles: mica-redis pub、sub 应该使用 `RedisMessageListenerContainer` 进行订阅
 - :sparkles: mica-redis 优化 `RPubSubEvent`
