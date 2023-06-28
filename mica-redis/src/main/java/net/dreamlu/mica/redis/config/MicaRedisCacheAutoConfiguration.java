@@ -86,7 +86,9 @@ public class MicaRedisCacheAutoConfiguration {
 		}
 		boolean allowInFlightCacheCreation = true;
 		boolean enableTransactions = false;
-		RedisAutoCacheManager cacheManager = new RedisAutoCacheManager(redisCacheWriter, cacheConfiguration, initialCaches, allowInFlightCacheCreation);
+		RedisAutoCacheManager cacheManager = new RedisAutoCacheManager(
+			redisCacheWriter, cacheConfiguration, allowInFlightCacheCreation, initialCaches
+		);
 		cacheManager.setTransactionAware(enableTransactions);
 		return this.customizerInvoker.customize(cacheManager);
 	}

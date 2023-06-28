@@ -37,8 +37,9 @@ import java.util.Map;
 public class RedisAutoCacheManager extends RedisCacheManager {
 
 	public RedisAutoCacheManager(RedisCacheWriter cacheWriter, RedisCacheConfiguration defaultCacheConfiguration,
-								 Map<String, RedisCacheConfiguration> initialCacheConfigurations, boolean allowInFlightCacheCreation) {
-		super(cacheWriter, defaultCacheConfiguration, initialCacheConfigurations, allowInFlightCacheCreation);
+								 boolean allowInFlightCacheCreation,
+								 Map<String, RedisCacheConfiguration> initialCacheConfigurations) {
+		super(cacheWriter, defaultCacheConfiguration, allowInFlightCacheCreation, initialCacheConfigurations);
 	}
 
 	@Override
