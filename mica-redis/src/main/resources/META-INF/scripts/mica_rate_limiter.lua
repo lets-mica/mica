@@ -5,7 +5,9 @@ redis.replicate_commands()
 local max = tonumber(ARGV[1])
 -- 超时时间
 local ttl = tonumber(ARGV[2])
-local now = redis.call('TIME')[1]
+-- 读取 redis 毫秒数
+local time = redis.call("TIME")
+local now = tonumber(time[1]) * 1000 + math.floor(tonumber(time[2]) / 1000)
 -- 已经过期的时间点
 local expired = now - ttl
 -- 清除过期的数据,移除指定分数（score）区间内的所有成员
