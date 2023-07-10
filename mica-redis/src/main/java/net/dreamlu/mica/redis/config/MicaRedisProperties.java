@@ -36,9 +36,21 @@ public class MicaRedisProperties {
 	public static final String PREFIX = "mica.redis";
 
 	/**
+	 * redis key 前缀
+	 */
+	private String keyPrefix;
+	/**
 	 * 序列化方式
 	 */
 	private SerializerType serializerType = SerializerType.JSON;
+	/**
+	 * key 过期事件
+	 */
+	private KeyExpiredEvent keyExpiredEvent = new KeyExpiredEvent();
+	/**
+	 * 限流配置
+	 */
+	private RateLimiter rateLimiter = new RateLimiter();
 	/**
 	 * stream
 	 */
@@ -56,6 +68,24 @@ public class MicaRedisProperties {
 		 * jdk 序列化
 		 */
 		JDK
+	}
+
+	@Getter
+	@Setter
+	public static class KeyExpiredEvent {
+		/**
+		 * 是否开启 redis key 失效事件.
+		 */
+		boolean enable = false;
+	}
+
+	@Getter
+	@Setter
+	public static class RateLimiter {
+		/**
+		 * 是否开启 RateLimiter
+		 */
+		boolean enable = false;
 	}
 
 	@Getter
