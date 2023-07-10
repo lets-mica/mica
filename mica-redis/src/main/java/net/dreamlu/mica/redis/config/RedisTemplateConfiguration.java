@@ -22,6 +22,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.redis.cache.MicaRedisCache;
+import net.dreamlu.mica.redis.resolver.DefaultRedisKeyResolver;
+import net.dreamlu.mica.redis.resolver.RedisKeyResolver;
+import net.dreamlu.mica.redis.resolver.RedisKeyResolverSerializer;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
@@ -43,6 +46,17 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 @AutoConfiguration(after = RedisAutoConfiguration.class)
 @EnableConfigurationProperties(MicaRedisProperties.class)
 public class RedisTemplateConfiguration {
+
+	/**
+	 * 默认的 redis key 处理
+	 * @param properties MicaRedisProperties
+	 * @return RedisKeyResolver
+	 */
+	@Bean
+	@ConditionalOnMissingBean(RedisKeyResolver.class)
+	public RedisKeyResolver redisKeyResolver(MicaRedisProperties properties) {
+		return new DefaultRedisKeyResolver(properties);
+	}
 
 	/**
 	 * value 值 序列化
@@ -72,10 +86,11 @@ public class RedisTemplateConfiguration {
 	@ConditionalOnMissingBean(name = "micaRedisTemplate")
 	@ConditionalOnSingleCandidate(RedisConnectionFactory.class)
 	public RedisTemplate<String, Object> micaRedisTemplate(RedisConnectionFactory redisConnectionFactory,
+														   RedisKeyResolver redisKeyResolver,
 														   RedisSerializer<Object> redisSerializer) {
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 		// key 序列化
-		RedisSerializer<String> keySerializer = RedisSerializer.string();
+		RedisKeyResolverSerializer keySerializer = new RedisKeyResolverSerializer(RedisSerializer.string(), redisKeyResolver);
 		redisTemplate.setKeySerializer(keySerializer);
 		redisTemplate.setHashKeySerializer(keySerializer);
 		// value 序列化

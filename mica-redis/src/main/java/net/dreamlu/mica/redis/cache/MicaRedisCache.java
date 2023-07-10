@@ -31,6 +31,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.LongSupplier;
 import java.util.function.Supplier;
 
 /**
@@ -47,6 +48,8 @@ public class MicaRedisCache {
 	private final ListOperations<String, Object> listOps;
 	private final SetOperations<String, Object> setOps;
 	private final ZSetOperations<String, Object> zSetOps;
+	private final GeoOperations<String, Object> geoOps;
+	private final HyperLogLogOperations<String, Object> hllOps;
 
 	public MicaRedisCache(RedisTemplate<String, Object> redisTemplate) {
 		this.redisTemplate = redisTemplate;
@@ -55,6 +58,8 @@ public class MicaRedisCache {
 		this.listOps = redisTemplate.opsForList();
 		this.setOps = redisTemplate.opsForSet();
 		this.zSetOps = redisTemplate.opsForZSet();
+		this.geoOps = redisTemplate.opsForGeo();
+		this.hllOps = redisTemplate.opsForHyperLogLog();
 	}
 
 	/**
@@ -505,7 +510,6 @@ public class MicaRedisCache {
 	 * @param key      key
 	 * @param pattern  匹配表达式
 	 * @param consumer consumer
-	 * @return 扫描结果
 	 */
 	public void sScan(String key, String pattern, Consumer<String> consumer) {
 		sScan(key, pattern, 100L, consumer);
@@ -518,7 +522,6 @@ public class MicaRedisCache {
 	 * @param pattern  匹配表达式
 	 * @param count    一次扫描的数量
 	 * @param consumer consumer
-	 * @return 扫描结果
 	 */
 	public void sScan(String key, String pattern, @Nullable Long count, Consumer<String> consumer) {
 		sScanBytes(key, pattern, count, (bytes) -> consumer.accept(keyDeserialize(bytes)));
@@ -531,7 +534,6 @@ public class MicaRedisCache {
 	 * @param pattern  匹配表达式
 	 * @param count    一次扫描的数量
 	 * @param consumer consumer
-	 * @return 扫描结果
 	 */
 	public void sScanBytes(String key, String pattern, @Nullable Long count, Consumer<byte[]> consumer) {
 		redisTemplate.execute((RedisCallback<Object>) redis -> {
@@ -692,8 +694,7 @@ public class MicaRedisCache {
 	 * 关于递增(increment) / 递减(decrement)操作的更多信息，参见 INCR 命令。
 	 */
 	public Long incrBy(String key, long longValue, Duration timeout) {
-		long seconds = timeout.getSeconds();
-		return incrBy(key, longValue, seconds);
+		return incrBy(key, longValue, timeout.getSeconds());
 	}
 
 	/**
@@ -720,7 +721,7 @@ public class MicaRedisCache {
 	 * @param loader  加载器
 	 */
 	@Nullable
-	public Long getCounter(String key, long seconds, Supplier<Long> loader) {
+	public Long getCounter(String key, long seconds, LongSupplier loader) {
 		return redisTemplate.execute((RedisCallback<Long>) redis -> {
 			byte[] keyBytes = keySerialize(key);
 			byte[] value = redis.get(keyBytes);
@@ -728,8 +729,7 @@ public class MicaRedisCache {
 			if (value != null) {
 				longValue = Long.parseLong(new String(value, StandardCharsets.UTF_8));
 			} else {
-				Long loaderValue = loader.get();
-				longValue = loaderValue == null ? 0 : loaderValue;
+				longValue = loader.getAsLong();
 				redis.setEx(keyBytes, seconds, String.valueOf(longValue).getBytes());
 			}
 			return longValue;
@@ -765,8 +765,8 @@ public class MicaRedisCache {
 	 * 当 key 和 newkey 相同，或者 key 不存在时，返回一个错误。
 	 * 当 newkey 已经存在时， RENAME 命令将覆盖旧值。
 	 */
-	public void rename(String oldkey, String newkey) {
-		redisTemplate.rename(oldkey, newkey);
+	public void rename(String oldKey, String newKey) {
+		redisTemplate.rename(oldKey, newKey);
 	}
 
 	/**
@@ -1515,8 +1515,9 @@ public class MicaRedisCache {
 	 * @param redisKey redisKey
 	 * @return byte array
 	 */
-	public static byte[] keySerialize(String redisKey) {
-		return Objects.requireNonNull(RedisSerializer.string().serialize(redisKey), "Redis key is null.");
+	public byte[] keySerialize(String redisKey) {
+		RedisSerializer<String> keySerializer = (RedisSerializer<String>) this.redisTemplate.getKeySerializer();
+		return Objects.requireNonNull(keySerializer.serialize(redisKey), "Redis key is null.");
 	}
 
 	/**
@@ -1525,8 +1526,40 @@ public class MicaRedisCache {
 	 * @param redisKey redisKey
 	 * @return byte array
 	 */
-	public static String keyDeserialize(byte[] redisKey) {
-		return Objects.requireNonNull(RedisSerializer.string().deserialize(redisKey), "Redis key is null.");
+	public String keyDeserialize(byte[] redisKey) {
+		RedisSerializer<String> keySerializer = (RedisSerializer<String>) this.redisTemplate.getKeySerializer();
+		return Objects.requireNonNull(keySerializer.deserialize(redisKey), "Redis key is null.");
 	}
 
+	public RedisTemplate<String, Object> getRedisTemplate() {
+		return redisTemplate;
+	}
+
+	public ValueOperations<String, Object> getValueOps() {
+		return valueOps;
+	}
+
+	public HashOperations<String, Object, Object> getHashOps() {
+		return hashOps;
+	}
+
+	public ListOperations<String, Object> getListOps() {
+		return listOps;
+	}
+
+	public SetOperations<String, Object> getSetOps() {
+		return setOps;
+	}
+
+	public ZSetOperations<String, Object> getzSetOps() {
+		return zSetOps;
+	}
+
+	public GeoOperations<String, Object> getGeoOps() {
+		return geoOps;
+	}
+
+	public HyperLogLogOperations<String, Object> getHllOps() {
+		return hllOps;
+	}
 }
