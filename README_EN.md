@@ -15,6 +15,7 @@ English | [简体中文](README.md)
 
 | Latest version | mica version     | spring boot version | spring cloud version |
 |----------------| ---------------- |---------------------|----------------------|
+| 3.1.1          | mica 3.1.x       | 3.1.x               | 2022                 |
 | 3.0.8          | mica 3.0.x       | 3.0.x               | 2022                 |
 | 2.7.13         | mica 2.7.x       | 2.7.x               | 2021                 |
 | 2.6.8          | mica 2.6.x       | 2.6.x               | 2021                 |
