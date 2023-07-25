@@ -2,6 +2,11 @@
 
 ## 发行版本
 
+### v2.7.14 - 2023-07-25
+- :sparkles: mica-redis key 支持统一添加前缀和自定义 key 处理
+- :sparkles: mica-redis 限流时间使用毫秒数
+- :arrow_up: 升级到 Spring boot 2.7.14
+
 ### v2.7.13 - 2023-06-24
 - :sparkles: mica-ip2region 升级 `ip2region.xdb`
 - :sparkles: mica-redis pub、sub 应该使用 `RedisMessageListenerContainer` 进行订阅
