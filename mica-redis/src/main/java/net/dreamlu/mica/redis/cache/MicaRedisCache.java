@@ -957,6 +957,18 @@ public class MicaRedisCache {
 	 * 对一个储存字符串值的域 field 执行 HINCRBY 命令将造成一个错误。
 	 * 本操作的值被限制在 64 位(bit)有符号数字表示之内。
 	 */
+	public Long hIncr(String key, Object field) {
+		return hashOps.increment(key, field);
+	}
+
+	/**
+	 * 为哈希表 key 中的域 field 的值加上增量 increment 。
+	 * 增量也可以为负数，相当于对给定域进行减法操作。
+	 * 如果 key 不存在，一个新的哈希表被创建并执行 HINCRBY 命令。
+	 * 如果域 field 不存在，那么在执行命令前，域的值被初始化为 0 。
+	 * 对一个储存字符串值的域 field 执行 HINCRBY 命令将造成一个错误。
+	 * 本操作的值被限制在 64 位(bit)有符号数字表示之内。
+	 */
 	public Long hIncrBy(String key, Object field, long value) {
 		return hashOps.increment(key, field, value);
 	}
