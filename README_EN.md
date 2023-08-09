@@ -119,9 +119,3 @@ Thanks to the support of `Rumeng Technology VIP` **Little friends**, for more **
 ![`Rumeng Technology](docs/img/dreamlu-weixin.jpg)
 
 Wonderful content recommended daily! ! !
-
-## 🏗️ Contributor
-
-![contributors](https://whnb.wang/contributors/596392912/mica)
-
-![Stargazers over time](https://whnb.wang/img/596392912/mica) 
