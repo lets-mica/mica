@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import net.dreamlu.mica.core.result.R;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -54,6 +55,18 @@ class JsonTest {
 		String json1 = JsonUtil.toJson(user);
 		Assertions.assertTrue(json1.contains("zhangsan"));
 		String json2 = JsonUtil.toJsonWithView(user, Views.Public.class);
+		Assertions.assertFalse(json2.contains("zhangsan"));
+	}
+
+	@Test
+	void testR() throws JsonProcessingException {
+		User user = new User();
+		user.setId(System.currentTimeMillis());
+		user.setName("张三");
+		user.setEmail("zhangsan@dreamlu.net");
+		String json1 = JsonUtil.toJson(R.success(user));
+		Assertions.assertTrue(json1.contains("zhangsan"));
+		String json2 = JsonUtil.toJsonWithView(R.success(user), Views.Public.class);
 		Assertions.assertFalse(json2.contains("zhangsan"));
 	}
 
