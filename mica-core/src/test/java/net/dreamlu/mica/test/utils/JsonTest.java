@@ -47,7 +47,7 @@ class JsonTest {
 	}
 
 	@Test
-	void test2() throws JsonProcessingException {
+	void test2() {
 		User user = new User();
 		user.setId(System.currentTimeMillis());
 		user.setName("张三");
@@ -59,7 +59,7 @@ class JsonTest {
 	}
 
 	@Test
-	void testR() throws JsonProcessingException {
+	void testR() {
 		User user = new User();
 		user.setId(System.currentTimeMillis());
 		user.setName("张三");
