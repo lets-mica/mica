@@ -1,0 +1,7 @@
+dependencies {
+    api "io.nats:jnats:2.16.13"
+    implementation "org.springframework.boot:spring-boot-starter"
+    compileOnly "org.springframework.cloud:spring-cloud-context"
+    compileOnly "net.dreamlu:mica-auto:${micaAutoVersion}"
+    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+}
