@@ -6,6 +6,7 @@ package net.dreamlu.mica.ip2region.core;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
 
 /**
  * xdb searcher (Not thread safe implementation)
@@ -128,7 +129,7 @@ public class Searcher {
 		// load and return the region data
 		final byte[] regionBuff = new byte[dataLen];
 		read(dataPtr, regionBuff);
-		return new String(regionBuff);
+		return new String(regionBuff, StandardCharsets.UTF_8);
 	}
 
 	protected void read(int offset, byte[] buffer) throws IOException {
