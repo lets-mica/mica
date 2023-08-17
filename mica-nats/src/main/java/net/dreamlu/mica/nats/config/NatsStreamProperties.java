@@ -16,13 +16,26 @@
 
 package net.dreamlu.mica.nats.config;
 
-import org.springframework.boot.autoconfigure.AutoConfiguration;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * nats stream 配置
  *
  * @author L.cm
  */
-@AutoConfiguration
-public class NatsStreamConfiguration {
+@Getter
+@Setter
+@RefreshScope
+@ConfigurationProperties(NatsStreamProperties.PREFIX)
+public class NatsStreamProperties {
+	public static final String PREFIX = "nats.stream";
+
+	/**
+	 * 是否开启 nats JetStream，默认为：false
+	 */
+	private boolean enable = false;
+
 }
