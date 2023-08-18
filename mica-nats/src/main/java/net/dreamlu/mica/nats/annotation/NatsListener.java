@@ -29,4 +29,11 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NatsListener {
 
+	/**
+	 * subject
+	 *
+	 * @return subject
+	 */
+	String value();
+
 }

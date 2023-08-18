@@ -19,7 +19,6 @@ package net.dreamlu.mica.xss.core;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.auto.annotation.AutoIgnore;
-import net.dreamlu.mica.core.utils.StringPool;
 import net.dreamlu.mica.xss.config.MicaXssProperties;
 import net.dreamlu.mica.xss.utils.XssUtil;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -58,12 +57,6 @@ public class FormXssClean {
 	public static class StringPropertiesEditor extends PropertyEditorSupport {
 		private final XssCleaner xssCleaner;
 		private final MicaXssProperties properties;
-
-		@Override
-		public String getAsText() {
-			Object value = getValue();
-			return value != null ? value.toString() : StringPool.EMPTY;
-		}
 
 		@Override
 		public void setAsText(String text) throws IllegalArgumentException {

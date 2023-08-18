@@ -16,19 +16,24 @@
 
 package net.dreamlu.mica.nats.config;
 
+import io.nats.client.Connection;
 import io.nats.client.ConnectionListener;
 import io.nats.client.Nats;
 import io.nats.client.Options;
+import net.dreamlu.mica.core.utils.ResourceUtil;
+import net.dreamlu.mica.core.utils.StringUtil;
+import net.dreamlu.mica.nats.core.DefaultNatsTemplate;
+import net.dreamlu.mica.nats.core.NatsTemplate;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 
 import javax.net.ssl.*;
 import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
@@ -93,6 +98,16 @@ public class NatsConfiguration {
         return builder.build();
     }
 
+	@Bean
+	public Connection natsConnection(Options natsOptions) throws IOException, InterruptedException {
+		return Nats.connect(natsOptions);
+	}
+
+	@Bean
+	public NatsTemplate natsTemplate(Connection natsConnection) {
+		return new DefaultNatsTemplate(natsConnection);
+	}
+
 	private static SSLContext createSSLContext(NatsProperties properties) {
 		try {
 			return initSSLContext(properties);
@@ -104,7 +119,8 @@ public class NatsConfiguration {
     private static KeyStore loadKeystore(String path, char[] password, String keyStoreType)
             throws IOException, GeneralSecurityException {
         KeyStore store = KeyStore.getInstance(keyStoreType);
-        try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(path))) {
+		Resource resource = ResourceUtil.getResource(path);
+		try (BufferedInputStream in = new BufferedInputStream(resource.getInputStream())) {
             store.load(in, password);
         }
         return store;
@@ -113,10 +129,10 @@ public class NatsConfiguration {
     private static KeyManager[] createKeyManagers(String path, String passwordStr,
                                                   String keyStoreProvider, String keyStoreType)
             throws IOException, GeneralSecurityException {
-        if (!StringUtils.hasText(keyStoreProvider)) {
+        if (StringUtil.isBlank(keyStoreProvider)) {
             keyStoreProvider = "SunX509";
         }
-        if (!StringUtils.hasText(keyStoreProvider)) {
+        if (StringUtil.isBlank(keyStoreProvider)) {
             keyStoreType = "PKCS12";
         }
         char[] password;
@@ -134,10 +150,10 @@ public class NatsConfiguration {
     private static TrustManager[] createTrustManagers(String path, String passwordStr,
                                                       String trustStoreProvider, String trustStoreType)
             throws IOException, GeneralSecurityException {
-        if (trustStoreProvider == null || trustStoreProvider.length() == 0) {
+        if (StringUtil.isBlank(trustStoreProvider)) {
             trustStoreProvider = "SunX509";
         }
-        if (trustStoreType == null || trustStoreType.length() == 0) {
+        if (StringUtil.isBlank(trustStoreType)) {
             trustStoreType = "PKCS12";
         }
         char[] password;

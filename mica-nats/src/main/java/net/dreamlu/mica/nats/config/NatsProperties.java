@@ -21,7 +21,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotBlank;
 import java.time.Duration;
 
 /**
@@ -35,6 +37,7 @@ import java.time.Duration;
  */
 @Getter
 @Setter
+@Validated
 @RefreshScope
 @ConfigurationProperties(NatsProperties.PREFIX)
 public class NatsProperties {
@@ -43,6 +46,7 @@ public class NatsProperties {
 	/**
 	 * nats服务器的URL，可以是 , 逗号分隔的列表。
 	 */
+	@NotBlank
 	private String server;
 
 	/**
