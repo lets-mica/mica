@@ -40,7 +40,7 @@ import java.util.function.Supplier;
  * @author L.cm
  */
 @Getter
-@SuppressWarnings({"unchecked", "deprecation"})
+@SuppressWarnings("unchecked")
 public class MicaRedisCache {
 	private final RedisTemplate<String, Object> redisTemplate;
 	private final ValueOperations<String, Object> valueOps;
@@ -737,6 +737,45 @@ public class MicaRedisCache {
 	}
 
 	/**
+	 * 获取记数器的值，用于获取 hIncr、hIncrBy 的值
+	 *
+	 * @param key key
+	 */
+	@Nullable
+	public Long getHCounter(String key, Object field) {
+		return redisTemplate.execute((RedisCallback<Long>) redis -> {
+			byte[] value = redis.hGet(keySerialize(key), hashKeySerializer(field));
+			if (value == null) {
+				return null;
+			}
+			return Long.valueOf(new String(value, StandardCharsets.UTF_8));
+		});
+	}
+
+	/**
+	 * 获取记数器的值，用于初始化获取 hIncr、hIncrBy 的值
+	 *
+	 * @param key     key
+	 * @param loader  加载器
+	 */
+	@Nullable
+	public Long getHCounter(String key, Object field, LongSupplier loader) {
+		return redisTemplate.execute((RedisCallback<Long>) redis -> {
+			byte[] keyBytes = keySerialize(key);
+			byte[] fieldBytes = hashKeySerializer(field);
+			byte[] value = redis.hGet(keyBytes, fieldBytes);
+			long longValue;
+			if (value != null) {
+				longValue = Long.parseLong(new String(value, StandardCharsets.UTF_8));
+			} else {
+				longValue = loader.getAsLong();
+				redis.hSet(keyBytes, fieldBytes, String.valueOf(longValue).getBytes());
+			}
+			return longValue;
+		});
+	}
+
+	/**
 	 * 检查给定 key 是否存在。
 	 */
 	@Nullable
@@ -947,6 +986,30 @@ public class MicaRedisCache {
 	 */
 	public Long hLen(String key) {
 		return hashOps.size(key);
+	}
+
+	/**
+	 * 为哈希表 key 中的域 field 的值加上增量 increment 。
+	 * 增量也可以为负数，相当于对给定域进行减法操作。
+	 * 如果 key 不存在，一个新的哈希表被创建并执行 HINCRBY 命令。
+	 * 如果域 field 不存在，那么在执行命令前，域的值被初始化为 0 。
+	 * 对一个储存字符串值的域 field 执行 HINCRBY 命令将造成一个错误。
+	 * 本操作的值被限制在 64 位(bit)有符号数字表示之内。
+	 */
+	public Long hIncr(String key, Object field) {
+		return hashOps.increment(key, field, 1);
+	}
+
+	/**
+	 * 为哈希表 key 中的域 field 的值加上增量 increment 。
+	 * 增量也可以为负数，相当于对给定域进行减法操作。
+	 * 如果 key 不存在，一个新的哈希表被创建并执行 HINCRBY 命令。
+	 * 如果域 field 不存在，那么在执行命令前，域的值被初始化为 0 。
+	 * 对一个储存字符串值的域 field 执行 HINCRBY 命令将造成一个错误。
+	 * 本操作的值被限制在 64 位(bit)有符号数字表示之内。
+	 */
+	public Long hDecr(String key, Object field) {
+		return hashOps.increment(key, field, -1);
 	}
 
 	/**
@@ -1518,6 +1581,17 @@ public class MicaRedisCache {
 	public byte[] keySerialize(String redisKey) {
 		RedisSerializer<String> keySerializer = (RedisSerializer<String>) this.redisTemplate.getKeySerializer();
 		return Objects.requireNonNull(keySerializer.serialize(redisKey), "Redis key is null.");
+	}
+
+	/**
+	 * redisKey 序列化
+	 *
+	 * @param redisKey redisKey
+	 * @return byte array
+	 */
+	public byte[] hashKeySerializer(Object redisKey) {
+		RedisSerializer<Object> hashKeySerializer = (RedisSerializer<Object>) this.redisTemplate.getHashKeySerializer();
+		return Objects.requireNonNull(hashKeySerializer.serialize(redisKey), "Redis key is null.");
 	}
 
 	/**

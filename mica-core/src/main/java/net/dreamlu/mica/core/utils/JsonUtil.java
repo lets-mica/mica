@@ -64,6 +64,27 @@ public class JsonUtil {
 	}
 
 	/**
+	 * 将对象序列化成json字符串
+	 *
+	 * @param object javaBean
+	 * @param serializationView    serializationView
+	 * @return jsonString json字符串
+	 */
+	@Nullable
+	public static String toJsonWithView(@Nullable Object object, Class<?> serializationView) {
+		if (object == null) {
+			return null;
+		}
+		try {
+			return getInstance()
+				.writerWithView(serializationView)
+				.writeValueAsString(object);
+		} catch (JsonProcessingException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
 	 * 将对象序列化成 json 字符串，格式美化
 	 *
 	 * @param object javaBean
@@ -75,7 +96,9 @@ public class JsonUtil {
 			return null;
 		}
 		try {
-			return getInstance().writerWithDefaultPrettyPrinter().writeValueAsString(object);
+			return getInstance()
+				.writerWithDefaultPrettyPrinter()
+				.writeValueAsString(object);
 		} catch (JsonProcessingException e) {
 			throw Exceptions.unchecked(e);
 		}
@@ -93,6 +116,25 @@ public class JsonUtil {
 		}
 		try {
 			return getInstance().writeValueAsBytes(object);
+		} catch (JsonProcessingException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
+	 * 将对象序列化成 json byte 数组
+	 *
+	 * @param object javaBean
+	 * @return jsonString json字符串
+	 */
+	public static byte[] toJsonAsBytesWithView(@Nullable Object object, Class<?> serializationView) {
+		if (object == null) {
+			return new byte[0];
+		}
+		try {
+			return getInstance()
+				.writerWithView(serializationView)
+				.writeValueAsBytes(object);
 		} catch (JsonProcessingException e) {
 			throw Exceptions.unchecked(e);
 		}

@@ -16,15 +16,16 @@
 
 package net.dreamlu.mica.xss.core;
 
-import net.dreamlu.mica.core.utils.Charsets;
-import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.xss.config.MicaXssProperties;
 import net.dreamlu.mica.xss.config.MicaXssProperties.Mode;
 import net.dreamlu.mica.xss.utils.XssUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Entities;
+import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * 默认的 xss 清理器
@@ -49,13 +50,13 @@ public class DefaultXssCleaner implements XssCleaner {
 	@Override
 	public String clean(String name, String bodyHtml, XssType type) {
 		// 1. 为空直接返回
-		if (StringUtil.isBlank(bodyHtml)) {
+		if (!StringUtils.hasText(bodyHtml)) {
 			return bodyHtml;
 		}
 		Mode mode = properties.getMode();
 		if (Mode.ESCAPE == mode) {
 			// html 转义
-			return HtmlUtils.htmlEscape(bodyHtml, Charsets.UTF_8_NAME);
+			return HtmlUtils.htmlEscape(bodyHtml, StandardCharsets.UTF_8.name());
 		} else if (Mode.VALIDATE == mode) {
 			// 校验
 			if (Jsoup.isValid(bodyHtml, XssUtil.WHITE_LIST)) {
