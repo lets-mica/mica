@@ -29,4 +29,27 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NatsStreamListener {
 
+	/**
+	 * 主题 subject
+	 *
+	 * @return subject
+	 */
+	String value();
+
+	/**
+	 * 队列
+	 * @return 队列名称
+	 */
+	String queue() default "";
+
+	/**
+	 * 交付主题
+	 */
+	String deliverSubject() default "";
+
+	/**
+	 * 交付组
+	 */
+	String deliverGroup() default "";
+
 }
