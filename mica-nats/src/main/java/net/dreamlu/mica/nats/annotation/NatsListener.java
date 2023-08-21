@@ -30,10 +30,16 @@ import java.lang.annotation.*;
 public @interface NatsListener {
 
 	/**
-	 * subject
+	 * 主题 subject
 	 *
 	 * @return subject
 	 */
 	String value();
+
+	/**
+	 * 队列
+	 * @return 队列名称
+	 */
+	String queue() default "";
 
 }

@@ -23,6 +23,7 @@ import io.nats.client.Options;
 import net.dreamlu.mica.core.utils.ResourceUtil;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.nats.core.DefaultNatsTemplate;
+import net.dreamlu.mica.nats.core.NatsListenerDetector;
 import net.dreamlu.mica.nats.core.NatsTemplate;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -102,6 +103,11 @@ public class NatsConfiguration {
 	public Connection natsConnection(Options natsOptions) throws IOException, InterruptedException {
 		return Nats.connect(natsOptions);
 	}
+
+    @Bean
+    public NatsListenerDetector natsListenerDetector(Connection natsConnection) {
+        return new NatsListenerDetector(natsConnection);
+    }
 
 	@Bean
 	public NatsTemplate natsTemplate(Connection natsConnection) {
