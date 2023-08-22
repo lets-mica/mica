@@ -39,7 +39,7 @@ import java.util.Map;
 @RefreshScope
 @ConfigurationProperties(NatsStreamProperties.PREFIX)
 public class NatsStreamProperties {
-	public static final String PREFIX = "nats.stream";
+	public static final String PREFIX = NatsProperties.PREFIX + ".stream";
 
 	/**
 	 * 是否开启 nats JetStream，默认为：false
@@ -53,6 +53,14 @@ public class NatsStreamProperties {
 	 * 描述
 	 */
 	private String description;
+	/**
+	 * 消费者名称
+	 */
+	private String consumerName;
+	/**
+	 * 消费者分组
+	 */
+	private String consumerGroup;
 	/**
 	 * 默认订阅列表
 	 */

@@ -85,7 +85,7 @@ public @interface NatsStreamListener {
      *
      * @return 最大消息数量
      */
-    long pendingMessageLimit() default Consumer.DEFAULT_MAX_BYTES;
+    long pendingMessageLimit() default Consumer.DEFAULT_MAX_MESSAGES;
 
     /**
      * 设置非调度推送订阅在内部（挂起）消息队列中所能容纳的最大字节数。

@@ -22,7 +22,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.validation.annotation.Validated;
 
 import java.time.Duration;
 
@@ -37,17 +36,15 @@ import java.time.Duration;
  */
 @Getter
 @Setter
-@Validated
 @RefreshScope
 @ConfigurationProperties(NatsProperties.PREFIX)
 public class NatsProperties {
 	public static final String PREFIX = "nats";
 
 	/**
-	 * nats服务器的URL，可以是 , 逗号分隔的列表。
+	 * nats服务器的URL，可以是 , 逗号分隔的列表。默认：nats://localhost:4222
 	 */
-	@NotBlank
-	private String server;
+	private String server = Options.DEFAULT_URL;
 
 	/**
 	 * 连接名称，显示在线程名称中。
