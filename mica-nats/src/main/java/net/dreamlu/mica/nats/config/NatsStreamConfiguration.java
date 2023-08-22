@@ -22,9 +22,11 @@ import io.nats.client.api.StreamInfo;
 import io.nats.client.support.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.nats.core.NatsStreamListenerDetector;
+import net.dreamlu.mica.nats.utils.StreamConfigurationUtil;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
 import java.io.IOException;
@@ -36,57 +38,35 @@ import java.io.IOException;
  */
 @Slf4j
 @AutoConfiguration(after = NatsConfiguration.class)
+@ConditionalOnProperty(
+	prefix = NatsStreamProperties.PREFIX,
+	name = "enable",
+	havingValue = "true"
+)
 @ConditionalOnClass(Options.class)
 public class NatsStreamConfiguration {
 
-    @Bean
-    public JetStream natsJetStream(Connection natsConnection,
-                                   NatsStreamProperties properties,
-                                   ObjectProvider<NatsStreamCustomizer> natsStreamCustomizerObjectProvider)
-            throws IOException, JetStreamApiException {
-        StreamConfiguration.Builder streamConfigurationBuilder = StreamConfiguration.builder()
-                .name(properties.getName())
-                .description(properties.getDescription())
-                .subjects(properties.getSubjects())
-                .retentionPolicy(properties.getRetentionPolicy())
-                .maxConsumers(properties.getMaxConsumers())
-                .maxMessages(properties.getMaxMsgs())
-                .maxMessagesPerSubject(properties.getMaxMsgsPerSubject())
-                .maxBytes(properties.getMaxBytes())
-                .maxAge(properties.getMaxAge())
-                .maxMsgSize(properties.getMaxMsgSize())
-                .storageType(properties.getStorageType())
-                .replicas(properties.getReplicas())
-                .noAck(properties.isNoAck())
-                .templateOwner(properties.getTemplateOwner())
-                .discardPolicy(properties.getDiscardPolicy())
-                .discardNewPerSubject(properties.isDiscardNewPerSubject())
-                .duplicateWindow(properties.getDuplicateWindow())
-                .allowRollup(properties.isAllowRollup())
-                .allowDirect(properties.isAllowDirect())
-                .denyDelete(properties.isDenyDelete())
-                .denyPurge(properties.isDenyPurge())
-                .metadata(properties.getMetadata());
-        // 是否已封存
-        if (properties.isSealed()) {
-            streamConfigurationBuilder.seal();
-        }
-        // 用户自定义配置
-        natsStreamCustomizerObjectProvider.orderedStream().forEach(natsOptionsCustomizer -> natsOptionsCustomizer.customize(streamConfigurationBuilder));
-        // stream 配置
-        StreamConfiguration streamConfiguration = streamConfigurationBuilder.build();
-        // stream 流管理器
-        JetStreamManagement jsm = natsConnection.jetStreamManagement();
-        StreamInfo streamInfo = jsm.addStream(streamConfiguration);
-        // 打印 stream 信息
-        log.info(JsonUtils.getFormatted(streamInfo));
-        return natsConnection.jetStream();
-    }
+	@Bean
+	public JetStream natsJetStream(Connection natsConnection,
+								   NatsStreamProperties properties,
+								   ObjectProvider<NatsStreamCustomizer> natsStreamCustomizerObjectProvider)
+		throws IOException, JetStreamApiException {
+		// stream 配置
+		StreamConfiguration streamConfiguration = StreamConfigurationUtil.from(properties, natsStreamCustomizerObjectProvider);
+		// stream 流管理器
+		JetStreamManagement jsm = natsConnection.jetStreamManagement();
+		StreamInfo streamInfo = jsm.addStream(streamConfiguration);
+		// 打印 stream 信息
+		log.info(JsonUtils.getFormatted(streamInfo));
+		return natsConnection.jetStream();
+	}
 
-    @Bean
-    public NatsStreamListenerDetector natsStreamListenerDetector(Connection natsConnection,
-                                                                 JetStream natsJetStream) {
-        return new NatsStreamListenerDetector(natsConnection, natsJetStream);
-    }
+	@Bean
+	public NatsStreamListenerDetector natsStreamListenerDetector(NatsStreamProperties properties,
+																 ObjectProvider<NatsStreamCustomizer> natsStreamCustomizerObjectProvider,
+																 Connection natsConnection,
+																 JetStream natsJetStream) {
+		return new NatsStreamListenerDetector(properties, natsStreamCustomizerObjectProvider, natsConnection, natsJetStream);
+	}
 
 }
