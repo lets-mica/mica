@@ -25,7 +25,7 @@ class UUIDTest {
         int size = 100_0000;
         for (int i = 0; i < size; i++) {
             service.submit(() -> {
-                String nanoId = StringUtil.getFastNanoId();
+                String nanoId = StringUtil.getNanoId();
                 if (uuidSet.contains(nanoId)) {
                     System.out.println("-----------存在冲突-------");
                 } else {

@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -417,21 +418,21 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
-	 * 生成uuid（冲突概率小），采用 jdk 9 的形式，优化性能
+	 * 生成uuid（更快，存在冲突的可能），采用 jdk 9 的形式，优化性能
 	 *
 	 * @return UUID
 	 */
 	public static String getUUID() {
-		return getUUID(Holder.SECURE_RANDOM);
+		return getUUID(ThreadLocalRandom.current());
 	}
 
 	/**
-	 * 生成安全的 uuid（更快，存在冲突的可能），采用 jdk 9 的形式，优化性能
+	 * 生成安全的 uuid（冲突概率小），采用 jdk 9 的形式，优化性能
 	 *
 	 * @return UUID
 	 */
-	public static String getFastUUID() {
-		return getUUID(Holder.RANDOM);
+	public static String getSafeUUID() {
+		return getUUID(Holder.SECURE_RANDOM);
 	}
 
 	private static String getUUID(Random random) {
@@ -453,7 +454,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return NanoId
 	 */
 	public static String getNanoId() {
-		return getNanoId(Holder.SECURE_RANDOM, true);
+		return getNanoId(ThreadLocalRandom.current(), true);
 	}
 
 	/**
@@ -462,7 +463,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return NanoId
 	 */
 	public static String getNanoId62() {
-		return getNanoId(Holder.SECURE_RANDOM, false);
+		return getNanoId(ThreadLocalRandom.current(), false);
 	}
 
 	/**
@@ -470,8 +471,8 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 *
 	 * @return NanoId
 	 */
-	public static String getFastNanoId() {
-		return getNanoId(Holder.RANDOM, true);
+	public static String getSafeNanoId() {
+		return getNanoId(Holder.SECURE_RANDOM, true);
 	}
 
 	/**
@@ -479,8 +480,8 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 *
 	 * @return NanoId
 	 */
-	public static String getFastNanoId62() {
-		return getNanoId(Holder.RANDOM, false);
+	public static String getSafeNanoId62() {
+		return getNanoId(Holder.SECURE_RANDOM, false);
 	}
 
 	private static String getNanoId(Random random, boolean radix64) {
