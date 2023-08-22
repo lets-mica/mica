@@ -13,3 +13,6 @@ nats 封装，更改方便 Spring boot 下使用。
 - **Stream（消息流）**：`stream` 是NATS Streaming中用于组织和存储消息的逻辑实体。它是由一个字符串标识符（也称为stream name）表示的，并用于发布和订阅相关的消息。一个消息流可以包含多个主题，而每个主题下可以有不同的订阅者。
 
 总结来说，`subject` 是发布和订阅消息的目标名称，`queue` 是用于负载均衡和竞争消费的机制，而 `stream` 是用于组织和存储消息的逻辑实体。它们在NATS Streaming中各自扮演不同的角色和功能。
+
+## 相关链接
+- [NATS—协议详解（nats-protocol）](https://www.cnblogs.com/yorkyang/p/8393080.html)
