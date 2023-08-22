@@ -18,6 +18,7 @@ package net.dreamlu.mica.nats.core;
 
 import io.nats.client.Connection;
 import io.nats.client.Dispatcher;
+import io.nats.client.MessageHandler;
 import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.nats.annotation.NatsListener;
 import org.springframework.beans.BeansException;
@@ -43,10 +44,12 @@ public class NatsListenerDetector implements BeanPostProcessor {
         ReflectionUtils.doWithMethods(userClass, method -> {
             NatsListener listener = AnnotationUtils.findAnnotation(method, NatsListener.class);
             if (listener != null) {
-                Dispatcher connectionDispatcher = natsConnection.createDispatcher();
-                DefaultMessageHandler messageHandler = new DefaultMessageHandler(bean, method);
+				// 订阅的主题
                 String subject = listener.value();
                 Assert.hasText(subject, "@NatsListener value(subject) must not be empty.");
+				Dispatcher connectionDispatcher = natsConnection.createDispatcher();
+				// 消息监听器
+				MessageHandler messageHandler = new DefaultMessageHandler(bean, method);
                 String queue = listener.queue();
                 if (StringUtils.hasText(queue)) {
                     connectionDispatcher.subscribe(subject, queue, messageHandler);
