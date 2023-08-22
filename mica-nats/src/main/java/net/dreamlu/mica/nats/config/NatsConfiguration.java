@@ -55,8 +55,9 @@ public class NatsConfiguration {
 
     @Bean
     public Options natsOptions(NatsProperties properties,
-                               ObjectProvider<ConnectionListener> connectionListenerObjectProvider) {
-        Options.Builder builder = new Options.Builder()
+                               ObjectProvider<ConnectionListener> connectionListenerObjectProvider,
+							   ObjectProvider<NatsCustomizer> natsCustomizerObjectProvider) {
+        final Options.Builder builder = new Options.Builder()
                 .server(properties.getServer())
                 .connectionName(properties.getConnectionName())
                 .maxReconnects(properties.getMaxReconnect())
@@ -80,13 +81,13 @@ public class NatsConfiguration {
         String username = properties.getUsername();
         String password = properties.getPassword();
         if (StringUtils.hasText(nKey)) {
-            builder = builder.authHandler(Nats.staticCredentials(null, nKey.toCharArray()));
+            builder.authHandler(Nats.staticCredentials(null, nKey.toCharArray()));
         } else if (StringUtils.hasText(credentials)) {
-            builder = builder.authHandler(Nats.credentials(credentials));
+            builder.authHandler(Nats.credentials(credentials));
         } else if (StringUtils.hasText(token)) {
-            builder = builder.token(token.toCharArray());
+            builder.token(token.toCharArray());
         } else if (StringUtils.hasText(username) && StringUtils.hasText(password)) {
-            builder = builder.userInfo(username, password);
+            builder.userInfo(username, password);
         }
         // ssl 证书信息
         String keyStorePath = properties.getKeyStorePath();
@@ -96,6 +97,8 @@ public class NatsConfiguration {
         }
         // 设置 nats 连接监听器
         connectionListenerObjectProvider.ifAvailable(builder::connectionListener);
+		// 用户自定义配置
+        natsCustomizerObjectProvider.orderedStream().forEach(natsOptionsCustomizer -> natsOptionsCustomizer.customize(builder));
         return builder.build();
     }
 

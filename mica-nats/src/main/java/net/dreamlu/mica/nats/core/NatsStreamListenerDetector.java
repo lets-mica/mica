@@ -16,10 +16,9 @@
 
 package net.dreamlu.mica.nats.core;
 
-import io.nats.client.Connection;
-import io.nats.client.Dispatcher;
+import io.nats.client.*;
 import lombok.RequiredArgsConstructor;
-import net.dreamlu.mica.nats.annotation.NatsListener;
+import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.nats.annotation.NatsStreamListener;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -29,34 +28,70 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
+
 /**
- * nats 监听器处理
+ * nats JetStream 监听器处理
  *
  * @author L.cm
  */
 @RequiredArgsConstructor
 public class NatsStreamListenerDetector implements BeanPostProcessor {
     private final Connection natsConnection;
+    private final JetStream jetStream;
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         Class<?> userClass = ClassUtils.getUserClass(bean);
         ReflectionUtils.doWithMethods(userClass, method -> {
-			NatsStreamListener listener = AnnotationUtils.findAnnotation(method, NatsStreamListener.class);
+            NatsStreamListener listener = AnnotationUtils.findAnnotation(method, NatsStreamListener.class);
             if (listener != null) {
-                Dispatcher connectionDispatcher = natsConnection.createDispatcher();
-                DefaultMessageHandler messageHandler = new DefaultMessageHandler(bean, method);
                 String subject = listener.value();
-                Assert.hasText(subject, "@NatsListener value(subject) must not be empty.");
-                String queue = listener.queue();
-                if (StringUtils.hasText(queue)) {
-                    connectionDispatcher.subscribe(subject, queue, messageHandler);
-                } else {
-                    connectionDispatcher.subscribe(subject, messageHandler);
+                Assert.hasText(subject, "@NatsStreamListener value(subject) must not be empty.");
+                // 消息处理器
+                MessageHandler messageHandler = new DefaultMessageHandler(bean, method);
+                try {
+                    jetStreamSubscribe(listener, messageHandler);
+                } catch (JetStreamApiException | IOException e) {
+                    throw Exceptions.unchecked(e);
                 }
             }
         }, ReflectionUtils.USER_DECLARED_METHODS);
         return bean;
+    }
+
+    /**
+     * JetStream 订阅
+     *
+     * @param listener       NatsStreamListener
+     * @param messageHandler MessageHandler
+     */
+    private void jetStreamSubscribe(NatsStreamListener listener, MessageHandler messageHandler)
+            throws JetStreamApiException, IOException {
+        String subject = listener.value();
+        // 调度器
+        Dispatcher dispatcher = natsConnection.createDispatcher(messageHandler);
+        // 订阅策略
+        PushSubscribeOptions.Builder optionsBuilder = PushSubscribeOptions.builder()
+                .deliverSubject(listener.deliverSubject())
+                .deliverGroup(listener.deliverGroup())
+                .pendingByteLimit(listener.pendingByteLimit())
+                .pendingMessageLimit(listener.pendingMessageLimit())
+                .ordered(listener.ordered());
+        // stream 流名称
+        String stream = listener.stream();
+        if (StringUtils.hasText(stream)) {
+            optionsBuilder.stream(stream);
+        }
+        // 队列
+        String queue = listener.queue();
+        // 是否自动 ack
+        boolean autoAck = listener.autoAck();
+        if (StringUtils.hasText(queue)) {
+            jetStream.subscribe(subject, queue, dispatcher, messageHandler, autoAck, optionsBuilder.build());
+        } else {
+            jetStream.subscribe(subject, dispatcher, messageHandler, autoAck, optionsBuilder.build());
+        }
     }
 
 }

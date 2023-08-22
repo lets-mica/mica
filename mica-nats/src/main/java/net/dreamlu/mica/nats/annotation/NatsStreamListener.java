@@ -16,6 +16,8 @@
 
 package net.dreamlu.mica.nats.annotation;
 
+import io.nats.client.Consumer;
+
 import java.lang.annotation.*;
 
 /**
@@ -29,27 +31,67 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NatsStreamListener {
 
-	/**
-	 * 主题 subject
-	 *
-	 * @return subject
-	 */
-	String value();
+    /**
+     * 主题 subject
+     *
+     * @return subject
+     */
+    String value();
 
-	/**
-	 * 队列
-	 * @return 队列名称
-	 */
-	String queue() default "";
+    /**
+     * 队列
+     *
+     * @return 队列名称
+     */
+    String queue() default "";
 
-	/**
-	 * 交付主题
-	 */
-	String deliverSubject() default "";
+    /**
+     * Stream（消息流）
+     *
+     * @return Stream name
+     */
+    String stream() default "";
 
-	/**
-	 * 交付组
-	 */
-	String deliverGroup() default "";
+    /**
+     * 自动 ack
+     *
+     * @return 是否自动 ack
+     */
+    boolean autoAck() default false;
+
+    /**
+     * 是否按顺序消费
+     *
+     * @return 顺序消费
+     */
+    boolean ordered() default false;
+
+    /**
+     * 交付主题
+     *
+     * @return 交付主题
+     */
+    String deliverSubject() default "";
+
+    /**
+     * 交付组
+     *
+     * @return 交付组
+     */
+    String deliverGroup() default "";
+
+    /**
+     * 设置非调度推送订阅在内部（挂起）消息队列中所能容纳的最大消息数量。
+     *
+     * @return 最大消息数量
+     */
+    long pendingMessageLimit() default Consumer.DEFAULT_MAX_BYTES;
+
+    /**
+     * 设置非调度推送订阅在内部（挂起）消息队列中所能容纳的最大字节数。
+     *
+     * @return 最大字节数
+     */
+    long pendingByteLimit() default Consumer.DEFAULT_MAX_BYTES;
 
 }
