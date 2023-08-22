@@ -33,6 +33,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * nats JetStream 监听器处理
@@ -75,6 +76,11 @@ public class NatsStreamListenerDetector implements BeanPostProcessor {
 	private void jetStreamSubscribe(NatsStreamListener listener, MessageHandler messageHandler)
 		throws JetStreamApiException, IOException {
 		String subject = listener.value();
+		List<String> subjects = properties.getSubjects();
+		// 判断是否包含关系，没有则需要添加进去
+		if (!subjects.contains(subject)) {
+			subjects.add(subject);
+		}
 		// 调度器
 		Dispatcher dispatcher = natsConnection.createDispatcher(messageHandler);
 		String deliverSubject = listener.deliverSubject();
