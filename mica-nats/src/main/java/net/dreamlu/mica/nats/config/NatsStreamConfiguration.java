@@ -21,7 +21,10 @@ import io.nats.client.api.StreamConfiguration;
 import io.nats.client.api.StreamInfo;
 import io.nats.client.support.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.nats.core.DefaultNatsStreamTemplate;
 import net.dreamlu.mica.nats.core.NatsStreamListenerDetector;
+import net.dreamlu.mica.nats.core.NatsStreamTemplate;
+import net.dreamlu.mica.nats.core.NatsTemplate;
 import net.dreamlu.mica.nats.utils.StreamConfigurationUtil;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -67,6 +70,11 @@ public class NatsStreamConfiguration {
 																 Connection natsConnection,
 																 JetStream natsJetStream) {
 		return new NatsStreamListenerDetector(properties, natsStreamCustomizerObjectProvider, natsConnection, natsJetStream);
+	}
+
+	@Bean
+	public NatsStreamTemplate natsStreamTemplate(JetStream natsJetStream) {
+		return new DefaultNatsStreamTemplate(natsJetStream);
 	}
 
 }
