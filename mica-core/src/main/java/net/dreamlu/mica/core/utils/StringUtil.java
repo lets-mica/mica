@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -418,12 +417,24 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
-	 * 生成uuid，采用 jdk 9 的形式，优化性能
+	 * 生成uuid（冲突概率小），采用 jdk 9 的形式，优化性能
 	 *
 	 * @return UUID
 	 */
 	public static String getUUID() {
-		ThreadLocalRandom random = ThreadLocalRandom.current();
+		return getUUID(Holder.SECURE_RANDOM);
+	}
+
+	/**
+	 * 生成安全的 uuid（更快，存在冲突的可能），采用 jdk 9 的形式，优化性能
+	 *
+	 * @return UUID
+	 */
+	public static String getFastUUID() {
+		return getUUID(Holder.RANDOM);
+	}
+
+	private static String getUUID(Random random) {
 		long lsb = random.nextLong();
 		long msb = random.nextLong();
 		byte[] buf = new byte[32];
@@ -442,7 +453,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return NanoId
 	 */
 	public static String getNanoId() {
-		return getNanoId(true);
+		return getNanoId(Holder.SECURE_RANDOM, true);
 	}
 
 	/**
@@ -451,11 +462,28 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return NanoId
 	 */
 	public static String getNanoId62() {
-		return getNanoId(false);
+		return getNanoId(Holder.SECURE_RANDOM, false);
 	}
 
-	private static String getNanoId(boolean radix64) {
-		Random random = ThreadLocalRandom.current();
+	/**
+	 * 一个小巧、安全、URL友好、21 位的字符串ID生成器。包含数字、大写、小写字母、_、-
+	 *
+	 * @return NanoId
+	 */
+	public static String getFastNanoId() {
+		return getNanoId(Holder.RANDOM, true);
+	}
+
+	/**
+	 * 一个小巧、安全、URL友好、21 位的字符串ID生成器，62 进制，只包含数字、大写、小写字母
+	 *
+	 * @return NanoId
+	 */
+	public static String getFastNanoId62() {
+		return getNanoId(Holder.RANDOM, false);
+	}
+
+	private static String getNanoId(Random random, boolean radix64) {
 		long lsb = random.nextLong();
 		long msb = random.nextLong();
 		byte[] buf = new byte[21];
