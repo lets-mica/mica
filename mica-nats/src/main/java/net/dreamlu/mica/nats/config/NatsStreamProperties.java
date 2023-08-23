@@ -16,17 +16,13 @@
 
 package net.dreamlu.mica.nats.config;
 
-import io.nats.client.api.DiscardPolicy;
-import io.nats.client.api.RetentionPolicy;
-import io.nats.client.api.StorageType;
+import io.nats.client.api.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,9 +58,9 @@ public class NatsStreamProperties {
 	 */
 	private String consumerGroup;
 	/**
-	 * 默认订阅列表
+	 * 消费策略
 	 */
-	private final List<String> subjects = new ArrayList<>();
+	private DeliverPolicy consumerPolicy= DeliverPolicy.Last;
 	/**
 	 * 保留策略，默认：限流
 	 */

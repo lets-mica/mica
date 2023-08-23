@@ -67,20 +67,6 @@ public @interface NatsStreamListener {
     boolean ordered() default false;
 
     /**
-     * 交付主题
-     *
-     * @return 交付主题
-     */
-    String deliverSubject() default "";
-
-    /**
-     * 交付组
-     *
-     * @return 交付组
-     */
-    String deliverGroup() default "";
-
-    /**
      * 设置非调度推送订阅在内部（挂起）消息队列中所能容纳的最大消息数量。
      *
      * @return 最大消息数量

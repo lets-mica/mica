@@ -25,6 +25,7 @@ public class NatsExample {
 			Dispatcher dispatcher = nc.createDispatcher(msg -> {
                 byte[] bytes = msg.getData();
                 System.out.println(new String(bytes));
+				msg.ack();
             });
 			dispatcher.subscribe("subject");
 			Thread.sleep(10000L);

@@ -16,16 +16,13 @@
 
 package net.dreamlu.mica.nats.config;
 
-import io.nats.client.*;
-import io.nats.client.api.StreamConfiguration;
-import io.nats.client.api.StreamInfo;
-import io.nats.client.support.JsonUtils;
+import io.nats.client.Connection;
+import io.nats.client.JetStream;
+import io.nats.client.Options;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.nats.core.DefaultNatsStreamTemplate;
 import net.dreamlu.mica.nats.core.NatsStreamListenerDetector;
 import net.dreamlu.mica.nats.core.NatsStreamTemplate;
-import net.dreamlu.mica.nats.core.NatsTemplate;
-import net.dreamlu.mica.nats.utils.StreamConfigurationUtil;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -50,17 +47,7 @@ import java.io.IOException;
 public class NatsStreamConfiguration {
 
 	@Bean
-	public JetStream natsJetStream(Connection natsConnection,
-								   NatsStreamProperties properties,
-								   ObjectProvider<NatsStreamCustomizer> natsStreamCustomizerObjectProvider)
-		throws IOException, JetStreamApiException {
-		// stream 配置
-		StreamConfiguration streamConfiguration = StreamConfigurationUtil.from(properties, natsStreamCustomizerObjectProvider);
-		// stream 流管理器
-		JetStreamManagement jsm = natsConnection.jetStreamManagement();
-		StreamInfo streamInfo = jsm.addStream(streamConfiguration);
-		// 打印 stream 信息
-		log.info(JsonUtils.getFormatted(streamInfo));
+	public JetStream natsJetStream(Connection natsConnection) throws IOException {
 		return natsConnection.jetStream();
 	}
 

@@ -23,6 +23,8 @@ import net.dreamlu.mica.nats.config.NatsStreamProperties;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.util.StringUtils;
 
+import java.util.Collections;
+
 /**
  * nats Stream 配置 工具
  *
@@ -34,30 +36,20 @@ public class StreamConfigurationUtil {
 	/**
 	 * 构造 StreamConfiguration
 	 *
-	 * @param properties                         NatsStreamProperties
-	 * @param natsStreamCustomizerObjectProvider ObjectProvider
-	 * @return StreamConfiguration
-	 */
-	public static StreamConfiguration from(NatsStreamProperties properties,
-										   ObjectProvider<NatsStreamCustomizer> natsStreamCustomizerObjectProvider) {
-		return from(null, properties, natsStreamCustomizerObjectProvider);
-	}
-
-	/**
-	 * 构造 StreamConfiguration
-	 *
+	 * @param subject                            subject
 	 * @param streamName                         stream name
 	 * @param properties                         NatsStreamProperties
 	 * @param natsStreamCustomizerObjectProvider ObjectProvider
 	 * @return StreamConfiguration
 	 */
-	public static StreamConfiguration from(String streamName,
+	public static StreamConfiguration from(String subject,
+										   String streamName,
 										   NatsStreamProperties properties,
 										   ObjectProvider<NatsStreamCustomizer> natsStreamCustomizerObjectProvider) {
 		StreamConfiguration.Builder builder = StreamConfiguration.builder()
 			.name(StringUtils.hasText(streamName) ? streamName : properties.getName())
 			.description(properties.getDescription())
-			.subjects(properties.getSubjects())
+			.subjects(Collections.singletonList(subject))
 			.retentionPolicy(properties.getRetentionPolicy())
 			.maxConsumers(properties.getMaxConsumers())
 			.maxMessages(properties.getMaxMsgs())
