@@ -18,6 +18,7 @@ package net.dreamlu.mica.nats.core;
 
 import io.nats.client.Message;
 import io.nats.client.MessageHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
@@ -27,6 +28,7 @@ import java.lang.reflect.Method;
  *
  * @author L.cm
  */
+@Slf4j
 public class DefaultMessageHandler implements MessageHandler {
 	private final Object bean;
 	private final Method method;
@@ -43,6 +45,11 @@ public class DefaultMessageHandler implements MessageHandler {
 
 	@Override
 	public void onMessage(Message msg) throws InterruptedException {
-		ReflectionUtils.invokeMethod(method, bean, msg);
+		try {
+			ReflectionUtils.invokeMethod(method, bean, msg);
+			msg.ack();
+		} catch (Throwable e) {
+			log.error(e.getMessage(), e);
+		}
 	}
 }

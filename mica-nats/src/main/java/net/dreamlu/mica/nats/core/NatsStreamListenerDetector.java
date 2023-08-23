@@ -17,8 +17,11 @@
 package net.dreamlu.mica.nats.core;
 
 import io.nats.client.*;
+import io.nats.client.api.ConsumerConfiguration;
+import io.nats.client.api.DeliverPolicy;
 import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.Exceptions;
+import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.nats.annotation.NatsStreamListener;
 import net.dreamlu.mica.nats.config.NatsStreamCustomizer;
 import net.dreamlu.mica.nats.config.NatsStreamProperties;
@@ -76,15 +79,8 @@ public class NatsStreamListenerDetector implements BeanPostProcessor {
 	private void jetStreamSubscribe(NatsStreamListener listener, MessageHandler messageHandler)
 		throws JetStreamApiException, IOException {
 		String subject = listener.value();
-		List<String> subjects = properties.getSubjects();
-		// 判断是否包含关系，没有则需要添加进去
-		if (!subjects.contains(subject)) {
-			subjects.add(subject);
-		}
 		// 调度器
 		Dispatcher dispatcher = natsConnection.createDispatcher(messageHandler);
-		String deliverSubject = listener.deliverSubject();
-		String deliverGroup = listener.deliverGroup();
 		long pendingMessageLimit = listener.pendingMessageLimit();
 		long pendingByteLimit = listener.pendingByteLimit();
 		dispatcher.setPendingLimits(pendingMessageLimit, pendingByteLimit);
@@ -93,12 +89,6 @@ public class NatsStreamListenerDetector implements BeanPostProcessor {
 			.pendingMessageLimit(pendingMessageLimit)
 			.pendingByteLimit(pendingByteLimit)
 			.ordered(listener.ordered());
-		if (StringUtils.hasText(deliverSubject)) {
-			optionsBuilder.deliverSubject(deliverSubject);
-		}
-		if (StringUtils.hasText(deliverGroup)) {
-			optionsBuilder.deliverGroup(deliverGroup);
-		}
 		// stream 流名称
 		String listenerStream = listener.stream();
 		String streamName = properties.getName();
@@ -107,8 +97,14 @@ public class NatsStreamListenerDetector implements BeanPostProcessor {
 			optionsBuilder.stream(listenerStream);
 			JetStreamManagement jsm = natsConnection.jetStreamManagement();
 			// 不是默认的流，则添加流
-			jsm.addStream(StreamConfigurationUtil.from(listenerStream, properties, natsStreamCustomizerObjectProvider));
+			jsm.addStream(StreamConfigurationUtil.from(listenerStream, subject, properties, natsStreamCustomizerObjectProvider));
 		}
+		ConsumerConfiguration config = ConsumerConfiguration.builder()
+			.durable(properties.getConsumerName() + '-' + StringUtil.getUUID())
+			.deliverGroup(properties.getConsumerGroup())
+			.deliverPolicy(properties.getConsumerPolicy())
+			.build();
+		optionsBuilder.configuration(config);
 		// 队列
 		String queue = listener.queue();
 		// 是否自动 ack
