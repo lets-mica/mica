@@ -35,25 +35,35 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 @RestControllerAdvice
 public class JsonViewResultAdvice implements ResponseBodyAdvice<Object> {
 
-    @Override
-    public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+	@Override
+	public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
 		return returnType.hasMethodAnnotation(JsonView.class);
-    }
+	}
 
-    @Override
-    public Object beforeBodyWrite(Object body,
+	@Override
+	public Object beforeBodyWrite(Object body,
 								  MethodParameter returnType,
-                                  MediaType selectedContentType,
-                                  Class<? extends HttpMessageConverter<?>> selectedConverterType,
-                                  ServerHttpRequest request,
-                                  ServerHttpResponse response) {
-		// 如果返回的是 R
-        if (body instanceof R<?>) {
-            MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(body);
-            JsonView jsonView = returnType.getMethodAnnotation(JsonView.class);
-            mappingJacksonValue.setSerializationView(jsonView.value()[0]);
-            return mappingJacksonValue;
-        }
-        return body;
-    }
+								  MediaType selectedContentType,
+								  Class<? extends HttpMessageConverter<?>> selectedConverterType,
+								  ServerHttpRequest request,
+								  ServerHttpResponse response) {
+		// 如果返回的是 mica 中的 R
+		if (body instanceof R<?>) {
+			JsonView jsonView = returnType.getMethodAnnotation(JsonView.class);
+			// 理论上是不会出现 null 的，为了编辑器的代码检查添加了判断
+			if (jsonView == null) {
+				return body;
+			}
+			// 没有标记 jsonView class
+			Class<?>[] jsonViewClassArray = jsonView.value();
+			if (jsonViewClassArray == null || jsonViewClassArray.length == 0) {
+				return body;
+			}
+			// 处理 json view
+			MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(body);
+			mappingJacksonValue.setSerializationView(jsonView.value()[0]);
+			return mappingJacksonValue;
+		}
+		return body;
+	}
 }
