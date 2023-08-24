@@ -18,7 +18,6 @@ package net.dreamlu.mica.nats.core;
 
 import io.nats.client.*;
 import io.nats.client.api.ConsumerConfiguration;
-import io.nats.client.api.DeliverPolicy;
 import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.core.utils.StringUtil;
@@ -36,7 +35,6 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * nats JetStream 监听器处理
