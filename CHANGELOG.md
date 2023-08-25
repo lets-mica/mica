@@ -2,7 +2,7 @@
 
 ## 发行版本
 
-### v2.7.14 - 2023-08-25
+### v2.7.15 - 2023-08-27
 
 - :sparkles: 完善 mica-lite 支持 JsonView 和 R 统一封装返回 github #53 感谢 `@yangwenliang123` 反馈。
 - :sparkles: 优化 mica-core 完善、优化 uuid
