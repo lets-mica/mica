@@ -31,11 +31,11 @@
 - :sparkles: mica-http 优化
 - :bug: mica-xss 修复 `@XssCleanIgnore` 注解判断
 
-## v3.0.5 - 2023-03-25
+### v3.0.5 - 2023-03-25
 - :sparkles: 完善 HexUtil 工具类
 - :arrow_up: 依赖升级，升级到安全版的 Spring boot。
 
-## v3.0.4 - 2023-03-01
+### v3.0.4 - 2023-03-01
 - :arrow_up: 升级到 Spring boot 3.0.4
 
 ### v3.0.3 - 2023-03-01
