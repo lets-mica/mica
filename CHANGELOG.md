@@ -2,6 +2,15 @@
 
 ## 发行版本
 
+### v3.1.3 - 2023-08-27
+
+- :sparkles: 完善 mica-lite 支持 JsonView 和 R 统一封装返回 github #53 感谢 `@yangwenliang123` 反馈。
+- :sparkles: 优化 mica-core 完善、优化 uuid
+- :sparkles: 优化 mica-core 完善 JsonUtil，添加 toJsonWithView 系列方法。
+- :sparkles: 添加 mica-nats 模块，高性能、轻量级 mq。
+- :sparkles: 优化 mica-ip2region 默认为 utf-8 字符集 gitee #I7TT74 感谢 `@Hi,all`。
+- :sparkles: 完善 mica-redis 方便 geo、HyperLogLog 操作。
+
 ### v3.1.1 - 2023-07-16
 - :sparkles: mica-redis key 支持统一添加前缀和自定义 key 处理
 - :sparkles: mica-redis 限流时间使用毫秒数
@@ -49,6 +58,20 @@
 - :sparkles: 代码优化，升级到高版本 jdk 语法
 - :arrow_up: 升级到 java17
 - :arrow_up: 升级到 Spring boot3
+
+### v2.7.15 - 2023-08-27
+
+- :sparkles: 完善 mica-lite 支持 JsonView 和 R 统一封装返回 github #53 感谢 `@yangwenliang123` 反馈。
+- :sparkles: 优化 mica-core 完善、优化 uuid
+- :sparkles: 优化 mica-core 完善 JsonUtil，添加 toJsonWithView 系列方法。
+- :sparkles: 添加 mica-nats 模块，高性能、轻量级 mq。
+- :sparkles: 优化 mica-ip2region 默认为 utf-8 字符集 gitee #I7TT74 感谢 `@Hi,all`。
+- :sparkles: 完善 mica-redis 方便 geo、HyperLogLog 操作。
+
+### v2.7.14 - 2023-07-25
+- :sparkles: mica-redis key 支持统一添加前缀和自定义 key 处理
+- :sparkles: mica-redis 限流时间使用毫秒数
+- :arrow_up: 升级到 Spring boot 2.7.14
 
 ### v2.7.13 - 2023-06-24
 - :sparkles: mica-ip2region 升级 `ip2region.xdb`
