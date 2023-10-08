@@ -21,6 +21,7 @@ import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.*;
+import java.net.URI;
 import java.net.URL;
 
 /**
@@ -76,7 +77,7 @@ public class ImageUtil {
 	 */
 	private static BufferedImage readUrl(String url) {
 		try {
-			return ImageIO.read(new URL(url));
+			return ImageIO.read(URI.create(url).toURL());
 		} catch (IOException e) {
 			throw Exceptions.unchecked(e);
 		}
