@@ -10,7 +10,7 @@ ext {
     druidVersion = "1.2.18"
     okhttpVersion = "4.10.0"
     jsoupVersion = "1.16.1"
-    lombokVersion = "1.18.28"
+    lombokVersion = "1.18.30"
     findbugsVersion = "3.0.2"
     logstashVersion = "7.3"
     zxingVersion = "3.5.1"
