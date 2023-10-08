@@ -53,17 +53,6 @@ public class RsaUtil {
 		return genKeyPair(1024);
 	}
 
-	public static void main(String[] args) throws NoSuchAlgorithmException {
-		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-		keyPairGenerator.initialize(1024); // 指定密钥长度
-		java.security.KeyPair keyPair = keyPairGenerator.generateKeyPair();
-
-		PrivateKey privateKey = keyPair.getPrivate();
-		PublicKey publicKey = keyPair.getPublic();
-		byte[] privateBytes = genKeyPair().getPrivateBytes();
-		System.out.println(privateBytes);
-	}
-
 	/**
 	 * 获取 KeyPair
 	 *
