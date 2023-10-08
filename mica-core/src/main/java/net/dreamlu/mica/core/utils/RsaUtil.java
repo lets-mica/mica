@@ -18,10 +18,12 @@ package net.dreamlu.mica.core.utils;
 
 import net.dreamlu.mica.core.tuple.KeyPair;
 import org.springframework.lang.Nullable;
+import org.springframework.util.FastByteArrayOutputStream;
 
 import javax.crypto.Cipher;
 import java.math.BigInteger;
 import java.security.*;
+import java.security.interfaces.RSAKey;
 import java.security.spec.*;
 import java.util.Objects;
 
@@ -212,7 +214,7 @@ public class RsaUtil {
 	 * @return 加密后的内容
 	 */
 	public static byte[] encrypt(PublicKey publicKey, byte[] data) {
-		return rsa(publicKey, data, Cipher.ENCRYPT_MODE);
+		return encryptRsa(publicKey, data);
 	}
 
 	/**
@@ -245,7 +247,7 @@ public class RsaUtil {
 	 * @return 加密后的内容
 	 */
 	public static byte[] encryptByPrivateKey(PrivateKey privateKey, byte[] data) {
-		return rsa(privateKey, data, Cipher.ENCRYPT_MODE);
+		return encryptRsa(privateKey, data);
 	}
 
 	/**
@@ -305,7 +307,7 @@ public class RsaUtil {
 	 * @return 解密后的数据
 	 */
 	public static byte[] decrypt(PrivateKey privateKey, byte[] data) {
-		return rsa(privateKey, data, Cipher.DECRYPT_MODE);
+		return decryptRsa(privateKey, data);
 	}
 
 	/**
@@ -316,22 +318,65 @@ public class RsaUtil {
 	 * @return 解密后的数据
 	 */
 	public static byte[] decryptByPublicKey(PublicKey publicKey, byte[] data) {
-		return rsa(publicKey, data, Cipher.DECRYPT_MODE);
+		return decryptRsa(publicKey, data);
+	}
+
+	/**
+	 * 公钥加密
+	 *
+	 * @param key  Key
+	 * @param data 待加密的内容
+	 * @return 加密后的内容
+	 */
+	public static byte[] encryptRsa(Key key, byte[] data) {
+		int blockSize = ((RSAKey) key).getModulus().bitLength() / 8 - 11;
+		return rsa(key, data, blockSize, Cipher.ENCRYPT_MODE);
+	}
+
+	/**
+	 * 解密
+	 *
+	 * @param key  Key
+	 * @param data 数据
+	 * @return 解密后的数据
+	 */
+	public static byte[] decryptRsa(Key key, byte[] data) {
+		int blockSize = ((RSAKey) key).getModulus().bitLength() / 8;
+		return rsa(key, data, blockSize, Cipher.DECRYPT_MODE);
 	}
 
 	/**
 	 * rsa 加、解密
 	 *
-	 * @param key  key
-	 * @param data 数据
-	 * @param mode 模式
+	 * @param key       key
+	 * @param data      数据
+	 * @param blockSize blockSize
+	 * @param mode      模式
 	 * @return 解密后的数据
 	 */
-	private static byte[] rsa(Key key, byte[] data, int mode) {
+	private static byte[] rsa(Key key, byte[] data, int maxBlockSize, int mode) {
+		// 数据长度
+		final int dataLength = data.length;
 		try {
 			Cipher cipher = Cipher.getInstance(RSA_PADDING);
 			cipher.init(mode, key);
-			return cipher.doFinal(data);
+			// 不需要分段
+			if (dataLength <= maxBlockSize) {
+				return cipher.doFinal(data, 0, dataLength);
+			}
+			final FastByteArrayOutputStream out = new FastByteArrayOutputStream();
+			int offSet = 0;
+			// 剩余长度
+			int remainLength = dataLength;
+			int blockSize;
+			// 对数据分段处理
+			while (remainLength > 0) {
+				blockSize = Math.min(remainLength, maxBlockSize);
+				out.write(cipher.doFinal(data, offSet, blockSize));
+				offSet += blockSize;
+				remainLength = dataLength - offSet;
+			}
+			return out.toByteArray();
 		} catch (Exception e) {
 			throw Exceptions.unchecked(e);
 		}

@@ -3,6 +3,7 @@ package net.dreamlu.mica.test.utils;
 import net.dreamlu.mica.core.tuple.KeyPair;
 import net.dreamlu.mica.core.utils.Charsets;
 import net.dreamlu.mica.core.utils.RsaUtil;
+import net.dreamlu.mica.core.utils.StringUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -41,6 +42,15 @@ class RsaUtilTest {
 		String decrypt = RsaUtil.decryptByPublicKeyFromBase64(pubKey, encrypt);
 		System.out.println(decrypt);
 		Assertions.assertEquals(text, decrypt);
+	}
+
+	@Test
+	void test3() {
+		KeyPair keyPair = RsaUtil.genKeyPair();
+		String text = StringUtil.repeat('a', 100000);
+		String encrypted = RsaUtil.encryptToBase64(keyPair.getPublic(), text);
+		String decrypted = RsaUtil.decryptFromBase64(keyPair.getPrivate(), encrypted);
+		Assertions.assertEquals(text, decrypted);
 	}
 
 }
