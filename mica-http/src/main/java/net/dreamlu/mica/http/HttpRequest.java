@@ -34,6 +34,7 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
+import java.io.File;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
@@ -57,7 +58,7 @@ import java.util.function.Predicate;
  */
 public class HttpRequest {
 	private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36";
-	private static final MediaType APPLICATION_JSON = MediaType.get("application/json;charset=UTF-8");
+	private static final MediaType APPLICATION_JSON = MediaType.get("application/json");
 	private static volatile OkHttpClient httpClient = new OkHttpClient();
 	@Nullable
 	private static HttpLoggingInterceptor globalLoggingInterceptor = null;
@@ -211,18 +212,36 @@ public class HttpRequest {
 		return this;
 	}
 
+	public HttpRequest body(byte[] body) {
+		return body(RequestBody.create(body));
+	}
+
+	public HttpRequest body(byte[] body, MediaType contentType) {
+		return body(RequestBody.create(body, contentType));
+	}
+
+	public HttpRequest body(File body, MediaType contentType) {
+		return body(RequestBody.create(body, contentType));
+	}
+
+	public HttpRequest body(String body, MediaType contentType) {
+		return body(RequestBody.create(body, contentType));
+	}
+
 	public HttpRequest bodyString(String body) {
-		this.requestBody = RequestBody.create (body, APPLICATION_JSON);
-		return this;
+		return body(RequestBody.create(body, APPLICATION_JSON));
 	}
 
 	public HttpRequest bodyString(MediaType contentType, String body) {
-		this.requestBody = RequestBody.create(body, contentType);
-		return this;
+		return body(RequestBody.create(body, contentType));
 	}
 
 	public HttpRequest bodyJson(Object body) {
 		return bodyString(JsonUtil.toJson(body));
+	}
+
+	public HttpRequest bodyJson(Object body, MediaType contentType) {
+		return body(JsonUtil.toJsonAsBytes(body), contentType);
 	}
 
 	private HttpRequest(final Request.Builder requestBuilder, String url, String httpMethod) {
