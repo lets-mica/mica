@@ -1,0 +1,6 @@
+dependencies {
+    api project(":mica-core")
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    compileOnly "org.springframework.cloud:spring-cloud-context"
+    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
+}

@@ -36,6 +36,8 @@ dependencyManagement {
         dependency "net.dreamlu:mica-lite:${VERSION}"
         dependency "net.dreamlu:mica-activerecord:${VERSION}"
         dependency "net.dreamlu:mica-prometheus:${VERSION}"
+        dependency "net.dreamlu:mica-nats:${VERSION}"
+        dependency "net.dreamlu:mica-holidays:${VERSION}"
         // commons
         dependency "com.google.code.findbugs:jsr305:${findbugsVersion}"
         dependency "com.github.xiaoymin:knife4j-spring-boot-starter:${knife4jVersion}"
