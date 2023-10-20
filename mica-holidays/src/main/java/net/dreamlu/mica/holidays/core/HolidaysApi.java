@@ -29,7 +29,7 @@ import java.util.Date;
 public interface HolidaysApi {
 
 	/**
-	 * 获取日志类型
+	 * 获取日期类型
 	 *
 	 * @param localDate LocalDate
 	 * @return DaysType
@@ -37,7 +37,7 @@ public interface HolidaysApi {
 	DaysType getDaysType(LocalDate localDate);
 
 	/**
-	 * 获取日志类型
+	 * 获取日期类型
 	 *
 	 * @param localDateTime LocalDateTime
 	 * @return DaysType
@@ -47,7 +47,7 @@ public interface HolidaysApi {
 	}
 
 	/**
-	 * 获取日志类型
+	 * 获取日期类型
 	 *
 	 * @param date Date
 	 * @return DaysType
