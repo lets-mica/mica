@@ -2,6 +2,14 @@
 
 ## 发行版本
 
+### v3.1.5 - 2023-10-21
+
+- :sparkles: 添加 mica-holidays 模块
+- :sparkles: 完善 mica-http 感谢好友 `@吴天狗` 反馈
+- :sparkles: mica-core RsaUtil 支持分段 gitee #I855S0 感谢 `@桂在坚持` 反馈
+- :sparkles: 升级 gradle wrapper 版本到 8.4
+- :sparkles: 升级 mica-auto 版本
+
 ### v3.1.3 - 2023-08-27
 
 - :sparkles: 完善 mica-lite 支持 JsonView 和 R 统一封装返回 github #53 感谢 `@yangwenliang123` 反馈。
@@ -58,6 +66,14 @@
 - :sparkles: 代码优化，升级到高版本 jdk 语法
 - :arrow_up: 升级到 java17
 - :arrow_up: 升级到 Spring boot3
+
+### v2.7.17 - 2023-10-21
+
+- :sparkles: 添加 mica-holidays 模块
+- :sparkles: 完善 mica-http 感谢好友 `@吴天狗` 反馈
+- :sparkles: mica-core RsaUtil 支持分段 gitee #I855S0 感谢 `@桂在坚持` 反馈
+- :sparkles: 升级 gradle wrapper 版本到 8.4
+- :sparkles: 升级 mica-auto 版本
 
 ### v2.7.15 - 2023-08-27
 
