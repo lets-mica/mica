@@ -2,6 +2,10 @@
 
 ## 发行版本
 
+### v2.7.17.1 - 2023-10-28
+
+- :sparkles: mica-holidays 模块，更新 2024 节假日。
+
 ### v2.7.17 - 2023-10-21
 
 - :sparkles: 添加 mica-holidays 模块
