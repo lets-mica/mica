@@ -2,6 +2,10 @@
 
 ## 发行版本
 
+### v3.1.5.1 - 2023-10-28
+
+- :sparkles: mica-holidays 模块，更新 2024 节假日。
+
 ### v3.1.5 - 2023-10-21
 
 - :sparkles: 添加 mica-holidays 模块
@@ -66,6 +70,10 @@
 - :sparkles: 代码优化，升级到高版本 jdk 语法
 - :arrow_up: 升级到 java17
 - :arrow_up: 升级到 Spring boot3
+
+### v2.7.17.1 - 2023-10-28
+
+- :sparkles: mica-holidays 模块，更新 2024 节假日。
 
 ### v2.7.17 - 2023-10-21
 
