@@ -27,7 +27,6 @@ import java.io.IOException;
  * @author L.cm
  */
 public class ResourceUtil extends org.springframework.util.ResourceUtils {
-	public static final String HTTP_REGEX = "^https?:.+$";
 	public static final String FTP_URL_PREFIX = "ftp:";
 
 	/**
@@ -49,7 +48,8 @@ public class ResourceUtil extends org.springframework.util.ResourceUtils {
 	public static Resource getResource(String resourceLocation) throws IOException {
 		Assert.notNull(resourceLocation, "Resource location must not be null");
 		if (resourceLocation.startsWith(CLASSPATH_URL_PREFIX)) {
-			return new ClassPathResource(resourceLocation);
+			String path = resourceLocation.substring(CLASSPATH_URL_PREFIX.length());
+			return new ClassPathResource(path);
 		}
 		if (resourceLocation.startsWith(FTP_URL_PREFIX)) {
 			return new UrlResource(resourceLocation);
