@@ -17,9 +17,11 @@
 package net.dreamlu.mica.http;
 
 import okhttp3.FormBody;
+import okhttp3.MultipartBody;
 
 import javax.annotation.Nullable;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * 表单构造器
@@ -52,10 +54,13 @@ public class FormBuilder {
 		return this;
 	}
 
+	public FormBuilder add(Consumer<FormBody.Builder> consumer) {
+		consumer.accept(this.formBuilder);
+		return this;
+	}
+
 	public HttpRequest build() {
-		FormBody formBody = formBuilder.build();
-		this.request.form(formBody);
-		return this.request;
+		return this.request.form(this.formBuilder.build());
 	}
 
 	public Exchange execute() {
