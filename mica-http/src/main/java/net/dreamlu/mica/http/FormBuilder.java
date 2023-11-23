@@ -17,7 +17,6 @@
 package net.dreamlu.mica.http;
 
 import okhttp3.FormBody;
-import okhttp3.MultipartBody;
 
 import javax.annotation.Nullable;
 import java.util.Map;
