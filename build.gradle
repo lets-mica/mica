@@ -21,7 +21,7 @@ ext {
     logstashVersion = "7.4"
     lokiLogbackAppender = "1.4.2"
     zxingVersion = "3.5.2"
-    jetCacheVersion = "2.7.4"
+    jetCacheVersion = "2.7.3"
     jfinalVersion = "5.1.2"
 }
 
