@@ -4,7 +4,7 @@ plugins {
 
 ext {
     javaVersion = JavaVersion.VERSION_1_8
-    springBootVersion = "2.7.17"
+    springBootVersion = "2.7.18"
     springCloudVersion = "2021.0.8"
     micaAutoVersion = "2.3.3"
     micaWeiXinVersion = "2.1.2"
@@ -13,15 +13,15 @@ ext {
     swaggerVersion = "1.5.22"
     swagger3xVersion = "2.2.8"
     druidVersion = "1.2.20"
-    okhttpVersion = "4.10.0"
-    jsoupVersion = "1.16.1"
+    okhttpVersion = "4.12.0"
+    jsoupVersion = "1.17.1"
     xxlJobVersion = "2.4.0"
     lombokVersion = "1.18.30"
     findbugsVersion = "3.0.2"
-    logstashVersion = "7.3"
-    lokiLogbackAppender = "1.4.0"
+    logstashVersion = "7.4"
+    lokiLogbackAppender = "1.4.2"
     zxingVersion = "3.5.2"
-    jetCacheVersion = "2.7.3"
+    jetCacheVersion = "2.7.4"
     jfinalVersion = "5.1.2"
 }
 
