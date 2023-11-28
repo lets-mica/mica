@@ -28,7 +28,9 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * 表单构造器
@@ -102,11 +104,20 @@ public class MultipartFormBuilder {
 		return this;
 	}
 
+	public MultipartFormBuilder addList(List<MultipartBody.Part> partList) {
+		for (MultipartBody.Part part : partList) {
+			this.formBuilder.addPart(part);
+		}
+		return this;
+	}
+
+	public MultipartFormBuilder add(Consumer<MultipartBody.Builder> consumer) {
+		consumer.accept(this.formBuilder);
+		return this;
+	}
+
 	public HttpRequest build() {
-		formBuilder.setType(MultipartBody.FORM);
-		MultipartBody formBody = formBuilder.build();
-		this.request.multipartForm(formBody);
-		return this.request;
+		return this.request.multipartForm(this.formBuilder.setType(MultipartBody.FORM).build());
 	}
 
 	public Exchange execute() {
