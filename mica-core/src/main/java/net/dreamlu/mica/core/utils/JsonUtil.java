@@ -823,6 +823,22 @@ public class JsonUtil {
 	}
 
 	/**
+	 * tree 转对象
+	 *
+	 * @param treeNode  TreeNode
+	 * @param valueType valueType
+	 * @param <T>       泛型标记
+	 * @return 转换结果
+	 */
+	public static <T> T treeToValue(TreeNode treeNode, JavaType valueType) {
+		try {
+			return getInstance().treeToValue(treeNode, valueType);
+		} catch (JsonProcessingException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
+	/**
 	 * 对象转 tree
 	 *
 	 * @param fromValue fromValue
