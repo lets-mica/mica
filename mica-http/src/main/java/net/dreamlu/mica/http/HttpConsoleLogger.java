@@ -33,8 +33,7 @@ public enum HttpConsoleLogger implements HttpLoggingInterceptor.Logger {
 
 	public void log(@Nonnull String message) {
 		// 统一添加前缀，方便在茫茫日志中查看
-		System.out.print("ConsoleLogger: ");
-		System.out.println(message);
+		System.out.printf("HttpLogger: %s\n", message);
 	}
 
 }
