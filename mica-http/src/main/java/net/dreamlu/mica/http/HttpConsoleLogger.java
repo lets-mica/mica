@@ -16,39 +16,25 @@
 
 package net.dreamlu.mica.http;
 
-import lombok.extern.slf4j.Slf4j;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import javax.annotation.Nonnull;
 
 /**
- * OkHttp logger, Slf4j and console log.
+ * OkHttp console log.
  *
  * @author L.cm
  */
-@Slf4j
-public enum HttpLogger implements HttpLoggingInterceptor.Logger {
-
+public enum HttpConsoleLogger implements HttpLoggingInterceptor.Logger {
 	/**
-	 * http 日志：Slf4j
+	 * 实例
 	 */
-	Slf4j() {
-		@Override
-		public void log(@Nonnull String message) {
-			log.info(message);
-		}
-	},
+	INSTANCE;
 
-	/**
-	 * http 日志：Console
-	 */
-	Console() {
-		@Override
-		public void log(@Nonnull String message) {
-			// 统一添加前缀，方便在茫茫日志中查看
-			System.out.print("ConsoleLogger: ");
-			System.out.println(message);
-		}
-	};
+	public void log(@Nonnull String message) {
+		// 统一添加前缀，方便在茫茫日志中查看
+		System.out.print("ConsoleLogger: ");
+		System.out.println(message);
+	}
 
 }

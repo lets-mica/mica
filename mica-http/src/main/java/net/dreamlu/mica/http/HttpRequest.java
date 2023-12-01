@@ -422,7 +422,7 @@ public class HttpRequest {
 	}
 
 	public HttpRequest useSlf4jLog(LogLevel logLevel) {
-		return useLog(HttpLogger.Slf4j, logLevel);
+		return useLog(HttpSel4jLogger.INSTANCE, logLevel);
 	}
 
 	public HttpRequest useConsoleLog() {
@@ -430,7 +430,19 @@ public class HttpRequest {
 	}
 
 	public HttpRequest useConsoleLog(LogLevel logLevel) {
-		return useLog(HttpLogger.Console, logLevel);
+		return useLog(HttpConsoleLogger.INSTANCE, logLevel);
+	}
+
+	public HttpRequest useDefaultLog() {
+		return useDefaultLog(LogLevel.BODY);
+	}
+
+	public HttpRequest useDefaultLog(LogLevel logLevel) {
+		return useLog(HttpLoggingInterceptor.Logger.DEFAULT, logLevel);
+	}
+
+	public HttpRequest useLog(HttpLoggingInterceptor.Logger logger) {
+		return useLog(logger, LogLevel.BODY);
 	}
 
 	public HttpRequest useLog(HttpLoggingInterceptor.Logger logger, LogLevel logLevel) {
@@ -570,7 +582,7 @@ public class HttpRequest {
 	 * @param logLevel LogLevel
 	 */
 	public static void setGlobalLog(LogLevel logLevel) {
-		setGlobalLog(HttpLogger.Slf4j, logLevel);
+		setGlobalLog(HttpSel4jLogger.INSTANCE, logLevel);
 	}
 
 	public static void setGlobalLog(HttpLoggingInterceptor.Logger logger, LogLevel logLevel) {
