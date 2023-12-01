@@ -22,21 +22,32 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import javax.annotation.Nonnull;
 
 /**
- * OkHttp Slf4j log.
+ * OkHttp logger, Slf4j and console log.
  *
  * @author L.cm
  */
 @Slf4j
-public enum HttpSel4jLogger implements HttpLoggingInterceptor.Logger {
+public enum HttpLogger implements HttpLoggingInterceptor.Logger {
 
 	/**
-	 * 实例
+	 * http 日志：Slf4j
 	 */
-	INSTANCE;
+	Slf4j() {
+		@Override
+		public void log(@Nonnull String message) {
+			log.info(message);
+		}
+	},
 
-	@Override
-	public void log(@Nonnull String message) {
-		log.info(message);
-	}
+	/**
+	 * http 日志：Console
+	 */
+	Console() {
+		@Override
+		public void log(@Nonnull String message) {
+			// 统一添加前缀，方便在茫茫日志中查看
+			System.out.printf("HttpLogger: %s\n", message);
+		}
+	};
 
 }
