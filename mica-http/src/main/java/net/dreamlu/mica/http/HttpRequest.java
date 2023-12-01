@@ -422,7 +422,7 @@ public class HttpRequest {
 	}
 
 	public HttpRequest useSlf4jLog(LogLevel logLevel) {
-		return useLog(HttpSel4jLogger.INSTANCE, logLevel);
+		return useLog(HttpLogger.Slf4j, logLevel);
 	}
 
 	public HttpRequest useConsoleLog() {
@@ -582,7 +582,25 @@ public class HttpRequest {
 	 * @param logLevel LogLevel
 	 */
 	public static void setGlobalLog(LogLevel logLevel) {
-		setGlobalLog(HttpSel4jLogger.INSTANCE, logLevel);
+		setGlobalLog(HttpLogger.Slf4j, logLevel);
+	}
+
+	/**
+	 * 设置全局日志，平台自带日志，默认 jdk 日志
+	 *
+	 * @param logLevel LogLevel
+	 */
+	public static void setGlobalDefaultLog(LogLevel logLevel) {
+		setGlobalLog(HttpLoggingInterceptor.Logger.DEFAULT, logLevel);
+	}
+
+	/**
+	 * 设置全局日志，控制台日志
+	 *
+	 * @param logLevel LogLevel
+	 */
+	public static void setGlobalConsoleLog(LogLevel logLevel) {
+		setGlobalLog(HttpConsoleLogger.INSTANCE, logLevel);
 	}
 
 	public static void setGlobalLog(HttpLoggingInterceptor.Logger logger, LogLevel logLevel) {
