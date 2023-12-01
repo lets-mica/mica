@@ -2,6 +2,12 @@
 
 ## 发行版本
 
+### v2.7.18 - 2023-12-01
+
+- :sparkles: mica-http 完善和优化，使用控制台日志时，可以没有 slf4j 依赖。
+- :sparkles: mica-core 完善 JsonUtil。
+- :arrow_up: 依赖升级
+
 ### v2.7.17.1 - 2023-10-28
 
 - :sparkles: mica-holidays 模块，更新 2024 节假日。
