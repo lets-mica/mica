@@ -73,6 +73,7 @@ configure(commons) {
         testCompileOnly "org.springframework:spring-test"
         testImplementation "org.slf4j:slf4j-api"
         testImplementation "org.junit.jupiter:junit-jupiter"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter"
     }
 
     compileJava.options.compilerArgs.add '-parameters'
