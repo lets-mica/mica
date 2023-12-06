@@ -14,7 +14,7 @@ class DesensitizationUtilTest {
 	@Test
 	void test1() {
 		String str1 = "12345678";
-		String str2 = "1******8";
+		String str2 = "12****78";
 		String middle1 = DesensitizationUtil.middle(str1);
 		Assertions.assertEquals(str2, middle1);
 		String middle2 = DesensitizationUtil.middle("1");
