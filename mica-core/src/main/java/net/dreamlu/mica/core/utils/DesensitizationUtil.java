@@ -273,4 +273,24 @@ public class DesensitizationUtil {
 		return head + StringUtil.repeat(padChar, padSiz) + tail;
 	}
 
+	/**
+	 * 智能透明，自动脱密中间部分
+	 *
+	 * @param str 脱敏前的字符串
+	 * @return 脱敏后的字符串
+	 */
+	@Nullable
+	public static String ai(@Nullable String str) {
+		if (str == null) {
+			return null;
+		}
+		int length = str.length();
+		// 小于6个字符，脱敏中间
+		if (length < 6) {
+			return middle(str);
+		}
+		int fromLastLen = length / 3;
+		return sensitive(str, fromLastLen, fromLastLen);
+	}
+
 }
