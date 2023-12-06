@@ -18,6 +18,7 @@ package net.dreamlu.mica.core.utils;
 
 
 import org.springframework.lang.Nullable;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 
@@ -93,7 +94,10 @@ public class DesensitizationUtil {
 	 */
 	@Nullable
 	public static String email(@Nullable final String email) {
-		if (StringUtil.isBlank(email)) {
+		if (email == null) {
+			return null;
+		}
+		if (!StringUtils.hasText(email)) {
 			return StringPool.EMPTY;
 		}
 		final int index = email.indexOf(CharPool.AT);
@@ -122,7 +126,7 @@ public class DesensitizationUtil {
 	 * @return 脱敏后的字符串
 	 */
 	@Nullable
-	public static String cnapsCode(@Nullable final String code) {
+	public static String cnApsCode(@Nullable final String code) {
 		return sensitive(code, 2, 0);
 	}
 
@@ -134,7 +138,10 @@ public class DesensitizationUtil {
 	 */
 	@Nullable
 	public static String right(@Nullable final String sensitiveStr) {
-		if (StringUtil.isBlank(sensitiveStr)) {
+		if (sensitiveStr == null) {
+			return null;
+		}
+		if (!StringUtils.hasText(sensitiveStr)) {
 			return StringPool.EMPTY;
 		}
 		int length = sensitiveStr.length();
@@ -149,7 +156,10 @@ public class DesensitizationUtil {
 	 */
 	@Nullable
 	public static String left(@Nullable final String sensitiveStr) {
-		if (StringUtil.isBlank(sensitiveStr)) {
+		if (sensitiveStr == null) {
+			return null;
+		}
+		if (!StringUtils.hasText(sensitiveStr)) {
 			return StringPool.EMPTY;
 		}
 		int length = sensitiveStr.length();
@@ -164,19 +174,28 @@ public class DesensitizationUtil {
 	 */
 	@Nullable
 	public static String middle(@Nullable final String sensitiveStr) {
-		if (StringUtil.isBlank(sensitiveStr)) {
+		if (sensitiveStr == null) {
+			return null;
+		}
+		if (!StringUtils.hasText(sensitiveStr)) {
 			return StringPool.EMPTY;
 		}
 		int length = sensitiveStr.length();
 		if (length < 3) {
 			return StringUtil.leftPad(StringPool.EMPTY, length, CharPool.STAR);
+		} else if (length < 6) {
+			// 小于6个字符，脱敏中间
+			char[] chars = new char[length];
+			int last = length - 1;
+			Arrays.fill(chars, 1, last, CharPool.STAR);
+			chars[0] = sensitiveStr.charAt(0);
+			chars[last] = sensitiveStr.charAt(last);
+			return new String(chars);
+		} else {
+			// 大于6个字符
+			int fromLastLen = length / 3;
+			return sensitive(sensitiveStr, fromLastLen, fromLastLen);
 		}
-		char[] chars = new char[length];
-		int last = length - 1;
-		Arrays.fill(chars, 1, last, CharPool.STAR);
-		chars[0] = sensitiveStr.charAt(0);
-		chars[last] = sensitiveStr.charAt(last);
-		return new String(chars);
 	}
 
 	/**
@@ -246,7 +265,7 @@ public class DesensitizationUtil {
 		if (str == null) {
 			return null;
 		}
-		if (StringUtil.isBlank(str)) {
+		if (!StringUtils.hasText(str)) {
 			return StringPool.EMPTY;
 		}
 		int length = str.length();
@@ -271,26 +290,6 @@ public class DesensitizationUtil {
 		String head = str.substring(0, fromIndex);
 		String tail = str.substring(toIndex);
 		return head + StringUtil.repeat(padChar, padSiz) + tail;
-	}
-
-	/**
-	 * 智能透明，自动脱密中间部分
-	 *
-	 * @param str 脱敏前的字符串
-	 * @return 脱敏后的字符串
-	 */
-	@Nullable
-	public static String ai(@Nullable String str) {
-		if (str == null) {
-			return null;
-		}
-		int length = str.length();
-		// 小于6个字符，脱敏中间
-		if (length < 6) {
-			return middle(str);
-		}
-		int fromLastLen = length / 3;
-		return sensitive(str, fromLastLen, fromLastLen);
 	}
 
 }
