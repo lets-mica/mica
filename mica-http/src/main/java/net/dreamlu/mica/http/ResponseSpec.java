@@ -17,8 +17,8 @@
 package net.dreamlu.mica.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import okhttp3.*;
 
@@ -29,7 +29,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -216,7 +215,18 @@ public interface ResponseSpec {
 	 * @return JsonNode
 	 */
 	default <T> T atJsonPathValue(String jsonPtrExpr, Class<T> valueType) {
-		return JsonUtil.convertValue(atJsonPath(jsonPtrExpr), valueType);
+		return JsonUtil.treeToValue(atJsonPath(jsonPtrExpr), valueType);
+	}
+
+	/**
+	 * jackson json path 语法读取节点
+	 *
+	 * @param jsonPtrExpr json path 表达式
+	 * @param valueType   value value type
+	 * @return JsonNode
+	 */
+	default <T> T atJsonPathValue(String jsonPtrExpr, JavaType valueType) {
+		return JsonUtil.treeToValue(atJsonPath(jsonPtrExpr), valueType);
 	}
 
 	/**
@@ -238,8 +248,7 @@ public interface ResponseSpec {
 	 * @return List
 	 */
 	default <T> List<T> atJsonPathList(String jsonPtrExpr, Class<T> valueType) {
-		CollectionLikeType collectionLikeType = JsonUtil.getListType(valueType);
-		return JsonUtil.convertValue(atJsonPath(jsonPtrExpr), collectionLikeType);
+		return atJsonPathValue(jsonPtrExpr, JsonUtil.getListType(valueType));
 	}
 
 	/**
