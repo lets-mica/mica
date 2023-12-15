@@ -34,6 +34,22 @@ public class GeoUtil {
 			* EARTH_RADIUS;
 	}
 
+	/**
+	 * 将整数形式的经纬度转换为十进制度格式
+	 *
+	 * @param coordinate 整数形式的经度或纬度
+	 * @return 十进制度格式的经纬度
+	 */
+	public static double getGpsValue(int coordinate) {
+		int degrees = coordinate / (3600 * 100);
+		int remainder = coordinate % (3600 * 100);
+		int minutes = remainder / (60 * 100);
+		remainder = remainder % (60 * 100);
+		double seconds = remainder / 100.0;
+		// 将分和秒转换为度的小数部分
+		return degrees + (minutes / 60.0) + (seconds / 3600.0);
+	}
+
 	private static double radian(double d) {
 		return d * Math.PI / 180.0;
 	}
