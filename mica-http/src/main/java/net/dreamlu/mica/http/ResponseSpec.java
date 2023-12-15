@@ -295,6 +295,28 @@ public interface ResponseSpec {
 	<V> Map<String, V> asMap(Class<?> valueType);
 
 	/**
+	 * 转换成文件上传 part
+	 *
+	 * @param name 表单名
+	 * @return Part
+	 */
+	default MultipartBody.Part asPart(String name) {
+		return asPart(name, null);
+	}
+
+	/**
+	 * 转换成文件上传 part
+	 *
+	 * @param name     表单名
+	 * @param fileName 文件名
+	 * @return Part
+	 */
+	default MultipartBody.Part asPart(String name, @Nullable String fileName) {
+		RequestBody requestBody = RequestBody.create(asBytes(), contentType());
+		return MultipartBody.Part.createFormData(name, fileName, requestBody);
+	}
+
+	/**
 	 * toFile.
 	 *
 	 * @param file File
