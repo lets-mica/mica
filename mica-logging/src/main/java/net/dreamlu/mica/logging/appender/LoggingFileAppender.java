@@ -17,7 +17,6 @@
 package net.dreamlu.mica.logging.appender;
 
 import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.filter.ThresholdFilter;
@@ -30,9 +29,9 @@ import net.dreamlu.mica.core.utils.CharPool;
 import net.dreamlu.mica.core.utils.SystemUtil;
 import net.dreamlu.mica.logging.config.MicaLoggingProperties;
 import net.dreamlu.mica.logging.utils.LoggingUtil;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.logging.LoggingSystemProperties;
-import org.springframework.boot.logging.logback.LogbackLoggingSystemProperties;
+import org.springframework.boot.logging.LoggingSystemProperty;
 import org.springframework.core.env.Environment;
 
 import java.nio.charset.Charset;
@@ -55,7 +54,7 @@ public class LoggingFileAppender implements ILoggingAppender {
 		String appName = environment.getRequiredProperty(MicaConstant.SPRING_APP_NAME_KEY);
 		// 2. 文件日志格式
 		String fileLogPattern = environment.resolvePlaceholders(LoggingUtil.DEFAULT_FILE_LOG_PATTERN);
-		System.setProperty(LoggingSystemProperties.FILE_LOG_PATTERN, fileLogPattern);
+		System.setProperty(LoggingSystemProperty.FILE_PATTERN.getEnvironmentVariableName(), fileLogPattern);
 		// 3. 生成日志文件的文件
 		String logDir = environment.getProperty("logging.file.path", LoggingUtil.DEFAULT_LOG_DIR);
 		this.logAllFile = logDir + CharPool.SLASH + appName + CharPool.SLASH + LoggingUtil.LOG_FILE_ALL;
@@ -125,8 +124,8 @@ public class LoggingFileAppender implements ILoggingAppender {
 	private static Encoder<ILoggingEvent> patternLayoutEncoder(LoggerContext context) {
 		final PatternLayoutEncoder encoder = new PatternLayoutEncoder();
 		encoder.setContext(context);
-		encoder.setPattern(SystemUtil.getProp(LoggingSystemProperties.FILE_LOG_PATTERN));
-		String charsetName = SystemUtil.getProp(LogbackLoggingSystemProperties.FILE_LOG_CHARSET, "default");
+		encoder.setPattern(SystemUtil.getProp(LoggingSystemProperty.FILE_PATTERN.getEnvironmentVariableName()));
+		String charsetName = SystemUtil.getProp(LoggingSystemProperty.FILE_CHARSET.getEnvironmentVariableName(), "default");
 		encoder.setCharset(Charset.forName(charsetName));
 		encoder.start();
 		return encoder;
