@@ -25,7 +25,7 @@
 compile("net.dreamlu:mica-http:${version}")
 ```
 
-spring-retry 为可选依赖，用来对 http 结果断言重试。
+注意：**2.5.7 开始已经不再需要** spring-retry 为可选依赖，用来对 http 结果断言重试。
 ```groovy
 compile("org.springframework.retry:spring-retry:${springRetryVersion}")
 ```
@@ -36,12 +36,14 @@ compile("org.springframework.retry:spring-retry:${springRetryVersion}")
 HttpRequest.setGlobalLog(LogLevel.BODY);
 // 设置控制台日志，用于没有日志依赖的 sdk 开发时使用
 HttpRequest.setGlobalLog(HttpLogger.Console, LogLevel.BODY);
+// 当然你也可以设定为自己的 log，这样就不用把 **net.dreamlu.mica.http** 包的日志设置为 info 级别。
+HttpRequest.setGlobalLog(log::info);
 ```
 
 ```java
 // 同步请求 url，方法支持 get、post、patch、put、delete
 HttpRequest.get("https://www.baidu.com")
-	.useSlf4jLog() // 使用 Slf4j 日志，同类的有 .useConsoleLog(),日志级别为 BODY
+	.useSlf4jLog() // 使用 Slf4j 日志，同类的有 .useConsoleLog(),日志级别为 BODY 和 自定义的 .useLog(log::info)
 	.addHeader("x-account-id", "mica001") // 添加 header
 	.addCookie(builder -> builder.domain("www.baidu.com").name("name").value("value"))  // 添加 cookie
 	.query("q", "mica") // 设置 url 参数，默认进行 url encode

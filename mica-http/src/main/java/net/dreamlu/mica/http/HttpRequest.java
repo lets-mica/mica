@@ -577,15 +577,6 @@ public class HttpRequest {
 	}
 
 	/**
-	 * 设置全局日志，默认：Slf4j
-	 *
-	 * @param logLevel LogLevel
-	 */
-	public static void setGlobalLog(LogLevel logLevel) {
-		setGlobalLog(HttpLogger.Slf4j, logLevel);
-	}
-
-	/**
 	 * 设置全局日志，平台自带日志，默认 jdk 日志
 	 *
 	 * @param logLevel LogLevel
@@ -603,6 +594,30 @@ public class HttpRequest {
 		setGlobalLog(HttpConsoleLogger.INSTANCE, logLevel);
 	}
 
+	/**
+	 * 设置全局日志，默认级别：BODY
+	 *
+	 * @param logger HttpLoggingInterceptor.Logger
+	 */
+	public static void setGlobalLog(HttpLoggingInterceptor.Logger logger) {
+		setGlobalLog(logger, LogLevel.BODY);
+	}
+
+	/**
+	 * 设置全局日志，默认：Slf4j
+	 *
+	 * @param logLevel LogLevel
+	 */
+	public static void setGlobalLog(LogLevel logLevel) {
+		setGlobalLog(HttpLogger.Slf4j, logLevel);
+	}
+
+	/**
+	 * 设置全局日志
+	 *
+	 * @param logger   HttpLoggingInterceptor.Logger
+	 * @param logLevel LogLevel
+	 */
 	public static void setGlobalLog(HttpLoggingInterceptor.Logger logger, LogLevel logLevel) {
 		HttpRequest.globalLoggingInterceptor = getLoggingInterceptor(logger, logLevel.getLevel());
 	}
