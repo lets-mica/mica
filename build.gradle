@@ -46,7 +46,7 @@ configure(subprojects - project(":mica-bom")) {
     targetCompatibility = "$javaVersion"
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
-        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        options.compilerArgs << "-parameters" << "-Xlint:unchecked" << "-Xlint:deprecation"
     }
 
     repositories {
