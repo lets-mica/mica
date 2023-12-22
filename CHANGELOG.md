@@ -2,6 +2,14 @@
 
 ## 发行版本
 
+### v2.7.18.1 - 2023-12-24
+
+- :sparkles: mica-http 优化，添加 `.setGlobalLog(log::info)`，`.useLog(log::info)` 避免需要配置 net.dreamlu.mica.http 包日志等级
+- :sparkles: mica-http 完善，添加 `asPart` 系列方法，方便下载的文件再上传的场景。
+- :sparkles: mica-core 完善 GeoUtil。
+- :sparkles: mica-core 优化 JsonUtil，使完全可以不依赖 Spring。
+- :sparkles: mica-core 完善 DesensitizationUtil 工具类。
+
 ### v2.7.18 - 2023-12-01
 
 - :sparkles: mica-http 完善和优化，使用控制台日志时，可以没有 slf4j 依赖。
