@@ -29,7 +29,6 @@ import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import com.fasterxml.jackson.databind.type.MapType;
 import net.dreamlu.mica.core.function.CheckedConsumer;
 import org.springframework.lang.Nullable;
-import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -220,7 +219,7 @@ public class JsonUtil {
 	 */
 	@Nullable
 	public static <T> T readValue(@Nullable byte[] content, Class<T> valueType) {
-		if (ObjectUtils.isEmpty(content)) {
+		if (content == null || content.length == 0) {
 			return null;
 		}
 		try {
@@ -301,7 +300,7 @@ public class JsonUtil {
 	 */
 	@Nullable
 	public static <T> T readValue(@Nullable byte[] content, TypeReference<T> typeReference) {
-		if (ObjectUtils.isEmpty(content)) {
+		if (content == null || content.length == 0) {
 			return null;
 		}
 		try {
@@ -381,7 +380,7 @@ public class JsonUtil {
 	 */
 	@Nullable
 	public static <T> T readValue(@Nullable byte[] content, JavaType javaType) {
-		if (ObjectUtils.isEmpty(content)) {
+		if (content == null || content.length == 0) {
 			return null;
 		}
 		try {
@@ -531,7 +530,7 @@ public class JsonUtil {
 	 * @return 集合
 	 */
 	public static <T> List<T> readList(@Nullable byte[] content, Class<T> elementClass) {
-		if (ObjectUtils.isEmpty(content)) {
+		if (content == null || content.length == 0) {
 			return Collections.emptyList();
 		}
 		try {
@@ -697,7 +696,7 @@ public class JsonUtil {
 	 * @return 集合
 	 */
 	public static <K, V> Map<K, V> readMap(@Nullable byte[] content, Class<?> keyClass, Class<?> valueClass) {
-		if (ObjectUtils.isEmpty(content)) {
+		if (content == null || content.length == 0) {
 			return Collections.emptyMap();
 		}
 		try {
