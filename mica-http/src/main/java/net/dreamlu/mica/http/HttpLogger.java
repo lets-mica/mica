@@ -46,7 +46,7 @@ public enum HttpLogger implements HttpLoggingInterceptor.Logger {
 		@Override
 		public void log(@Nonnull String message) {
 			// 统一添加前缀，方便在茫茫日志中查看
-			System.out.printf("HttpLogger: %s\n", message);
+			System.out.println("HttpLogger: " + message);
 		}
 	};
 
