@@ -1,6 +1,6 @@
 dependencies {
-    api "org.springframework:spring-context"
     api "com.fasterxml.jackson.core:jackson-databind"
+    implementation "org.springframework:spring-context"
     compileOnly "org.springframework:spring-web"
     compileOnly "jakarta.validation:jakarta.validation-api"
     compileOnly "io.swagger:swagger-annotations"
