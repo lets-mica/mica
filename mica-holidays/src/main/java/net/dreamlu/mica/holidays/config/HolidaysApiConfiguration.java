@@ -21,6 +21,7 @@ import net.dreamlu.mica.holidays.impl.HolidaysApiImpl;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.core.io.ResourceLoader;
 
 /**
@@ -30,6 +31,7 @@ import org.springframework.core.io.ResourceLoader;
  */
 @AutoConfiguration
 @EnableConfigurationProperties(HolidaysApiProperties.class)
+@ImportRuntimeHints(HolidaysApiRuntimeHintsRegistrar.class)
 public class HolidaysApiConfiguration {
 
 	@Bean
