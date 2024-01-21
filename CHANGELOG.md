@@ -2,6 +2,11 @@
 
 ## 发行版本
 
+### v3.2.2 - 2024-01-21
+- :sparkles: mica-holidays graalvm AOT 支持。
+- :bug: mica-ip2region 修复 ipv6 数据库文件 graalvm AOT 支持。
+- :sparkles: 依赖升级
+
 ### v3.2.0 - 2023-12-02
 
 - :sparkles: mica-http 完善和优化，使用控制台日志时，可以没有 slf4j 依赖。
