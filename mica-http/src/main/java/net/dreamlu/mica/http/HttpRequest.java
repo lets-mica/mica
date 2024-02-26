@@ -636,6 +636,41 @@ public class HttpRequest {
 		HttpRequest.globalLoggingInterceptor = getLoggingInterceptor(logger, logLevel.getLevel());
 	}
 
+	/**
+	 * 设置全局的 ssl 配置
+	 */
+	public static OkHttpClient setGlobalSSL() {
+		return setGlobalSSL((InputStream) null, null);
+	}
+
+	public static OkHttpClient setGlobalSSL(String keyStoreFile, String keyPass) {
+		return setGlobalSSL(keyStoreFile, keyPass, null, null);
+	}
+
+	public static OkHttpClient setGlobalSSL(String keyStoreFile, String keyPass, String trustStoreFile, String trustPass) {
+		Pair<SSLContext, X509TrustManager> pair = getSslContext(keyStoreFile, keyPass, trustStoreFile, trustPass);
+		return setGlobalSSL(pair.getLeft().getSocketFactory(), pair.getRight());
+	}
+
+	public static OkHttpClient setGlobalSSL(InputStream keyStoreInputStream, String keyPass) {
+		return setGlobalSSL(keyStoreInputStream, keyPass, null, null);
+	}
+
+	public static OkHttpClient setGlobalSSL(InputStream keyStoreInputStream, String keyPass, InputStream trustInputStream, String trustPass) {
+		Pair<SSLContext, X509TrustManager> pair = getSslContext(keyStoreInputStream, keyPass, trustInputStream, trustPass);
+		return setGlobalSSL(pair.getLeft().getSocketFactory(), pair.getRight());
+	}
+
+	public static OkHttpClient setGlobalSSL(SSLSocketFactory sslSocketFactory, X509TrustManager trustManager) {
+		X509TrustManager tm = trustManager == null ? DisableValidationTrustManager.INSTANCE : trustManager;
+		OkHttpClient okHttpClient = httpClient.newBuilder()
+			.sslSocketFactory(sslSocketFactory, tm)
+			.hostnameVerifier(TrustAllHostNames.INSTANCE)
+			.build();
+		setHttpClient(okHttpClient);
+		return okHttpClient;
+	}
+
 	static String handleValue(@Nullable Object value) {
 		if (value == null) {
 			return StringPool.EMPTY;
@@ -712,7 +747,7 @@ public class HttpRequest {
 	 * @param path 相对于ClassPath路径，可以以classpath:开头
 	 * @return {@link InputStream}资源
 	 */
-	public static InputStream getResourceAsStream(String path) {
+	private static InputStream getResourceAsStream(String path) {
 		if (path.toLowerCase().startsWith("classpath:")) {
 			path = path.substring("classpath:".length());
 		}
@@ -725,7 +760,7 @@ public class HttpRequest {
 	 * @param file 文件
 	 * @return {@link InputStream}资源
 	 */
-	public static InputStream getFileResource(String file) {
+	private static InputStream getFileResource(String file) {
 		try {
 			return Files.newInputStream(Paths.get(file));
 		} catch (IOException e) {
