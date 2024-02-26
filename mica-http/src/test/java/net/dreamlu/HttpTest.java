@@ -6,8 +6,9 @@ import net.dreamlu.mica.http.LogLevel;
 public class HttpTest {
 
 	public static void main(String[] args) {
-		String html = HttpRequest.get("https://www.dreamluxxx.net/123123")
-			.useSlf4jLog(LogLevel.NONE)
+		String html = HttpRequest.get("https://www.dreamlu.net/")
+			.useConsoleLog(LogLevel.NONE)
+			.useSSL()
 			.execute()
 			.onResponse(responseSpec -> {
 				return responseSpec.asString();

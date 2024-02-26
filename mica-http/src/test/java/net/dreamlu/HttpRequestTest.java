@@ -65,7 +65,6 @@ public class HttpRequestTest {
 		HttpRequest.get("https://123.xxx")
 			.useConsoleLog(LogLevel.BODY)
 			.sslSocketFactory(sc.getSocketFactory(), trustManager)
-			.disableSslValidation()
 			.execute()
 			.asString();
 	}
