@@ -559,6 +559,10 @@ public class HttpRequest {
 		return this;
 	}
 
+	public HttpRequest useSSL(SSLSocketFactory sslSocketFactory, X509TrustManager trustManager) {
+		return sslSocketFactory(sslSocketFactory, trustManager);
+	}
+
 	public HttpRequest useSSL() {
 		return useSSL((InputStream) null, null);
 	}
