@@ -181,6 +181,7 @@ HttpRequest.get("https://www.baidu.com/some-form")
 ```
 
 ### 示例证书配置
+注意：使用 jks 格式证书！
 ```java
 // 1. 全局配置证书
 HttpRequest.setGlobalSSL(
