@@ -20,9 +20,9 @@ import net.dreamlu.mica.core.retry.IRetry;
 import net.dreamlu.mica.core.retry.SimpleRetry;
 import net.dreamlu.mica.core.ssl.DisableValidationTrustManager;
 import net.dreamlu.mica.core.ssl.TrustAllHostNames;
-import net.dreamlu.mica.core.utils.Exceptions;
-import net.dreamlu.mica.core.utils.Holder;
+import net.dreamlu.mica.core.tuple.Pair;
 import net.dreamlu.mica.core.utils.JsonUtil;
+import net.dreamlu.mica.core.utils.ResourceUtil;
 import net.dreamlu.mica.core.utils.StringPool;
 import okhttp3.*;
 import okhttp3.internal.Util;
@@ -30,17 +30,21 @@ import okhttp3.internal.http.HttpMethod;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import javax.annotation.Nullable;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.*;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
-import java.security.KeyManagementException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,8 +105,6 @@ public class HttpRequest {
 	private IRetry retry;
 	@Nullable
 	private Predicate<ResponseSpec> respPredicate;
-	@Nullable
-	private Boolean disableSslValidation;
 	@Nullable
 	private HostnameVerifier hostnameVerifier;
 	@Nullable
@@ -278,14 +280,14 @@ public class HttpRequest {
 		if (proxyAuthenticator != null) {
 			builder.proxyAuthenticator(proxyAuthenticator);
 		}
-		if (hostnameVerifier != null) {
-			builder.hostnameVerifier(hostnameVerifier);
-		}
 		if (sslSocketFactory != null && trustManager != null) {
 			builder.sslSocketFactory(sslSocketFactory, trustManager);
+			if (hostnameVerifier == null) {
+				hostnameVerifier = TrustAllHostNames.INSTANCE;
+			}
 		}
-		if (Boolean.TRUE.equals(disableSslValidation)) {
-			disableSslValidation(builder);
+		if (hostnameVerifier != null) {
+			builder.hostnameVerifier(hostnameVerifier);
 		}
 		if (authenticator != null) {
 			builder.authenticator(authenticator);
@@ -546,16 +548,6 @@ public class HttpRequest {
 		return this;
 	}
 
-	/**
-	 * 关闭 ssl 校验
-	 *
-	 * @return HttpRequest
-	 */
-	public HttpRequest disableSslValidation() {
-		this.disableSslValidation = Boolean.TRUE;
-		return this;
-	}
-
 	public HttpRequest hostnameVerifier(HostnameVerifier hostnameVerifier) {
 		this.hostnameVerifier = hostnameVerifier;
 		return this;
@@ -563,8 +555,34 @@ public class HttpRequest {
 
 	public HttpRequest sslSocketFactory(SSLSocketFactory sslSocketFactory, X509TrustManager trustManager) {
 		this.sslSocketFactory = sslSocketFactory;
-		this.trustManager = trustManager;
+		this.trustManager = trustManager == null ? DisableValidationTrustManager.INSTANCE : trustManager;
 		return this;
+	}
+
+	public HttpRequest useSSL(SSLSocketFactory sslSocketFactory, X509TrustManager trustManager) {
+		return sslSocketFactory(sslSocketFactory, trustManager);
+	}
+
+	public HttpRequest useSSL() {
+		return useSSL((InputStream) null, null);
+	}
+
+	public HttpRequest useSSL(String keyStoreFile, String keyPass) {
+		return useSSL(keyStoreFile, keyPass, null, null);
+	}
+
+	public HttpRequest useSSL(String keyStoreFile, String keyPass, String trustStoreFile, String trustPass) {
+		Pair<SSLContext, X509TrustManager> pair = getSslContext(keyStoreFile, keyPass, trustStoreFile, trustPass);
+		return sslSocketFactory(pair.getLeft().getSocketFactory(), pair.getRight());
+	}
+
+	public HttpRequest useSSL(InputStream keyStoreInputStream, String keyPass) {
+		return useSSL(keyStoreInputStream, keyPass, null, null);
+	}
+
+	public HttpRequest useSSL(InputStream keyStoreInputStream, String keyPass, InputStream trustInputStream, String trustPass) {
+		Pair<SSLContext, X509TrustManager> pair = getSslContext(keyStoreInputStream, keyPass, trustInputStream, trustPass);
+		return sslSocketFactory(pair.getLeft().getSocketFactory(), pair.getRight());
 	}
 
 	@Override
@@ -622,6 +640,41 @@ public class HttpRequest {
 		HttpRequest.globalLoggingInterceptor = getLoggingInterceptor(logger, logLevel.getLevel());
 	}
 
+	/**
+	 * 设置全局的 ssl 配置
+	 */
+	public static OkHttpClient setGlobalSSL() {
+		return setGlobalSSL((InputStream) null, null);
+	}
+
+	public static OkHttpClient setGlobalSSL(String keyStoreFile, String keyPass) {
+		return setGlobalSSL(keyStoreFile, keyPass, null, null);
+	}
+
+	public static OkHttpClient setGlobalSSL(String keyStoreFile, String keyPass, String trustStoreFile, String trustPass) {
+		Pair<SSLContext, X509TrustManager> pair = getSslContext(keyStoreFile, keyPass, trustStoreFile, trustPass);
+		return setGlobalSSL(pair.getLeft().getSocketFactory(), pair.getRight());
+	}
+
+	public static OkHttpClient setGlobalSSL(InputStream keyStoreInputStream, String keyPass) {
+		return setGlobalSSL(keyStoreInputStream, keyPass, null, null);
+	}
+
+	public static OkHttpClient setGlobalSSL(InputStream keyStoreInputStream, String keyPass, InputStream trustInputStream, String trustPass) {
+		Pair<SSLContext, X509TrustManager> pair = getSslContext(keyStoreInputStream, keyPass, trustInputStream, trustPass);
+		return setGlobalSSL(pair.getLeft().getSocketFactory(), pair.getRight());
+	}
+
+	public static OkHttpClient setGlobalSSL(SSLSocketFactory sslSocketFactory, X509TrustManager trustManager) {
+		X509TrustManager tm = trustManager == null ? DisableValidationTrustManager.INSTANCE : trustManager;
+		OkHttpClient okHttpClient = httpClient.newBuilder()
+			.sslSocketFactory(sslSocketFactory, tm)
+			.hostnameVerifier(TrustAllHostNames.INSTANCE)
+			.build();
+		setHttpClient(okHttpClient);
+		return okHttpClient;
+	}
+
 	static String handleValue(@Nullable Object value) {
 		if (value == null) {
 			return StringPool.EMPTY;
@@ -632,16 +685,114 @@ public class HttpRequest {
 		return String.valueOf(value);
 	}
 
-	private static void disableSslValidation(OkHttpClient.Builder builder) {
+	public static Pair<SSLContext, X509TrustManager> getSslContext(String keyStoreFile, String keyPass,
+																   String trustStoreFile, String trustPass) {
+		InputStream keyStoreInputStream;
+		if (keyStoreFile == null) {
+			keyStoreInputStream = null;
+		} else if (keyStoreFile.toLowerCase().startsWith("classpath:")) {
+			keyStoreInputStream = getResourceAsStream(keyStoreFile);
+		} else {
+			keyStoreInputStream = getFileResource(keyStoreFile);
+		}
+		InputStream trustStoreInputStream;
+		if (trustStoreFile == null) {
+			trustStoreInputStream = null;
+		} else if (trustStoreFile.toLowerCase().startsWith("classpath:")) {
+			trustStoreInputStream = getResourceAsStream(trustStoreFile);
+		} else {
+			trustStoreInputStream = getFileResource(trustStoreFile);
+		}
+		return getSslContext(keyStoreInputStream, keyPass, trustStoreInputStream, trustPass);
+	}
+
+	public static Pair<SSLContext, X509TrustManager> getSslContext(InputStream keyStoreInputStream, String keyPass,
+																   InputStream trustInputStream, String trustPass) {
 		try {
-			DisableValidationTrustManager disabledTrustManager = DisableValidationTrustManager.INSTANCE;
-			SSLContext sslContext = SSLContext.getInstance("SSL");
-			sslContext.init(null, disabledTrustManager.getTrustManagers(), Holder.SECURE_RANDOM);
-			SSLSocketFactory disabledSslSocketFactory = sslContext.getSocketFactory();
-			builder.sslSocketFactory(disabledSslSocketFactory, disabledTrustManager);
-			builder.hostnameVerifier(TrustAllHostNames.INSTANCE);
-		} catch (NoSuchAlgorithmException | KeyManagementException e) {
-			throw Exceptions.unchecked(e);
+			KeyManager[] kms = null;
+			TrustManager[] tms = null;
+			if (keyStoreInputStream != null) {
+				KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
+				KeyStore keyStore = KeyStore.getInstance("JKS");
+				char[] keyPassChars = keyPass == null ? null : keyPass.toCharArray();
+				keyStore.load(keyStoreInputStream, keyPassChars);
+				keyManagerFactory.init(keyStore, keyPassChars);
+				kms = keyManagerFactory.getKeyManagers();
+			}
+			if (trustInputStream != null) {
+				char[] trustPassChars = trustPass == null ? null : trustPass.toCharArray();
+				tms = getTrustManagers(trustInputStream, trustPassChars);
+			}
+			SSLContext sslContext = SSLContext.getInstance("TLS");
+			sslContext.init(kms, tms, new SecureRandom());
+			X509TrustManager trustManager = tms == null ? null : (X509TrustManager) tms[0];
+			return Pair.create(sslContext, trustManager);
+		} catch (Exception e) {
+			throw new IllegalArgumentException(e);
 		}
 	}
+
+	private static TrustManager[] getTrustManagers(InputStream trustInputStream, char[] trustPassword)
+		throws NoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {
+		if (trustInputStream == null) {
+			return new TrustManager[]{DisableValidationTrustManager.INSTANCE};
+		} else {
+			TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance("SunX509");
+			KeyStore keyStore = KeyStore.getInstance("JKS");
+			keyStore.load(trustInputStream, trustPassword);
+			trustManagerFactory.init(keyStore);
+			return trustManagerFactory.getTrustManagers();
+		}
+	}
+
+	/**
+	 * 获取ClassPath下的资源做为流
+	 *
+	 * @param path 相对于ClassPath路径，可以以classpath:开头
+	 * @return {@link InputStream}资源
+	 */
+	private static InputStream getResourceAsStream(String path) {
+		if (path.toLowerCase().startsWith("classpath:")) {
+			path = path.substring("classpath:".length());
+		}
+		return getClassLoader().getResourceAsStream(path);
+	}
+
+	/**
+	 * 获取 file 下的资源做为流
+	 *
+	 * @param file 文件
+	 * @return {@link InputStream}资源
+	 */
+	private static InputStream getFileResource(String file) {
+		try {
+			return Files.newInputStream(Paths.get(file));
+		} catch (IOException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	/**
+	 * 获取{@link ClassLoader}<br>
+	 * 获取顺序如下：<br>
+	 *
+	 * <pre>
+	 * 1、获取当前线程的ContextClassLoader
+	 * 2、获取类对应的ClassLoader
+	 * 3、获取系统ClassLoader（{@link ClassLoader#getSystemClassLoader()}）
+	 * </pre>
+	 *
+	 * @return 类加载器
+	 */
+	private static ClassLoader getClassLoader() {
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		if (classLoader == null) {
+			classLoader = ResourceUtil.class.getClassLoader();
+			if (null == classLoader) {
+				classLoader = ClassLoader.getSystemClassLoader();
+			}
+		}
+		return classLoader;
+	}
+
 }
