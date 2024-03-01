@@ -2,6 +2,12 @@
 
 ## 发行版本
 
+### v2.7.18.2 - 2024-03-01
+
+- :sparkles: mica-ip2region 升级 ip2region xdb 文件。
+- :sparkles: mica-http 简化 ssl 配置。
+- :arrow_up: 依赖升级
+
 ### v2.7.18.1 - 2023-12-24
 
 - :sparkles: mica-http 优化，添加 `.setGlobalLog(log::info)`，`.useLog(log::info)` 避免需要配置 net.dreamlu.mica.http 包日志等级
