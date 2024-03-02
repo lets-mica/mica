@@ -2,6 +2,11 @@
 
 ## 发行版本
 
+### v3.2.3 - 2024-03-02
+- :sparkles: mica-ip2region 升级 ip2region xdb 文件。
+- :sparkles: mica-http 简化 ssl 配置。
+- :arrow_up: 依赖升级
+
 ### v3.2.2 - 2024-01-21
 - :sparkles: mica-holidays graalvm AOT 支持。
 - :bug: mica-ip2region 修复 ipv6 数据库文件 graalvm AOT 支持。感谢 github `@lishangbu` pr
