@@ -31,6 +31,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -158,7 +159,15 @@ public class RestExceptionTranslator {
 	 */
 	private static R<Object> handleError(BindingResult result) {
 		FieldError error = result.getFieldError();
-		String message = String.format("%s:%s", error.getField(), error.getDefaultMessage());
+		String message = "";
+		if (error != null) {
+			message = String.format("%s:%s", error.getField(), error.getDefaultMessage());
+        } else {
+			ObjectError globalError = result.getGlobalError();
+			if (globalError != null) {
+				message = globalError.getDefaultMessage();
+			}
+		}
 		return R.fail(SystemCode.PARAM_BIND_ERROR, message);
 	}
 
