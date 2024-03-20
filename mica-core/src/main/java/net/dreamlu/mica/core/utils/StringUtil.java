@@ -982,5 +982,28 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		return text.startsWith("http://") || text.startsWith("https://");
 	}
 
+	/**
+	 * Returns either the passed in CharSequence, or if the CharSequence is
+	 * whitespace, empty ("") or {@code null}, the value of {@code defaultStr}.
+	 *
+	 * <p>Whitespace is defined by {@link Character#isWhitespace(char)}.</p>
+	 *
+	 * <pre>
+	 * StringUtils.defaultIfBlank(null, "NULL")  = "NULL"
+	 * StringUtils.defaultIfBlank("", "NULL")    = "NULL"
+	 * StringUtils.defaultIfBlank(" ", "NULL")   = "NULL"
+	 * StringUtils.defaultIfBlank("bat", "NULL") = "bat"
+	 * StringUtils.defaultIfBlank("", null)      = null
+	 * </pre>
+	 * @param <T> the specific kind of CharSequence
+	 * @param str the CharSequence to check, may be null
+	 * @param defaultStr  the default CharSequence to return
+	 *  if the input is whitespace, empty ("") or {@code null}, may be null
+	 * @return the passed in CharSequence, or the default
+	 */
+	@Nullable
+	public static <T extends CharSequence> T defaultIfBlank(@Nullable final T str, @Nullable final T defaultStr) {
+		return isBlank(str) ? defaultStr : str;
+	}
 }
 

@@ -18,6 +18,7 @@ package net.dreamlu.mica.lite.launch;
 
 import net.dreamlu.mica.core.constant.MicaConstant;
 import net.dreamlu.mica.core.log.LogPrintStream;
+import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.core.utils.SystemUtil;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.web.context.WebServerApplicationContext;
@@ -51,9 +52,11 @@ public class StartedEventListener {
 		String profile = StringUtils.arrayToCommaDelimitedString(environment.getActiveProfiles());
 		System.err.printf("---[%s]---启动完成，当前使用的端口:[%d]，环境变量:[%s]---%n", appName, localPort, profile);
 		// 如果有 swagger，打印开发阶段的 swagger ui 地址
-		if (hasOpenApi()) {
+		if (hasKnife4J()) {
 			System.out.printf("http://localhost:%s/doc.html%n", localPort);
-			System.out.printf("http://localhost:%s/swagger-ui/index.html%n", localPort);
+		} else if (hasOpenApi()) {
+			String swaggerPath = StringUtil.defaultIfBlank(environment.getProperty("springdoc.swagger-ui.path"), "/swagger-ui.html");
+			System.out.printf("http://localhost:%s%s%n", localPort, swaggerPath);
 		} else {
 			System.out.printf("http://localhost:%s%n", localPort);
 		}
@@ -67,6 +70,11 @@ public class StartedEventListener {
 
 	private static boolean hasOpenApi() {
 		return Stream.of("springfox.documentation.spring.web.plugins.Docket", "io.swagger.v3.oas.models.OpenAPI")
+			.anyMatch(clazz -> ClassUtils.isPresent(clazz, null));
+	}
+
+	private static boolean hasKnife4J() {
+		return Stream.of("com.github.xiaoymin.knife4j.core.conf.Consts", "com.github.xiaoymin.knife4j.core.conf.GlobalConstants")
 			.anyMatch(clazz -> ClassUtils.isPresent(clazz, null));
 	}
 
