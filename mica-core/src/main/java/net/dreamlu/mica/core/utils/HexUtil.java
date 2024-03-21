@@ -114,6 +114,32 @@ public class HexUtil {
 	}
 
 	/**
+	 * encode Hex
+	 *
+	 * @param data    Data to Hex
+	 * @param charset Charset
+	 * @return bytes as a hex string
+	 */
+	public static String encodeToString(String data, Charset charset) {
+		return encodeToString(data, charset, charset);
+	}
+
+	/**
+	 * encode Hex
+	 *
+	 * @param data        Data to Hex
+	 * @param dataCharset Charset
+	 * @param toCharset   Charset
+	 * @return bytes as a hex string
+	 */
+	public static String encodeToString(String data, Charset dataCharset, Charset toCharset) {
+		if (StringUtil.isBlank(data)) {
+			return null;
+		}
+		return encodeToString(data.getBytes(dataCharset), toCharset);
+	}
+
+	/**
 	 * decode Hex
 	 *
 	 * @param data Hex data
@@ -151,6 +177,18 @@ public class HexUtil {
 	/**
 	 * decodeToString Hex
 	 *
+	 * @param data    Data to Hex
+	 * @param charset Charset
+	 * @return bytes as a hex string
+	 */
+	public static String decodeToString(byte[] data, Charset charset) {
+		byte[] decodeBytes = decode(data);
+		return new String(decodeBytes, charset);
+	}
+
+	/**
+	 * decodeToString Hex
+	 *
 	 * @param data Data to Hex
 	 * @return bytes as a hex string
 	 */
@@ -160,6 +198,32 @@ public class HexUtil {
 			return null;
 		}
 		return decodeToString(data.getBytes(DEFAULT_CHARSET));
+	}
+
+	/**
+	 * decodeToString Hex
+	 *
+	 * @param data    Data to Hex
+	 * @param charset Charset
+	 * @return bytes as a hex string
+	 */
+	public static String decodeToString(String data, Charset charset) {
+		return decodeToString(data, charset, charset);
+	}
+
+	/**
+	 * decodeToString Hex
+	 *
+	 * @param data        Data to Hex
+	 * @param dataCharset Charset
+	 * @param toCharset   Charset
+	 * @return bytes as a hex string
+	 */
+	public static String decodeToString(String data, Charset dataCharset, Charset toCharset) {
+		if (StringUtil.isBlank(data)) {
+			return null;
+		}
+		return decodeToString(data.getBytes(dataCharset), toCharset);
 	}
 
 	/**
