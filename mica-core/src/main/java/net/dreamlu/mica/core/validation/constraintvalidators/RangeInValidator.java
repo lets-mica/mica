@@ -19,6 +19,7 @@ package net.dreamlu.mica.core.validation.constraintvalidators;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import net.dreamlu.mica.core.utils.CollectionUtil;
+import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.core.validation.constraints.RangeIn;
 
 import java.util.Arrays;
@@ -46,7 +47,7 @@ public class RangeInValidator implements ConstraintValidator<RangeIn, Object> {
 		if (value == null) {
 			return true;
 		}
-		String[] ranges = rangeIn.value().split(",");
+		String[] ranges = StringUtil.splitTrim(rangeIn.value(), ",");
 		if (value instanceof CharSequence obj) {
 			return CollectionUtil.contains(ranges, obj);
 		} else if (value instanceof Number obj) {
