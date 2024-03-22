@@ -21,6 +21,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.ClassUtil;
 import net.dreamlu.mica.xss.config.MicaXssProperties;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 
@@ -31,6 +33,7 @@ import org.springframework.web.servlet.AsyncHandlerInterceptor;
  */
 @RequiredArgsConstructor
 public class XssCleanInterceptor implements AsyncHandlerInterceptor {
+	private final PathMatcher matcher = new AntPathMatcher();
 	private final MicaXssProperties xssProperties;
 
 	@Override
@@ -43,11 +46,20 @@ public class XssCleanInterceptor implements AsyncHandlerInterceptor {
 		if (!xssProperties.isEnabled()) {
 			return true;
 		}
+		// 判断是否需要跳过
+		List<String> pathExcludePatterns = xssProperties.getPathExcludePatterns();
+		String requestURL = request.getRequestURL().toString();
+		boolean needExclude = pathExcludePatterns.stream()
+			.anyMatch(pattern -> matcher.match(pattern, requestURL));
+		if (needExclude) {
+			XssHolder.setIgnore(new XssIgnoreVo());
+			return true;
+		}
 		// 3. 处理 XssIgnore 注解
 		HandlerMethod handlerMethod = (HandlerMethod) handler;
 		XssCleanIgnore xssCleanIgnore = ClassUtil.getAnnotation(handlerMethod, XssCleanIgnore.class);
 		if (xssCleanIgnore != null) {
-			XssHolder.setIgnore(xssCleanIgnore);
+			XssHolder.setIgnore(new XssIgnoreVo(xssCleanIgnore.value()));
 		}
 		return true;
 	}
