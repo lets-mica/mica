@@ -30,6 +30,8 @@ import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -76,14 +78,17 @@ public class MicaXssConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		List<String> patterns = xssProperties.getPathPatterns();
+		List<String> patterns = new ArrayList<>();
+		// 拦截路由和排除的路由
+		patterns.addAll(xssProperties.getPathPatterns());
+		patterns.addAll(xssProperties.getPathExcludePatterns());
 		if (patterns.isEmpty()) {
 			patterns.add("/**");
 		}
+		// 拦截所有
 		XssCleanInterceptor interceptor = new XssCleanInterceptor(xssProperties);
 		registry.addInterceptor(interceptor)
 			.addPathPatterns(patterns)
-			.excludePathPatterns(xssProperties.getPathExcludePatterns())
 			.order(Ordered.LOWEST_PRECEDENCE);
 	}
 
