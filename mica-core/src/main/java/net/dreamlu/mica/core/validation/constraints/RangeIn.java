@@ -16,10 +16,10 @@
 
 package net.dreamlu.mica.core.validation.constraints;
 
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
 import net.dreamlu.mica.core.validation.constraintvalidators.RangeInValidator;
 
+import javax.validation.Constraint;
+import javax.validation.Payload;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -16,12 +16,12 @@
 
 package net.dreamlu.mica.core.validation.constraintvalidators;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 import net.dreamlu.mica.core.utils.CollectionUtil;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.core.validation.constraints.RangeIn;
 
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -40,7 +40,6 @@ public class RangeInValidator implements ConstraintValidator<RangeIn, Object> {
 		this.rangeIn = constraintAnnotation;
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
 	public boolean isValid(Object value, ConstraintValidatorContext context) {
 		// 如果 value 为空则不进行验证，为空验证可以使用 @NotBlank @NotNull @NotEmpty 等注解来进行控制，职责分离
@@ -48,22 +47,22 @@ public class RangeInValidator implements ConstraintValidator<RangeIn, Object> {
 			return true;
 		}
 		String[] ranges = StringUtil.splitTrim(rangeIn.value(), ",");
-		if (value instanceof CharSequence obj) {
-			return CollectionUtil.contains(ranges, obj);
-		} else if (value instanceof Number obj) {
-			return CollectionUtil.contains(ranges, obj.toString());
-		} else if (value instanceof Collection obj) {
-			return obj.stream().allMatch(it -> CollectionUtil.contains(ranges, it.toString()));
-		} else if (value instanceof Iterable obj) {
+		if (value instanceof CharSequence) {
+			return CollectionUtil.contains(ranges, (CharSequence) value);
+		} else if (value instanceof Number) {
+			return CollectionUtil.contains(ranges, value.toString());
+		} else if (value instanceof Collection) {
+			return ((Collection) value).stream().allMatch(it -> CollectionUtil.contains(ranges, it.toString()));
+		} else if (value instanceof Iterable) {
 			AtomicBoolean flag = new AtomicBoolean(true);
-			obj.forEach(it -> {
+			((Iterable<?>) value).forEach(it -> {
 				if (!CollectionUtil.contains(ranges, it.toString())) {
 					flag.set(false);
 				}
 			});
 			return flag.get();
-		} else if (value instanceof Object[] obj) {
-			return Arrays.stream(obj).allMatch(it -> CollectionUtil.contains(ranges, it.toString()));
+		} else if (value instanceof Object[]) {
+			return Arrays.stream((Object[]) value).allMatch(it -> CollectionUtil.contains(ranges, it.toString()));
 		}
 		return false;
 	}
