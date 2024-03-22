@@ -16,12 +16,12 @@
 
 package net.dreamlu.mica.core.validation.constraintvalidators;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import net.dreamlu.mica.core.utils.CollectionUtil;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.core.validation.constraints.RangeIn;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;

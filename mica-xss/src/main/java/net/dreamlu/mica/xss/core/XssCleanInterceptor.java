@@ -26,6 +26,8 @@ import org.springframework.util.PathMatcher;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 
+import java.util.List;
+
 /**
  * xss 处理拦截器
  *
