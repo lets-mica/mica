@@ -50,7 +50,7 @@ public class XssCleanInterceptor implements AsyncHandlerInterceptor {
 		}
 		// 判断是否需要跳过
 		List<String> pathExcludePatterns = xssProperties.getPathExcludePatterns();
-		String requestURL = request.getRequestURL().toString();
+		String requestURL = request.getRequestURI();
 		boolean needExclude = pathExcludePatterns.stream()
 			.anyMatch(pattern -> matcher.match(pattern, requestURL));
 		if (needExclude) {
