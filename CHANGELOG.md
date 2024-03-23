@@ -2,6 +2,14 @@
 
 ## 发行版本
 
+### v2.7.18.3 - 2024-03-23
+- :sparkles: mica-redis 修复redis启动警告 gitee #I8REGD #32 感谢 `@mymx2`
+- :sparkles: mica-xss 调整逻辑 gitee #I9AL2N 感谢 `@okayaok` 反馈
+- :sparkles: mica-core validation 增加范围验证 gitee #30 感谢 `@mymx2`
+- :sparkles: mica-core 完善 HexUtil
+- :sparkles: mica-lite 区分knife4j路径 gitee #28 感谢 `@mymx2`
+- :sparkles: mica-lite 完善 FieldError 为空问题 gitee #27 感谢 `@mymx2`
+
 ### v2.7.18.2 - 2024-03-01
 
 - :sparkles: mica-ip2region 升级 ip2region xdb 文件。
