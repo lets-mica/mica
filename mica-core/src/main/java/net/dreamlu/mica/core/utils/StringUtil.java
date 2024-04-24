@@ -20,6 +20,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.*;
 import org.springframework.web.util.HtmlUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -493,7 +494,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		formatUnsignedLong(msb, radix, buf, 10, 4);
 		formatUnsignedLong(msb >>> 16, radix, buf, 6, 4);
 		formatUnsignedLong(msb >>> 32, radix, buf, 0, 6);
-		return new String(buf, Charsets.UTF_8);
+		return new String(buf,  StandardCharsets.ISO_8859_1);
 	}
 
 	private static void formatUnsignedLong(long val, int radix, byte[] buf, int offset, int len) {
@@ -503,6 +504,45 @@ public class StringUtil extends org.springframework.util.StringUtils {
 			buf[--charPos] = NumberUtil.DIGITS[((int) val) & mask];
 			val >>>= 4;
 		} while (charPos > offset);
+	}
+
+	/**
+	 * 获取一个快速生成的随机 id，包含数字，大小写，比 uuid 冲突概率更小
+	 *
+	 * @param len len
+	 * @return id 字符串
+	 */
+	public static String getFastId(int len) {
+		return getId(ThreadLocalRandom.current(), len, 62);
+	}
+
+	/**
+	 * 获取一个生成的随机 id，比 uuid 冲突概率更小
+	 *
+	 * @param random Random
+	 * @param len    len
+	 * @return id 字符串
+	 */
+	public static String getId(Random random, int len) {
+		return getId(random, len, 62);
+	}
+
+	/**
+	 * 获取一个生成的随机 id，比 uuid 冲突概率更小
+	 *
+	 * @param random Random
+	 * @param len    len
+	 * @param radix  radix，36 包含字母和数字，62 包含大写字母
+	 * @return id 字符串
+	 */
+	public static String getId(Random random, int len, int radix) {
+		byte[] randomBytes = new byte[len];
+		random.nextBytes(randomBytes);
+		int mask = radix - 1;
+		for (int i = 0; i < len; i++) {
+			randomBytes[i] = NumberUtil.DIGITS[(randomBytes[i] & 0xff) & mask];
+		}
+		return new String(randomBytes, StandardCharsets.ISO_8859_1);
 	}
 
 	/**
