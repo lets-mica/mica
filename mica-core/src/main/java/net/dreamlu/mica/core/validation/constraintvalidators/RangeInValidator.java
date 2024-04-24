@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * @author dy
  */
+@SuppressWarnings("unchecked")
 public class RangeInValidator implements ConstraintValidator<RangeIn, Object> {
 
 	private RangeIn rangeIn;
@@ -52,7 +53,7 @@ public class RangeInValidator implements ConstraintValidator<RangeIn, Object> {
 		} else if (value instanceof Number) {
 			return CollectionUtil.contains(ranges, value.toString());
 		} else if (value instanceof Collection) {
-			return ((Collection) value).stream().allMatch(it -> CollectionUtil.contains(ranges, it.toString()));
+			return ((Collection<?>) value).stream().allMatch(it -> CollectionUtil.contains(ranges, it.toString()));
 		} else if (value instanceof Iterable) {
 			AtomicBoolean flag = new AtomicBoolean(true);
 			((Iterable<?>) value).forEach(it -> {

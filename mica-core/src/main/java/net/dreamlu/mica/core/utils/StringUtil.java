@@ -416,12 +416,12 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
-	 * 生成uuid（更快，存在冲突的可能），采用 jdk 9 的形式，优化性能
+	 * 生成 uuid，随机位数是普通 uuid 的一倍，冲突概率更小
 	 *
 	 * @return UUID
 	 */
 	public static String getUUID() {
-		return getUUID(ThreadLocalRandom.current());
+		return getId(ThreadLocalRandom.current(), 32, 16);
 	}
 
 	/**
@@ -430,12 +430,8 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return UUID
 	 */
 	public static String getSafeUUID() {
-		return getUUID(Holder.SECURE_RANDOM);
-	}
-
-	private static String getUUID(Random random) {
-		long lsb = random.nextLong();
-		long msb = random.nextLong();
+		long lsb = Holder.SECURE_RANDOM.nextLong();
+		long msb = Holder.SECURE_RANDOM.nextLong();
 		byte[] buf = new byte[32];
 		int radix = 1 << 4;
 		formatUnsignedLong(lsb, radix, buf, 20, 12);
@@ -443,7 +439,16 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		formatUnsignedLong(msb, radix, buf, 12, 4);
 		formatUnsignedLong(msb >>> 16, radix, buf, 8, 4);
 		formatUnsignedLong(msb >>> 32, radix, buf, 0, 8);
-		return new String(buf, Charsets.UTF_8);
+		return new String(buf, StandardCharsets.ISO_8859_1);
+	}
+
+	private static void formatUnsignedLong(long val, int radix, byte[] buf, int offset, int len) {
+		int charPos = offset + len;
+		int mask = radix - 1;
+		do {
+			buf[--charPos] = NumberUtil.DIGITS[((int) val) & mask];
+			val >>>= 4;
+		} while (charPos > offset);
 	}
 
 	/**
@@ -483,24 +488,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	private static String getNanoId(Random random, boolean radix64) {
-		long lsb = random.nextLong();
-		long msb = random.nextLong();
-		byte[] buf = new byte[21];
-		int radix = radix64 ? 64 : 62;
-		formatUnsignedLong(lsb, radix, buf, 14, 7);
-		formatUnsignedLong(msb, radix, buf, 10, 4);
-		formatUnsignedLong(msb >>> 16, radix, buf, 6, 4);
-		formatUnsignedLong(msb >>> 32, radix, buf, 0, 6);
-		return new String(buf, StandardCharsets.ISO_8859_1);
-	}
-
-	private static void formatUnsignedLong(long val, int radix, byte[] buf, int offset, int len) {
-		int charPos = offset + len;
-		int mask = radix - 1;
-		do {
-			buf[--charPos] = NumberUtil.DIGITS[((int) val) & mask];
-			val >>>= 4;
-		} while (charPos > offset);
+		return getId(random, 21, radix64 ? 64 : 62);
 	}
 
 	/**
