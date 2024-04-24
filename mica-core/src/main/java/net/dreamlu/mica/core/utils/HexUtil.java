@@ -19,6 +19,7 @@ package net.dreamlu.mica.core.utils;
 import org.springframework.lang.Nullable;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * hex 工具，编解码全用 byte
@@ -26,7 +27,6 @@ import java.nio.charset.Charset;
  * @author L.cm
  */
 public class HexUtil {
-	public static final Charset DEFAULT_CHARSET = Charsets.UTF_8;
 	private static final byte[] DIGITS_LOWER = new byte[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 	private static final byte[] DIGITS_UPPER = new byte[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
@@ -75,7 +75,7 @@ public class HexUtil {
 	 * @return bytes as a hex string
 	 */
 	public static String encodeToString(byte[] data, boolean toLowerCase) {
-		return new String(encode(data, toLowerCase), DEFAULT_CHARSET);
+		return new String(encode(data, toLowerCase), StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class HexUtil {
 	 * @return bytes as a hex string
 	 */
 	public static String encodeToString(byte[] data) {
-		return encodeToString(data, DEFAULT_CHARSET);
+		return encodeToString(data, StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class HexUtil {
 		if (StringUtil.isBlank(data)) {
 			return null;
 		}
-		return encodeToString(data.getBytes(DEFAULT_CHARSET));
+		return encodeToString(data.getBytes(StandardCharsets.UTF_8));
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class HexUtil {
 	 * @return decode hex to bytes
 	 */
 	public static byte[] decode(String data) {
-		return decode(data, DEFAULT_CHARSET);
+		return decode(data, StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class HexUtil {
 	 */
 	public static String decodeToString(byte[] data) {
 		byte[] decodeBytes = decode(data);
-		return new String(decodeBytes, DEFAULT_CHARSET);
+		return new String(decodeBytes, StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -197,7 +197,7 @@ public class HexUtil {
 		if (StringUtil.isBlank(data)) {
 			return null;
 		}
-		return decodeToString(data.getBytes(DEFAULT_CHARSET));
+		return decodeToString(data.getBytes(StandardCharsets.UTF_8));
 	}
 
 	/**

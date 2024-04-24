@@ -1,11 +1,11 @@
 package net.dreamlu.mica.qrcode;
 
-import net.dreamlu.mica.core.utils.Charsets;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.nio.charset.StandardCharsets;
 
 /**
  * qrcode 测试
@@ -26,7 +26,7 @@ class QrCodeTest {
 			.size(512) // 默认 512，可以不设置
 			.backGroundColor(Color.WHITE) // 默认白色，可以不设置
 			.foreGroundColor(Color.BLACK) // 默认黑色，可以不设置
-			.encode(Charsets.UTF_8) // 默认 UTF_8，可以不设置
+			.encode(StandardCharsets.UTF_8) // 默认 UTF_8，可以不设置
 			.imageFormat("png") // 默认 png，可以不设置
 			.deleteMargin(true) // 删除白边，默认为 true，可以不设置
 			.logo("/Users/lcm/Desktop/mica.png") // 设置二维码 logo

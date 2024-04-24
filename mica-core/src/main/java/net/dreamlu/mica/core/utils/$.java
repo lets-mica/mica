@@ -42,6 +42,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -1010,7 +1011,7 @@ public class $ {
 	 * @return digest as a hex string
 	 */
 	public static String sha224Hex(String data) {
-		return DigestUtil.sha224Hex(data.getBytes(Charsets.UTF_8));
+		return DigestUtil.sha224Hex(data.getBytes(StandardCharsets.UTF_8));
 	}
 
 	/**
@@ -1855,7 +1856,7 @@ public class $ {
 	 * @return the encoded String
 	 */
 	public static String urlEncode(String source) {
-		return UriUtils.encode(source, Charsets.UTF_8);
+		return UriUtils.encode(source, StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -1879,7 +1880,7 @@ public class $ {
 	 * @see java.net.URLDecoder#decode(String, String)
 	 */
 	public static String urlDecode(String source) {
-		return StringUtils.uriDecode(source, Charsets.UTF_8);
+		return StringUtils.uriDecode(source, StandardCharsets.UTF_8);
 	}
 
 	/**
