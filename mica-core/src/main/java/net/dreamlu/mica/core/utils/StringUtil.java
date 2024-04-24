@@ -21,10 +21,7 @@ import org.springframework.util.*;
 import org.springframework.web.util.HtmlUtils;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -494,7 +491,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		formatUnsignedLong(msb, radix, buf, 10, 4);
 		formatUnsignedLong(msb >>> 16, radix, buf, 6, 4);
 		formatUnsignedLong(msb >>> 32, radix, buf, 0, 6);
-		return new String(buf,  StandardCharsets.ISO_8859_1);
+		return new String(buf, StandardCharsets.ISO_8859_1);
 	}
 
 	private static void formatUnsignedLong(long val, int radix, byte[] buf, int offset, int len) {
@@ -536,6 +533,9 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return id 字符串
 	 */
 	public static String getId(Random random, int len, int radix) {
+		if (len < 8) {
+			throw new IllegalArgumentException("为了减少冲突，len 需要大于7，实际尽量设置在10~16或以上。");
+		}
 		byte[] randomBytes = new byte[len];
 		random.nextBytes(randomBytes);
 		int mask = radix - 1;
@@ -1035,10 +1035,11 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * StringUtils.defaultIfBlank("bat", "NULL") = "bat"
 	 * StringUtils.defaultIfBlank("", null)      = null
 	 * </pre>
-	 * @param <T> the specific kind of CharSequence
-	 * @param str the CharSequence to check, may be null
-	 * @param defaultStr  the default CharSequence to return
-	 *  if the input is whitespace, empty ("") or {@code null}, may be null
+	 *
+	 * @param <T>        the specific kind of CharSequence
+	 * @param str        the CharSequence to check, may be null
+	 * @param defaultStr the default CharSequence to return
+	 *                   if the input is whitespace, empty ("") or {@code null}, may be null
 	 * @return the passed in CharSequence, or the default
 	 */
 	@Nullable

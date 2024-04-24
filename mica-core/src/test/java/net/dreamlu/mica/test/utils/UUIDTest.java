@@ -22,7 +22,7 @@ class UUIDTest {
 	void test() {
 		ExecutorService service = Executors.newFixedThreadPool(10);
 		Set<String> uuidSet = ConcurrentHashMap.newKeySet();
-		int size = 100_0000;
+		int size = 1000_0000;
 		for (int i = 0; i < size; i++) {
 			service.submit(() -> {
 				String nanoId = StringUtil.getNanoId();
@@ -42,7 +42,7 @@ class UUIDTest {
 	void testUUID() {
 		ExecutorService service = Executors.newFixedThreadPool(10);
 		Set<String> uuidSet = ConcurrentHashMap.newKeySet();
-		int size = 100_0000;
+		int size = 1000_0000;
 		for (int i = 0; i < size; i++) {
 			service.submit(() -> {
 				String uuid = StringUtil.getUUID();
@@ -62,10 +62,10 @@ class UUIDTest {
 	void testID() {
 		ExecutorService service = Executors.newFixedThreadPool(10);
 		Set<String> uuidSet = ConcurrentHashMap.newKeySet();
-		int size = 100_0000;
+		int size = 1000_0000;
 		for (int i = 0; i < size; i++) {
 			service.submit(() -> {
-				String uuid = StringUtil.getFastId(16);
+				String uuid = StringUtil.getFastId(10);
 				if (uuidSet.contains(uuid)) {
 					System.out.println("-----------存在冲突-------");
 				} else {
@@ -73,7 +73,7 @@ class UUIDTest {
 				}
 			});
 		}
-		ThreadUtil.sleep(TimeUnit.SECONDS, 5);
+		ThreadUtil.sleep(TimeUnit.SECONDS, 8);
 		Assertions.assertEquals(size, uuidSet.size());
 		service.shutdown();
 	}
