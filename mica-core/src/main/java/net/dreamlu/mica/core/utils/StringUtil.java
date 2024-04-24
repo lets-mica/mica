@@ -514,6 +514,16 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
+	 * 获取一个安全的随机 id，包含数字，大小写，同长度比 uuid 冲突概率更小得多
+	 *
+	 * @param len 为了减少冲突，len 需要大于7，实际尽量设置在10~16或以上。
+	 * @return id 字符串
+	 */
+	public static String getSafeId(int len) {
+		return getId(Holder.SECURE_RANDOM, len, 62);
+	}
+
+	/**
 	 * 获取一个生成的随机 id，同长度比 uuid 冲突概率更小得多
 	 *
 	 * @param random Random
