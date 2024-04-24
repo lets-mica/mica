@@ -44,7 +44,7 @@ public class MicaReactiveUploadConfiguration implements WebFluxConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		String path = properties.getSavePath();
 		registry.addResourceHandler(properties.getUploadPathPattern())
-			.addResourceLocations("file:" + path + "/");
+			.addResourceLocations("file:" + path + '/');
 	}
 
 }

@@ -146,7 +146,7 @@ public class RestExceptionTranslator {
 	@ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
 	@ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 	public R<Object> handleError(HttpMediaTypeNotAcceptableException e) {
-		String message = e.getMessage() + " " + StringUtil.join(e.getSupportedMediaTypes());
+		String message = e.getMessage() + ' ' + StringUtil.join(e.getSupportedMediaTypes());
 		log.error("不接受的媒体类型:{}", message);
 		return R.fail(SystemCode.MEDIA_TYPE_NOT_SUPPORTED, message);
 	}
