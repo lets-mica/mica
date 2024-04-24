@@ -504,9 +504,9 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
-	 * 获取一个快速生成的随机 id，包含数字，大小写，比 uuid 冲突概率更小
+	 * 获取一个快速生成的随机 id，包含数字，大小写，同长度比 uuid 冲突概率更小得多
 	 *
-	 * @param len len
+	 * @param len 为了减少冲突，len 需要大于7，实际尽量设置在10~16或以上。
 	 * @return id 字符串
 	 */
 	public static String getFastId(int len) {
@@ -514,10 +514,10 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
-	 * 获取一个生成的随机 id，比 uuid 冲突概率更小
+	 * 获取一个生成的随机 id，同长度比 uuid 冲突概率更小得多
 	 *
 	 * @param random Random
-	 * @param len    len
+	 * @param len    为了减少冲突，len 需要大于7，实际尽量设置在10~16或以上。
 	 * @return id 字符串
 	 */
 	public static String getId(Random random, int len) {
@@ -525,10 +525,10 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
-	 * 获取一个生成的随机 id，比 uuid 冲突概率更小
+	 * 获取一个生成的随机 id，同长度比 uuid 冲突概率更小得多
 	 *
 	 * @param random Random
-	 * @param len    len
+	 * @param len    为了减少冲突，len 需要大于7，实际尽量设置在10~16或以上。
 	 * @param radix  radix，36 包含字母和数字，62 包含大写字母
 	 * @return id 字符串
 	 */
