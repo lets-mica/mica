@@ -20,6 +20,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.*;
 import org.springframework.web.util.HtmlUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -418,12 +419,12 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
-	 * 生成uuid（更快，存在冲突的可能），采用 jdk 9 的形式，优化性能
+	 * 生成 uuid，随机位数是普通 uuid 的一倍，冲突概率更小
 	 *
 	 * @return UUID
 	 */
 	public static String getUUID() {
-		return getUUID(ThreadLocalRandom.current());
+		return getId(ThreadLocalRandom.current(), 32, 16);
 	}
 
 	/**
@@ -432,12 +433,8 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @return UUID
 	 */
 	public static String getSafeUUID() {
-		return getUUID(Holder.SECURE_RANDOM);
-	}
-
-	private static String getUUID(Random random) {
-		long lsb = random.nextLong();
-		long msb = random.nextLong();
+		long lsb = Holder.SECURE_RANDOM.nextLong();
+		long msb = Holder.SECURE_RANDOM.nextLong();
 		byte[] buf = new byte[32];
 		int radix = 1 << 4;
 		formatUnsignedLong(lsb, radix, buf, 20, 12);
@@ -445,7 +442,16 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		formatUnsignedLong(msb, radix, buf, 12, 4);
 		formatUnsignedLong(msb >>> 16, radix, buf, 8, 4);
 		formatUnsignedLong(msb >>> 32, radix, buf, 0, 8);
-		return new String(buf, Charsets.UTF_8);
+		return new String(buf, StandardCharsets.ISO_8859_1);
+	}
+
+	private static void formatUnsignedLong(long val, int radix, byte[] buf, int offset, int len) {
+		int charPos = offset + len;
+		int mask = radix - 1;
+		do {
+			buf[--charPos] = NumberUtil.DIGITS[((int) val) & mask];
+			val >>>= 4;
+		} while (charPos > offset);
 	}
 
 	/**
@@ -485,24 +491,59 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	private static String getNanoId(Random random, boolean radix64) {
-		long lsb = random.nextLong();
-		long msb = random.nextLong();
-		byte[] buf = new byte[21];
-		int radix = radix64 ? 64 : 62;
-		formatUnsignedLong(lsb, radix, buf, 14, 7);
-		formatUnsignedLong(msb, radix, buf, 10, 4);
-		formatUnsignedLong(msb >>> 16, radix, buf, 6, 4);
-		formatUnsignedLong(msb >>> 32, radix, buf, 0, 6);
-		return new String(buf, Charsets.UTF_8);
+		return getId(random, 21, radix64 ? 64 : 62);
 	}
 
-	private static void formatUnsignedLong(long val, int radix, byte[] buf, int offset, int len) {
-		int charPos = offset + len;
+	/**
+	 * 获取一个快速生成的随机 id，包含数字，大小写，同长度比 uuid 冲突概率更小得多
+	 *
+	 * @param len 为了减少冲突，len 需要大于7，实际尽量设置在10~16或以上。
+	 * @return id 字符串
+	 */
+	public static String getFastId(int len) {
+		return getId(ThreadLocalRandom.current(), len, 62);
+	}
+
+	/**
+	 * 获取一个安全的随机 id，包含数字，大小写，同长度比 uuid 冲突概率更小得多
+	 *
+	 * @param len 为了减少冲突，len 需要大于7，实际尽量设置在10~16或以上。
+	 * @return id 字符串
+	 */
+	public static String getSafeId(int len) {
+		return getId(Holder.SECURE_RANDOM, len, 62);
+	}
+
+	/**
+	 * 获取一个生成的随机 id，同长度比 uuid 冲突概率更小得多
+	 *
+	 * @param random Random
+	 * @param len    为了减少冲突，len 需要大于7，实际尽量设置在10~16或以上。
+	 * @return id 字符串
+	 */
+	public static String getId(Random random, int len) {
+		return getId(random, len, 62);
+	}
+
+	/**
+	 * 获取一个生成的随机 id，同长度比 uuid 冲突概率更小得多
+	 *
+	 * @param random Random
+	 * @param len    为了减少冲突，len 需要大于7，实际尽量设置在10~16或以上。
+	 * @param radix  radix，36 包含字母和数字，62 包含大写字母
+	 * @return id 字符串
+	 */
+	public static String getId(Random random, int len, int radix) {
+		if (len < 8) {
+			throw new IllegalArgumentException("为了减少冲突，len 需要大于7，实际尽量设置在10~16或以上。");
+		}
+		byte[] randomBytes = new byte[len];
+		random.nextBytes(randomBytes);
 		int mask = radix - 1;
-		do {
-			buf[--charPos] = NumberUtil.DIGITS[((int) val) & mask];
-			val >>>= 4;
-		} while (charPos > offset);
+		for (int i = 0; i < len; i++) {
+			randomBytes[i] = NumberUtil.DIGITS[(randomBytes[i] & 0xff) & mask];
+		}
+		return new String(randomBytes, StandardCharsets.ISO_8859_1);
 	}
 
 	/**
@@ -995,10 +1036,11 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * StringUtils.defaultIfBlank("bat", "NULL") = "bat"
 	 * StringUtils.defaultIfBlank("", null)      = null
 	 * </pre>
-	 * @param <T> the specific kind of CharSequence
-	 * @param str the CharSequence to check, may be null
-	 * @param defaultStr  the default CharSequence to return
-	 *  if the input is whitespace, empty ("") or {@code null}, may be null
+	 *
+	 * @param <T>        the specific kind of CharSequence
+	 * @param str        the CharSequence to check, may be null
+	 * @param defaultStr the default CharSequence to return
+	 *                   if the input is whitespace, empty ("") or {@code null}, may be null
 	 * @return the passed in CharSequence, or the default
 	 */
 	@Nullable

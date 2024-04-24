@@ -17,6 +17,7 @@
 package net.dreamlu.mica.core.utils;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /**
@@ -37,7 +38,7 @@ public class Base64Util {
 	 * @return {String}
 	 */
 	public static String encode(String value) {
-		return encode(value, Charsets.UTF_8);
+		return encode(value, StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class Base64Util {
 	 * @return {String}
 	 */
 	public static String encodeUrlSafe(String value) {
-		return encodeUrlSafe(value, Charsets.UTF_8);
+		return encodeUrlSafe(value, StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -81,7 +82,7 @@ public class Base64Util {
 	 * @return {String}
 	 */
 	public static String decode(String value) {
-		return decode(value, Charsets.UTF_8);
+		return decode(value, StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -104,7 +105,7 @@ public class Base64Util {
 	 * @return {String}
 	 */
 	public static String decodeUrlSafe(String value) {
-		return decodeUrlSafe(value, Charsets.UTF_8);
+		return decodeUrlSafe(value, StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -185,7 +186,7 @@ public class Base64Util {
 		if (src.length == 0) {
 			return "";
 		}
-		return new String(encode(src), Charsets.UTF_8);
+		return new String(encode(src), StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -198,7 +199,7 @@ public class Base64Util {
 		if (src.isEmpty()) {
 			return new byte[0];
 		}
-		return decode(src.getBytes(Charsets.UTF_8));
+		return decode(src.getBytes(StandardCharsets.UTF_8));
 	}
 
 	/**
@@ -209,7 +210,7 @@ public class Base64Util {
 	 * @return the encoded byte array as a UTF-8 String
 	 */
 	public static String encodeToUrlSafeString(byte[] src) {
-		return new String(encodeUrlSafe(src), Charsets.UTF_8);
+		return new String(encodeUrlSafe(src), StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -220,7 +221,7 @@ public class Base64Util {
 	 * @return the original byte array
 	 */
 	public static byte[] decodeFromUrlSafeString(String src) {
-		return decodeUrlSafe(src.getBytes(Charsets.UTF_8));
+		return decodeUrlSafe(src.getBytes(StandardCharsets.UTF_8));
 	}
 
 }

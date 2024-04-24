@@ -21,7 +21,6 @@ import java.util.function.Function;
  * @author L.cm
  */
 public class AesUtil {
-	public static final Charset DEFAULT_CHARSET = Charsets.UTF_8;
 
 	public static String genAesKey() {
 		return StringUtil.random(32);
@@ -49,7 +48,7 @@ public class AesUtil {
 	 * @return SecretKeySpec
 	 */
 	public static SecretKeySpec genMySqlAesKey(final String key) {
-		return genMySqlAesKey(key.getBytes(DEFAULT_CHARSET));
+		return genMySqlAesKey(key.getBytes(StandardCharsets.UTF_8));
 	}
 
 	public static String encryptToHex(String content, String aesTextKey) {
@@ -69,7 +68,7 @@ public class AesUtil {
 	}
 
 	public static byte[] encrypt(String content, String aesTextKey) {
-		return encrypt(content.getBytes(DEFAULT_CHARSET), aesTextKey);
+		return encrypt(content.getBytes(StandardCharsets.UTF_8), aesTextKey);
 	}
 
 	public static byte[] encrypt(String content, Charset charset, String aesTextKey) {
@@ -77,7 +76,7 @@ public class AesUtil {
 	}
 
 	public static byte[] encrypt(byte[] content, String aesTextKey) {
-		return encrypt(content, Objects.requireNonNull(aesTextKey).getBytes(DEFAULT_CHARSET));
+		return encrypt(content, Objects.requireNonNull(aesTextKey).getBytes(StandardCharsets.UTF_8));
 	}
 
 	@Nullable
@@ -86,7 +85,7 @@ public class AesUtil {
 		if (hexBytes == null) {
 			return null;
 		}
-		return new String(hexBytes, DEFAULT_CHARSET);
+		return new String(hexBytes, StandardCharsets.UTF_8);
 	}
 
 	@Nullable
@@ -94,7 +93,7 @@ public class AesUtil {
 		if (StringUtil.isBlank(content)) {
 			return null;
 		}
-		return decryptFormHex(content.getBytes(DEFAULT_CHARSET), aesTextKey);
+		return decryptFormHex(content.getBytes(StandardCharsets.UTF_8), aesTextKey);
 	}
 
 	public static byte[] decryptFormHex(byte[] content, String aesTextKey) {
@@ -107,7 +106,7 @@ public class AesUtil {
 		if (hexBytes == null) {
 			return null;
 		}
-		return new String(hexBytes, DEFAULT_CHARSET);
+		return new String(hexBytes, StandardCharsets.UTF_8);
 	}
 
 	@Nullable
@@ -115,7 +114,7 @@ public class AesUtil {
 		if (StringUtil.isBlank(content)) {
 			return null;
 		}
-		return decryptFormBase64(content.getBytes(DEFAULT_CHARSET), aesTextKey);
+		return decryptFormBase64(content.getBytes(StandardCharsets.UTF_8), aesTextKey);
 	}
 
 	public static byte[] decryptFormBase64(byte[] content, String aesTextKey) {
@@ -123,11 +122,11 @@ public class AesUtil {
 	}
 
 	public static String decryptToString(byte[] content, String aesTextKey) {
-		return new String(decrypt(content, aesTextKey), DEFAULT_CHARSET);
+		return new String(decrypt(content, aesTextKey), StandardCharsets.UTF_8);
 	}
 
 	public static byte[] decrypt(byte[] content, String aesTextKey) {
-		return decrypt(content, Objects.requireNonNull(aesTextKey).getBytes(DEFAULT_CHARSET));
+		return decrypt(content, Objects.requireNonNull(aesTextKey).getBytes(StandardCharsets.UTF_8));
 	}
 
 	public static byte[] encrypt(byte[] content, byte[] aesKey) {
@@ -190,7 +189,7 @@ public class AesUtil {
 	 * @return byte 数组
 	 */
 	public static byte[] decryptMysql(String input, String aesKey) {
-		return decryptMysql(input, txt -> txt.getBytes(DEFAULT_CHARSET), aesKey);
+		return decryptMysql(input, txt -> txt.getBytes(StandardCharsets.UTF_8), aesKey);
 	}
 
 	/**
@@ -219,7 +218,7 @@ public class AesUtil {
 	 * @return 字符串
 	 */
 	public static String decryptMysqlToString(String input, Function<String, byte[]> inputMapper, String aesKey) {
-		return new String(decryptMysql(input, inputMapper, aesKey), DEFAULT_CHARSET);
+		return new String(decryptMysql(input, inputMapper, aesKey), StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -230,7 +229,7 @@ public class AesUtil {
 	 * @return 字符串
 	 */
 	public static String decryptMysqlToString(String input, String aesKey) {
-		return decryptMysqlToString(input, txt -> txt.getBytes(DEFAULT_CHARSET), aesKey);
+		return decryptMysqlToString(input, txt -> txt.getBytes(StandardCharsets.UTF_8), aesKey);
 	}
 
 }

@@ -74,7 +74,6 @@ public class IpInfoUtil {
 	 * @param ipRecord ipRecord
 	 * @return IpInfo
 	 */
-	@Nullable
 	public static IpInfo toIpV6Info(String[] ipRecord) {
 		IpInfo ipInfo = new IpInfo();
 		String info1 = ipRecord[0];

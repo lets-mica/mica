@@ -22,6 +22,7 @@ import org.springframework.util.FastByteArrayOutputStream;
 
 import javax.crypto.Cipher;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.interfaces.RSAKey;
 import java.security.spec.*;
@@ -262,7 +263,7 @@ public class RsaUtil {
 		if (StringUtil.isBlank(data)) {
 			return null;
 		}
-		return Base64Util.encodeToString(encrypt(publicKey, data.getBytes(Charsets.UTF_8)));
+		return Base64Util.encodeToString(encrypt(publicKey, data.getBytes(StandardCharsets.UTF_8)));
 	}
 
 	/**
@@ -416,7 +417,7 @@ public class RsaUtil {
 		if (StringUtil.isBlank(base64Data)) {
 			return null;
 		}
-		return new String(decrypt(privateKey, Base64Util.decodeFromString(base64Data)), Charsets.UTF_8);
+		return new String(decrypt(privateKey, Base64Util.decodeFromString(base64Data)), StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -454,7 +455,7 @@ public class RsaUtil {
 		if (StringUtil.isBlank(base64Data)) {
 			return null;
 		}
-		return new String(decryptByPublicKey(publicKey, Base64Util.decodeFromString(base64Data)), Charsets.UTF_8);
+		return new String(decryptByPublicKey(publicKey, Base64Util.decodeFromString(base64Data)), StandardCharsets.UTF_8);
 	}
 
 	/**
