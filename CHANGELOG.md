@@ -2,6 +2,12 @@
 
 ## 发行版本
 
+### v2.7.18.4 - 2024-04-26
+- :sparkles: mica-core 内部直接使用 StandardCharsets
+- :sparkles: mica-core 添加一个 id 生成系列方法，原理同 uuid
+- :sparkles: mica-redis !34 fix(RedisSerializer): 适配kotlin类型 (data class 是 final修饰的)
+- :sparkles: mica-lite refactor(MicaExceptionTranslator): change log position
+
 ### v2.7.18.3 - 2024-03-23
 - :sparkles: mica-redis 修复redis启动警告 gitee #I8REGD #32 感谢 `@mymx2`
 - :sparkles: mica-xss 调整逻辑 gitee #I9AL2N 感谢 `@okayaok` 反馈
