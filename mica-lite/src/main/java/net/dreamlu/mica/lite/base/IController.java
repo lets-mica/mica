@@ -19,7 +19,6 @@ package net.dreamlu.mica.lite.base;
 import net.dreamlu.mica.core.result.IResultCode;
 import net.dreamlu.mica.core.result.R;
 import net.dreamlu.mica.core.result.SystemCode;
-import net.dreamlu.mica.core.utils.Charsets;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -30,6 +29,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.util.UriUtils;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 基础 controller
@@ -160,7 +160,7 @@ public interface IController {
 	default ResponseEntity<Resource> download(Resource resource, String fileName) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-		String encodeFileName = UriUtils.encode(fileName, Charsets.UTF_8);
+		String encodeFileName = UriUtils.encode(fileName, StandardCharsets.UTF_8);
 		// 兼容各种浏览器下载：
 		// https://blog.robotshell.org/2012/deal-with-http-header-encoding-for-file-download/
 		String disposition = "attachment;" +

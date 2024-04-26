@@ -44,7 +44,7 @@ public class MicaServletUploadConfiguration implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		String path = properties.getSavePath();
 		registry.addResourceHandler(properties.getUploadPathPattern())
-			.addResourceLocations("file:" + path + "/");
+			.addResourceLocations("file:" + path + '/');
 	}
 
 }

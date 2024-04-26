@@ -19,7 +19,6 @@ package net.dreamlu.mica.redis.config;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.redis.cache.MicaRedisCache;
 import net.dreamlu.mica.redis.resolver.DefaultRedisKeyResolver;
@@ -31,6 +30,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandi
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.KotlinDetector;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -78,7 +78,11 @@ public class RedisTemplateConfiguration {
 		objectMapper.findAndRegisterModules();
 		// class type info to json
 		GenericJackson2JsonRedisSerializer.registerNullValueSerializer(objectMapper, null);
-		objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), DefaultTyping.NON_FINAL, As.PROPERTY);
+		if (KotlinDetector.isKotlinPresent()) {
+			objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.EVERYTHING, As.PROPERTY);
+		} else {
+			objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, As.PROPERTY);
+		}
 		return new GenericJackson2JsonRedisSerializer(objectMapper);
 	}
 

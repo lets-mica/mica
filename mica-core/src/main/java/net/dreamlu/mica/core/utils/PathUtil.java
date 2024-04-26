@@ -22,6 +22,7 @@ import org.springframework.web.util.UriUtils;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 用来获取各种目录
@@ -49,7 +50,7 @@ public class PathUtil {
 	private static String toFilePath(@Nullable URL url) {
 		if (url == null) { return null; }
 		String protocol = url.getProtocol();
-		String file = UriUtils.decode(url.getPath(), Charsets.UTF_8);
+		String file = UriUtils.decode(url.getPath(), StandardCharsets.UTF_8);
 		if (ResourceUtils.URL_PROTOCOL_FILE.equals(protocol)) {
 			return new File(file).getParentFile().getParentFile().getAbsolutePath();
 		} else if (ResourceUtils.URL_PROTOCOL_JAR.equals(protocol)
