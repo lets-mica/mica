@@ -26,7 +26,7 @@ compile("net.dreamlu:mica-xss:${version}")
 | ------------------------------ | ------ |------------------------------------------------|
 | mica.xss.enabled               | true   | 开启xss                                          |
 | mica.xss.trim-text             | true   | 【全局】是否去除文本首尾空格                                 |
-| mica.xss.mode                  | clear  | 模式：clear 清理（默认）、escape 转义、validate 校验（3.7.4新增） |
+| mica.xss.mode                  | clear  | 模式：clear 清理（默认）、escape 转义、validate 校验（2.7.4新增） |
 | mica.xss.pretty-print          | false  | `clear 专用` prettyPrint，默认关闭： 保留换行              |
 | mica.xss.enable-escape         | false  | `clear 专用` 转义，默认关闭                             |
 | mica.xss.path-patterns         | `/**`  | 拦截的路由，例如: `/api/order/**`                      |
