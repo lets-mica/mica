@@ -102,7 +102,7 @@ HttpRequest.get("https://demo.dreamlu.net/captcha.jpg")
 // 设置全局日志级别
 HttpRequest.setGlobalLog(LogLevel.BODY);
 
-// 直接用 jackson json path 语法
+// 直接用 jackson json path 语法（jackson Pointer 语法）
 private String getUserEmail(String accessToken) {
     return HttpRequest.get("https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))")
             .addHeader("Host", "api.linkedin.com")
@@ -128,6 +128,8 @@ public static void test() {
         .execute();
 }
 ```
+
+扩展阅读：[鲜为人知的 jackson Pointer 语法，超好用！](https://mp.weixin.qq.com/s/SSzX6cG7Y6AQ21vLgIuu4A)
 
 ### 示例代码2
 ```java
