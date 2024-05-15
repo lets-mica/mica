@@ -24,10 +24,12 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Setup Gradle 8.5
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.5
       - name: Build with Gradle
-        run: ./gradlew publishSnapshot
+        run: gradle publishSnapshot
         env:
           NEXUS_OSS_USER_NAME: ${{ secrets.OSS_NAME }}
           NEXUS_OSS_PASS_WORD: ${{ secrets.OSS_PWD }}
