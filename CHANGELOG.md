@@ -2,6 +2,10 @@
 
 ## 发行版本
 
+### v2.7.18.5 - 2024-06-10
+- :sparkles: mica-prometheus 优化，支持自定义的 management 端口
+- :sparkles: mica-redis 添加 get time 获取 redis 时间
+
 ### v2.7.18.4 - 2024-04-26
 - :sparkles: mica-core 内部直接使用 StandardCharsets
 - :sparkles: mica-core 添加一个 id 生成系列方法，原理同 uuid
