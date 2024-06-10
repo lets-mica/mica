@@ -1,5 +1,5 @@
 ext {
-    springBootVersion = "3.1.11"
+    springBootVersion = "3.1.12"
     springCloudVersion = "2022.0.5"
     micaAutoVersion = "3.1.2"
     micaWeiXinVersion = "3.0.0"
@@ -7,7 +7,7 @@ ext {
     swaggerVersion = "1.6.9"
     swagger3xVersion = "2.2.19"
     springDocVersion = "2.2.0"
-    druidVersion = "1.2.22"
+    druidVersion = "1.2.23"
     okhttpVersion = "4.12.0"
     jsoupVersion = "1.17.2"
     lombokVersion = "1.18.32"
