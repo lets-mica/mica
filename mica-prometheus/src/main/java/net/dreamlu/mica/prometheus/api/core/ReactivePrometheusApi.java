@@ -30,6 +30,8 @@ import reactor.core.publisher.Flux;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * prometheus http sd
@@ -49,9 +51,14 @@ public class ReactivePrometheusApi {
 	public Flux<TargetGroup> getList() {
 		return discoveryClient.getServices()
 			.flatMap(discoveryClient::getInstances)
-			.groupBy(ServiceInstance::getServiceId, instance ->
-				String.format("%s:%d", instance.getHost(), instance.getPort())
-			).flatMap(instanceGrouped -> {
+			.groupBy(ServiceInstance::getServiceId, instance -> {
+				String instanceHost = instance.getHost();
+				int managementPort = Optional.ofNullable(instance.getMetadata())
+					.map(x -> x.get("management.port"))
+					.map(Integer::parseInt)
+					.orElseGet(instance::getPort);
+				return instanceHost + ':' + managementPort;
+			}).flatMap(instanceGrouped -> {
 				Map<String, String> labels = new HashMap<>(4);
 				// 1. 环境
 				if (StringUtils.hasText(activeProfile)) {
@@ -60,7 +67,7 @@ public class ReactivePrometheusApi {
 				// 2. 服务名
 				String serviceId = instanceGrouped.key();
 				labels.put("__meta_prometheus_job", serviceId);
-				return instanceGrouped.collectList().map(targets -> new TargetGroup(targets, labels));
+				return instanceGrouped.collect(Collectors.toList()).map(targets -> new TargetGroup(targets, labels));
 			});
 	}
 
