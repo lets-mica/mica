@@ -54,7 +54,12 @@ public class PrometheusApi {
 			List<ServiceInstance> instanceList = discoveryClient.getInstances(serviceId);
 			List<String> targets = new ArrayList<>();
 			for (ServiceInstance instance : instanceList) {
-				targets.add(String.format("%s:%d", instance.getHost(), instance.getPort()));
+				String instanceHost = instance.getHost();
+				int managementPort = Optional.ofNullable(instance.getMetadata())
+					.map(x -> x.get("management.port"))
+					.map(Integer::parseInt)
+					.orElseGet(instance::getPort);
+				targets.add(instanceHost + ':' + managementPort);
 			}
 			Map<String, String> labels = new HashMap<>(4);
 			// 1. 环境
