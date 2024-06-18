@@ -1,6 +1,6 @@
 dependencies {
     api project(":mica-core")
-    api "io.nats:jnats:2.16.13"
+    api "io.nats:jnats:2.19.0"
     implementation "org.springframework.boot:spring-boot-starter"
     compileOnly "org.springframework.cloud:spring-cloud-context"
     compileOnly "net.dreamlu:mica-auto:${micaAutoVersion}"
