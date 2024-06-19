@@ -4,10 +4,12 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
@@ -22,8 +24,20 @@ import java.util.function.Function;
  */
 public class AesUtil {
 
+	/**
+	 * 生成 aes key
+	 *
+	 * @return aes key
+	 */
 	public static String genAesKey() {
-		return StringUtil.random(32);
+		try {
+			KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+			keyGen.init(128);
+			byte[] aesKey = keyGen.generateKey().getEncoded();
+			return HexUtil.encodeToString(aesKey);
+		} catch (NoSuchAlgorithmException e) {
+			throw Exceptions.unchecked(e);
+		}
 	}
 
 	/**

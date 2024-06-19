@@ -70,9 +70,9 @@ public class CodeGenerator extends Generator {
 				String osName = System.getProperty("os.name");
 				if (osName != null) {
 					if (osName.contains("Mac")) {
-						Runtime.getRuntime().exec("open " + outDir);
+						Runtime.getRuntime().exec(new String[]{"open " + outDir});
 					} else if (osName.contains("Windows")) {
-						Runtime.getRuntime().exec("cmd /c start " + outDir);
+						Runtime.getRuntime().exec(new String[]{"cmd /c start " + outDir});
 					}
 				}
 			} catch (IOException e) {

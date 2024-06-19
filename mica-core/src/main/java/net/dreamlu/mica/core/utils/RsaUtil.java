@@ -51,7 +51,7 @@ public class RsaUtil {
 	 * @return KeyPair
 	 */
 	public static KeyPair genKeyPair() {
-		return genKeyPair(1024);
+		return genKeyPair(2048);
 	}
 
 	/**
