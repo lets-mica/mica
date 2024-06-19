@@ -68,7 +68,7 @@ class RsaHelperTest {
 
 	@SneakyThrows
 	@Test
-	public void gen() {
+	void gen() {
 		KeyPair keyPair = RsaUtil.genKeyPair(2048);
 		RsaHelper rsaHelper = new RsaHelper((RSAPublicKey) keyPair.getPublic(), (RSAPrivateKey) keyPair.getPrivate());
 
@@ -159,7 +159,7 @@ class RsaHelperTest {
 		String str = "我爱mica";
 
 		//加密内容
-		Cipher enc = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+		Cipher enc = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
 		enc.init(Cipher.ENCRYPT_MODE, pem.getRSAPublicKey());
 		byte[] en = enc.doFinal(str.getBytes(StandardCharsets.UTF_8));
 		System.out.println("【公钥加密】：");
@@ -167,7 +167,7 @@ class RsaHelperTest {
 
 		RsaHelper pem2 = RsaHelper.fromPem(PKCS8_PRIVATE_KEY);
 		//解密内容
-		Cipher dec = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+		Cipher dec = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
 		dec.init(Cipher.DECRYPT_MODE, pem2.getRSAPrivateKey());
 		byte[] de = dec.doFinal(en);
 		System.out.println("【私钥解密】：");
@@ -181,7 +181,7 @@ class RsaHelperTest {
 		String str = "我爱mica";
 
 		//加密内容
-		Cipher enc = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+		Cipher enc = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
 		enc.init(Cipher.ENCRYPT_MODE, pem.getRSAPublicKey());
 		byte[] en = enc.doFinal(str.getBytes(StandardCharsets.UTF_8));
 		System.out.println("【公钥加密】：");
@@ -189,7 +189,7 @@ class RsaHelperTest {
 
 		RsaHelper pem2 = RsaHelper.fromPem(PKCS1_PRIVATE_KEY);
 		//解密内容
-		Cipher dec = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+		Cipher dec = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
 		dec.init(Cipher.DECRYPT_MODE, pem2.getRSAPrivateKey());
 		byte[] de = dec.doFinal(en);
 		System.out.println("【私钥解密】：");
