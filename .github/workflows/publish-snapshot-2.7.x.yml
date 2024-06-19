@@ -29,7 +29,7 @@ jobs:
         with:
           gradle-version: 8.8
       - name: Build with Gradle
-        run: gradle publishSnapshot
+        run: gradle publishSnapshot --no-parallel
         env:
           NEXUS_OSS_USER_NAME: ${{ secrets.OSSRH_USERNAME }}
           NEXUS_OSS_PASS_WORD: ${{ secrets.OSSRH_TOKEN }}
