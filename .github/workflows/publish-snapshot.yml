@@ -31,8 +31,8 @@ jobs:
       - name: Build with Gradle
         run: gradle publishSnapshot
         env:
-          NEXUS_OSS_USER_NAME: ${{ secrets.OSS_NAME }}
-          NEXUS_OSS_PASS_WORD: ${{ secrets.OSS_PWD }}
+          NEXUS_OSS_USER_NAME: ${{ secrets.OSSRH_USERNAME }}
+          NEXUS_OSS_PASS_WORD: ${{ secrets.OSSRH_TOKEN }}
       - name: Cleanup Gradle Cache
         run: |
           rm -f ~/.gradle/caches/modules-2/modules-2.lock
