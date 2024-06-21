@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.logging.appender;
 
-import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.CoreConstants;
 import com.github.loki4j.logback.*;
@@ -26,6 +25,7 @@ import net.dreamlu.mica.core.utils.CharPool;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.logging.config.MicaLoggingProperties;
 import net.dreamlu.mica.logging.loki.Loki4jOkHttpSender;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;

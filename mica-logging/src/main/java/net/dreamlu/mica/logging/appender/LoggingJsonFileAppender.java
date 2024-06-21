@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.logging.appender;
 
-import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.rolling.RollingFileAppender;
@@ -28,8 +27,9 @@ import net.dreamlu.mica.logging.config.MicaLoggingProperties;
 import net.dreamlu.mica.logging.utils.LogStashUtil;
 import net.dreamlu.mica.logging.utils.LoggingUtil;
 import net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.logging.LoggingSystemProperties;
+import org.springframework.boot.logging.LoggingSystemProperty;
 import org.springframework.core.env.Environment;
 
 import java.util.HashMap;
@@ -54,7 +54,8 @@ public class LoggingJsonFileAppender implements ILoggingAppender {
 		String profile = environment.getRequiredProperty(MicaConstant.ACTIVE_PROFILES_PROPERTY);
 		// 2. 文件日志格式
 		String fileLogPattern = environment.resolvePlaceholders(LoggingUtil.DEFAULT_FILE_LOG_PATTERN);
-		System.setProperty(LoggingSystemProperties.FILE_LOG_PATTERN, fileLogPattern);
+		String filePatternEnvName = LoggingSystemProperty.FILE_PATTERN.getEnvironmentVariableName();
+		System.setProperty(filePatternEnvName, fileLogPattern);
 		// 3. 生成日志文件的文件
 		String logDir = environment.getProperty("logging.file.path", LoggingUtil.DEFAULT_LOG_DIR);
 		this.logAllFile = logDir + CharPool.SLASH + appName + CharPool.SLASH + LoggingUtil.LOG_FILE_ALL;

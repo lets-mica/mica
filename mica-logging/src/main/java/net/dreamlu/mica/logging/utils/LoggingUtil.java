@@ -19,7 +19,6 @@
 
 package net.dreamlu.mica.logging.utils;
 
-import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.FileAppender;
@@ -27,8 +26,9 @@ import ch.qos.logback.core.rolling.RollingPolicy;
 import ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy;
 import ch.qos.logback.core.util.FileSize;
 import net.dreamlu.mica.core.utils.SystemUtil;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.logging.logback.LogbackLoggingSystemProperties;
+import org.springframework.boot.logging.logback.RollingPolicySystemProperty;
 
 /**
  * 参考自 jhipster
@@ -62,11 +62,11 @@ public class LoggingUtil {
 											  String logErrorFile) {
 		final SizeAndTimeBasedRollingPolicy<ILoggingEvent> rollingPolicy = new SizeAndTimeBasedRollingPolicy<>();
 		rollingPolicy.setContext(context);
-		rollingPolicy.setCleanHistoryOnStart(SystemUtil.getPropToBool(LogbackLoggingSystemProperties.ROLLINGPOLICY_CLEAN_HISTORY_ON_START, false));
+		rollingPolicy.setCleanHistoryOnStart(SystemUtil.getPropToBool(RollingPolicySystemProperty.CLEAN_HISTORY_ON_START.getEnvironmentVariableName(), false));
 		rollingPolicy.setFileNamePattern(logErrorFile + ".%d{yyyy-MM-dd}.%i.gz");
-		rollingPolicy.setMaxFileSize(FileSize.valueOf(SystemUtil.getProp(LogbackLoggingSystemProperties.ROLLINGPOLICY_MAX_FILE_SIZE, "10MB")));
-		rollingPolicy.setMaxHistory(SystemUtil.getPropToInt(LogbackLoggingSystemProperties.ROLLINGPOLICY_MAX_HISTORY, 7));
-		rollingPolicy.setTotalSizeCap(FileSize.valueOf(SystemUtil.getProp(LogbackLoggingSystemProperties.ROLLINGPOLICY_TOTAL_SIZE_CAP, "0")));
+		rollingPolicy.setMaxFileSize(FileSize.valueOf(SystemUtil.getProp(RollingPolicySystemProperty.MAX_FILE_SIZE.getEnvironmentVariableName(), "10MB")));
+		rollingPolicy.setMaxHistory(SystemUtil.getPropToInt(RollingPolicySystemProperty.MAX_HISTORY.getEnvironmentVariableName(), 7));
+		rollingPolicy.setTotalSizeCap(FileSize.valueOf(SystemUtil.getProp(RollingPolicySystemProperty.TOTAL_SIZE_CAP.getEnvironmentVariableName(), "0")));
 		rollingPolicy.setParent(appender);
 		rollingPolicy.start();
 		return rollingPolicy;

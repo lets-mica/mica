@@ -15,11 +15,8 @@ dependencies {
         // commons
         api "com.google.code.findbugs:jsr305:$findbugsVersion"
         api "io.swagger:swagger-annotations:$swaggerVersion"
-        api "io.swagger.core.v3:swagger-annotations:$swagger3xVersion"
         api "io.swagger.core.v3:swagger-annotations-jakarta:$swagger3xVersion"
-        api "org.springdoc:springdoc-openapi-starter-webmvc-ui:$springDocVersion"
-        api "com.github.xiaoymin:knife4j-spring-boot-starter:$knife4jVersion"
-        api "com.github.xiaoymin:knife4j-springdoc-ui:$knife4jVersion"
+        api "com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:$knife4jVersion"
         api "com.squareup.okhttp3:okhttp:$okhttpVersion"
         api "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
         api "org.jsoup:jsoup:$jsoupVersion"

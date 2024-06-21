@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.logging.appender;
 
-import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.constant.MicaConstant;
@@ -25,6 +24,7 @@ import net.dreamlu.mica.logging.config.MicaLoggingProperties;
 import net.dreamlu.mica.logging.utils.LogStashUtil;
 import net.logstash.logback.appender.LogstashTcpSocketAppender;
 import net.logstash.logback.encoder.LogstashEncoder;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 
