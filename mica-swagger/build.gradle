@@ -1,8 +1,0 @@
-dependencies {
-    api "org.springframework.boot:spring-boot-starter"
-    api "com.github.xiaoymin:knife4j-spring-boot-starter:${knife4jVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-web"
-    implementation "org.springframework.boot:spring-boot-starter-webflux"
-    compileOnly "org.springframework.cloud:spring-cloud-context"
-    annotationProcessor "net.dreamlu:mica-auto:${micaAutoVersion}"
-}

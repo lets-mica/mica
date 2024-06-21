@@ -20,7 +20,6 @@ dependencyManagement {
         dependency "net.dreamlu:mica-http:${VERSION}"
         dependency "net.dreamlu:mica-spider:${VERSION}"
         dependency "net.dreamlu:mica-laytpl:${VERSION}"
-        dependency "net.dreamlu:mica-swagger:${VERSION}"
         dependency "net.dreamlu:mica-openapi:${VERSION}"
         dependency "net.dreamlu:mica-captcha:${VERSION}"
         dependency "net.dreamlu:mica-jobs:${VERSION}"
@@ -36,7 +35,6 @@ dependencyManagement {
         dependency "net.dreamlu:mica-lite:${VERSION}"
         dependency "net.dreamlu:mica-activerecord:${VERSION}"
         dependency "net.dreamlu:mica-prometheus:${VERSION}"
-        dependency "net.dreamlu:mica-nats:${VERSION}"
         dependency "net.dreamlu:mica-holidays:${VERSION}"
         // commons
         dependency "com.google.code.findbugs:jsr305:${findbugsVersion}"
