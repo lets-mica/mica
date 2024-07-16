@@ -614,12 +614,11 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		}
 		Assert.isTrue(count > 0, "Requested random string length " + count + " is less than 0.");
 		final Random random = Holder.SECURE_RANDOM;
-		char[] buffer = new char[count];
+		byte[] buffer = new byte[count];
 		for (int i = 0; i < count; i++) {
-			String factor = randomType.getFactor();
-			buffer[i] = factor.charAt(random.nextInt(factor.length()));
+			buffer[i] = randomType.random(random);
 		}
-		return new String(buffer);
+		return new String(buffer, StandardCharsets.ISO_8859_1);
 	}
 
 	/**
