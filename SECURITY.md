@@ -3,10 +3,10 @@
 ## Supported Versions（支持的版本）
 
 | Version | Supported          |
-| ------- | ------------------ |
+| ------- |--------------------|
 | 3.3.x   | :white_check_mark: |
 | 3.2.x   | :white_check_mark: |
-| 3.1.x   | :white_check_mark: |
+| 3.1.x   | :x:                |
 | 3.0.x   | :x:                |
 | 2.7.x   | :white_check_mark: |
 | < 2.7.x | :x:                |
