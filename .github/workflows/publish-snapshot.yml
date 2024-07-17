@@ -2,9 +2,9 @@ name: Publish Snapshot
 
 on:
   push:
-    branches: [ master, 2.7.x ]
+    branches: [ master, 3.2.x ]
   pull_request:
-    branches: [ master, 2.7.x ]
+    branches: [ master, 3.2.x ]
 jobs:
   publish:
     runs-on: ubuntu-latest
