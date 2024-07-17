@@ -21,6 +21,7 @@ import net.dreamlu.mica.core.utils.CollectionUtil;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import org.springframework.data.domain.Range;
 import org.springframework.data.redis.connection.BitFieldSubCommands;
+import org.springframework.data.redis.connection.RedisServerCommands;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.lang.Nullable;
@@ -755,8 +756,8 @@ public class MicaRedisCache {
 	/**
 	 * 获取记数器的值，用于初始化获取 hIncr、hIncrBy 的值
 	 *
-	 * @param key     key
-	 * @param loader  加载器
+	 * @param key    key
+	 * @param loader 加载器
 	 */
 	@Nullable
 	public Long getHCounter(String key, Object field, LongSupplier loader) {
@@ -1570,6 +1571,16 @@ public class MicaRedisCache {
 	@Nullable
 	public Boolean setBit(String key, long offset, boolean value) {
 		return redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.setBit(keySerialize(key), offset, value));
+	}
+
+	/**
+	 * 获取 redis 时间
+	 *
+	 * @return redis 时间
+	 */
+	@Nullable
+	public Long getTime() {
+		return redisTemplate.execute((RedisCallback<Long>) RedisServerCommands::time);
 	}
 
 	/**
