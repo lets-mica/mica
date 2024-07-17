@@ -19,6 +19,8 @@ package net.dreamlu.mica.core.utils;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Random;
+
 /**
  * 生成的随机数类型
  *
@@ -30,16 +32,25 @@ public enum RandomType {
 	/**
 	 * INT STRING ALL
 	 */
-	INT(RandomType.INT_STR),
-	STRING(RandomType.STR_STR),
-	ALL(RandomType.ALL_STR);
+	INT(0, 9),
+	STRING(10, 61),
+	ALL(0, 61);
 
-	private final String factor;
+	private final int begin;
+	private final int end;
 
 	/**
-	 * 随机字符串因子
+	 * 生成随机数
+	 *
+	 * @param random random
+	 * @return 随机数
 	 */
-	private static final String INT_STR = "0123456789";
-	private static final String STR_STR = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	private static final String ALL_STR = INT_STR + STR_STR;
+	public byte random(Random random) {
+		int idx = random.nextInt(end);
+		if (idx < begin) {
+			idx += begin;
+		}
+		return NumberUtil.DIGITS[idx];
+	}
+
 }
