@@ -35,6 +35,7 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  * Redisson 监听器
@@ -43,6 +44,8 @@ import java.util.Map;
  */
 @Slf4j
 public class RStreamListenerDetector implements BeanPostProcessor, InitializingBean {
+	// redis 重连等会触发异常，异常时不取消订阅
+	private static final Predicate<Throwable> CANCEL_SUBSCRIPTION_ON_ERROR = t -> false;
 	private final StreamMessageListenerContainer<String, MapRecord<String, String, byte[]>> streamMessageListenerContainer;
 	private final RedisTemplate<String, Object> redisTemplate;
 	private final String consumerGroup;
@@ -90,7 +93,12 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 	}
 
 	private void broadCast(StreamOffset<String> streamOffset, Object bean, Method method, boolean isReadRawBytes) {
-		streamMessageListenerContainer.receive(streamOffset, (message) -> {
+		StreamMessageListenerContainer.StreamReadRequest<String> streamReadRequest = StreamMessageListenerContainer.StreamReadRequest
+			.builder(streamOffset)
+			// 重连会触发异常
+			.cancelOnError(CANCEL_SUBSCRIPTION_ON_ERROR)
+			.build();
+		streamMessageListenerContainer.register(streamReadRequest, (message) -> {
 			// MapBackedRecord
 			invokeMethod(bean, method, message, isReadRawBytes);
 		});
@@ -98,7 +106,13 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 
 	private void cluster(Consumer consumer, StreamOffset<String> streamOffset, RStreamListener listener, Object bean, Method method) {
 		boolean autoAcknowledge = listener.autoAcknowledge();
-		StreamMessageListenerContainer.ConsumerStreamReadRequest<String> readRequest = StreamMessageListenerContainer.StreamReadRequest.builder(streamOffset).consumer(consumer).autoAcknowledge(autoAcknowledge).build();
+		StreamMessageListenerContainer.ConsumerStreamReadRequest<String> readRequest = StreamMessageListenerContainer.StreamReadRequest
+			.builder(streamOffset)
+			.consumer(consumer)
+			.autoAcknowledge(autoAcknowledge)
+			// 重连会触发异常
+			.cancelOnError(CANCEL_SUBSCRIPTION_ON_ERROR)
+			.build();
 		StreamOperations<String, Object, Object> opsForStream = redisTemplate.opsForStream();
 		streamMessageListenerContainer.register(readRequest, (message) -> {
 			// MapBackedRecord
