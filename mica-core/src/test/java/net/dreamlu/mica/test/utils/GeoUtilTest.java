@@ -19,4 +19,17 @@ public class GeoUtilTest {
 		Assertions.assertEquals(1571, (long) distance);
 	}
 
+	@Test
+	public void testGps() {
+		int latitude = 9577595;
+		int longitude = 38383456;
+		System.out.println(GeoUtil.formatGeo(latitude));
+		System.out.println(GeoUtil.formatGeo(longitude));
+		double lat = GeoUtil.getGpsValue(latitude);
+		double lon = GeoUtil.getGpsValue(longitude);
+		System.out.println(GeoUtil.formatGeo(lat));
+		System.out.println(GeoUtil.formatGeo(lon));
+		System.out.printf("lat:%s\nlon:%s", lat, lon);
+	}
+
 }
