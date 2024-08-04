@@ -25,7 +25,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Setup Gradle 8.5
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 8.5
       - name: Build with Gradle
