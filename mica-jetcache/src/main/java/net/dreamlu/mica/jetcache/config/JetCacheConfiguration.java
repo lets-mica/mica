@@ -62,19 +62,6 @@ public class JetCacheConfiguration implements InitializingBean {
 		return new ConfigMap();
 	}
 
-	@Bean
-	public SpringConfigProvider springConfigProvider(ApplicationContext applicationContext) {
-		DefaultSpringKeyConvertorParser convertorParser = new DefaultSpringKeyConvertorParser();
-		convertorParser.setApplicationContext(applicationContext);
-		SpringConfigProvider springConfigProvider = new SpringConfigProvider();
-		springConfigProvider.setKeyConvertorParser(convertorParser);
-		springConfigProvider.setApplicationContext(applicationContext);
-		DefaultSpringEncoderParser encoderParser = new DefaultSpringEncoderParser();
-		encoderParser.setApplicationContext(applicationContext);
-		springConfigProvider.setEncoderParser(encoderParser);
-		return springConfigProvider;
-	}
-
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		ObjectMapper mapper = JsonUtil.getInstance().copy();
