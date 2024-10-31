@@ -44,6 +44,10 @@ public class MicaRedisProperties {
 	 */
 	private SerializerType serializerType = SerializerType.JSON;
 	/**
+	 * 开启 Kotlin json 序列化
+	 */
+	private boolean enableKotlinJson = false;
+	/**
 	 * key 过期事件
 	 */
 	private KeyExpiredEvent keyExpiredEvent = new KeyExpiredEvent();

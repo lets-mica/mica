@@ -78,7 +78,7 @@ public class RedisTemplateConfiguration {
 		objectMapper.findAndRegisterModules();
 		// class type info to json
 		GenericJackson2JsonRedisSerializer.registerNullValueSerializer(objectMapper, null);
-		if (KotlinDetector.isKotlinPresent()) {
+		if (KotlinDetector.isKotlinPresent() && properties.isEnableKotlinJson()) {
 			objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.EVERYTHING, As.PROPERTY);
 		} else {
 			objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, As.PROPERTY);
