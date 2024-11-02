@@ -1616,35 +1616,4 @@ public class MicaRedisCache {
 		return Objects.requireNonNull(keySerializer.deserialize(redisKey), "Redis key is null.");
 	}
 
-	public RedisTemplate<String, Object> getRedisTemplate() {
-		return redisTemplate;
-	}
-
-	public ValueOperations<String, Object> getValueOps() {
-		return valueOps;
-	}
-
-	public HashOperations<String, Object, Object> getHashOps() {
-		return hashOps;
-	}
-
-	public ListOperations<String, Object> getListOps() {
-		return listOps;
-	}
-
-	public SetOperations<String, Object> getSetOps() {
-		return setOps;
-	}
-
-	public ZSetOperations<String, Object> getzSetOps() {
-		return zSetOps;
-	}
-
-	public GeoOperations<String, Object> getGeoOps() {
-		return geoOps;
-	}
-
-	public HyperLogLogOperations<String, Object> getHllOps() {
-		return hllOps;
-	}
 }
