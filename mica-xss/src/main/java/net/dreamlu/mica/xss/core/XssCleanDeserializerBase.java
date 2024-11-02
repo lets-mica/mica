@@ -34,7 +34,7 @@ public abstract class XssCleanDeserializerBase extends JsonDeserializer<String> 
 	@Override
 	public String deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
 		// json 字段名
-		String name = p.getCurrentName();
+		String name = p.currentName();
 		// 字符串类型
 		if (p.hasToken(JsonToken.VALUE_STRING)) {
 			String text = p.getText();
