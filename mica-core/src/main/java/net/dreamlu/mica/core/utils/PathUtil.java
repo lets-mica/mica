@@ -18,7 +18,7 @@ package net.dreamlu.mica.core.utils;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.util.UriUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.net.URL;
@@ -50,7 +50,7 @@ public class PathUtil {
 	private static String toFilePath(@Nullable URL url) {
 		if (url == null) { return null; }
 		String protocol = url.getProtocol();
-		String file = UriUtils.decode(url.getPath(), StandardCharsets.UTF_8);
+		String file = StringUtils.uriDecode(url.getPath(), StandardCharsets.UTF_8);
 		if (ResourceUtils.URL_PROTOCOL_FILE.equals(protocol)) {
 			return new File(file).getParentFile().getParentFile().getAbsolutePath();
 		} else if (ResourceUtils.URL_PROTOCOL_JAR.equals(protocol)
