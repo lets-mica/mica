@@ -6,7 +6,11 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/1d1253221f524945882ff480351cfa6b)](https://www.codacy.com/gh/lets-mica/mica/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lets-mica/mica&amp;utm_campaign=Badge_Grade)
 [![GitHub](https://img.shields.io/github/license/lets-mica/mica.svg?style=flat-square)](https://github.com/lets-mica/mica/blob/master/LICENSE)
 
-`Mica`，Spring Cloud 微服务开发核心包，支持 `web` 和 `webflux`。
+`Mica`，Spring Boot、Cloud 微服务开发基础组件、工具包，支持 `web` 和 `webflux`。
+
+[✨✨✨推广：**BladeX 物联网平台**✨✨✨iot.bladex.cn](https://iot.bladex.cn?from=mica-mqtt)
+
+------
 
 简体中文 | [English](README_EN.md)
 
