@@ -16,6 +16,8 @@
 
 package net.dreamlu.mica.core.geo;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -99,6 +101,7 @@ public enum GeoType {
 		}
 	};
 
+	@JsonValue
 	private final String type;
 	private final String desc;
 
@@ -128,5 +131,22 @@ public enum GeoType {
 	 * @return GeoPoint
 	 */
 	public abstract GeoPoint toBD09(double lon, double lat);
+
+
+	/**
+	 * 获取坐标系
+	 *
+	 * @param type type 坐标系类型
+	 * @return GeoType
+	 */
+	@JsonCreator
+	public static GeoType getGeoType(String type) {
+		for (GeoType geoType : values()) {
+			if (geoType.type.equalsIgnoreCase(type)) {
+				return geoType;
+			}
+		}
+		throw new IllegalArgumentException("未知的坐标系类型" + type);
+	}
 
 }
