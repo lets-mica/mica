@@ -712,7 +712,7 @@ public class HttpRequest {
 			KeyManager[] kms = null;
 			TrustManager[] tms = null;
 			if (keyStoreInputStream != null) {
-				KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
+				KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 				KeyStore keyStore = KeyStore.getInstance("JKS");
 				char[] keyPassChars = keyPass == null ? null : keyPass.toCharArray();
 				keyStore.load(keyStoreInputStream, keyPassChars);
@@ -737,7 +737,7 @@ public class HttpRequest {
 		if (trustInputStream == null) {
 			return new TrustManager[]{DisableValidationTrustManager.INSTANCE};
 		} else {
-			TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance("SunX509");
+			TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 			KeyStore keyStore = KeyStore.getInstance("JKS");
 			keyStore.load(trustInputStream, trustPassword);
 			trustManagerFactory.init(keyStore);
