@@ -16,8 +16,10 @@
 
 package net.dreamlu.mica.core.ssl;
 
+import javax.net.ssl.SSLEngine;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.X509ExtendedTrustManager;
+import java.net.Socket;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
@@ -26,12 +28,8 @@ import java.security.cert.X509Certificate;
  *
  * @author L.cm
  */
-public enum DisableValidationTrustManager implements X509TrustManager {
-
-	/**
-	 * 实例
-	 */
-	INSTANCE;
+public class DisableValidationTrustManager extends X509ExtendedTrustManager {
+	public static final DisableValidationTrustManager INSTANCE = new DisableValidationTrustManager();
 
 	/**
 	 * 获取 TrustManagers
@@ -43,6 +41,11 @@ public enum DisableValidationTrustManager implements X509TrustManager {
 	}
 
 	@Override
+	public X509Certificate[] getAcceptedIssuers() {
+		return new X509Certificate[0];
+	}
+
+	@Override
 	public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
 	}
 
@@ -51,8 +54,22 @@ public enum DisableValidationTrustManager implements X509TrustManager {
 	}
 
 	@Override
-	public X509Certificate[] getAcceptedIssuers() {
-		return new X509Certificate[0];
+	public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket) throws CertificateException {
+
 	}
 
+	@Override
+	public void checkServerTrusted(X509Certificate[] chain, String authType, Socket socket) throws CertificateException {
+
+	}
+
+	@Override
+	public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine) throws CertificateException {
+
+	}
+
+	@Override
+	public void checkServerTrusted(X509Certificate[] chain, String authType, SSLEngine engine) throws CertificateException {
+
+	}
 }
