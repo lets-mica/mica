@@ -30,6 +30,7 @@ class HolidaysApiTest {
 		Assertions.assertEquals(DaysType.HOLIDAYS, daysType);
 		Assertions.assertFalse(holidaysApi.isWeekdays(LocalDate.of(2023, 9, 29)));
 		Assertions.assertTrue(holidaysApi.isWeekdays(LocalDate.of(2023, 10, 7)));
+		Assertions.assertFalse(holidaysApi.isWeekdays(LocalDate.of(2025, 10, 8)));
 	}
 
 }
