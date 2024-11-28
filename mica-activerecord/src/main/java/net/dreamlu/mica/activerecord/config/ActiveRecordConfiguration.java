@@ -146,8 +146,6 @@ public class ActiveRecordConfiguration {
 												 ResourceLoader resourceLoader,
 												 MicaActiveRecordProperties properties,
 												 ObjectProvider<ActiveRecordPluginCustomizer> customizerObjectProvider) {
-		String modelPackage = properties.getModelPackage();
-		Assert.hasText(modelPackage, "mica.activerecord.model-package is blank.");
 		ActiveRecordPlugin arp = new ActiveRecordPlugin(dataSourceProvider);
 		arp.setDialect(properties.getDialect().getDialect());
 		arp.setTransactionLevel(properties.getTransactionLevel().getLevel());
@@ -162,6 +160,8 @@ public class ActiveRecordConfiguration {
 		}
 		// 扫描和添加表映射
 		if (properties.isAutoTableScan()) {
+			String modelPackage = properties.getModelPackage();
+			Assert.hasText(modelPackage, "mica.activerecord.model-package is blank.");
 			scanTable(arp, environment, resourceLoader, modelPackage);
 		}
 		// arp 自定义配置 bean
