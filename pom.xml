@@ -33,32 +33,31 @@
 
     <properties>
         <!-- mica version -->
-        <revision>2.7.18.9</revision>
+        <revision>3.2.12</revision>
         <!-- java version -->
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven-flatten.version>1.6.0</maven-flatten.version>
         <maven-compiler.version>3.10.1</maven-compiler.version>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <!-- spring boot 全家桶 -->
-        <spring.version>5.3.39</spring.version>
-        <spring.boot.version>2.7.18</spring.boot.version>
-        <spring.cloud.version>2021.0.9</spring.cloud.version>
+        <spring.boot.version>3.2.12</spring.boot.version>
+        <spring.cloud.version>2023.0.4</spring.cloud.version>
         <findbugs.version>3.0.2</findbugs.version>
         <swagger.version>1.5.22</swagger.version>
         <swagger3x.version>2.2.19</swagger3x.version>
         <jsoup.version>1.18.1</jsoup.version>
         <knife4j.version>3.0.3</knife4j.version>
-        <springDoc.version>1.7.0</springDoc.version>
+        <springDoc.version>2.2.0</springDoc.version>
         <xxl.job.version>2.4.1</xxl.job.version>
         <druid.version>1.2.23</druid.version>
         <jfinal.version>5.2.2</jfinal.version>
         <zxing.version>3.5.3</zxing.version>
-        <jetcache.version>2.7.3</jetcache.version>
+        <jetcache.version>2.7.5</jetcache.version>
         <logstash.version>7.4</logstash.version>
         <loki.logback.appender.version>1.4.2</loki.logback.appender.version>
-        <mcia.auto.version>2.3.5</mcia.auto.version>
+        <mcia.auto.version>3.1.4</mcia.auto.version>
     </properties>
 
     <modules>
@@ -115,13 +114,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-framework-bom</artifactId>
-                <version>${spring.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
