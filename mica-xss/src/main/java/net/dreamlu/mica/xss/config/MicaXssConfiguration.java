@@ -31,7 +31,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

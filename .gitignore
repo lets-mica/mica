@@ -29,6 +29,7 @@ nbdist/
 .nb-gradle/
 
 ### maven ###
+.flattened-pom.xml
 target/
 *.war
 *.ear

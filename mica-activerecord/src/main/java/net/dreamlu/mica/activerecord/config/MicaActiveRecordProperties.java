@@ -41,7 +41,7 @@ public class MicaActiveRecordProperties {
 	 */
 	private String modelPackage;
 	/**
-	 * 自定表扫描
+	 * 自动表扫描
 	 */
 	private boolean autoTableScan = true;
 	/**
