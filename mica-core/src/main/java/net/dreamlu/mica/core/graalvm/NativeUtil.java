@@ -29,6 +29,8 @@ public class NativeUtil {
 
 	/**
 	 * Returns {@code true} if invoked in the context of image building or during image runtime, else {@code false}.
+	 *
+	 * @return boolean
 	 */
 	public static boolean inNativeImage() {
 		return IS_IMAGE_CODE || GENERATED_CLASS_PRESENT;
