@@ -15,15 +15,15 @@ English | [简体中文](README.md)
 
 | Latest version | spring boot version | spring cloud version | Supported  |
 | -------- | ---------------- | ----------------- |--------------------|
-| 3.3.0    | 3.3.x            | 2023              | :white_check_mark: |
-| 3.2.6    | 3.2.x            | 2023              | :white_check_mark: |
-| 3.1.12   | 3.1.x            | 2022              | :x:                |
-| 3.0.8    | 3.0.x            | 2022              | :x:                |
-| 2.7.18.5 | 2.7.x            | 2021              | :white_check_mark: |
-| 2.6.8    | 2.6.x            | 2021              | :x:                |
-| 2.5.8    | 2.5.x            | 2020              | :x:                |
-| 2.4.11   | 2.4.x            | 2020              | :x:                |
-| 2.1.1-GA | 2.2.x ~ 2.3.x    | Hoxton            | :x:                |
+| 3.3.6    | 3.3.x            | 2023              | :white_check_mark: |
+| 3.2.12   | 3.2.x            | 2023              | :white_check_mark: |
+| 3.1.12   | 3.1.x            | 2022              | :x: |
+| 3.0.8    | 3.0.x            | 2022              | :x: |
+| 2.7.18.9 | 2.7.x            | 2021              | :white_check_mark: |
+| 2.6.8    | 2.6.x            | 2021              | :x: |
+| 2.5.8    | 2.5.x            | 2020              | :x: |
+| 2.4.11   | 2.4.x            | 2020              | :x: |
+| 2.1.1-GA | 2.2.x ~ 2.3.x    | Hoxton            | :x: |
 
 ## 🏷️ Version number description
 
