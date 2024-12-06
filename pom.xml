@@ -47,7 +47,7 @@
         <findbugs.version>3.0.2</findbugs.version>
         <swagger.version>1.5.22</swagger.version>
         <swagger3x.version>2.2.19</swagger3x.version>
-        <jsoup.version>1.18.1</jsoup.version>
+        <jsoup.version>1.18.3</jsoup.version>
         <knife4j.version>3.0.3</knife4j.version>
         <springDoc.version>2.2.0</springDoc.version>
         <xxl.job.version>2.4.1</xxl.job.version>
