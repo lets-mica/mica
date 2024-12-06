@@ -1,7 +1,7 @@
 ## 🌐 mica（云母）
 [![Java CI](https://github.com/lets-mica/mica/workflows/Java%20CI/badge.svg)](https://github.com/lets-mica/mica/actions)
 ![JAVA 8](https://img.shields.io/badge/JDK-1.8+-brightgreen.svg)
-[![Mica Maven release](https://img.shields.io/nexus/r/https/oss.sonatype.org/net.dreamlu/mica-bom.svg?style=flat-square)](https://central.sonatype.com/artifact/net.dreamlu/mica-bom/versions)
+[![Mica Maven release](https://img.shields.io/maven-central/v/net.dreamlu/mica-bom.svg?style=flat-square)](https://central.sonatype.com/artifact/net.dreamlu/mica-bom/versions)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/1d1253221f524945882ff480351cfa6b)](https://www.codacy.com/gh/lets-mica/mica/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lets-mica/mica&amp;utm_campaign=Badge_Grade)
 [![GitHub](https://img.shields.io/github/license/lets-mica/mica.svg?style=flat-square)](https://github.com/lets-mica/mica/blob/master/LICENSE)
 
