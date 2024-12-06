@@ -49,7 +49,7 @@
         <swagger3x.version>2.2.19</swagger3x.version>
         <jsoup.version>1.18.1</jsoup.version>
         <knife4j.version>3.0.3</knife4j.version>
-        <springDoc.version>2.2.0</springDoc.version>
+        <springDoc.version>2.7.0</springDoc.version>
         <xxl.job.version>2.4.1</xxl.job.version>
         <druid.version>1.2.24</druid.version>
         <jfinal.version>5.2.2</jfinal.version>
