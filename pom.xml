@@ -51,7 +51,7 @@
         <knife4j.version>3.0.3</knife4j.version>
         <springDoc.version>2.2.0</springDoc.version>
         <xxl.job.version>2.4.1</xxl.job.version>
-        <druid.version>1.2.23</druid.version>
+        <druid.version>1.2.24</druid.version>
         <jfinal.version>5.2.2</jfinal.version>
         <zxing.version>3.5.3</zxing.version>
         <jetcache.version>2.7.5</jetcache.version>
