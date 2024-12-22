@@ -58,6 +58,7 @@
         <logstash.version>8.0</logstash.version>
         <loki.logback.appender.version>1.5.2</loki.logback.appender.version>
         <mcia.auto.version>3.1.4</mcia.auto.version>
+        <okhttp.version>4.12.0</okhttp.version>
     </properties>
 
     <modules>
@@ -125,6 +126,13 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp-bom</artifactId>
+                <version>${okhttp.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
