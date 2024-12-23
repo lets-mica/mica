@@ -198,7 +198,7 @@
             </dependency>
             <dependency>
                 <groupId>com.github.loki4j</groupId>
-                <artifactId>loki-logback-appender-jdk8</artifactId>
+                <artifactId>loki-logback-appender</artifactId>
                 <version>${loki.logback.appender.version}</version>
             </dependency>
             <!-- mica 相关 -->
@@ -433,6 +433,12 @@
                     </releases>
                 </repository>
             </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>aliyun-plugin</id>
+                    <url>https://maven.aliyun.com/repository/public</url>
+                </pluginRepository>
+            </pluginRepositories>
         </profile>
         <profile>
             <id>release</id>

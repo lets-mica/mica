@@ -17,7 +17,7 @@
 package net.dreamlu.mica.logging.loki;
 
 import com.github.loki4j.client.http.HttpConfig;
-import com.github.loki4j.client.http.HttpHeaders;
+import com.github.loki4j.client.http.HttpHeader;
 import com.github.loki4j.client.http.Loki4jHttpClient;
 import com.github.loki4j.client.http.LokiResponse;
 import okhttp3.*;
@@ -57,9 +57,9 @@ public class Loki4jOkHttpClient implements Loki4jHttpClient {
 	private static Request requestBuilder(HttpConfig conf) {
 		Request.Builder request = new Request.Builder()
 			.url(conf.pushUrl)
-			.addHeader(HttpHeaders.CONTENT_TYPE, conf.contentType);
-		conf.tenantId.ifPresent(tenant -> request.addHeader(HttpHeaders.X_SCOPE_ORGID, tenant));
-		conf.basicAuthToken().ifPresent(token -> request.addHeader(HttpHeaders.AUTHORIZATION, "Basic " + token));
+			.addHeader(HttpHeader.CONTENT_TYPE, conf.contentType);
+		conf.tenantId.ifPresent(tenant -> request.addHeader(HttpHeader.X_SCOPE_ORGID, tenant));
+		conf.basicAuthToken().ifPresent(token -> request.addHeader(HttpHeader.AUTHORIZATION, "Basic " + token));
 		return request.build();
 	}
 
