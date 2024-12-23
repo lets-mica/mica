@@ -12,7 +12,7 @@ ext {
     lombokVersion = "1.18.34"
     findbugsVersion = "3.0.2"
     logstashVersion = "7.4"
-    lokiLogbackAppender = "1.4.2"
+    lokiLogbackAppender = "1.5.2"
     zxingVersion = "3.5.3"
     xxlJobVersion = "2.4.0"
     jetCacheVersion = "2.7.6"
