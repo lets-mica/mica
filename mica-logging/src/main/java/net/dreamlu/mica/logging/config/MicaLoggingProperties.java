@@ -148,10 +148,6 @@ public class MicaLoggingProperties {
 		 */
 		private String formatLabelKeyValueSeparator = "=";
 		private boolean formatLabelNoPex = true;
-		/**
-		 * 消息体格式，默认为: l=%level c=%logger{20} t=%thread | %msg %ex
-		 */
-		private String formatMessagePattern;
 		private boolean formatStaticLabels = false;
 		private boolean formatSortByTime = false;
 	}
