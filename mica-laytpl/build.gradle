@@ -1,6 +1,6 @@
 dependencies {
     api project(":mica-core")
-    api "org.openjdk.nashorn:nashorn-core:15.5"
+    api "org.openjdk.nashorn:nashorn-core:15.6"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     compileOnly "org.springframework.cloud:spring-cloud-context"
     annotationProcessor "net.dreamlu:mica-auto"
