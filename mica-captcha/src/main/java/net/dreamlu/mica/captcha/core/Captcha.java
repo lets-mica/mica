@@ -72,7 +72,7 @@ public class Captcha implements ICaptcha {
 		this.captchaDraw = captchaDraw;
 		this.interferenceDraw = interferenceDraw;
 		this.random = random;
-		this.fonts = loadFonts();
+		this.fonts = loadAndRegisterFont();
 	}
 
 	public void setBackgroundDraw(BackgroundDraw backgroundDraw) {
@@ -128,11 +128,16 @@ public class Captcha implements ICaptcha {
 		return graphics;
 	}
 
-	private static Font[] loadFonts() {
+	private static Font[] loadAndRegisterFont() {
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		List<Font> fontList = new ArrayList<>();
 		for (String fontName : FONT_NAMES) {
 			String path = "fonts/" + fontName;
-			fontList.add(loadFont(new ClassPathResource(path)));
+			// 加载字体
+			Font font = loadFont(new ClassPathResource(path));
+			// 注册字体
+			ge.registerFont(font);
+			fontList.add(font);
 		}
 		return fontList.toArray(new Font[0]);
 	}
