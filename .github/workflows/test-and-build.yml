@@ -6,31 +6,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '17' ]
+        java: [ '17', '21' ]
     name: Java ${{ matrix.Java }} build
     steps:
       - uses: actions/checkout@v4
-      - name: Setup java
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: ${{ matrix.java }}
-      - name: Cache Gradle packages
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Setup Gradle 8.5
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: 8.5
-      - name: Build with Gradle
-        run: gradle build
-      - name: Cleanup Gradle Cache
-        run: |
-          rm -f ~/.gradle/caches/modules-2/modules-2.lock
-          rm -f ~/.gradle/caches/modules-2/gc.properties
+          cache: 'maven'
+          cache-dependency-path: 'pom.xml'
+      - name: Build with Maven
+        run: mvn package -P !develop
