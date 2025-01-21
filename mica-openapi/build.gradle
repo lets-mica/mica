@@ -1,5 +1,0 @@
-dependencies {
-    api "com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:4.5.0"
-    compileOnly "org.springframework.cloud:spring-cloud-context"
-    annotationProcessor "net.dreamlu:mica-auto"
-}

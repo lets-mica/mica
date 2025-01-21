@@ -1,8 +1,0 @@
-sonarqube {
-    properties {
-        property "sonar.projectKey", "lets-mica_mica"
-        property "sonar.organization", "lets-mica"
-        property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.login", getSonarToken()
-    }
-}

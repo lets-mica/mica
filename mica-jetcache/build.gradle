@@ -1,9 +1,0 @@
-dependencies {
-    api project(":mica-core")
-    api("com.alicp.jetcache:jetcache-autoconfigure") {
-        exclude group: "com.alibaba", module: "fastjson"
-    }
-    implementation "io.micrometer:micrometer-core"
-    compileOnly "org.springframework.cloud:spring-cloud-context"
-    annotationProcessor "net.dreamlu:mica-auto"
-}

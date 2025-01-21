@@ -24,7 +24,6 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.util.ClassUtils;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -147,9 +146,7 @@ public class MicaLoggingProperties {
 		 * format 标签 key、value 分隔符，默认: =
 		 */
 		private String formatLabelKeyValueSeparator = "=";
-		private boolean formatLabelNoPex = true;
 		private boolean formatStaticLabels = false;
-		private boolean formatSortByTime = false;
 	}
 
 	/**

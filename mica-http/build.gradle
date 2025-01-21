@@ -1,7 +1,0 @@
-dependencies {
-    api(project(":mica-core")) {
-        exclude group: "org.springframework", module: "spring-context"
-    }
-    api "com.squareup.okhttp3:okhttp"
-    api "com.squareup.okhttp3:logging-interceptor"
-}

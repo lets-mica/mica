@@ -1,7 +1,0 @@
-dependencies {
-    api "com.xuxueli:xxl-job-core"
-    api "org.springframework.cloud:spring-cloud-commons"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
-    compileOnly "org.springframework.cloud:spring-cloud-context"
-    annotationProcessor "net.dreamlu:mica-auto"
-}
