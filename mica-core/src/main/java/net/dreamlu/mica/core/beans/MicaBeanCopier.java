@@ -70,11 +70,11 @@ public abstract class MicaBeanCopier {
 		// 利用 ConcurrentMap 缓存 提高性能，接近 直接 get set
 		return CollectionUtil.computeIfAbsent(BEAN_COPIER_MAP, copierKey, key -> {
 			Generator gen = new Generator();
-			gen.setSource(key.getSource());
-			gen.setTarget(key.getTarget());
+			gen.setSource(key.source());
+			gen.setTarget(key.target());
 			gen.setContextClass(MicaBeanCopier.class);
-			gen.setUseConverter(key.isUseConverter());
-			gen.setNonNull(key.isNonNull());
+			gen.setUseConverter(key.useConverter());
+			gen.setNonNull(key.nonNull());
 			gen.setNamePrefix(BEAN_NAME_PREFIX);
 			gen.setUseCache(true);
 			return gen.create(key);
