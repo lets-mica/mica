@@ -265,11 +265,11 @@ public class DesensitizationUtil {
 		if (str == null) {
 			return null;
 		}
+        if (fromIndex < 0 || lastSize < 0) {
+			return str;
+		}
 		if (!StringUtils.hasText(str)) {
 			return StringPool.EMPTY;
-		}
-		if (fromIndex < 0 || lastSize < 0) {
-			return str;
 		}
 		int length = str.length();
 		// 全部脱敏
