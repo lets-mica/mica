@@ -26,8 +26,8 @@ import java.math.RoundingMode;
  *
  * @author L.cm
  */
+@Getter
 public class DecimalNum extends Number {
-	@Getter
 	private BigDecimal value;
 
 	public DecimalNum() {
