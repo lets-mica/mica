@@ -265,6 +265,9 @@ public class DesensitizationUtil {
 		if (str == null) {
 			return null;
 		}
+        if (fromIndex < 0 || lastSize < 0) {
+			return str;
+		}
 		if (!StringUtils.hasText(str)) {
 			return StringPool.EMPTY;
 		}
@@ -273,6 +276,10 @@ public class DesensitizationUtil {
 		if (fromIndex == 0 && lastSize == 0) {
 			int padSiz = padSize > 0 ? padSize : length;
 			return StringUtil.repeat(CharPool.STAR, padSiz);
+		}
+		int minLength = fromIndex + lastSize;
+		if (length <= minLength) {
+			return StringUtil.repeat(CharPool.STAR, length);
 		}
 		int toIndex = length - lastSize;
 		int padSiz = padSize > 0 ? padSize : toIndex - fromIndex;
