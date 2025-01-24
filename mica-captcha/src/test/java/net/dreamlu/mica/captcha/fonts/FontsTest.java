@@ -1,4 +1,4 @@
-package net.dreamlu.mica.fonts;
+package net.dreamlu.mica.captcha.fonts;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;

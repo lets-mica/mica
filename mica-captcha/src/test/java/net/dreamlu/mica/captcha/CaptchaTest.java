@@ -1,4 +1,4 @@
-package net.dreamlu.mica;
+package net.dreamlu.mica.captcha;
 
 import net.dreamlu.mica.captcha.core.Captcha;
 import net.dreamlu.mica.captcha.enums.CaptchaType;
