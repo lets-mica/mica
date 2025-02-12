@@ -20,8 +20,7 @@ import lombok.Getter;
 import net.dreamlu.mica.core.utils.CollectionUtil;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import org.springframework.data.domain.Range;
-import org.springframework.data.redis.connection.BitFieldSubCommands;
-import org.springframework.data.redis.connection.RedisServerCommands;
+import org.springframework.data.redis.connection.*;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.lang.Nullable;
@@ -102,13 +101,14 @@ public class MicaRedisCache {
 			byte[] rawKey = keySerialize(cacheKey.getKey());
 			Duration timeout = cacheKey.getExpire();
 			byte[] rawValue = mapper.apply(value);
+			RedisStringCommands commands = redis.stringCommands();
 			if (timeout == null) {
-				return redis.set(rawKey, rawValue);
+				return commands.set(rawKey, rawValue);
 			} else {
 				if (TimeoutUtils.hasMillis(timeout)) {
-					return redis.setEx(rawKey, TimeoutUtils.toSeconds(timeout.toMillis(), TimeUnit.MILLISECONDS), rawValue);
+					return commands.setEx(rawKey, TimeoutUtils.toSeconds(timeout.toMillis(), TimeUnit.MILLISECONDS), rawValue);
 				} else {
-					return redis.setEx(rawKey, TimeoutUtils.toSeconds(timeout.getSeconds(), TimeUnit.SECONDS), rawValue);
+					return commands.setEx(rawKey, TimeoutUtils.toSeconds(timeout.getSeconds(), TimeUnit.SECONDS), rawValue);
 				}
 			}
 		});
@@ -140,7 +140,7 @@ public class MicaRedisCache {
 	 * @param <T>    泛型
 	 */
 	public <T> void set(String key, T value, Function<T, byte[]> mapper) {
-		redisTemplate.execute((RedisCallback<Object>) redis -> redis.set(keySerialize(key), mapper.apply(value)));
+		redisTemplate.execute((RedisCallback<Object>) redis -> redis.stringCommands().set(keySerialize(key), mapper.apply(value)));
 	}
 
 	/**
@@ -231,7 +231,7 @@ public class MicaRedisCache {
 	@Nullable
 	public <T> T get(String key, Function<byte[], T> mapper) {
 		return redisTemplate.execute((RedisCallback<T>) redis -> {
-			byte[] value = redis.get(keySerialize(key));
+			byte[] value = redis.stringCommands().get(keySerialize(key));
 			if (value == null) {
 				return null;
 			}
@@ -473,7 +473,8 @@ public class MicaRedisCache {
 			if (count != null) {
 				builder.count(count);
 			}
-			try (Cursor<byte[]> cursor = redis.scan(builder.build())) {
+			RedisKeyCommands commands = redis.keyCommands();
+			try (Cursor<byte[]> cursor = commands.scan(builder.build())) {
 				cursor.forEachRemaining(consumer);
 			}
 			return null;
@@ -543,7 +544,8 @@ public class MicaRedisCache {
 			if (count != null) {
 				builder.count(count);
 			}
-			try (Cursor<byte[]> cursor = redis.sScan(keySerialize(key), builder.build())) {
+			RedisSetCommands commands = redis.setCommands();
+			try (Cursor<byte[]> cursor = commands.sScan(keySerialize(key), builder.build())) {
 				cursor.forEachRemaining(consumer);
 			}
 			return null;
@@ -628,8 +630,8 @@ public class MicaRedisCache {
 	public Long decrBy(String key, long longValue, long seconds) {
 		byte[] serializedKey = keySerialize(key);
 		List<Object> result = redisTemplate.executePipelined((RedisCallback<Long>) redis -> {
-			Long data = redis.decrBy(serializedKey, longValue);
-			redis.expire(serializedKey, seconds);
+			Long data = redis.stringCommands().decrBy(serializedKey, longValue);
+			redis.keyCommands().expire(serializedKey, seconds);
 			return data;
 		});
 		return (Long) result.get(0);
@@ -680,8 +682,8 @@ public class MicaRedisCache {
 	public Long incrBy(String key, long longValue, long seconds) {
 		byte[] serializedKey = keySerialize(key);
 		List<Object> result = redisTemplate.executePipelined((RedisCallback<Long>) redis -> {
-			Long data = redis.incrBy(serializedKey, longValue);
-			redis.expire(serializedKey, seconds);
+			Long data = redis.stringCommands().incrBy(serializedKey, longValue);
+			redis.keyCommands().expire(serializedKey, seconds);
 			return data;
 		});
 		return (Long) result.get(0);
@@ -706,7 +708,7 @@ public class MicaRedisCache {
 	@Nullable
 	public Long getCounter(String key) {
 		return redisTemplate.execute((RedisCallback<Long>) redis -> {
-			byte[] value = redis.get(keySerialize(key));
+			byte[] value = redis.stringCommands().get(keySerialize(key));
 			if (value == null) {
 				return null;
 			}
@@ -724,14 +726,15 @@ public class MicaRedisCache {
 	@Nullable
 	public Long getCounter(String key, long seconds, LongSupplier loader) {
 		return redisTemplate.execute((RedisCallback<Long>) redis -> {
+			RedisStringCommands commands = redis.stringCommands();
 			byte[] keyBytes = keySerialize(key);
-			byte[] value = redis.get(keyBytes);
+			byte[] value = commands.get(keyBytes);
 			long longValue;
 			if (value != null) {
 				longValue = Long.parseLong(new String(value, StandardCharsets.UTF_8));
 			} else {
 				longValue = loader.getAsLong();
-				redis.setEx(keyBytes, seconds, String.valueOf(longValue).getBytes());
+				commands.setEx(keyBytes, seconds, String.valueOf(longValue).getBytes());
 			}
 			return longValue;
 		});
@@ -745,7 +748,7 @@ public class MicaRedisCache {
 	@Nullable
 	public Long getHCounter(String key, Object field) {
 		return redisTemplate.execute((RedisCallback<Long>) redis -> {
-			byte[] value = redis.hGet(keySerialize(key), hashKeySerializer(field));
+			byte[] value = redis.hashCommands().hGet(keySerialize(key), hashKeySerializer(field));
 			if (value == null) {
 				return null;
 			}
@@ -762,15 +765,16 @@ public class MicaRedisCache {
 	@Nullable
 	public Long getHCounter(String key, Object field, LongSupplier loader) {
 		return redisTemplate.execute((RedisCallback<Long>) redis -> {
+			RedisHashCommands commands = redis.hashCommands();
 			byte[] keyBytes = keySerialize(key);
 			byte[] fieldBytes = hashKeySerializer(field);
-			byte[] value = redis.hGet(keyBytes, fieldBytes);
+			byte[] value = commands.hGet(keyBytes, fieldBytes);
 			long longValue;
 			if (value != null) {
 				longValue = Long.parseLong(new String(value, StandardCharsets.UTF_8));
 			} else {
 				longValue = loader.getAsLong();
-				redis.hSet(keyBytes, fieldBytes, String.valueOf(longValue).getBytes());
+				commands.hSet(keyBytes, fieldBytes, String.valueOf(longValue).getBytes());
 			}
 			return longValue;
 		});
@@ -1287,7 +1291,7 @@ public class MicaRedisCache {
 	 * 移除集合 key 中的一个或多个 member 元素，不存在的 member 元素会被忽略。
 	 */
 	@Nullable
-	public <T> Long sRem(String key, T... members) {
+	public Long sRem(String key, Object... members) {
 		return setOps.remove(key, members);
 	}
 
@@ -1439,7 +1443,7 @@ public class MicaRedisCache {
 	 * 当 key 存在但不是有序集类型时，返回一个错误。
 	 */
 	@Nullable
-	public <T> Long zRem(String key, T... members) {
+	public Long zRem(String key, Object... members) {
 		return zSetOps.remove(key, members);
 	}
 
@@ -1477,7 +1481,7 @@ public class MicaRedisCache {
 	 */
 	@Nullable
 	public Long bitCount(String key) {
-		return redisTemplate.execute((RedisCallback<Long>) redis -> redis.bitCount(keySerialize(key)));
+		return redisTemplate.execute((RedisCallback<Long>) redis -> redis.stringCommands().bitCount(keySerialize(key)));
 	}
 
 	/**
@@ -1490,7 +1494,7 @@ public class MicaRedisCache {
 	 */
 	@Nullable
 	public Long bitCount(String key, long start, long end) {
-		return redisTemplate.execute((RedisCallback<Long>) redis -> redis.bitCount(keySerialize(key), start, end));
+		return redisTemplate.execute((RedisCallback<Long>) redis -> redis.stringCommands().bitCount(keySerialize(key), start, end));
 	}
 
 	/**
@@ -1521,7 +1525,7 @@ public class MicaRedisCache {
 	 */
 	@Nullable
 	public List<Long> bitField(String key, BitFieldSubCommands commands) {
-		return redisTemplate.execute((RedisCallback<List<Long>>) redis -> redis.bitField(keySerialize(key), commands));
+		return redisTemplate.execute((RedisCallback<List<Long>>) redis -> redis.stringCommands().bitField(keySerialize(key), commands));
 	}
 
 	/**
@@ -1533,7 +1537,7 @@ public class MicaRedisCache {
 	 */
 	@Nullable
 	public Long bitPos(String key, boolean bit) {
-		return redisTemplate.execute((RedisCallback<Long>) redis -> redis.bitPos(keySerialize(key), bit));
+		return redisTemplate.execute((RedisCallback<Long>) redis -> redis.stringCommands().bitPos(keySerialize(key), bit));
 	}
 
 	/**
@@ -1545,7 +1549,7 @@ public class MicaRedisCache {
 	 */
 	@Nullable
 	public Long bitPos(String key, boolean bit, Range<Long> range) {
-		return redisTemplate.execute((RedisCallback<Long>) redis -> redis.bitPos(keySerialize(key), bit, range));
+		return redisTemplate.execute((RedisCallback<Long>) redis -> redis.stringCommands().bitPos(keySerialize(key), bit, range));
 	}
 
 	/**
@@ -1557,7 +1561,7 @@ public class MicaRedisCache {
 	 */
 	@Nullable
 	public Boolean getBit(String key, long offset) {
-		return redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.getBit(keySerialize(key), offset));
+		return redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.stringCommands().getBit(keySerialize(key), offset));
 	}
 
 	/**
@@ -1570,7 +1574,7 @@ public class MicaRedisCache {
 	 */
 	@Nullable
 	public Boolean setBit(String key, long offset, boolean value) {
-		return redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.setBit(keySerialize(key), offset, value));
+		return redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.stringCommands().setBit(keySerialize(key), offset, value));
 	}
 
 	/**
