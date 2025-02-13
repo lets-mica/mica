@@ -1,6 +1,7 @@
 package net.dreamlu.mica.test.bean;
 
 import lombok.Data;
+import net.dreamlu.mica.core.utils.BeanProperty;
 import net.dreamlu.mica.core.utils.BeanUtil;
 import net.dreamlu.mica.test.utils.BeanCopyUtilTest;
 import org.junit.jupiter.api.Assertions;
@@ -9,6 +10,8 @@ import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.cglib.core.Converter;
 import org.springframework.cglib.core.DebuggingClassWriter;
 import org.springframework.cglib.core.SpringNamingPolicy;
+
+import java.util.Map;
 
 public class BeanTest {
 
@@ -35,6 +38,23 @@ public class BeanTest {
 		Assertions.assertNotNull(userVO);
 		Assertions.assertEquals("如梦技术", userVO.getName());
 		Assertions.assertEquals(18, userVO.getAge());
+	}
+
+	@Test
+	void testGen() {
+		Object genBean = BeanUtil.generator(UserVO.class, new BeanProperty("id", Integer.class));
+
+		User user = new User();
+		user.setId(1);
+		user.setName("如梦技术");
+		user.setAge(18);
+		BeanUtil.copy(user, genBean);
+
+		Map<String, Object> map = BeanUtil.toMap(genBean);
+		Assertions.assertNotNull(genBean);
+		Assertions.assertEquals("如梦技术", map.get("name"));
+		Assertions.assertEquals(18, map.get("age"));
+		Assertions.assertEquals(1, map.get("id"));
 	}
 
 	public static void test0() {
@@ -94,7 +114,7 @@ public class BeanTest {
 		String sourcePath = BeanCopyUtilTest.class.getResource("/").getPath().split("mica-core")[0];
 		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, sourcePath + "gen_code");
 
-//		test0();
+		test0();
 		test1();
 		test2();
 	}
