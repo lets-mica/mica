@@ -1,7 +1,10 @@
 package net.dreamlu.mica.test.bean;
 
 import lombok.Data;
+import net.dreamlu.mica.core.utils.BeanUtil;
 import net.dreamlu.mica.test.utils.BeanCopyUtilTest;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.cglib.core.Converter;
 import org.springframework.cglib.core.DebuggingClassWriter;
@@ -20,6 +23,18 @@ public class BeanTest {
 	public static class UserVO {
 		private String name;
 		private Integer age;
+	}
+
+	@Test
+	void test() {
+		User user = new User();
+		user.setId(1);
+		user.setName("如梦技术");
+		user.setAge(18);
+		UserVO userVO = BeanUtil.copy(user, UserVO.class);
+		Assertions.assertNotNull(userVO);
+		Assertions.assertEquals("如梦技术", userVO.getName());
+		Assertions.assertEquals(18, userVO.getAge());
 	}
 
 	public static void test0() {
