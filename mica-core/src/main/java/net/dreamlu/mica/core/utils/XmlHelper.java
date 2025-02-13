@@ -296,7 +296,7 @@ public class XmlHelper {
 			try {
 				documentBuilderFactory.setFeature(feature, state);
 			} catch (Exception e) {
-				log.warn(String.format("Failed to set the XML Document Builder factory feature %s to %s", feature, state), e);
+				log.warn("Failed to set the XML Document Builder factory feature {} to {}", feature, state, e);
 			}
 		}
 	}
