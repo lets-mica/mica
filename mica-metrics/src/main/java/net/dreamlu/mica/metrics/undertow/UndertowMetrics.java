@@ -30,13 +30,10 @@ import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.util.ReflectionUtils;
 import org.xnio.management.XnioWorkerMXBean;
 
-import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -82,7 +79,6 @@ public class UndertowMetrics implements ApplicationListener<ApplicationStartedEv
 	private static final String METRIC_NAME_SESSIONS_REJECTED 					= UNDERTOW_METRIC_NAME_PREFIX + ".sessions.rejected";
 	private static final String METRIC_NAME_SESSIONS_ALIVE_MAX 					= UNDERTOW_METRIC_NAME_PREFIX + ".sessions.alive.max";
 
-	private static final Field UNDERTOW_FIELD;
 	private final Iterable<Tag> tags;
 
 	public UndertowMetrics() {
@@ -97,7 +93,7 @@ public class UndertowMetrics implements ApplicationListener<ApplicationStartedEv
 		if (undertowWebServer == null) {
 			return;
 		}
-		Undertow undertow = getUndertow(undertowWebServer);
+		Undertow undertow = undertowWebServer.getUndertow();
 		XnioWorkerMXBean xWorker = undertow.getWorker().getMXBean();
 		MeterRegistry registry = applicationContext.getBean(MeterRegistry.class);
 		// xWorker 指标
@@ -233,16 +229,6 @@ public class UndertowMetrics implements ApplicationListener<ApplicationStartedEv
 		TimeGauge.builder(METRIC_NAME_SESSIONS_ALIVE_MAX, statistics, TimeUnit.SECONDS, SessionManagerStatistics::getHighestSessionCount)
 			.tags(tags)
 			.register(registry);
-	}
-
-	static {
-		UNDERTOW_FIELD = ReflectionUtils.findField(UndertowWebServer.class, "undertow");
-		Objects.requireNonNull(UNDERTOW_FIELD, "UndertowWebServer class field undertow not exist.");
-		ReflectionUtils.makeAccessible(UNDERTOW_FIELD);
-	}
-
-	private static Undertow getUndertow(UndertowWebServer undertowWebServer) {
-		return (Undertow) ReflectionUtils.getField(UNDERTOW_FIELD, undertowWebServer);
 	}
 
 	private static UndertowWebServer findUndertowWebServer(ConfigurableApplicationContext applicationContext) {
