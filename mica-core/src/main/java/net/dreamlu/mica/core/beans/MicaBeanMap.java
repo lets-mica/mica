@@ -55,7 +55,7 @@ public abstract class MicaBeanMap extends BeanMap {
 	public abstract MicaBeanMap newInstance(Object o);
 
 	public static class MicaGenerator extends AbstractClassGenerator {
-		private static final Source SOURCE = new Source(MicaBeanMap.class.getName());
+		private static final Source SOURCE = new Source(BEAN_NAME_PREFIX);
 
 		private Object bean;
 		private Class beanClass;
