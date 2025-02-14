@@ -20,6 +20,7 @@ package net.dreamlu.mica.caffeine.config;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
+import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -33,7 +34,7 @@ import java.util.Objects;
 class CaffeineAutoCacheRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 
 	@Override
-	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+	public void registerHints(RuntimeHints hints, @Nullable ClassLoader classLoader) {
 		hints.reflection().registerField(findField());
 	}
 

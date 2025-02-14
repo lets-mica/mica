@@ -89,14 +89,7 @@ public class CaffeineAutoCacheManager extends CaffeineCacheManager {
 		if (cacheArray.length < 2) {
 			return super.createNativeCaffeineCache(name);
 		}
-		// 转换时间，支持时间单位例如：300ms，第二个参数是默认单位
-		Duration duration = DurationStyle.detectAndParse(cacheArray[1], ChronoUnit.SECONDS);
-		Caffeine<Object, Object> cacheBuilder;
-		if (this.caffeineSpec != null) {
-			cacheBuilder = Caffeine.from(caffeineSpec).expireAfterAccess(duration);
-		} else {
-			cacheBuilder = Caffeine.newBuilder().expireAfterAccess(duration);
-		}
+		Caffeine<Object, Object> cacheBuilder = getCaffeine(cacheArray);
 		AsyncCacheLoader<Object, Object> cacheLoader = getCacheLoader();
 		if (cacheLoader == null) {
 			return cacheBuilder.build();
@@ -113,16 +106,18 @@ public class CaffeineAutoCacheManager extends CaffeineCacheManager {
 		if (cacheArray.length < 2) {
 			return super.createAsyncCaffeineCache(name);
 		}
-		// 转换时间，支持时间单位例如：300ms，第二个参数是默认单位
-		Duration duration = DurationStyle.detectAndParse(cacheArray[1], ChronoUnit.SECONDS);
-		Caffeine<Object, Object> cacheBuilder;
-		if (this.caffeineSpec != null) {
-			cacheBuilder = Caffeine.from(caffeineSpec).expireAfterAccess(duration);
-		} else {
-			cacheBuilder = Caffeine.newBuilder().expireAfterAccess(duration);
-		}
+		Caffeine<Object, Object> cacheBuilder = getCaffeine(cacheArray);
 		AsyncCacheLoader<Object, Object> cacheLoader = getCacheLoader();
 		return cacheLoader == null ? cacheBuilder.buildAsync() : cacheBuilder.buildAsync(cacheLoader) ;
 	}
 
+	private Caffeine<Object, Object> getCaffeine(String[] cacheArray) {
+		// 转换时间，支持时间单位例如：300ms，第二个参数是默认单位
+		Duration duration = DurationStyle.detectAndParse(cacheArray[1], ChronoUnit.SECONDS);
+		if (this.caffeineSpec == null) {
+			return Caffeine.newBuilder().expireAfterAccess(duration);
+		} else {
+			return Caffeine.from(caffeineSpec).expireAfterAccess(duration);
+		}
+	}
 }
