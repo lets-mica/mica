@@ -23,6 +23,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.lang.Nullable;
 
 /**
  * Swagger 配置
@@ -39,10 +40,12 @@ public class MicaSwaggerProperties {
 	/**
 	 * 标题，默认：XXX服务
 	 */
+	@Nullable
 	private String title;
 	/**
 	 * 详情，默认：XXX服务
 	 */
+	@Nullable
 	private String description;
 	/**
 	 * 版本号，默认：V1.0

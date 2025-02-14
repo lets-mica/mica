@@ -22,6 +22,7 @@ import net.dreamlu.mica.core.utils.INetUtil;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.redis.stream.DefaultRStreamTemplate;
 import net.dreamlu.mica.redis.stream.RStreamListenerDetector;
+import net.dreamlu.mica.redis.stream.RStreamListenerLazyFilter;
 import net.dreamlu.mica.redis.stream.RStreamTemplate;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -112,6 +113,11 @@ public class RedisStreamConfiguration {
 			consumerName = consumerNameBuilder.toString();
 		}
 		return new RStreamListenerDetector(streamMessageListenerContainer, redisTemplate, consumerGroup, consumerName);
+	}
+
+	@Bean
+	public RStreamListenerLazyFilter streamListenerLazyFilter() {
+		return new RStreamListenerLazyFilter();
 	}
 
 	@Bean

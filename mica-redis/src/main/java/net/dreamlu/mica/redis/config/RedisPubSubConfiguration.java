@@ -17,6 +17,7 @@
 package net.dreamlu.mica.redis.config;
 
 import net.dreamlu.mica.redis.cache.MicaRedisCache;
+import net.dreamlu.mica.redis.pubsub.RPubSubListenerLazyFilter;
 import net.dreamlu.mica.redis.pubsub.RPubSubPublisher;
 import net.dreamlu.mica.redis.pubsub.RPubSubListenerDetector;
 import net.dreamlu.mica.redis.pubsub.RedisPubSubPublisher;
@@ -55,6 +56,11 @@ public class RedisPubSubConfiguration {
 	public RPubSubListenerDetector topicListenerDetector(RedisMessageListenerContainer redisMessageListenerContainer,
 														 RedisSerializer<Object> redisSerializer) {
 		return new RPubSubListenerDetector(redisMessageListenerContainer, redisSerializer);
+	}
+
+	@Bean
+	public RPubSubListenerLazyFilter pubSubListenerLazyFilter() {
+		return new RPubSubListenerLazyFilter();
 	}
 
 }
