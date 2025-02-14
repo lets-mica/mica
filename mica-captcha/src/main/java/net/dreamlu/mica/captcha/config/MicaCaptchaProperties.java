@@ -35,6 +35,10 @@ public class MicaCaptchaProperties {
 	public static final String PREFIX = "mica.captcha";
 
 	/**
+	 * 是否开启验证码，默认：true
+	 */
+	private Boolean enabled = Boolean.TRUE;
+	/**
 	 * 验证码类型，默认：随机数
 	 */
 	private CaptchaType captchaType = CaptchaType.RANDOM;
