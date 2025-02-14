@@ -212,15 +212,15 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 */
 	@Contract("null -> false")
 	public static boolean isNumeric(@Nullable final CharSequence cs) {
-		if (StringUtil.isBlank(cs)) {
-			return false;
+		if (StringUtils.hasText(cs)) {
+			try {
+				Double.parseDouble(cs.toString().trim());
+				return true;
+			} catch (NumberFormatException ignored) {
+				return false;
+			}
 		}
-		try {
-			Double.parseDouble(cs.toString().trim());
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
+		return false;
 	}
 
 	/**
