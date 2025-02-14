@@ -97,7 +97,7 @@ public class ULID {
 	private final Random random;
 
 	public ULID() {
-		this(new SecureRandom());
+		this(Holder.SECURE_RANDOM);
 	}
 
 	public ULID(Random random) {

@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.core.utils;
 
+import org.springframework.lang.Contract;
 import org.springframework.lang.Nullable;
 import org.springframework.util.*;
 import org.springframework.web.util.HtmlUtils;
@@ -94,6 +95,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * its length is greater than 0, and it does not contain whitespace only
 	 * @see Character#isWhitespace
 	 */
+	@Contract("null -> true")
 	public static boolean isBlank(@Nullable final CharSequence cs) {
 		return !StringUtils.hasText(cs);
 	}
@@ -113,6 +115,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * not empty and not null and not whitespace
 	 * @see Character#isWhitespace
 	 */
+	@Contract("null -> false")
 	public static boolean isNotBlank(@Nullable final CharSequence cs) {
 		return StringUtils.hasText(cs);
 	}
@@ -123,6 +126,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @param css CharSequence
 	 * @return boolean
 	 */
+	@Contract("null -> true")
 	public static boolean isAnyBlank(final CharSequence... css) {
 		if (ObjectUtils.isEmpty(css)) {
 			return true;
@@ -136,6 +140,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @param css CharSequence
 	 * @return boolean
 	 */
+	@Contract("null -> true")
 	public static boolean isAnyBlank(Collection<CharSequence> css) {
 		if (CollectionUtils.isEmpty(css)) {
 			return true;
@@ -149,6 +154,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @param css CharSequence
 	 * @return boolean
 	 */
+	@Contract("null -> false")
 	public static boolean isNoneBlank(final CharSequence... css) {
 		if (ObjectUtils.isEmpty(css)) {
 			return false;
@@ -162,6 +168,7 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @param css CharSequence
 	 * @return boolean
 	 */
+	@Contract("null -> false")
 	public static boolean isNoneBlank(Collection<CharSequence> css) {
 		if (CollectionUtils.isEmpty(css)) {
 			return false;
@@ -170,11 +177,12 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
-	 * 有 任意 一个 Blank
+	 * 有 任意 一个不为 Blank
 	 *
 	 * @param css CharSequence
 	 * @return boolean
 	 */
+	@Contract("null -> false")
 	public static boolean isAnyNotBlank(CharSequence... css) {
 		if (ObjectUtils.isEmpty(css)) {
 			return false;
@@ -183,11 +191,12 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	}
 
 	/**
-	 * 有 任意 一个 Blank
+	 * 有 任意 一个不为 Blank
 	 *
 	 * @param css CharSequence
 	 * @return boolean
 	 */
+	@Contract("null -> false")
 	public static boolean isAnyNotBlank(Collection<CharSequence> css) {
 		if (CollectionUtils.isEmpty(css)) {
 			return false;
@@ -201,17 +210,17 @@ public class StringUtil extends org.springframework.util.StringUtils {
 	 * @param cs the CharSequence to check, may be null
 	 * @return {boolean}
 	 */
-	public static boolean isNumeric(final CharSequence cs) {
+	@Contract("null -> false")
+	public static boolean isNumeric(@Nullable final CharSequence cs) {
 		if (StringUtil.isBlank(cs)) {
 			return false;
 		}
-		for (int i = cs.length(); --i >= 0; ) {
-			int chr = cs.charAt(i);
-			if (chr < 48 || chr > 57) {
-				return false;
-			}
+		try {
+			Double.parseDouble(cs.toString().trim());
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
 		}
-		return true;
 	}
 
 	/**
