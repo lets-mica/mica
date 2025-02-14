@@ -16,9 +16,7 @@
 
 package net.dreamlu.mica.caffeine.config;
 
-import com.github.benmanes.caffeine.cache.CacheLoader;
-import com.github.benmanes.caffeine.cache.Caffeine;
-import com.github.benmanes.caffeine.cache.CaffeineSpec;
+import com.github.benmanes.caffeine.cache.*;
 import net.dreamlu.mica.core.utils.StringPool;
 import org.springframework.boot.convert.DurationStyle;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
@@ -56,8 +54,8 @@ public class CaffeineAutoCacheManager extends CaffeineCacheManager {
 
 	@Nullable
 	@SuppressWarnings("unchecked")
-	protected CacheLoader<Object, Object> getCacheLoader() {
-		return (CacheLoader<Object, Object>) ReflectionUtils.getField(CACHE_LOADER_FIELD, this);
+	protected AsyncCacheLoader<Object, Object> getCacheLoader() {
+		return (AsyncCacheLoader<Object, Object>) ReflectionUtils.getField(CACHE_LOADER_FIELD, this);
 	}
 
 	@Override
@@ -95,16 +93,36 @@ public class CaffeineAutoCacheManager extends CaffeineCacheManager {
 		Duration duration = DurationStyle.detectAndParse(cacheArray[1], ChronoUnit.SECONDS);
 		Caffeine<Object, Object> cacheBuilder;
 		if (this.caffeineSpec != null) {
-			cacheBuilder = Caffeine.from(caffeineSpec);
+			cacheBuilder = Caffeine.from(caffeineSpec).expireAfterAccess(duration);
 		} else {
-			cacheBuilder = Caffeine.newBuilder();
+			cacheBuilder = Caffeine.newBuilder().expireAfterAccess(duration);
 		}
-		CacheLoader<Object, Object> cacheLoader = getCacheLoader();
+		AsyncCacheLoader<Object, Object> cacheLoader = getCacheLoader();
 		if (cacheLoader == null) {
-			return cacheBuilder.expireAfterAccess(duration).build();
+			return cacheBuilder.build();
+		} else if (cacheLoader instanceof CacheLoader<Object, Object> regularCacheLoader) {
+			return cacheBuilder.build(regularCacheLoader);
 		} else {
-			return cacheBuilder.expireAfterAccess(duration).build(cacheLoader);
+			throw new IllegalStateException("Cannot create regular Caffeine Cache with async-only cache loader: " + cacheLoader);
 		}
+	}
+
+	@Override
+	protected AsyncCache<Object, Object> createAsyncCaffeineCache(String name) {
+		String[] cacheArray = name.split(StringPool.HASH);
+		if (cacheArray.length < 2) {
+			return super.createAsyncCaffeineCache(name);
+		}
+		// 转换时间，支持时间单位例如：300ms，第二个参数是默认单位
+		Duration duration = DurationStyle.detectAndParse(cacheArray[1], ChronoUnit.SECONDS);
+		Caffeine<Object, Object> cacheBuilder;
+		if (this.caffeineSpec != null) {
+			cacheBuilder = Caffeine.from(caffeineSpec).expireAfterAccess(duration);
+		} else {
+			cacheBuilder = Caffeine.newBuilder().expireAfterAccess(duration);
+		}
+		AsyncCacheLoader<Object, Object> cacheLoader = getCacheLoader();
+		return cacheLoader == null ? cacheBuilder.buildAsync() : cacheBuilder.buildAsync(cacheLoader) ;
 	}
 
 }
