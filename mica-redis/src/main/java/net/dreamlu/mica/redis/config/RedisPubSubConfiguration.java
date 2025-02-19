@@ -34,7 +34,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  *
  * @author L.cm
  */
-@AutoConfiguration
+@AutoConfiguration(after = RedisTemplateConfiguration.class)
 public class RedisPubSubConfiguration {
 
 	@Bean
