@@ -2,6 +2,14 @@
 
 ## 发行版本
 
+### v3.4.3 - 2025-02-23
+
+- :sparkles: mica-metrics UndertowMetrics 不再需要反射
+- :sparkles: 折腾不动了，删除 gradle 支持
+- :bug: mica-redis 修复redis配置顺序问题
+- :bug: mica-core DesensitizationUtil 修复 .StringIndexOutOfBounds
+- :bug: mica-core 解决 bean copy java17 反射报错
+
 ### v3.2.5 - 2024-04-26
 
 - :sparkles: mica-core 内部直接使用 StandardCharsets
