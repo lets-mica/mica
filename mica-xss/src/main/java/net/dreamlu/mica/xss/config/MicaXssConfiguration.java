@@ -64,6 +64,7 @@ public class MicaXssConfiguration implements WebMvcConfigurer {
 	}
 
 	@Bean
+	@ConditionalOnMissingBean
 	public FormXssClean formXssClean(MicaXssProperties properties,
 									 XssCleaner xssCleaner) {
 		return new FormXssClean(properties, xssCleaner);
