@@ -20,13 +20,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.auto.annotation.AutoIgnore;
 import net.dreamlu.mica.xss.config.MicaXssProperties;
-import net.dreamlu.mica.xss.utils.XssUtil;
+import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.InitBinder;
 
 import java.beans.PropertyEditorSupport;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * 表单 xss 处理
@@ -49,25 +54,52 @@ public class FormXssClean {
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		// 处理前端传来的表单字符串
+		MicaXssProperties.Trimmer trimmer = properties.getTrimmer();
 		binder.registerCustomEditor(String.class, new StringPropertiesEditor(xssCleaner, properties));
+		if (trimmer.isEnableInCollection()) {
+			binder.registerCustomEditor(Collection.class, new CustomCollectionEditor(Collection.class));
+			binder.registerCustomEditor(Set.class, new CustomCollectionEditor(Set.class));
+			binder.registerCustomEditor(SortedSet.class, new CustomCollectionEditor(SortedSet.class));
+			binder.registerCustomEditor(List.class, new CustomCollectionEditor(List.class));
+		}
 	}
 
 	@Slf4j
-	@RequiredArgsConstructor
 	public static class StringPropertiesEditor extends PropertyEditorSupport {
+		public StringPropertiesEditor(XssCleaner xssCleaner, MicaXssProperties properties) {
+			this.xssCleaner = xssCleaner;
+			this.properties = properties;
+		}
+
 		private final XssCleaner xssCleaner;
 		private final MicaXssProperties properties;
 
 		@Override
-		public void setAsText(String text) throws IllegalArgumentException {
+		public void setAsText(String text) throws FromXssException {
+			if (!XssHolder.isEnabled()) {
+				setValue(text);
+				return;
+			}
 			if (text == null) {
 				setValue(null);
-			} else if (XssHolder.isEnabled()) {
-				String value = xssCleaner.clean(XssUtil.trim(text, properties.isTrimText()), XssType.FORM);
-				setValue(value);
-				log.debug("Request parameter value:{} cleaned up by mica-xss, current value is:{}.", text, value);
 			} else {
-				setValue(XssUtil.trim(text, properties.isTrimText()));
+				String value = xssCleaner.clean(text, XssType.FORM);
+				MicaXssProperties.Trimmer trimmer = properties.getTrimmer();
+				String charsToDelete = trimmer.getCharsToDelete();
+				if (!charsToDelete.isEmpty()) {
+					value = StringUtils.deleteAny(value, charsToDelete);
+				}
+				boolean isTrimText = properties.isTrimText() || trimmer.isTrimText();
+				if (isTrimText) {
+					value = value.trim();
+				}
+				boolean emptyAsNull = trimmer.isEmptyAsNull();
+				if (emptyAsNull && value.isEmpty()) {
+					setValue(null);
+				} else {
+					setValue(value);
+				}
+				log.debug("Request parameter value:{} cleaned up by mica-xss, current value is:{}.", text, value);
 			}
 		}
 	}
