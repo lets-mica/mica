@@ -19,7 +19,7 @@ package net.dreamlu.mica.xss.core;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.xss.config.MicaXssProperties;
-import net.dreamlu.mica.xss.utils.XssUtil;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 
@@ -41,9 +41,22 @@ public class JacksonXssClean extends XssCleanDeserializerBase {
 		}
 		// 判断是否忽略
 		if (XssHolder.isIgnore(name)) {
-			return XssUtil.trim(text, properties.isTrimText());
+			return text;
 		}
-		String value = xssCleaner.clean(name, XssUtil.trim(text, properties.isTrimText()), XssType.JACKSON);
+		String value = xssCleaner.clean(name, text, XssType.JACKSON);
+		MicaXssProperties.JacksonConfig jackson = properties.getJackson();
+		String charsToDelete = jackson.getCharsToDelete();
+		if (!charsToDelete.isEmpty()) {
+			value = StringUtils.deleteAny(value, charsToDelete);
+		}
+		boolean isTrimText = properties.isTrimText() || jackson.isTrimText();
+		if (isTrimText) {
+			value = value.trim();
+		}
+		boolean emptyAsNull = jackson.isEmptyAsNull();
+		if (emptyAsNull && value.isEmpty()) {
+			return null;
+		}
 		log.debug("Json property name:{} value:{} cleaned up by mica-xss, current value is:{}.", name, text, value);
 		return value;
 	}

@@ -19,7 +19,7 @@ package net.dreamlu.mica.xss.core;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.spring.SpringContextUtil;
 import net.dreamlu.mica.xss.config.MicaXssProperties;
-import net.dreamlu.mica.xss.utils.XssUtil;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 
@@ -43,10 +43,23 @@ public class XssCleanDeserializer extends XssCleanDeserializerBase {
 		}
 		// 读取 XssCleaner bean
 		XssCleaner xssCleaner = SpringContextUtil.getBean(XssCleaner.class);
-		if (xssCleaner == null) {
-			return XssUtil.trim(text, properties.isTrimText());
+		String value = text;
+		if (xssCleaner != null) {
+			value = xssCleaner.clean(name, XssType.JACKSON);
 		}
-		String value = xssCleaner.clean(name, XssUtil.trim(text, properties.isTrimText()), XssType.JACKSON);
+		MicaXssProperties.JacksonConfig jackson = properties.getJackson();
+		String charsToDelete = jackson.getCharsToDelete();
+		if (!charsToDelete.isEmpty()) {
+			value = StringUtils.deleteAny(value, charsToDelete);
+		}
+		boolean isTrimText = properties.isTrimText() || jackson.isTrimText();
+		if (isTrimText) {
+			value = value.trim();
+		}
+		boolean emptyAsNull = jackson.isEmptyAsNull();
+		if (emptyAsNull && value.isEmpty()) {
+			return null;
+		}
 		log.debug("Json property name:{} value:{} cleaned up by mica-xss, current value is:{}.", name, text, value);
 		return value;
 	}

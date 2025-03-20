@@ -54,9 +54,9 @@ public class FormXssClean {
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		// 处理前端传来的表单字符串
-		MicaXssProperties.Trimmer trimmer = properties.getTrimmer();
+		MicaXssProperties.FormConfig form = properties.getForm();
 		binder.registerCustomEditor(String.class, new StringPropertiesEditor(xssCleaner, properties));
-		if (trimmer.isEnableInCollection()) {
+		if (form.isEnableInCollection()) {
 			binder.registerCustomEditor(Collection.class, new CustomCollectionEditor(Collection.class));
 			binder.registerCustomEditor(Set.class, new CustomCollectionEditor(Set.class));
 			binder.registerCustomEditor(SortedSet.class, new CustomCollectionEditor(SortedSet.class));
@@ -76,24 +76,24 @@ public class FormXssClean {
 
 		@Override
 		public void setAsText(String text) throws FromXssException {
-			if (!XssHolder.isEnabled()) {
-				setValue(text);
-				return;
-			}
 			if (text == null) {
 				setValue(null);
 			} else {
+				if (!XssHolder.isEnabled()) {
+					setValue(text);
+					return;
+				}
 				String value = xssCleaner.clean(text, XssType.FORM);
-				MicaXssProperties.Trimmer trimmer = properties.getTrimmer();
-				String charsToDelete = trimmer.getCharsToDelete();
+				MicaXssProperties.FormConfig form = properties.getForm();
+				String charsToDelete = form.getCharsToDelete();
 				if (!charsToDelete.isEmpty()) {
 					value = StringUtils.deleteAny(value, charsToDelete);
 				}
-				boolean isTrimText = properties.isTrimText() || trimmer.isTrimText();
+				boolean isTrimText = properties.isTrimText() || form.isTrimText();
 				if (isTrimText) {
 					value = value.trim();
 				}
-				boolean emptyAsNull = trimmer.isEmptyAsNull();
+				boolean emptyAsNull = form.isEmptyAsNull();
 				if (emptyAsNull && value.isEmpty()) {
 					setValue(null);
 				} else {
