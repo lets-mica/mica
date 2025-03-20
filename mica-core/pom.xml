@@ -48,6 +48,16 @@
             <artifactId>mica-auto</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-el</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
