@@ -19,6 +19,7 @@ package net.dreamlu.mica.core.result;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -56,6 +57,7 @@ public class R<T> implements Serializable {
 	@ApiModelProperty(value = "消息", required = true)
 	@Schema(description = "消息")
 	private String msg;
+	@Valid
 	@ApiModelProperty("返回对象")
 	@Schema(description = "返回对象")
 	private T data;
