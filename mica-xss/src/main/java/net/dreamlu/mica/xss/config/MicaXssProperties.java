@@ -43,7 +43,12 @@ public class MicaXssProperties {
 	/**
 	 * 全局：对文件进行首尾 trim
 	 */
+	@Deprecated
 	private boolean trimText = true;
+	/**
+	 * 全局：字符串trim配置
+	 */
+	private Trimmer trimmer = new Trimmer();
 	/**
 	 * 模式：clear 清理（默认），escape 转义
 	 */
@@ -80,4 +85,24 @@ public class MicaXssProperties {
 		VALIDATE
 	}
 
+	@Getter
+	@Setter
+	public static class Trimmer {
+		/**
+		 * 对字符串首尾 trim
+		 */
+		boolean trimText = true;
+		/**
+		 * 对字符串去除特殊字符
+		 */
+		String charsToDelete = "";
+		/**
+		 * 对字符串trim后，如果为空字符串，转null
+		 */
+		boolean emptyAsNull = false;
+		/**
+		 * [charsToDelete, trimText, emptyAsNull]三个规则，对集合中的元素也生效
+		 */
+		boolean enableInCollection = false;
+	}
 }
