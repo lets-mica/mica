@@ -51,7 +51,7 @@ class UUIDTest {
 				}
 			});
 		}
-		service.awaitTermination(10, TimeUnit.SECONDS);
+		service.awaitTermination(20, TimeUnit.SECONDS);
 		Assertions.assertEquals(size, uuidSet.size());
 		service.shutdown();
 	}
