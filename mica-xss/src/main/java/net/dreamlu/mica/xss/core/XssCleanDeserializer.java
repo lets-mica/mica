@@ -58,7 +58,7 @@ public class XssCleanDeserializer extends XssCleanDeserializerBase {
 		}
 		boolean emptyAsNull = jackson.isEmptyAsNull();
 		if (emptyAsNull && value.isEmpty()) {
-			return null;
+			value = null;
 		}
 		log.debug("Json property name:{} value:{} cleaned up by mica-xss, current value is:{}.", name, text, value);
 		return value;
