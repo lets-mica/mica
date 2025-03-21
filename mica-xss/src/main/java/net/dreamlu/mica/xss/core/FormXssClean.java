@@ -95,10 +95,9 @@ public class FormXssClean {
 				}
 				boolean emptyAsNull = form.isEmptyAsNull();
 				if (emptyAsNull && value.isEmpty()) {
-					setValue(null);
-				} else {
-					setValue(value);
+					value = null;
 				}
+				setValue(value);
 				log.debug("Request parameter value:{} cleaned up by mica-xss, current value is:{}.", text, value);
 			}
 		}
