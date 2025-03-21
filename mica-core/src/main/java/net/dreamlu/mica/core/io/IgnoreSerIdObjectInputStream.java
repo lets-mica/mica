@@ -32,39 +32,40 @@ import java.io.*;
 @Slf4j
 public class IgnoreSerIdObjectInputStream extends ObjectInputStream {
 
-    public IgnoreSerIdObjectInputStream(byte[] bytes) throws IOException {
-        this(new ByteArrayInputStream(bytes));
-    }
+	public IgnoreSerIdObjectInputStream(byte[] bytes) throws IOException {
+		this(new ByteArrayInputStream(bytes));
+	}
 
-    public IgnoreSerIdObjectInputStream(InputStream in) throws IOException {
-        super(in);
-    }
+	public IgnoreSerIdObjectInputStream(InputStream in) throws IOException {
+		super(in);
+	}
 
-    @Override
-    protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
-        // initially streams descriptor
-        ObjectStreamClass resultClassDescriptor = super.readClassDescriptor();
-        // the class in the local JVM that this descriptor represents.
-        Class<?> localClass;
-        try {
-            localClass = Class.forName(resultClassDescriptor.getName());
-        } catch (ClassNotFoundException e) {
-            log.warn("No local class for " + resultClassDescriptor.getName());
-            return resultClassDescriptor;
-        }
-        ObjectStreamClass localClassDescriptor = ObjectStreamClass.lookup(localClass);
-        // only if class implements serializable
-        if (localClassDescriptor != null) {
-            long localSerId = localClassDescriptor.getSerialVersionUID();
-            long streamSerId = resultClassDescriptor.getSerialVersionUID();
-            // check for serialVersionUID mismatch.
-            if (streamSerId != localSerId) {
-                log.warn("Overriding serialized class {} version mismatch: local serialVersionUID = {} stream serialVersionUID = {}", localClass, localSerId, streamSerId);
-                // Use local class descriptor for deserialization
-                resultClassDescriptor = localClassDescriptor;
-            }
-        }
-        return resultClassDescriptor;
-    }
+	@Override
+	protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
+		// initially streams descriptor
+		ObjectStreamClass resultClassDescriptor = super.readClassDescriptor();
+		String descriptorName = resultClassDescriptor.getName();
+		// the class in the local JVM that this descriptor represents.
+		Class<?> localClass;
+		try {
+			localClass = Class.forName(descriptorName);
+		} catch (ClassNotFoundException e) {
+			log.warn("No local class for {}", descriptorName);
+			return resultClassDescriptor;
+		}
+		ObjectStreamClass localClassDescriptor = ObjectStreamClass.lookup(localClass);
+		// only if class implements serializable
+		if (localClassDescriptor != null) {
+			long localSerId = localClassDescriptor.getSerialVersionUID();
+			long streamSerId = resultClassDescriptor.getSerialVersionUID();
+			// check for serialVersionUID mismatch.
+			if (streamSerId != localSerId) {
+				log.warn("Overriding serialized class {} version mismatch: local serialVersionUID = {} stream serialVersionUID = {}", localClass, localSerId, streamSerId);
+				// Use local class descriptor for deserialization
+				resultClassDescriptor = localClassDescriptor;
+			}
+		}
+		return resultClassDescriptor;
+	}
 
 }
