@@ -21,16 +21,34 @@
 compile("net.dreamlu:mica-xss:${version}")
 ```
 
-## 配置
-| 配置项                         | 默认值 | 说明                                             |
-| ------------------------------ | ------ |------------------------------------------------|
-| mica.xss.enabled               | true   | 开启xss                                          |
-| mica.xss.trim-text             | true   | 【全局】是否去除文本首尾空格                                 |
-| mica.xss.mode                  | clear  | 模式：clear 清理（默认）、escape 转义、validate 校验（2.7.4新增） |
-| mica.xss.pretty-print          | false  | `clear 专用` prettyPrint，默认关闭： 保留换行              |
-| mica.xss.enable-escape         | false  | `clear 专用` 转义，默认关闭                             |
-| mica.xss.path-patterns         | `/**`  | 拦截的路由，例如: `/api/order/**`                      |
-| mica.xss.path-exclude-patterns |        | 放行的路由，默认为空                                     |
+
+## 默认配置
+| 配置项                         | 默认值   | 说明                                                         |
+| ------------------------------ | -------- | ------------------------------------------------------------ |
+| mica.xss.enabled               | true     | 开启xss                                                      |
+| ~~mica.xss.trim-text~~         | ~~true~~ | ~~【全局】是否去除文本首尾空格，已弃用，将在下版本删除~~     |
+| mica.xss.mode                  | clear    | 模式：clear 清理（默认）、escape 转义、validate 校验（2.7.4新增） |
+| mica.xss.pretty-print          | false    | `clear 专用` prettyPrint，默认关闭： 保留换行                |
+| mica.xss.enable-escape         | false    | `clear 专用` 转义，默认关闭                                  |
+| mica.xss.path-patterns         | `/**`    | 拦截的路由，例如: `/api/order/**`                            |
+| mica.xss.path-exclude-patterns |          | 放行的路由，默认为空                                         |
+| mica.xss.path-exclude-patterns |          | 放行的路由，默认为空                                         |
+
+### xss.form 配置
+| 配置项                             | 默认值 | 说明                                                         |
+| ---------------------------------- | ------ | ------------------------------------------------------------ |
+| mica.xss.form.trim-text            | true   | 是否去除字符串首尾空格                                       |
+| mica.xss.form.chars-to-delete      |        | 需要去除的特殊字符，按字符去除                               |
+| mica.xss.form.empty-as-null        | false  | 去除首尾空格后，空字符串转null                               |
+| mica.xss.form.enable-in-collection | false  | [trim-text, chars-to-delete, empty-as-null]三个规则，对集合中的元素也生效 |
+
+### xss.jackson 配置
+
+| 配置项                           | 默认值 | 说明                           |
+| -------------------------------- | ------ | ------------------------------ |
+| mica.xss.jackson.trim-text       | true   | 是否去除字符串首尾空格         |
+| mica.xss.jackson.chars-to-delete |        | 需要去除的特殊字符，按字符去除 |
+| mica.xss.jackson.empty-as-null   | false  | 去除首尾空格后，空字符串转null |
 
 ## 注解
 可以使用 `@XssCleanIgnore` 注解对方法和类级别进行忽略。
