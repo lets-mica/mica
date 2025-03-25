@@ -83,7 +83,7 @@ public class MicaConverter implements Converter {
 		// 忽略抛出异常的函数，定义完整泛型，避免编译问题
 		CheckedFunction<String, TypeDescriptor> uncheckedFunction = (key) -> {
 			// 这里 property 理论上不会为 null
-			Field field = ReflectUtil.getField(clazz, fieldName);
+			Field field = ReflectUtil.findField(clazz, fieldName);
 			if (field == null) {
 				throw new NoSuchFieldException(fieldName);
 			}
