@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true">
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
     <!-- 日志级别 -->
     <springProperty scope="context" name="loggingLevelRoot" source="logging.level.root" defaultValue="INFO"/>
