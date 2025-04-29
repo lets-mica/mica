@@ -56,6 +56,16 @@ public class Exchange {
 		return this;
 	}
 
+	/**
+	 * not return.
+	 */
+	public void asVoid() {
+		try (HttpResponse ignored = new HttpResponse(call.execute())) {
+		} catch (IOException e) {
+			throw Exceptions.unchecked(e);
+		}
+	}
+
 	public <R> R onResponse(Function<ResponseSpec, R> func) {
 		try (HttpResponse response = new HttpResponse(call.execute())) {
 			return func.apply(response);
@@ -226,6 +236,7 @@ public class Exchange {
 	public <V> Map<String, V> asMap(Class<?> valueType) {
 		return onResponse(responseSpec -> responseSpec.asMap(valueType));
 	}
+
 
 	/**
 	 * toFile.

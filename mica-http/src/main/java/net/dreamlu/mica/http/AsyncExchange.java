@@ -66,6 +66,10 @@ public class AsyncExchange {
 		call.enqueue(new AsyncCallback(this));
 	}
 
+	public void asVoid() {
+		this.execute();
+	}
+
 	protected void onResponse(HttpResponse response) {
 		if (responseConsumer != null) {
 			responseConsumer.accept(response);

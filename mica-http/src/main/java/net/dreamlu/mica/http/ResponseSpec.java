@@ -162,6 +162,13 @@ public interface ResponseSpec {
 	}
 
 	/**
+	 * not return.
+	 */
+	default void asVoid() {
+
+	}
+
+	/**
 	 * Returns body String.
 	 *
 	 * @return body String
