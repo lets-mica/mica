@@ -16,8 +16,6 @@
 
 package net.dreamlu.mica.http;
 
-import okhttp3.logging.HttpLoggingInterceptor;
-
 import javax.annotation.Nonnull;
 
 /**

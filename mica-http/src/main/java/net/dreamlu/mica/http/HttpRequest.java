@@ -27,7 +27,6 @@ import net.dreamlu.mica.core.utils.StringPool;
 import okhttp3.*;
 import okhttp3.internal.Util;
 import okhttp3.internal.http.HttpMethod;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 import javax.annotation.Nullable;
 import javax.net.ssl.*;
@@ -79,7 +78,7 @@ public class HttpRequest {
 	@Nullable
 	private HttpLoggingInterceptor.Logger logger;
 	@Nullable
-	private HttpLoggingInterceptor.Level logLevel;
+	private LogLevel logLevel;
 	@Nullable
 	private CookieJar cookieJar;
 	@Nullable
@@ -310,7 +309,7 @@ public class HttpRequest {
 		if (retry != null) {
 			builder.addInterceptor(new RetryInterceptor(retry, respPredicate));
 		}
-		if (logger != null && logLevel != null && HttpLoggingInterceptor.Level.NONE != logLevel) {
+		if (logger != null && logLevel != null && LogLevel.NONE != logLevel) {
 			builder.addInterceptor(getLoggingInterceptor(logger, logLevel));
 		} else if (globalLoggingInterceptor != null) {
 			builder.addInterceptor(globalLoggingInterceptor);
@@ -412,7 +411,7 @@ public class HttpRequest {
 	}
 
 	private static HttpLoggingInterceptor getLoggingInterceptor(HttpLoggingInterceptor.Logger httpLogger,
-																HttpLoggingInterceptor.Level level) {
+																LogLevel level) {
 		HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(httpLogger);
 		loggingInterceptor.setLevel(level);
 		return loggingInterceptor;
@@ -448,7 +447,7 @@ public class HttpRequest {
 
 	public HttpRequest useLog(HttpLoggingInterceptor.Logger logger, LogLevel logLevel) {
 		this.logger = logger;
-		this.logLevel = logLevel.getLevel();
+		this.logLevel = logLevel;
 		return this;
 	}
 
@@ -636,7 +635,7 @@ public class HttpRequest {
 	 * @param logLevel LogLevel
 	 */
 	public static void setGlobalLog(HttpLoggingInterceptor.Logger logger, LogLevel logLevel) {
-		HttpRequest.globalLoggingInterceptor = getLoggingInterceptor(logger, logLevel.getLevel());
+		HttpRequest.globalLoggingInterceptor = getLoggingInterceptor(logger, logLevel);
 	}
 
 	/**

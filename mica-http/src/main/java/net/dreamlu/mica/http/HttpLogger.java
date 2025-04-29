@@ -17,7 +17,6 @@
 package net.dreamlu.mica.http;
 
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 import javax.annotation.Nonnull;
 
