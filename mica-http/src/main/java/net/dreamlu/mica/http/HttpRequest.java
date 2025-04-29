@@ -349,8 +349,7 @@ public class HttpRequest {
 	}
 
 	public HttpRequest baseAuth(String userName, String password) {
-		this.authenticator = new BaseAuthenticator(userName, password);
-		return this;
+		return this.authenticator(new BaseAuthenticator(userName, password));
 	}
 
 	//// HTTP header operations
