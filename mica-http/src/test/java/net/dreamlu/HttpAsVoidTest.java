@@ -7,7 +7,7 @@ public class HttpAsVoidTest {
 
 	public static void test1() {
 		HttpRequest.get("https://www.dreamlu.net/")
-			.useConsoleLog(LogLevel.BODY)
+			.useSlf4jLog(LogLevel.BODY)
 			.useSSL()
 			.execute()
 			.asVoid();

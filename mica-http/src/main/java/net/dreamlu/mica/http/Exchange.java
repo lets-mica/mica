@@ -207,6 +207,16 @@ public class Exchange {
 	}
 
 	/**
+	 * 转换成 JsonPointer 语法的模型
+	 * @param valueType valueType
+	 * @return bean
+	 * @param <T> 泛型
+	 */
+	public <T> T asJsonPointerBean(Class<T> valueType) {
+		return onResponse(responseSpec -> responseSpec.asJsonPointerBean(valueType));
+	}
+
+	/**
 	 * Returns body to List.
 	 *
 	 * @param valueType value type

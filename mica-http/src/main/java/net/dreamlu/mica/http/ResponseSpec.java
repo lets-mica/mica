@@ -277,6 +277,16 @@ public interface ResponseSpec {
 	<T> T asValue(TypeReference<T> typeReference);
 
 	/**
+	 * 转换成 JsonPointer 语法的模型
+	 * @param valueType valueType
+	 * @return bean
+	 * @param <T> 泛型
+	 */
+	default <T> T asJsonPointerBean(Class<T> valueType) {
+		return JsonPointerUtil.readValue(asJsonNode(), valueType);
+	}
+
+	/**
 	 * Returns body to List.
 	 *
 	 * @param valueType value type
