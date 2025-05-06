@@ -274,6 +274,8 @@ Long trim(String name, long count, boolean approximateTrimming);
 
 #### 4.2 监听
 
+##### 4.2.1 注解方式
+
 ```java
 @RStreamListener(name = "order")
 public void order(Record<String, OrderDto> record) {
@@ -330,6 +332,31 @@ public @interface RStreamListener {
 }
 ```
 
+##### 4.2.2 Bean方式
+
+```java
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class OrderListener implements RPubSubListenerCustomizer {
+    @Override
+    public List<Topic> getTopics() {
+        return List.of(ChannelTopic.of("order_1"), ChannelTopic.of("order_2"));
+    }
+
+    @Override
+    public void onMessage(Message message, byte[] pattern) {
+        if ("order_1".equals(new String(message.getChannel()))) {
+            // 业务逻辑
+        }
+        if ("order_2".equals(new String(message.getChannel()))) {
+            // 业务逻辑
+        }
+    }
+}
+```
+
 ### 5. 示例 redis pubsub 使用
 
 #### 5.1 发布
@@ -346,10 +373,28 @@ public void test(OrderDto message) {
 ```
 
 #### 5.2 监听
+
+#### 5.2.1 注解方式
 ```java
 @RPubSubListener(name = "test")
 public void test(RPubSubEvent<OrderDto> event) {
 // 业务逻辑
+}
+```
+
+#### 5.2.2 Bean方式
+```java
+public class TestListener implements RPubSubListenerCustomizer {
+    @Override
+    public List<Topic> getTopics() {
+        return List.of(ChannelTopic.of("test"));
+    }
+    @Override
+    public void onMessage(Message message, byte[] pattern) {
+        if ("test".equals(new String(message.getChannel()))) {
+            // 业务逻辑
+        }
+    }
 }
 ```
 

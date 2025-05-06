@@ -17,10 +17,8 @@
 package net.dreamlu.mica.redis.config;
 
 import net.dreamlu.mica.redis.cache.MicaRedisCache;
-import net.dreamlu.mica.redis.pubsub.RPubSubListenerLazyFilter;
-import net.dreamlu.mica.redis.pubsub.RPubSubPublisher;
-import net.dreamlu.mica.redis.pubsub.RPubSubListenerDetector;
-import net.dreamlu.mica.redis.pubsub.RedisPubSubPublisher;
+import net.dreamlu.mica.redis.pubsub.*;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -39,9 +37,15 @@ public class RedisPubSubConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory connectionFactory) {
+	public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory connectionFactory,
+																	   ObjectProvider<RPubSubListenerCustomizer> customizers) {
 		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
+		customizers.orderedStream().forEach(listener -> {
+			listener.getTopics().forEach(topic -> {
+				container.addMessageListener(listener, topic);
+			});
+		});
 		return container;
 	}
 
