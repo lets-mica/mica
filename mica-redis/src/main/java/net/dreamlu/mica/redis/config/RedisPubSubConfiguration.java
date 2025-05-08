@@ -38,7 +38,7 @@ public class RedisPubSubConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory connectionFactory,
-																	   ObjectProvider<RPubSubListenerCustomizer> customizers) {
+																	   ObjectProvider<RPubSubMessageListener> customizers) {
 		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
 		customizers.orderedStream().forEach(listener -> {

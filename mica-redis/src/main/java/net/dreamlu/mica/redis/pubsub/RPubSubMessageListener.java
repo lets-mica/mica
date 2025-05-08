@@ -26,7 +26,7 @@ import java.util.List;
  *
  * @see org.springframework.data.redis.listener.adapter.MessageListenerAdapter
  */
-public interface RPubSubListenerCustomizer extends MessageListener {
+public interface RPubSubMessageListener extends MessageListener {
 
 	/**
 	 * 获取订阅的 topic
