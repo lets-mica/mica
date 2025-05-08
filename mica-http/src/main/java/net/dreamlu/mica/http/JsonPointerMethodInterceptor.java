@@ -81,7 +81,7 @@ public class JsonPointerMethodInterceptor implements MethodInterceptor {
 		if (isInner) {
 			return proxyInner(jsonPointerValue, method, returnType, isColl);
 		}
-		Object proxyValue = proxyValue(jsonPointerValue, jsonPointer, returnType, isColl);
+		Object proxyValue = proxyValue(jsonPointerValue, returnType, isColl);
 		if (String.class.isAssignableFrom(returnType)) {
 			return proxyValue;
 		}
@@ -91,7 +91,7 @@ public class JsonPointerMethodInterceptor implements MethodInterceptor {
 	}
 
 	@Nullable
-	private Object proxyValue(String jsonPointerValue, JsonPointer jsonPointer, Class<?> returnType, boolean isColl) {
+	private Object proxyValue(String jsonPointerValue, Class<?> returnType, boolean isColl) {
 		if (isColl) {
 			JsonNode nodes = jsonNode.at(jsonPointerValue);
 			Collection<Object> valueList = newColl(returnType);
@@ -99,14 +99,14 @@ public class JsonPointerMethodInterceptor implements MethodInterceptor {
 				return valueList;
 			}
 			for (JsonNode node : nodes) {
-				String value = getValue(node, jsonPointer);
+				String value = getValue(node);
 				if (value != null) {
 					valueList.add(value);
 				}
 			}
 			return valueList;
 		}
-		return getValue(jsonNode.at(jsonPointerValue), jsonPointer);
+		return getValue(jsonNode.at(jsonPointerValue));
 	}
 
 	private Object proxyInner(String jsonPointerValue, Method method, Class<?> returnType, boolean isColl) {
@@ -127,11 +127,11 @@ public class JsonPointerMethodInterceptor implements MethodInterceptor {
 	}
 
 	@Nullable
-	private String getValue(@Nullable JsonNode jsonNode, JsonPointer jsonPointer) {
+	private String getValue(@Nullable JsonNode jsonNode) {
 		if (jsonNode == null) {
 			return null;
 		}
-		return jsonNode.at(jsonPointer.value()).asText();
+		return jsonNode.asText();
 	}
 
 	private Collection<Object> newColl(Class<?> returnType) {
