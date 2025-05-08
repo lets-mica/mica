@@ -52,16 +52,12 @@ public enum DaysType {
 	 * @return DaysType
 	 */
 	public static DaysType from(byte type) {
-		switch (type) {
-			case 0:
-				return WEEKDAYS;
-			case 1:
-				return REST_DAYS;
-			case 2:
-				return HOLIDAYS;
-			default:
-				throw new IllegalArgumentException("未知的 DaysType:" + type);
-		}
+		return switch (type) {
+			case 0 -> WEEKDAYS;
+			case 1 -> REST_DAYS;
+			case 2 -> HOLIDAYS;
+			default -> throw new IllegalArgumentException("未知的 DaysType:" + type);
+		};
 	}
 
 }
