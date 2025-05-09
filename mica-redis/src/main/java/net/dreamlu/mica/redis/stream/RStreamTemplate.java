@@ -16,13 +16,13 @@
 
 package net.dreamlu.mica.redis.stream;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.redis.connection.RedisStreamCommands;
 import org.springframework.data.redis.connection.stream.MapRecord;
 import org.springframework.data.redis.connection.stream.ObjectRecord;
 import org.springframework.data.redis.connection.stream.Record;
 import org.springframework.data.redis.connection.stream.RecordId;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.lang.Nullable;
 
 import java.util.Collections;
 import java.util.Map;

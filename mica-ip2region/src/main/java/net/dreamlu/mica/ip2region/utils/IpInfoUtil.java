@@ -18,7 +18,7 @@ package net.dreamlu.mica.ip2region.utils;
 
 import net.dreamlu.mica.core.utils.StringPool;
 import net.dreamlu.mica.ip2region.core.IpInfo;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.function.Function;

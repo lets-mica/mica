@@ -59,6 +59,7 @@
         <loki.logback.appender.version>1.6.0</loki.logback.appender.version>
         <mcia.auto.version>3.1.4</mcia.auto.version>
         <okhttp.version>4.12.0</okhttp.version>
+        <jspecify.version>1.0.0</jspecify.version>
     </properties>
 
     <modules>
@@ -102,8 +103,8 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -200,6 +201,12 @@
                 <groupId>com.github.loki4j</groupId>
                 <artifactId>loki-logback-appender</artifactId>
                 <version>${loki.logback.appender.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jspecify</groupId>
+                <artifactId>jspecify</artifactId>
+                <version>${jspecify.version}</version>
+                <scope>provided</scope>
             </dependency>
             <!-- mica 相关 -->
             <dependency>

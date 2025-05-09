@@ -18,7 +18,7 @@ package net.dreamlu.mica.core.exception;
 
 import net.dreamlu.mica.core.result.IResultCode;
 import net.dreamlu.mica.core.result.R;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.io.Serial;
 

@@ -19,15 +19,17 @@ package net.dreamlu.mica.http;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.ConvertUtil;
+import net.dreamlu.mica.core.utils.ReflectUtil;
 import net.dreamlu.mica.core.utils.StringUtil;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.core.ResolvableType;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.util.ReflectionUtils;
 
-import javax.annotation.Nullable;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -64,11 +66,11 @@ public class JsonPointerMethodInterceptor implements MethodInterceptor {
 		}
 		// 兼容 lombok bug 强制首字母小写： https://github.com/rzwitserloot/lombok/issues/1861
 		String fieldName = StringUtil.firstCharToLower(propertyDescriptor.getDisplayName());
-		Field field = clazz.getDeclaredField(fieldName);
+		Field field = ReflectUtil.findField(clazz, fieldName);
 		if (field == null) {
 			return methodProxy.invokeSuper(object, args);
 		}
-		JsonPointer jsonPointer = field.getAnnotation(JsonPointer.class);
+		JsonPointer jsonPointer = AnnotationUtils.getAnnotation(field, JsonPointer.class);
 		// 没有注解，不代理
 		if (jsonPointer == null) {
 			return methodProxy.invokeSuper(object, args);

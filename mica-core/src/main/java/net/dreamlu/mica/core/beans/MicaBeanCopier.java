@@ -20,12 +20,12 @@ import net.dreamlu.mica.core.utils.BeanUtil;
 import net.dreamlu.mica.core.utils.CollectionUtil;
 import net.dreamlu.mica.core.utils.ReflectUtil;
 import net.dreamlu.mica.core.utils.StringUtil;
+import org.jspecify.annotations.Nullable;
 import org.springframework.asm.ClassVisitor;
 import org.springframework.asm.Label;
 import org.springframework.asm.Opcodes;
 import org.springframework.asm.Type;
 import org.springframework.cglib.core.*;
-import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
 import java.beans.PropertyDescriptor;

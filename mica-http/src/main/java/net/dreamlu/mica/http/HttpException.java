@@ -20,7 +20,6 @@ import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 
 /**
@@ -28,7 +27,6 @@ import java.io.IOException;
  *
  * @author L.cm
  */
-@ParametersAreNonnullByDefault
 public class HttpException extends IOException {
 	private final ResponseSpec response;
 

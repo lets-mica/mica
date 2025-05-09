@@ -16,13 +16,13 @@
 
 package net.dreamlu.mica.core.utils;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.cglib.core.CodeGenerationException;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.convert.Property;
 import org.springframework.core.convert.TypeDescriptor;
-import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
 
 import java.beans.PropertyDescriptor;

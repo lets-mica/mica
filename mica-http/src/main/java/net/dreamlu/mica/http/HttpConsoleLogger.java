@@ -16,8 +16,6 @@
 
 package net.dreamlu.mica.http;
 
-import javax.annotation.Nonnull;
-
 /**
  * OkHttp console log.
  *
@@ -29,7 +27,7 @@ public enum HttpConsoleLogger implements HttpLoggingInterceptor.Logger {
 	 */
 	INSTANCE;
 
-	public void log(@Nonnull String message) {
+	public void log(String message) {
 		// 统一添加前缀，方便在茫茫日志中查看
 		System.out.println("HttpLogger: " + message);
 	}

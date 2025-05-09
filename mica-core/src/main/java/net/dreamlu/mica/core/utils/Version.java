@@ -16,7 +16,7 @@
 
 package net.dreamlu.mica.core.utils;
 
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * 版本号比较工具

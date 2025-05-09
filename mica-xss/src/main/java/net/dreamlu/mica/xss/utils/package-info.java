@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-@NonNullApi
-@NonNullFields
+@NullMarked
 package net.dreamlu.mica.xss.utils;
 
-import org.springframework.lang.NonNullApi;
-import org.springframework.lang.NonNullFields;
+import org.jspecify.annotations.NullMarked;

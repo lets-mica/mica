@@ -18,9 +18,9 @@ package net.dreamlu.mica.caffeine.config;
 
 import com.github.benmanes.caffeine.cache.*;
 import net.dreamlu.mica.core.utils.StringPool;
+import org.jspecify.annotations.Nullable;
 import org.springframework.boot.convert.DurationStyle;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
-import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;

@@ -17,9 +17,9 @@
 package net.dreamlu.mica.core.utils;
 
 import net.dreamlu.mica.core.convert.MicaConversionService;
+import org.jspecify.annotations.Nullable;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.support.GenericConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
 /**

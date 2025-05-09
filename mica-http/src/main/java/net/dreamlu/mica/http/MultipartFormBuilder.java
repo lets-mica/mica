@@ -22,9 +22,8 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.internal.Util;
 import okio.Buffer;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,12 +67,12 @@ public class MultipartFormBuilder {
 		return add(name, filename, fileBody);
 	}
 
-	public MultipartFormBuilder add(String name, @Nonnull String filename, byte[] bytes) {
+	public MultipartFormBuilder add(String name, String filename, byte[] bytes) {
 		RequestBody fileBody = RequestBody.create(bytes, null);
 		return add(name, filename, fileBody);
 	}
 
-	public MultipartFormBuilder add(String name, @Nonnull String filename, InputStream stream) {
+	public MultipartFormBuilder add(String name, String filename, InputStream stream) {
 		try (Buffer buffer = new Buffer()) {
 			buffer.readFrom(stream);
 			return add(name, filename, buffer.readByteArray());

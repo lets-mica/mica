@@ -23,8 +23,8 @@ import net.dreamlu.mica.core.utils.JsonUtil;
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;

@@ -18,8 +18,6 @@ package net.dreamlu.mica.http;
 
 import lombok.extern.slf4j.Slf4j;
 
-import javax.annotation.Nonnull;
-
 /**
  * OkHttp logger, Slf4j and console log.
  *
@@ -33,7 +31,7 @@ public enum HttpLogger implements HttpLoggingInterceptor.Logger {
 	 */
 	Slf4j() {
 		@Override
-		public void log(@Nonnull String message) {
+		public void log(String message) {
 			log.info(message);
 		}
 	},
@@ -43,7 +41,7 @@ public enum HttpLogger implements HttpLoggingInterceptor.Logger {
 	 */
 	Console() {
 		@Override
-		public void log(@Nonnull String message) {
+		public void log(String message) {
 			// 统一添加前缀，方便在茫茫日志中查看
 			System.out.println("HttpLogger: " + message);
 		}

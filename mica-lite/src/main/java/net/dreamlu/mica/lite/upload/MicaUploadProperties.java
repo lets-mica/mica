@@ -19,9 +19,9 @@ package net.dreamlu.mica.lite.upload;
 import lombok.Getter;
 import lombok.Setter;
 import net.dreamlu.mica.core.utils.PathUtil;
+import org.jspecify.annotations.Nullable;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.lang.Nullable;
 
 /**
  * 文件上传配置

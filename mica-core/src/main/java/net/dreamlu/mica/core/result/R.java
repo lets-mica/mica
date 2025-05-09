@@ -25,7 +25,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import net.dreamlu.mica.core.exception.ServiceException;
-import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.io.Serial;
@@ -55,7 +54,6 @@ public class R<T> implements Serializable {
 	@ApiModelProperty(value = "是否成功", required = true)
 	@Schema(description = "是否成功", requiredMode = Schema.RequiredMode.REQUIRED)
 	private boolean success;
-	@NonNull
 	@ApiModelProperty(value = "消息", required = true)
 	@Schema(description = "消息", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String msg;
@@ -73,11 +71,11 @@ public class R<T> implements Serializable {
 		this(resultCode, msg, null);
 	}
 
-	private R(IResultCode resultCode, T data) {
+	private R(IResultCode resultCode, @Nullable T data) {
 		this(resultCode, resultCode.getMsg(), data);
 	}
 
-	private R(IResultCode resultCode, String msg, T data) {
+	private R(IResultCode resultCode, String msg, @Nullable T data) {
 		this.code = resultCode.getCode();
 		this.msg = msg;
 		this.data = data;

@@ -17,10 +17,10 @@
 package net.dreamlu.mica.caffeine.config;
 
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
-import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;

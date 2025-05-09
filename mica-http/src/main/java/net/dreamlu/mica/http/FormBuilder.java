@@ -17,8 +17,8 @@
 package net.dreamlu.mica.http;
 
 import okhttp3.FormBody;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.function.Consumer;
 
