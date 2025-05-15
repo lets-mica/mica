@@ -45,7 +45,7 @@
         <spring.boot.version>3.4.5</spring.boot.version>
         <spring.cloud.version>2024.0.1</spring.cloud.version>
         <findbugs.version>3.0.2</findbugs.version>
-        <swagger.version>1.6.15</swagger.version>
+        <swagger.version>1.6.16</swagger.version>
         <swagger3x.version>2.2.32</swagger3x.version>
         <jsoup.version>1.20.1</jsoup.version>
         <knife4j.version>3.0.3</knife4j.version>
