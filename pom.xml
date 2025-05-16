@@ -33,7 +33,7 @@
 
     <properties>
         <!-- mica version -->
-        <revision>3.4.5</revision>
+        <revision>3.4.6-SNAPSHOT</revision>
         <!-- java version -->
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -446,6 +446,24 @@
                     <url>https://maven.aliyun.com/repository/public</url>
                 </pluginRepository>
             </pluginRepositories>
+        </profile>
+        <profile>
+            <id>snapshot</id>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>central</id>
+                    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+                </snapshotRepository>
+            </distributionManagement>
+            <build>
+                <plugins>
+                    <!-- 发布到中央库 -->
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
         <profile>
             <id>release</id>
