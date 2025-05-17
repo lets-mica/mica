@@ -53,6 +53,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 /**
  * ok http 封装，请求结构体
@@ -180,12 +181,16 @@ public class HttpRequest {
 	}
 
 	public HttpRequest query(String name, @Nullable Object value) {
-		this.uriBuilder.addQueryParameter(name, value == null ? null : String.valueOf(value));
+		if (value != null) {
+			this.uriBuilder.addQueryParameter(name, String.valueOf(value));
+		}
 		return this;
 	}
 
 	public HttpRequest queryEncoded(String encodedName, @Nullable Object encodedValue) {
-		this.uriBuilder.addEncodedQueryParameter(encodedName, encodedValue == null ? null : String.valueOf(encodedValue));
+		if (encodedValue != null) {
+			this.uriBuilder.addEncodedQueryParameter(encodedName, String.valueOf(encodedValue));
+		}
 		return this;
 	}
 
@@ -550,7 +555,7 @@ public class HttpRequest {
 		return this;
 	}
 
-	public HttpRequest sslSocketFactory(SSLSocketFactory sslSocketFactory, X509TrustManager trustManager) {
+	public HttpRequest sslSocketFactory(SSLSocketFactory sslSocketFactory, @Nullable X509TrustManager trustManager) {
 		this.sslSocketFactory = sslSocketFactory;
 		this.trustManager = trustManager == null ? DisableValidationTrustManager.INSTANCE : trustManager;
 		return this;
