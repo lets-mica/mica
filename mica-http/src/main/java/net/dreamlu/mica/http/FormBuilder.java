@@ -37,7 +37,9 @@ public class FormBuilder {
 	}
 
 	public FormBuilder add(String name, @Nullable Object value) {
-		this.formBuilder.add(name, HttpRequest.handleValue(value));
+		if (value != null) {
+			this.formBuilder.add(name, HttpRequest.handleValue(value));
+		}
 		return this;
 	}
 
@@ -49,7 +51,9 @@ public class FormBuilder {
 	}
 
 	public FormBuilder addEncoded(String name, @Nullable Object encodedValue) {
-		this.formBuilder.addEncoded(name, HttpRequest.handleValue(encodedValue));
+		if (encodedValue != null) {
+			this.formBuilder.addEncoded(name, HttpRequest.handleValue(encodedValue));
+		}
 		return this;
 	}
 
