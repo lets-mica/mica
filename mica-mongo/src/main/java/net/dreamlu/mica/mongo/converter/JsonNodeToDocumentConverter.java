@@ -18,9 +18,9 @@ package net.dreamlu.mica.mongo.converter;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.bson.Document;
+import org.jspecify.annotations.Nullable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
-import org.springframework.lang.Nullable;
 
 /**
  * JsonNode 转 mongo Document

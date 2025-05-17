@@ -18,7 +18,7 @@ package net.dreamlu.mica.captcha.cache;
 
 import net.dreamlu.mica.captcha.core.CaptchaUtil;
 import net.dreamlu.mica.core.utils.CharPool;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * 验证码缓存

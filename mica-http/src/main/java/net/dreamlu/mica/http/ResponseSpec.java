@@ -21,8 +21,8 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import okhttp3.*;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.Charset;

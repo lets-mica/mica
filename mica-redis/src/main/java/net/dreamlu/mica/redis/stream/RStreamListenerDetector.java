@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 /**
- * Redisson 监听器
+ * redis 监听器
  *
  * @author L.cm
  */

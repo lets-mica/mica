@@ -33,7 +33,7 @@
 
     <properties>
         <!-- mica version -->
-        <revision>3.4.5</revision>
+        <revision>3.4.6-SNAPSHOT</revision>
         <!-- java version -->
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,12 +45,12 @@
         <spring.boot.version>3.4.5</spring.boot.version>
         <spring.cloud.version>2024.0.1</spring.cloud.version>
         <findbugs.version>3.0.2</findbugs.version>
-        <swagger.version>1.6.15</swagger.version>
-        <swagger3x.version>2.2.30</swagger3x.version>
+        <swagger.version>1.6.16</swagger.version>
+        <swagger3x.version>2.2.32</swagger3x.version>
         <jsoup.version>1.20.1</jsoup.version>
         <knife4j.version>3.0.3</knife4j.version>
-        <springDoc.version>2.8.6</springDoc.version>
-        <xxl.job.version>3.0.0</xxl.job.version>
+        <springDoc.version>2.8.8</springDoc.version>
+        <xxl.job.version>3.1.0</xxl.job.version>
         <druid.version>1.2.24</druid.version>
         <jfinal.version>5.2.2</jfinal.version>
         <zxing.version>3.5.3</zxing.version>
@@ -59,6 +59,7 @@
         <loki.logback.appender.version>1.6.0</loki.logback.appender.version>
         <mcia.auto.version>3.1.4</mcia.auto.version>
         <okhttp.version>4.12.0</okhttp.version>
+        <jspecify.version>1.0.0</jspecify.version>
     </properties>
 
     <modules>
@@ -102,8 +103,8 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -200,6 +201,12 @@
                 <groupId>com.github.loki4j</groupId>
                 <artifactId>loki-logback-appender</artifactId>
                 <version>${loki.logback.appender.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jspecify</groupId>
+                <artifactId>jspecify</artifactId>
+                <version>${jspecify.version}</version>
+                <scope>provided</scope>
             </dependency>
             <!-- mica 相关 -->
             <dependency>
@@ -439,6 +446,24 @@
                     <url>https://maven.aliyun.com/repository/public</url>
                 </pluginRepository>
             </pluginRepositories>
+        </profile>
+        <profile>
+            <id>snapshot</id>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>central</id>
+                    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+                </snapshotRepository>
+            </distributionManagement>
+            <build>
+                <plugins>
+                    <!-- 发布到中央库 -->
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
         <profile>
             <id>release</id>

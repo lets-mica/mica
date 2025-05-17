@@ -23,9 +23,9 @@ import net.dreamlu.mica.core.utils.CollectionUtil;
 import net.dreamlu.mica.core.utils.ConvertUtil;
 import net.dreamlu.mica.core.utils.ReflectUtil;
 import net.dreamlu.mica.core.utils.Unchecked;
+import org.jspecify.annotations.Nullable;
 import org.springframework.cglib.core.Converter;
 import org.springframework.core.convert.TypeDescriptor;
-import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
 import java.lang.reflect.Field;

@@ -18,9 +18,8 @@ package net.dreamlu.mica.http;
 
 import okhttp3.Call;
 import okhttp3.Request;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -30,7 +29,6 @@ import java.util.function.Consumer;
  *
  * @author L.cm
  */
-@ParametersAreNonnullByDefault
 public class AsyncExchange {
 	private final Call call;
 	@Nullable

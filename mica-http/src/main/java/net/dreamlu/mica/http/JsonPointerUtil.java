@@ -18,6 +18,8 @@ package net.dreamlu.mica.http;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.core.annotation.AnnotationUtils;
 
 /**
  * 采用 jackson JSON Pointer 语法快速解析 bean
@@ -40,7 +42,15 @@ public class JsonPointerUtil {
 		enhancer.setSuperclass(clazz);
 		enhancer.setUseCache(true);
 		enhancer.setContextClass(clazz);
-		enhancer.setCallback(new JsonPointerMethodInterceptor(clazz, jsonNode));
+		// 如果类上有 JsonPointer 注解
+		JsonPointer jsonPointer = AnnotationUtils.getAnnotation(clazz, JsonPointer.class);
+		MethodInterceptor interceptor;
+		if (jsonPointer != null) {
+			interceptor = new JsonPointerMethodInterceptor(clazz, jsonNode.at(jsonPointer.value()));
+		} else {
+			interceptor = new JsonPointerMethodInterceptor(clazz, jsonNode);
+		}
+		enhancer.setCallback(interceptor);
 		return (T) enhancer.create();
 	}
 

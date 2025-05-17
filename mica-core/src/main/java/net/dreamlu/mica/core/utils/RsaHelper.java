@@ -24,7 +24,7 @@
 
 package net.dreamlu.mica.core.utils;
 
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;

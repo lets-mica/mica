@@ -20,7 +20,6 @@ import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -31,7 +30,6 @@ import java.util.concurrent.CopyOnWriteArraySet;
  *
  * @author L.cm
  */
-@ParametersAreNonnullByDefault
 public class InMemoryCookieManager implements CookieJar {
 	private final Set<Cookie> cookieSet;
 

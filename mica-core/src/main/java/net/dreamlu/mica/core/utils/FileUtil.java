@@ -16,7 +16,7 @@
 
 package net.dreamlu.mica.core.utils;
 
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.util.*;
 import org.springframework.web.multipart.MultipartFile;
 

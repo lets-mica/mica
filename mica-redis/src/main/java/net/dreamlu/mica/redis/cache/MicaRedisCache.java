@@ -19,11 +19,11 @@ package net.dreamlu.mica.redis.cache;
 import lombok.Getter;
 import net.dreamlu.mica.core.utils.CollectionUtil;
 import net.dreamlu.mica.core.utils.JsonUtil;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Range;
 import org.springframework.data.redis.connection.*;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.lang.Nullable;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;

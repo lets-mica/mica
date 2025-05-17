@@ -18,9 +18,9 @@ package net.dreamlu.mica.redis.cache;
 
 import net.dreamlu.mica.core.utils.StringPool;
 import net.dreamlu.mica.core.utils.StringUtil;
+import org.jspecify.annotations.Nullable;
 import org.springframework.util.ObjectUtils;
 
-import javax.annotation.Nullable;
 import java.time.Duration;
 
 /**

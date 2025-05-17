@@ -20,7 +20,6 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
@@ -29,7 +28,6 @@ import java.util.concurrent.CompletableFuture;
  *
  * @author L.cm
  */
-@ParametersAreNonnullByDefault
 public class CompletableCallback implements Callback {
 	private final CompletableFuture<ResponseSpec> future;
 

@@ -14,17 +14,7 @@
  * limitations under the License.
  */
 
-/**
- * Hystrix 默认 fallback
- *
- * DefaultProperties: https://github.com/Netflix/Hystrix/issues/1446
- *
- * @author L.cm
- */
+@NullMarked
+package net.dreamlu.mica.http;
 
-@NonNullApi
-@NonNullFields
-package net.dreamlu.mica.core.io;
-
-import org.springframework.lang.NonNullApi;
-import org.springframework.lang.NonNullFields;
+import org.jspecify.annotations.NullMarked;

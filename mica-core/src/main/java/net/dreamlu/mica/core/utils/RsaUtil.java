@@ -17,7 +17,7 @@
 package net.dreamlu.mica.core.utils;
 
 import net.dreamlu.mica.core.tuple.KeyPair;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.util.FastByteArrayOutputStream;
 
 import javax.crypto.Cipher;

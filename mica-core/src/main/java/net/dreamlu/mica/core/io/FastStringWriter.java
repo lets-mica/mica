@@ -16,7 +16,7 @@
 
 package net.dreamlu.mica.core.io;
 
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.io.Writer;
 

@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+@NullMarked
 package net.dreamlu.mica.redis.pubsub;
+
+import org.jspecify.annotations.NullMarked;

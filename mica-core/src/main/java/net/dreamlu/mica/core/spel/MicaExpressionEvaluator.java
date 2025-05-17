@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.core.spel;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.expression.AnnotatedElementKey;
@@ -24,7 +25,6 @@ import org.springframework.context.expression.CachedExpressionEvaluator;
 import org.springframework.context.expression.MethodBasedEvaluationContext;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
-import org.springframework.lang.Nullable;
 
 import java.lang.reflect.Method;
 import java.util.Map;

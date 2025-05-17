@@ -16,9 +16,9 @@
 
 package net.dreamlu.mica.core.convert;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.format.support.DefaultFormattingConversionService;
-import org.springframework.lang.Nullable;
 
 /**
  * 类型 转换 服务，添加了 IEnum 转换

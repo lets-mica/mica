@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.utils.ReflectUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.Topic;
@@ -32,15 +33,14 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Method;
 
 /**
- * Redisson 监听器
+ * redis 监听器
  *
  * @author L.cm
  */
 @Slf4j
 @RequiredArgsConstructor
 public class RPubSubListenerDetector implements BeanPostProcessor {
-	private final RedisMessageListenerContainer redisMessageListenerContainer;
-	private final RedisSerializer<Object> redisSerializer;
+	private final ApplicationContext applicationContext;
 
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
@@ -59,6 +59,10 @@ public class RPubSubListenerDetector implements BeanPostProcessor {
 				}
 				// 精准模式和模糊匹配模式
 				Topic topic = ChannelUtil.getTopic(channel);
+				// 获取参数
+				RedisMessageListenerContainer redisMessageListenerContainer = getRedisMessageListenerContainer();
+				RedisSerializer<?> redisSerializer = getRedisSerializer();
+				// 添加到监听器处理
 				redisMessageListenerContainer.addMessageListener((message, pattern) -> {
 					String messageChannel = new String(message.getChannel());
 					Object body = redisSerializer.deserialize(message.getBody());
@@ -76,6 +80,14 @@ public class RPubSubListenerDetector implements BeanPostProcessor {
 		} else {
 			ReflectUtil.invokeMethod(method, bean, topicEvent);
 		}
+	}
+
+	private RedisMessageListenerContainer getRedisMessageListenerContainer() {
+		return applicationContext.getBean(RedisMessageListenerContainer.class);
+	}
+
+	private RedisSerializer<?> getRedisSerializer() {
+		return applicationContext.getBean(RedisSerializer.class);
 	}
 
 }

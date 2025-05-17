@@ -18,6 +18,7 @@ package net.dreamlu.mica.http;
 
 import lombok.RequiredArgsConstructor;
 import okhttp3.*;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -33,7 +34,7 @@ public class BaseAuthenticator implements Authenticator {
 	private final String password;
 
 	@Override
-	public Request authenticate(Route route, Response response) throws IOException {
+	public Request authenticate(@Nullable Route route, Response response) throws IOException {
 		String credential = Credentials.basic(userName, password, StandardCharsets.UTF_8);
 		return response.request().newBuilder()
 			.header("Authorization", credential)

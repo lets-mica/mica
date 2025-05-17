@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import net.dreamlu.mica.core.exception.ServiceException;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -49,14 +49,15 @@ public class R<T> implements Serializable {
 	private static final long serialVersionUID = -1160662278280275915L;
 
 	@ApiModelProperty(value = "code值", required = true)
-	@Schema(description = "code值")
+	@Schema(description = "code值", requiredMode = Schema.RequiredMode.REQUIRED)
 	private int code;
 	@ApiModelProperty(value = "是否成功", required = true)
-	@Schema(description = "是否成功")
+	@Schema(description = "是否成功", requiredMode = Schema.RequiredMode.REQUIRED)
 	private boolean success;
 	@ApiModelProperty(value = "消息", required = true)
-	@Schema(description = "消息")
+	@Schema(description = "消息", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String msg;
+	@Nullable
 	@Valid
 	@ApiModelProperty("返回对象")
 	@Schema(description = "返回对象")
@@ -70,11 +71,11 @@ public class R<T> implements Serializable {
 		this(resultCode, msg, null);
 	}
 
-	private R(IResultCode resultCode, T data) {
+	private R(IResultCode resultCode, @Nullable T data) {
 		this(resultCode, resultCode.getMsg(), data);
 	}
 
-	private R(IResultCode resultCode, String msg, T data) {
+	private R(IResultCode resultCode, String msg, @Nullable T data) {
 		this.code = resultCode.getCode();
 		this.msg = msg;
 		this.data = data;

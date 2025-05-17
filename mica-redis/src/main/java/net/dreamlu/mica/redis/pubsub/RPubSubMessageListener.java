@@ -14,7 +14,26 @@
  * limitations under the License.
  */
 
-@NullMarked
-package net.dreamlu.mica.mongo.converter;
+package net.dreamlu.mica.redis.pubsub;
 
-import org.jspecify.annotations.NullMarked;
+import org.springframework.data.redis.connection.MessageListener;
+import org.springframework.data.redis.listener.Topic;
+
+import java.util.List;
+
+/**
+ * 消息监听器
+ *
+ * @see org.springframework.data.redis.listener.adapter.MessageListenerAdapter
+ */
+public interface RPubSubMessageListener extends MessageListener {
+
+	/**
+	 * 获取订阅的 topic
+	 *
+	 * @return topic
+	 * @see org.springframework.data.redis.listener.ChannelTopic
+	 * @see org.springframework.data.redis.listener.PatternTopic
+	 */
+	List<Topic> getTopics();
+}

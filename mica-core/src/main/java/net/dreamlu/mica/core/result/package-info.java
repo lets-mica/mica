@@ -15,6 +15,6 @@
  */
 
 @NullMarked
-package net.dreamlu.mica.mongo.converter;
+package net.dreamlu.mica.core.result;
 
 import org.jspecify.annotations.NullMarked;

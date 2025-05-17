@@ -18,6 +18,7 @@ package net.dreamlu.mica.redis.config;
 
 import net.dreamlu.mica.core.utils.CharPool;
 import net.dreamlu.mica.core.utils.StringPool;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
@@ -33,7 +34,6 @@ import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.lang.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.List;

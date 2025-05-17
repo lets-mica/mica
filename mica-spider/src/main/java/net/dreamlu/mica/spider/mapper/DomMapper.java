@@ -24,6 +24,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -170,7 +171,7 @@ public class DomMapper {
 	 * @return 对象列表
 	 */
 	public static <T> List<T> readList(Element doc, Class<T> clazz) {
-		CssQuery annotation = clazz.getAnnotation(CssQuery.class);
+		CssQuery annotation = AnnotationUtils.getAnnotation(clazz, CssQuery.class);
 		if (annotation == null) {
 			throw new IllegalArgumentException("DomMapper readList " + clazz + " mast has annotation @CssQuery.");
 		}
