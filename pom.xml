@@ -48,7 +48,7 @@
         <swagger.version>1.6.16</swagger.version>
         <swagger3x.version>2.2.32</swagger3x.version>
         <jsoup.version>1.20.1</jsoup.version>
-        <knife4j.version>4.4.0</knife4j.version>
+        <knife4j.version>4.5.0</knife4j.version>
         <xxl.job.version>3.1.0</xxl.job.version>
         <druid.version>1.2.25</druid.version>
         <jfinal.version>5.2.2</jfinal.version>
