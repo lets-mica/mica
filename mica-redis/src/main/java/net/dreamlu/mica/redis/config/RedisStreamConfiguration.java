@@ -16,10 +16,6 @@
 
 package net.dreamlu.mica.redis.config;
 
-import net.dreamlu.mica.core.constant.MicaConstant;
-import net.dreamlu.mica.core.utils.CharPool;
-import net.dreamlu.mica.core.utils.INetUtil;
-import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.redis.stream.DefaultRStreamTemplate;
 import net.dreamlu.mica.redis.stream.RStreamListenerDetector;
 import net.dreamlu.mica.redis.stream.RStreamListenerLazyFilter;
@@ -28,10 +24,8 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.stream.MapRecord;
 import org.springframework.data.redis.core.RedisTemplate;
