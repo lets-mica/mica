@@ -46,6 +46,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 @AutoConfiguration(after = RedisAutoConfiguration.class)
 @EnableConfigurationProperties(MicaRedisProperties.class)
 public class RedisTemplateConfiguration {
+	public static final String REDIS_TEMPLATE_BEAN_NAME = "micaRedisTemplate";
 
 	/**
 	 * 默认的 redis key 处理
@@ -87,7 +88,7 @@ public class RedisTemplateConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name = "micaRedisTemplate")
+	@ConditionalOnMissingBean(name = REDIS_TEMPLATE_BEAN_NAME)
 	@ConditionalOnSingleCandidate(RedisConnectionFactory.class)
 	public RedisTemplate<String, Object> micaRedisTemplate(RedisConnectionFactory redisConnectionFactory,
 														   RedisKeyResolver redisKeyResolver,

@@ -16,13 +16,23 @@
 
 package net.dreamlu.mica.redis.stream;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.core.constant.MicaConstant;
+import net.dreamlu.mica.core.utils.CharPool;
+import net.dreamlu.mica.core.utils.INetUtil;
 import net.dreamlu.mica.core.utils.ReflectUtil;
 import net.dreamlu.mica.core.utils.StringUtil;
+import net.dreamlu.mica.redis.config.MicaRedisProperties;
+import net.dreamlu.mica.redis.config.RedisTemplateConfiguration;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.RedisSystemException;
 import org.springframework.data.redis.connection.stream.*;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -43,21 +53,11 @@ import java.util.function.Predicate;
  * @author L.cm
  */
 @Slf4j
-public class RStreamListenerDetector implements BeanPostProcessor, InitializingBean {
+@RequiredArgsConstructor
+public class RStreamListenerDetector implements BeanPostProcessor, SmartInitializingSingleton {
 	// redis 重连等会触发异常，异常时不取消订阅
 	private static final Predicate<Throwable> CANCEL_SUBSCRIPTION_ON_ERROR = t -> false;
-	private final StreamMessageListenerContainer<String, MapRecord<String, String, byte[]>> streamMessageListenerContainer;
-	private final RedisTemplate<String, Object> redisTemplate;
-	private final String consumerGroup;
-	private final String consumerName;
-
-	public RStreamListenerDetector(StreamMessageListenerContainer<String, MapRecord<String, String, byte[]>> streamMessageListenerContainer,
-								   RedisTemplate<String, Object> redisTemplate, String consumerGroup, String consumerName) {
-		this.streamMessageListenerContainer = streamMessageListenerContainer;
-		this.redisTemplate = redisTemplate;
-		this.consumerGroup = consumerGroup;
-		this.consumerName = consumerName;
-	}
+	private final ApplicationContext applicationContext;
 
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
@@ -81,10 +81,12 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 				if (MessageModel.BROADCASTING == messageModel) {
 					broadCast(streamOffset, bean, method, listener.readRawBytes());
 				} else {
+					String consumerGroup = getConsumerGroup();
 					String groupId = StringUtil.isNotBlank(listener.group()) ? listener.group() : consumerGroup;
+					String consumerName = getConsumerName();
 					Consumer consumer = Consumer.from(groupId, consumerName);
 					// 如果需要，创建 group
-					createGroupIfNeed(redisTemplate, streamKey, readOffset, groupId);
+					createGroupIfNeed(streamKey, readOffset, groupId);
 					cluster(consumer, streamOffset, listener, bean, method);
 				}
 			}
@@ -98,9 +100,9 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 			// 重连会触发异常
 			.cancelOnError(CANCEL_SUBSCRIPTION_ON_ERROR)
 			.build();
-		streamMessageListenerContainer.register(streamReadRequest, (message) -> {
+		getStreamMessageListenerContainer().register(streamReadRequest, (message) -> {
 			// MapBackedRecord
-			invokeMethod(bean, method, message, isReadRawBytes);
+			invokeMethod(getRedisTemplate(), bean, method, message, isReadRawBytes);
 		});
 	}
 
@@ -113,10 +115,11 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 			// 重连会触发异常
 			.cancelOnError(CANCEL_SUBSCRIPTION_ON_ERROR)
 			.build();
+		RedisTemplate<String, Object> redisTemplate = getRedisTemplate();
 		StreamOperations<String, Object, Object> opsForStream = redisTemplate.opsForStream();
-		streamMessageListenerContainer.register(readRequest, (message) -> {
+		getStreamMessageListenerContainer().register(readRequest, (message) -> {
 			// MapBackedRecord
-			invokeMethod(bean, method, message, listener.readRawBytes());
+			invokeMethod(redisTemplate, bean, method, message, listener.readRawBytes());
 			// ack
 			if (!autoAcknowledge) {
 				opsForStream.acknowledge(consumer.getGroup(), message);
@@ -124,7 +127,8 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 		});
 	}
 
-	private static void createGroupIfNeed(RedisTemplate<String, Object> redisTemplate, String streamKey, ReadOffset readOffset, String group) {
+	private void createGroupIfNeed(String streamKey, ReadOffset readOffset, String group) {
+		RedisTemplate<String, Object> redisTemplate = getRedisTemplate();
 		StreamOperations<String, Object, Object> opsForStream = redisTemplate.opsForStream();
 		try {
 			StreamInfo.XInfoGroups groups = opsForStream.groups(streamKey);
@@ -137,7 +141,9 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 		}
 	}
 
-	private void invokeMethod(Object bean, Method method, MapRecord<String, String, byte[]> mapRecord, boolean isReadRawBytes) {
+	private void invokeMethod(RedisTemplate<String, Object> redisTemplate,
+							  Object bean, Method method,
+							  MapRecord<String, String, byte[]> mapRecord, boolean isReadRawBytes) {
 		// 支持没有参数的方法
 		if (method.getParameterCount() == 0) {
 			ReflectUtil.invokeMethod(method, bean);
@@ -146,11 +152,12 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 		if (isReadRawBytes) {
 			ReflectUtil.invokeMethod(method, bean, mapRecord);
 		} else {
-			ReflectUtil.invokeMethod(method, bean, getRecordValue(mapRecord));
+			ReflectUtil.invokeMethod(method, bean, getRecordValue(redisTemplate, mapRecord));
 		}
 	}
 
-	private Object getRecordValue(MapRecord<String, String, byte[]> mapRecord) {
+	private Object getRecordValue(RedisTemplate<String, Object> redisTemplate,
+								  MapRecord<String, String, byte[]> mapRecord) {
 		Map<String, byte[]> messageValue = mapRecord.getValue();
 		if (messageValue.containsKey(RStreamTemplate.OBJECT_PAYLOAD_KEY)) {
 			byte[] payloads = messageValue.get(RStreamTemplate.OBJECT_PAYLOAD_KEY);
@@ -165,9 +172,60 @@ public class RStreamListenerDetector implements BeanPostProcessor, InitializingB
 		}
 	}
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		streamMessageListenerContainer.start();
+	private MicaRedisProperties getMicaRedisProperties() {
+		return applicationContext.getBean(MicaRedisProperties.class);
 	}
 
+	private ObjectProvider<ServerProperties> getServerPropertiesObjectProvider() {
+		return applicationContext.getBeanProvider(ServerProperties.class);
+	}
+
+	private RedisTemplate<String, Object> getRedisTemplate() {
+		return applicationContext.getBean(RedisTemplateConfiguration.REDIS_TEMPLATE_BEAN_NAME, RedisTemplate.class);
+	}
+
+	private StreamMessageListenerContainer<String, MapRecord<String, String, byte[]>> getStreamMessageListenerContainer() {
+		return applicationContext.getBean(StreamMessageListenerContainer.class);
+	}
+
+	/**
+	 * 获取消费组名
+	 *
+	 * @return 消费组
+	 */
+	private String getConsumerGroup() {
+		MicaRedisProperties properties = getMicaRedisProperties();
+		MicaRedisProperties.Stream streamProperties = properties.getStream();
+		// 消费组名称
+		String consumerGroup = streamProperties.getConsumerGroup();
+		Environment environment = applicationContext.getEnvironment();
+		if (StringUtil.isBlank(consumerGroup)) {
+			String appName = environment.getRequiredProperty(MicaConstant.SPRING_APP_NAME_KEY);
+			String profile = environment.getProperty(MicaConstant.ACTIVE_PROFILES_PROPERTY);
+			return StringUtil.isBlank(profile) ? appName : appName + CharPool.COLON + profile;
+		}
+		return consumerGroup;
+	}
+
+	private String getConsumerName() {
+		MicaRedisProperties properties = getMicaRedisProperties();
+		MicaRedisProperties.Stream streamProperties = properties.getStream();
+		// 消费者名称
+		ObjectProvider<ServerProperties> serverPropertiesObjectProvider = getServerPropertiesObjectProvider();
+		String consumerName = streamProperties.getConsumerName();
+		if (StringUtil.isBlank(consumerName)) {
+			final StringBuilder consumerNameBuilder = new StringBuilder(INetUtil.getHostIp());
+			serverPropertiesObjectProvider.ifAvailable(serverProperties -> {
+				consumerNameBuilder.append(CharPool.COLON).append(serverProperties.getPort());
+			});
+			return consumerNameBuilder.toString();
+		}
+		return consumerName;
+	}
+
+	@Override
+	public void afterSingletonsInstantiated() {
+		// 启动 streamMessageListenerContainer
+		getStreamMessageListenerContainer().start();
+	}
 }

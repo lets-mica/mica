@@ -29,6 +29,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -90,29 +91,8 @@ public class RedisStreamConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public RStreamListenerDetector streamListenerDetector(StreamMessageListenerContainer<String, MapRecord<String, String, byte[]>> streamMessageListenerContainer,
-														  RedisTemplate<String, Object> redisTemplate,
-														  ObjectProvider<ServerProperties> serverPropertiesObjectProvider,
-														  MicaRedisProperties properties,
-														  Environment environment) {
-		MicaRedisProperties.Stream streamProperties = properties.getStream();
-		// 消费组名称
-		String consumerGroup = streamProperties.getConsumerGroup();
-		if (StringUtil.isBlank(consumerGroup)) {
-			String appName = environment.getRequiredProperty(MicaConstant.SPRING_APP_NAME_KEY);
-			String profile = environment.getProperty(MicaConstant.ACTIVE_PROFILES_PROPERTY);
-			consumerGroup = StringUtil.isBlank(profile) ? appName : appName + CharPool.COLON + profile;
-		}
-		// 消费者名称
-		String consumerName = streamProperties.getConsumerName();
-		if (StringUtil.isBlank(consumerName)) {
-			final StringBuilder consumerNameBuilder = new StringBuilder(INetUtil.getHostIp());
-			serverPropertiesObjectProvider.ifAvailable(serverProperties -> {
-				consumerNameBuilder.append(CharPool.COLON).append(serverProperties.getPort());
-			});
-			consumerName = consumerNameBuilder.toString();
-		}
-		return new RStreamListenerDetector(streamMessageListenerContainer, redisTemplate, consumerGroup, consumerName);
+	public static RStreamListenerDetector streamListenerDetector(ApplicationContext applicationContext) {
+		return new RStreamListenerDetector(applicationContext);
 	}
 
 	@Bean
