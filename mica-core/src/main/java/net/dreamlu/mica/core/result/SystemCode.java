@@ -17,6 +17,7 @@
 package net.dreamlu.mica.core.result;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 @ApiModel(description = "系统内置code")
+@Schema(description = "系统内置code")
 public enum SystemCode implements IResultCode {
 	/**
 	 * 系统未知异常
