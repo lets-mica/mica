@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.core.result;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -61,6 +62,7 @@ public class R<T> implements Serializable {
 	@Valid
 	@ApiModelProperty("返回对象")
 	@Schema(description = "返回对象")
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private T data;
 
 	private R(IResultCode resultCode) {

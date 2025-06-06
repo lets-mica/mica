@@ -45,6 +45,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentConversionNotSupportedException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Set;
 
@@ -99,6 +100,13 @@ public class RestExceptionTranslator {
 	public R<Object> handleError(ConstraintViolationException e) {
 		log.warn("参数验证失败:{}", e.getMessage());
 		return handleError(e.getConstraintViolations());
+	}
+
+	@ExceptionHandler(NoResourceFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public R<Object> handleError(NoResourceFoundException e) {
+		log.error("resource 静态资源没找到:{}", e.getMessage());
+		return R.fail(SystemCode.NOT_FOUND, e.getMessage());
 	}
 
 	@ExceptionHandler(NoHandlerFoundException.class)
