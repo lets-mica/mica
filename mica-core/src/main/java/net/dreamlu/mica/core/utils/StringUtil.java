@@ -550,7 +550,8 @@ public class StringUtil extends org.springframework.util.StringUtils {
 		random.nextBytes(randomBytes);
 		int mask = radix - 1;
 		for (int i = 0; i < len; i++) {
-			randomBytes[i] = NumberUtil.DIGITS[(randomBytes[i] & 0xff) & mask];
+			int value = randomBytes[i] & 0xff;
+			randomBytes[i] = NumberUtil.DIGITS[value % mask];
 		}
 		return new String(randomBytes, StandardCharsets.ISO_8859_1);
 	}
