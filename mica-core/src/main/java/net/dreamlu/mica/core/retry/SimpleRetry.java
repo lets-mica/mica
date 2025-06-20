@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.core.retry;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.core.utils.ThreadUtil;
@@ -28,6 +29,7 @@ import java.io.IOException;
  * @author L.cm
  */
 @Slf4j
+@Getter
 public final class SimpleRetry implements IRetry {
 	/**
 	 * The default limit to the number of attempts for a new policy.
@@ -58,14 +60,6 @@ public final class SimpleRetry implements IRetry {
 	public SimpleRetry(int maxAttempts, long sleepMillis) {
 		this.maxAttempts = maxAttempts;
 		this.sleepMillis = (sleepMillis > 0 ? sleepMillis : 1);
-	}
-
-	public int getMaxAttempts() {
-		return maxAttempts;
-	}
-
-	public long getSleepMillis() {
-		return sleepMillis;
 	}
 
 	@Override
