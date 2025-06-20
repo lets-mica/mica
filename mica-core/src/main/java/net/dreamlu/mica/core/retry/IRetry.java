@@ -23,6 +23,7 @@ import net.dreamlu.mica.core.function.CheckedCallable;
  *
  * @author L.cm
  */
+@FunctionalInterface
 public interface IRetry {
 
 	/**
