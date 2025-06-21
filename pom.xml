@@ -37,7 +37,7 @@
         <!-- java version -->
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven-flatten.version>1.7.0</maven-flatten.version>
+        <maven-flatten.version>1.7.1</maven-flatten.version>
         <maven-compiler.version>3.14.0</maven-compiler.version>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
