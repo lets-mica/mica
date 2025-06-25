@@ -102,8 +102,7 @@ public class AesUtil {
 		return new String(hexBytes, StandardCharsets.UTF_8);
 	}
 
-	@Nullable
-	public static byte[] decryptFormHex(@Nullable String content, String aesTextKey) {
+	public static byte @Nullable [] decryptFormHex(@Nullable String content, String aesTextKey) {
 		if (StringUtil.isBlank(content)) {
 			return null;
 		}
@@ -123,8 +122,7 @@ public class AesUtil {
 		return new String(hexBytes, StandardCharsets.UTF_8);
 	}
 
-	@Nullable
-	public static byte[] decryptFormBase64(@Nullable String content, String aesTextKey) {
+	public static byte @Nullable [] decryptFormBase64(@Nullable String content, String aesTextKey) {
 		if (StringUtil.isBlank(content)) {
 			return null;
 		}

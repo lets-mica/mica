@@ -129,7 +129,7 @@ public class CountMap {
 	 * @return 返回数据大小
 	 */
 	public int size() {
-		return this.data.keySet().size();
+		return this.data.size();
 	}
 
 	/**

@@ -120,6 +120,7 @@ public class HexUtil {
 	 * @param charset Charset
 	 * @return bytes as a hex string
 	 */
+	@Nullable
 	public static String encodeToString(String data, Charset charset) {
 		return encodeToString(data, charset, charset);
 	}
@@ -132,6 +133,7 @@ public class HexUtil {
 	 * @param toCharset   Charset
 	 * @return bytes as a hex string
 	 */
+	@Nullable
 	public static String encodeToString(String data, Charset dataCharset, Charset toCharset) {
 		if (StringUtil.isBlank(data)) {
 			return null;
@@ -145,7 +147,7 @@ public class HexUtil {
 	 * @param data Hex data
 	 * @return decode hex to bytes
 	 */
-	public static byte[] decode(String data) {
+	public static byte @Nullable [] decode(String data) {
 		return decode(data, StandardCharsets.UTF_8);
 	}
 
@@ -156,7 +158,7 @@ public class HexUtil {
 	 * @param charset Charset
 	 * @return decode hex to bytes
 	 */
-	public static byte[] decode(String data, Charset charset) {
+	public static byte @Nullable [] decode(String data, Charset charset) {
 		if (StringUtil.isBlank(data)) {
 			return null;
 		}
@@ -207,6 +209,7 @@ public class HexUtil {
 	 * @param charset Charset
 	 * @return bytes as a hex string
 	 */
+	@Nullable
 	public static String decodeToString(String data, Charset charset) {
 		return decodeToString(data, charset, charset);
 	}
@@ -219,6 +222,7 @@ public class HexUtil {
 	 * @param toCharset   Charset
 	 * @return bytes as a hex string
 	 */
+	@Nullable
 	public static String decodeToString(String data, Charset dataCharset, Charset toCharset) {
 		if (StringUtil.isBlank(data)) {
 			return null;
