@@ -415,9 +415,7 @@ public class HttpRequest {
 
 	private static HttpLoggingInterceptor getLoggingInterceptor(HttpLoggingInterceptor.Logger httpLogger,
 																LogLevel level) {
-		HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(httpLogger);
-		loggingInterceptor.setLevel(level);
-		return loggingInterceptor;
+		return new HttpLoggingInterceptor(httpLogger, level);
 	}
 
 	public HttpRequest useSlf4jLog() {

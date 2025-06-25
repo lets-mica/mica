@@ -23,12 +23,12 @@ import okhttp3.internal.platform.Platform;
 import okio.Buffer;
 import okio.BufferedSource;
 import okio.GzipSource;
+import org.jspecify.annotations.Nullable;
 
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static okhttp3.internal.platform.Platform.INFO;
@@ -63,18 +63,9 @@ public final class HttpLoggingInterceptor implements Interceptor {
 		};
 	}
 
-	public HttpLoggingInterceptor(Logger logger) {
-		this.logger = logger;
-	}
-
-	/**
-	 * Change the level at which this interceptor logs.
-	 * @param level log Level
-	 * @return HttpLoggingInterceptor
-	 */
-	public HttpLoggingInterceptor setLevel(LogLevel level) {
-		this.level = Objects.requireNonNull(level, "level == null. Use Level.NONE instead.");
-		return this;
+	public HttpLoggingInterceptor(@Nullable Logger logger, @Nullable LogLevel level) {
+		this.logger = logger == null ? Logger.DEFAULT : logger;
+		this.level = level == null ? LogLevel.NONE : level;
 	}
 
 	@Override
