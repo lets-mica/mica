@@ -21,12 +21,12 @@ import net.dreamlu.mica.core.utils.StringPool;
 import org.jspecify.annotations.Nullable;
 import org.springframework.boot.convert.DurationStyle;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
-import org.springframework.util.ReflectionUtils;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.lang.reflect.Field;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.Objects;
 
 /**
  * caffeine 缓存自动配置超时时间
@@ -34,11 +34,18 @@ import java.util.Objects;
  * @author L.cm
  */
 public class CaffeineAutoCacheManager extends CaffeineCacheManager {
-	private static final Field CACHE_LOADER_FIELD;
+	private static final VarHandle CACHE_LOADER_VAR_HANDLE;
 
 	static {
-		CACHE_LOADER_FIELD = Objects.requireNonNull(ReflectionUtils.findField(CaffeineCacheManager.class, "cacheLoader"));
-		ReflectionUtils.makeAccessible(CACHE_LOADER_FIELD);
+		try {
+			// 1. 获取 MethodHandles.Lookup 实例（需要模块访问权限）
+			MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(CaffeineCacheManager.class, MethodHandles.lookup());
+			// 2. 找到字段并创建 VarHandle
+			Field cacheLoaderField = CaffeineCacheManager.class.getDeclaredField("cacheLoader");
+			CACHE_LOADER_VAR_HANDLE = lookup.unreflectVarHandle(cacheLoaderField);
+		} catch (IllegalAccessException | NoSuchFieldException e) {
+			throw new IllegalStateException("Failed to initialize CaffeineAutoCacheManager", e);
+		}
 	}
 
 	@Nullable
@@ -55,7 +62,7 @@ public class CaffeineAutoCacheManager extends CaffeineCacheManager {
 	@Nullable
 	@SuppressWarnings("unchecked")
 	protected AsyncCacheLoader<Object, Object> getCacheLoader() {
-		return (AsyncCacheLoader<Object, Object>) ReflectionUtils.getField(CACHE_LOADER_FIELD, this);
+		return (AsyncCacheLoader<Object, Object>) CACHE_LOADER_VAR_HANDLE.get(this);
 	}
 
 	@Override
