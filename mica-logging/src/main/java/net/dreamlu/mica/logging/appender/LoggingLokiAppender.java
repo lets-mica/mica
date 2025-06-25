@@ -72,50 +72,45 @@ public class LoggingLokiAppender implements ILoggingAppender {
 	}
 
 	private void addLokiAppender(LoggerContext context, MicaLoggingProperties.Loki properties) {
+		// appender 配置
 		Loki4jAppender lokiAppender = new Loki4jAppender();
 		lokiAppender.setName(APPENDER_NAME);
 		lokiAppender.setContext(context);
-		// 通用配置
-		lokiAppender.setBatchMaxItems(properties.getBatchMaxItems());
-		lokiAppender.setBatchMaxBytes(properties.getBatchMaxBytes());
-		lokiAppender.setBatchTimeoutMs(properties.getBatchTimeoutMs());
-		lokiAppender.setSendQueueMaxBytes(properties.getSendQueueMaxBytes());
-		lokiAppender.setUseDirectBuffers(properties.isUseDirectBuffers());
-		lokiAppender.setDrainOnStop(properties.isDrainOnStop());
+		lokiAppender.setHttp(getHttpCfg(properties));
+		lokiAppender.setBatch(getBatchCfg(properties));
 		lokiAppender.setMetricsEnabled(properties.isMetricsEnabled());
 		lokiAppender.setVerbose(properties.isVerbose());
 		// format
-		Loki4jEncoder loki4jEncoder = getFormat(context, properties);
-		lokiAppender.setFormat(loki4jEncoder);
-		// http
-		lokiAppender.setHttp(getSender(properties));
+		lokiAppender.setLabels(formatLabelPatternHandle(context, properties));
+		lokiAppender.setStructuredMetadata(properties.getStructuredMetadataPattern());
 		lokiAppender.start();
 		// 先删除，再添加
 		context.getLogger(Logger.ROOT_LOGGER_NAME).detachAppender(APPENDER_NAME);
 		context.getLogger(Logger.ROOT_LOGGER_NAME).addAppender(lokiAppender);
 	}
 
-	private Loki4jEncoder getFormat(LoggerContext context,
-									MicaLoggingProperties.Loki properties) {
-		MicaLoggingProperties.LokiEncoder encoder = properties.getEncoder();
-		AbstractLoki4jEncoder loki4jEncoder = MicaLoggingProperties.LokiEncoder.ProtoBuf == encoder ?
-			new ProtobufEncoder() : new JsonEncoder();
-		// label config
-		AbstractLoki4jEncoder.LabelCfg labelCfg = new AbstractLoki4jEncoder.LabelCfg();
-		labelCfg.setPattern(formatLabelPatternHandle(context, properties));
-		labelCfg.setPairSeparator(properties.getFormatLabelPairSeparator());
-		labelCfg.setKeyValueSeparator(properties.getFormatLabelKeyValueSeparator());
-		loki4jEncoder.setLabel(labelCfg);
-		// 其他配置
-		loki4jEncoder.setStaticLabels(properties.isFormatStaticLabels());
-		loki4jEncoder.setContext(context);
-		loki4jEncoder.start();
-		return loki4jEncoder;
-	}
-
-	private static HttpSender getSender(MicaLoggingProperties.Loki properties) {
+	private static PipelineConfigAppenderBase.HttpCfg getHttpCfg(MicaLoggingProperties.Loki properties) {
+		// http 配置
+		PipelineConfigAppenderBase.HttpCfg httpCfg = new PipelineConfigAppenderBase.HttpCfg();
+		httpCfg.setUrl(properties.getHttpUrl());
+		httpCfg.setTenantId(properties.getHttpTenantId());
+		httpCfg.setConnectionTimeoutMs(properties.getHttpConnectionTimeoutMs());
+		httpCfg.setRequestTimeoutMs(properties.getHttpRequestTimeoutMs());
+		httpCfg.setUseProtobufApi(true);
+		// 认证配置
+		String authUsername = properties.getHttpAuthUsername();
+		String authPassword = properties.getHttpAuthPassword();
+		if (StringUtil.isNotBlank(authUsername) && StringUtil.isNotBlank(authPassword)) {
+			PipelineConfigAppenderBase.BasicAuth basicAuth = new PipelineConfigAppenderBase.BasicAuth();
+			basicAuth.setUsername(authUsername);
+			basicAuth.setPassword(authPassword);
+			httpCfg.setAuth(basicAuth);
+		}
+		// json or Protobuf
+		httpCfg.setUseProtobufApi(MicaLoggingProperties.LokiEncoder.ProtoBuf == properties.getEncoder());
+		// http sender
+		HttpSender httpSender;
 		MicaLoggingProperties.HttpSender httpSenderType = getHttpSender(properties);
-		AbstractHttpSender httpSender;
 		if (MicaLoggingProperties.HttpSender.OKHttp == httpSenderType) {
 			httpSender = new Loki4jOkHttpSender();
 		} else if (MicaLoggingProperties.HttpSender.ApacheHttp == httpSenderType) {
@@ -123,19 +118,20 @@ public class LoggingLokiAppender implements ILoggingAppender {
 		} else {
 			httpSender = new JavaHttpSender();
 		}
-		httpSender.setUrl(properties.getHttpUrl());
-		httpSender.setConnectionTimeoutMs(properties.getHttpConnectionTimeoutMs());
-		httpSender.setRequestTimeoutMs(properties.getHttpRequestTimeoutMs());
-		String authUsername = properties.getHttpAuthUsername();
-		String authPassword = properties.getHttpAuthPassword();
-		if (StringUtil.isNotBlank(authUsername) && StringUtil.isNotBlank(authPassword)) {
-			AbstractHttpSender.BasicAuth basicAuth = new AbstractHttpSender.BasicAuth();
-			basicAuth.setUsername(authUsername);
-			basicAuth.setPassword(authPassword);
-			httpSender.setAuth(basicAuth);
-		}
-		httpSender.setTenantId(properties.getHttpTenantId());
-		return httpSender;
+		httpCfg.setSender(httpSender);
+		return httpCfg;
+	}
+
+	private static PipelineConfigAppenderBase.BatchCfg getBatchCfg(MicaLoggingProperties.Loki properties) {
+		PipelineConfigAppenderBase.BatchCfg batchCfg = new PipelineConfigAppenderBase.BatchCfg();
+		batchCfg.setMaxItems(properties.getBatchMaxItems());
+		batchCfg.setMaxBytes(properties.getBatchMaxBytes());
+		batchCfg.setTimeoutMs(properties.getBatchTimeoutMs());
+		batchCfg.setSendQueueMaxBytes(properties.getSendQueueMaxBytes());
+		batchCfg.setUseDirectBuffers(properties.isUseDirectBuffers());
+		batchCfg.setDrainOnStop(properties.isDrainOnStop());
+		batchCfg.setStaticLabels(properties.isFormatStaticLabels());
+		return batchCfg;
 	}
 
 	private String formatLabelPatternHandle(LoggerContext context, MicaLoggingProperties.Loki properties) {

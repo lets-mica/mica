@@ -18,7 +18,7 @@ package net.dreamlu.mica.logging.loki;
 
 import com.github.loki4j.client.http.HttpConfig;
 import com.github.loki4j.client.http.Loki4jHttpClient;
-import com.github.loki4j.logback.AbstractHttpSender;
+import com.github.loki4j.logback.HttpSender;
 
 import java.util.function.Function;
 
@@ -27,7 +27,7 @@ import java.util.function.Function;
  *
  * @author L.cm
  */
-public class Loki4jOkHttpSender extends AbstractHttpSender {
+public class Loki4jOkHttpSender implements HttpSender {
 
 	@Override
 	public Function<HttpConfig, Loki4jHttpClient> getHttpClientFactory() {
@@ -36,8 +36,6 @@ public class Loki4jOkHttpSender extends AbstractHttpSender {
 
 	@Override
 	public HttpConfig.Builder getConfig() {
-		HttpConfig.Builder builder = HttpConfig.builder();
-		super.fillHttpConfig(builder);
-		return builder;
+		return HttpConfig.builder();
 	}
 }

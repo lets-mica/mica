@@ -138,15 +138,8 @@ public class MicaLoggingProperties {
 		 * format 标签扩展
 		 */
 		private String formatLabelPatternExtend;
-		/**
-		 * format 标签分隔符，默认:，
-		 */
-		private String formatLabelPairSeparator = ",";
-		/**
-		 * format 标签 key、value 分隔符，默认: =
-		 */
-		private String formatLabelKeyValueSeparator = "=";
 		private boolean formatStaticLabels = false;
+		private String structuredMetadataPattern;
 	}
 
 	/**
