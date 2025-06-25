@@ -18,7 +18,6 @@ package net.dreamlu.mica.core.http;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -31,7 +30,6 @@ import java.util.Map;
  */
 @Getter
 @Setter
-@ToString
 public class HttpRequestInfo implements Serializable {
 	/**
 	 * 请求方法
@@ -52,6 +50,17 @@ public class HttpRequestInfo implements Serializable {
 
 	public void addHeader(String name, String value) {
 		headers.put(name, value);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(this.method).append(' ').append(url).append('\n');
+		headers.forEach((k, v) -> builder.append(k).append(": ").append(v).append('\n'));
+		if (body != null) {
+			builder.append('\n').append(body).append('\n');
+		}
+		return builder.toString();
 	}
 
 }
