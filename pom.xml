@@ -50,7 +50,7 @@
         <jsoup.version>1.21.1</jsoup.version>
         <knife4j.version>4.5.0</knife4j.version>
         <xxl.job.version>3.1.1</xxl.job.version>
-        <druid.version>1.2.25</druid.version>
+        <druid.version>1.2.27</druid.version>
         <jfinal.version>5.2.5</jfinal.version>
         <zxing.version>3.5.3</zxing.version>
         <jetcache.version>2.7.8</jetcache.version>
