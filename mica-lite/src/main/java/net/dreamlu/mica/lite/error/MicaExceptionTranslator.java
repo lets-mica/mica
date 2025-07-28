@@ -1,5 +1,6 @@
 package net.dreamlu.mica.lite.error;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.Servlet;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ import org.springframework.web.servlet.DispatcherServlet;
  */
 @Slf4j
 @Order
+@Hidden
 @RestControllerAdvice
 @AutoConfiguration
 @ConditionalOnClass({Servlet.class, DispatcherServlet.class})

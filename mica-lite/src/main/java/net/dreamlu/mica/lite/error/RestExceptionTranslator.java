@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.lite.error;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -59,6 +60,7 @@ import java.util.Set;
  * @author L.cm
  */
 @Slf4j
+@Hidden
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @AutoConfiguration
 @RestControllerAdvice
