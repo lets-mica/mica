@@ -572,7 +572,7 @@ public class HttpRequest {
 
 	public HttpRequest useSSL(String keyStoreFile, String keyPass, String trustStoreFile, String trustPass) {
 		Pair<SSLContext, X509TrustManager> pair = getSslContext(keyStoreFile, keyPass, trustStoreFile, trustPass);
-		return sslSocketFactory(pair.getLeft().getSocketFactory(), pair.getRight());
+		return sslSocketFactory(pair.left().getSocketFactory(), pair.right());
 	}
 
 	public HttpRequest useSSL(InputStream keyStoreInputStream, String keyPass) {
@@ -581,7 +581,7 @@ public class HttpRequest {
 
 	public HttpRequest useSSL(InputStream keyStoreInputStream, String keyPass, InputStream trustInputStream, String trustPass) {
 		Pair<SSLContext, X509TrustManager> pair = getSslContext(keyStoreInputStream, keyPass, trustInputStream, trustPass);
-		return sslSocketFactory(pair.getLeft().getSocketFactory(), pair.getRight());
+		return sslSocketFactory(pair.left().getSocketFactory(), pair.right());
 	}
 
 	@Override
@@ -652,7 +652,7 @@ public class HttpRequest {
 
 	public static OkHttpClient setGlobalSSL(String keyStoreFile, String keyPass, String trustStoreFile, String trustPass) {
 		Pair<SSLContext, X509TrustManager> pair = getSslContext(keyStoreFile, keyPass, trustStoreFile, trustPass);
-		return setGlobalSSL(pair.getLeft().getSocketFactory(), pair.getRight());
+		return setGlobalSSL(pair.left().getSocketFactory(), pair.right());
 	}
 
 	public static OkHttpClient setGlobalSSL(InputStream keyStoreInputStream, String keyPass) {
@@ -661,7 +661,7 @@ public class HttpRequest {
 
 	public static OkHttpClient setGlobalSSL(InputStream keyStoreInputStream, String keyPass, InputStream trustInputStream, String trustPass) {
 		Pair<SSLContext, X509TrustManager> pair = getSslContext(keyStoreInputStream, keyPass, trustInputStream, trustPass);
-		return setGlobalSSL(pair.getLeft().getSocketFactory(), pair.getRight());
+		return setGlobalSSL(pair.left().getSocketFactory(), pair.right());
 	}
 
 	public static OkHttpClient setGlobalSSL(SSLSocketFactory sslSocketFactory, X509TrustManager trustManager) {

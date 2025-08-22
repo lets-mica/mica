@@ -18,9 +18,7 @@ package net.dreamlu.mica.core.tuple;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import org.jspecify.annotations.Nullable;
 
 /**
  * tuple Pair
@@ -29,17 +27,12 @@ import lombok.ToString;
  * @param <R> 泛型
  * @author L.cm
  **/
-@Getter
-@ToString
-@EqualsAndHashCode
-public class Pair<L, R> {
+public record Pair<L, R>(@Nullable L left, @Nullable R right) {
 	private static final Pair<Object, Object> EMPTY = new Pair<>(null, null);
-
-	private final L left;
-	private final R right;
 
 	/**
 	 * Returns an empty pair.
+	 *
 	 * @return Pair
 	 */
 	@SuppressWarnings("unchecked")
@@ -52,11 +45,11 @@ public class Pair<L, R> {
 	 * {@code left} is null.
 	 *
 	 * @param left left
-	 * @param <L> 泛型
-	 * @param <R> 泛型
+	 * @param <L>  泛型
+	 * @param <R>  泛型
 	 * @return the constructed pair or an empty pair if {@code left} is null.
 	 */
-	public static <L, R> Pair<L, R> createLeft(L left) {
+	public static <L, R> Pair<L, R> createLeft(@Nullable L left) {
 		if (left == null) {
 			return empty();
 		} else {
@@ -69,11 +62,11 @@ public class Pair<L, R> {
 	 * {@code right} is null.
 	 *
 	 * @param right right
-	 * @param <L> 泛型
-	 * @param <R> 泛型
+	 * @param <L>   泛型
+	 * @param <R>   泛型
 	 * @return the constructed pair or an empty pair if {@code right} is null.
 	 */
-	public static <L, R> Pair<L, R> createRight(R right) {
+	public static <L, R> Pair<L, R> createRight(@Nullable R right) {
 		if (right == null) {
 			return empty();
 		} else {
@@ -82,17 +75,12 @@ public class Pair<L, R> {
 	}
 
 	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-	public static <L, R> Pair<L, R> create(@JsonProperty("left") L left, @JsonProperty("right") R right) {
+	public static <L, R> Pair<L, R> create(@Nullable @JsonProperty("left") L left, @Nullable @JsonProperty("right") R right) {
 		if (right == null && left == null) {
 			return empty();
 		} else {
 			return new Pair<>(left, right);
 		}
-	}
-
-	private Pair(L left, R right) {
-		this.left = left;
-		this.right = right;
 	}
 
 }

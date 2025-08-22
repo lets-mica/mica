@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.tuple;
 
-import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.RsaUtil;
 
 import java.security.PrivateKey;
@@ -27,10 +26,7 @@ import java.security.PublicKey;
  *
  * @author L.cm
  */
-@RequiredArgsConstructor
-public class KeyPair {
-	private final java.security.KeyPair keyPair;
-
+public record KeyPair(java.security.KeyPair keyPair) {
 	public PublicKey getPublic() {
 		return keyPair.getPublic();
 	}
