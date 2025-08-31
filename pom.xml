@@ -56,7 +56,7 @@
         <jetcache.version>2.7.8</jetcache.version>
         <logstash.version>8.1</logstash.version>
         <loki.logback.appender.version>2.0.0</loki.logback.appender.version>
-        <mcia.auto.version>3.1.4</mcia.auto.version>
+        <mcia.auto.version>3.1.5</mcia.auto.version>
         <okhttp.version>5.1.0</okhttp.version>
         <jspecify.version>1.0.0</jspecify.version>
     </properties>
