@@ -42,7 +42,7 @@
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <!-- spring boot 全家桶 -->
-        <spring.boot.version>3.5.6</spring.boot.version>
+        <spring.boot.version>3.5.7</spring.boot.version>
         <spring.cloud.version>2025.0.0</spring.cloud.version>
         <findbugs.version>3.0.2</findbugs.version>
         <swagger.version>1.6.16</swagger.version>
