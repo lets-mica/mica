@@ -349,10 +349,10 @@ public class RsaUtil {
 	/**
 	 * rsa 加、解密
 	 *
-	 * @param key       key
-	 * @param data      数据
-	 * @param blockSize blockSize
-	 * @param mode      模式
+	 * @param key          key
+	 * @param data         数据
+	 * @param maxBlockSize maxBlockSize
+	 * @param mode         模式
 	 * @return 解密后的数据
 	 */
 	private static byte[] rsa(Key key, byte[] data, int maxBlockSize, int mode) {

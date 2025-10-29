@@ -36,7 +36,6 @@ package net.dreamlu.mica.core.utils;
 
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;

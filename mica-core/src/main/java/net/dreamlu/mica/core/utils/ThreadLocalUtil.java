@@ -67,7 +67,6 @@ public class ThreadLocalUtil {
 	 * 设置一个值到ThreadLocal
 	 *
 	 * @param map map
-	 * @return 被放入的值
 	 * @see Map#putAll(Map)
 	 */
 	public static void put(Map<String, Object> map) {
@@ -77,7 +76,7 @@ public class ThreadLocalUtil {
 	/**
 	 * 删除参数对应的值
 	 *
-	 * @param key
+	 * @param key key
 	 * @see Map#remove(Object)
 	 */
 	public static void remove(String key) {
