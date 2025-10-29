@@ -20,8 +20,8 @@ import com.github.loki4j.client.http.HttpConfig;
 import com.github.loki4j.client.http.HttpHeader;
 import com.github.loki4j.client.http.Loki4jHttpClient;
 import com.github.loki4j.client.http.LokiResponse;
+import net.dreamlu.mica.core.utils.IoUtil;
 import okhttp3.*;
-import okhttp3.internal.Util;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -96,7 +96,7 @@ public class Loki4jOkHttpClient implements Loki4jHttpClient {
 		httpClient.connectionPool().evictAll();
 		Cache cache = httpClient.cache();
 		if (cache != null) {
-			Util.closeQuietly(cache);
+			IoUtil.closeQuietly(cache);
 		}
 	}
 }
