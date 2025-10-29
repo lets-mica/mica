@@ -25,7 +25,6 @@ import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.core.utils.ResourceUtil;
 import net.dreamlu.mica.core.utils.StringPool;
 import okhttp3.*;
-import okhttp3.internal.Util;
 import okhttp3.internal.http.HttpMethod;
 import org.jspecify.annotations.Nullable;
 
@@ -324,7 +323,7 @@ public class HttpRequest {
 		String method = httpMethod;
 		Request request;
 		if (HttpMethod.requiresRequestBody(method) && requestBody == null) {
-			request = requestBuilder.method(method, Util.EMPTY_REQUEST).build();
+			request = requestBuilder.method(method, null).build();
 		} else {
 			request = requestBuilder.method(method, requestBody).build();
 		}

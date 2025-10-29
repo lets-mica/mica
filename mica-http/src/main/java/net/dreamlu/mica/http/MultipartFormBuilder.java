@@ -20,7 +20,6 @@ import net.dreamlu.mica.core.utils.Exceptions;
 import okhttp3.Headers;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.internal.Util;
 import okio.Buffer;
 import org.jspecify.annotations.Nullable;
 
