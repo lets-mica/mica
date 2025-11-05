@@ -71,7 +71,7 @@ public class HolidaysApiImpl implements HolidaysApi, InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		int[] years = new int[]{2019, 2020, 2021, 2022, 2023, 2024, 2025};
+		int[] years = new int[]{2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026};
 		for (int year : years) {
 			Resource resource = resourceLoader.getResource("classpath:data/" + year + "_data.json");
 			try (InputStream inputStream = resource.getInputStream()) {
