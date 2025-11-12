@@ -52,7 +52,7 @@
         <xxl.job.version>3.2.0</xxl.job.version>
         <druid.version>1.2.27</druid.version>
         <jfinal.version>5.2.5</jfinal.version>
-        <zxing.version>3.5.3</zxing.version>
+        <zxing.version>3.5.4</zxing.version>
         <jetcache.version>2.7.8</jetcache.version>
         <logstash.version>9.0</logstash.version>
         <loki.logback.appender.version>2.0.1</loki.logback.appender.version>
