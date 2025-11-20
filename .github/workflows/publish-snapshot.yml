@@ -13,7 +13,7 @@ jobs:
     outputs:
       should_continue: ${{ steps.check.outputs.is_snapshot }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Extract Maven version
         id: check
         run: |
