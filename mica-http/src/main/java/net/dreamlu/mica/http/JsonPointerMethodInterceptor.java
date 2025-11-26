@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.http;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.core.utils.ConvertUtil;
 import net.dreamlu.mica.core.utils.ReflectUtil;
@@ -29,6 +28,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.util.ReflectionUtils;
+import tools.jackson.databind.JsonNode;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;

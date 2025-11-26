@@ -27,7 +27,6 @@ import net.dreamlu.mica.redis.resolver.RedisKeyResolverSerializer;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
-import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.KotlinDetector;
@@ -35,6 +34,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
@@ -43,7 +43,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  *
  * @author L.cm
  */
-@AutoConfiguration(after = RedisAutoConfiguration.class)
+@AutoConfiguration
 @EnableConfigurationProperties(MicaRedisProperties.class)
 public class RedisTemplateConfiguration {
 	public static final String REDIS_TEMPLATE_BEAN_NAME = "micaRedisTemplate";
@@ -78,13 +78,12 @@ public class RedisTemplateConfiguration {
 		// findAndRegisterModules
 		objectMapper.findAndRegisterModules();
 		// class type info to json
-		GenericJackson2JsonRedisSerializer.registerNullValueSerializer(objectMapper, null);
 		if (KotlinDetector.isKotlinPresent() && properties.isEnableKotlinJson()) {
 			objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL_AND_ENUMS, As.PROPERTY);
 		} else {
 			objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, As.PROPERTY);
 		}
-		return new GenericJackson2JsonRedisSerializer(objectMapper);
+		return new GenericJacksonJsonRedisSerializer(objectMapper);
 	}
 
 	@Bean

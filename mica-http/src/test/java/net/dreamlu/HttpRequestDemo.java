@@ -16,7 +16,6 @@
 
 package net.dreamlu;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.utils.Base64Util;
 import net.dreamlu.mica.http.HttpLogger;
@@ -24,6 +23,7 @@ import net.dreamlu.mica.http.HttpRequest;
 import net.dreamlu.mica.http.LogLevel;
 import net.dreamlu.mica.http.ResponseSpec;
 import okhttp3.Cookie;
+import tools.jackson.databind.JsonNode;
 
 import java.net.URI;
 import java.time.Duration;

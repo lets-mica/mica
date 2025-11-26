@@ -1,10 +1,10 @@
 package net.dreamlu;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.http.JsonPointerUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.JsonNode;
 
 class JsonPointerTest {
 

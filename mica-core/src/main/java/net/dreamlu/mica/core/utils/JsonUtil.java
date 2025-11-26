@@ -16,19 +16,19 @@
 
 package net.dreamlu.mica.core.utils;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.TreeNode;
-import com.fasterxml.jackson.core.json.JsonReadFeature;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.type.CollectionLikeType;
-import com.fasterxml.jackson.databind.type.MapType;
 import net.dreamlu.mica.core.function.CheckedConsumer;
+import net.dreamlu.mica.core.function.CheckedFunction;
 import org.jspecify.annotations.Nullable;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.TreeNode;
+import tools.jackson.core.json.JsonReadFeature;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.*;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.type.CollectionLikeType;
+import tools.jackson.databind.type.MapType;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,18 +55,14 @@ public class JsonUtil {
 		if (object == null) {
 			return null;
 		}
-		try {
-			return getInstance().writeValueAsString(object);
-		} catch (JsonProcessingException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().writeValueAsString(object);
 	}
 
 	/**
 	 * 将对象序列化成json字符串
 	 *
-	 * @param object javaBean
-	 * @param serializationView    serializationView
+	 * @param object            javaBean
+	 * @param serializationView serializationView
 	 * @return jsonString json字符串
 	 */
 	@Nullable
@@ -74,13 +70,9 @@ public class JsonUtil {
 		if (object == null) {
 			return null;
 		}
-		try {
-			return getInstance()
-				.writerWithView(serializationView)
-				.writeValueAsString(object);
-		} catch (JsonProcessingException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance()
+			.writerWithView(serializationView)
+			.writeValueAsString(object);
 	}
 
 	/**
@@ -94,13 +86,9 @@ public class JsonUtil {
 		if (object == null) {
 			return null;
 		}
-		try {
-			return getInstance()
-				.writerWithDefaultPrettyPrinter()
-				.writeValueAsString(object);
-		} catch (JsonProcessingException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance()
+			.writerWithDefaultPrettyPrinter()
+			.writeValueAsString(object);
 	}
 
 	/**
@@ -113,11 +101,7 @@ public class JsonUtil {
 		if (object == null) {
 			return new byte[0];
 		}
-		try {
-			return getInstance().writeValueAsBytes(object);
-		} catch (JsonProcessingException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().writeValueAsBytes(object);
 	}
 
 	/**
@@ -130,13 +114,9 @@ public class JsonUtil {
 		if (object == null) {
 			return new byte[0];
 		}
-		try {
-			return getInstance()
-				.writerWithView(serializationView)
-				.writeValueAsBytes(object);
-		} catch (JsonProcessingException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance()
+			.writerWithView(serializationView)
+			.writeValueAsBytes(object);
 	}
 
 	/**
@@ -146,11 +126,7 @@ public class JsonUtil {
 	 * @return jsonString json字符串
 	 */
 	public static JsonNode readTree(String jsonString) {
-		try {
-			return getInstance().readTree(Objects.requireNonNull(jsonString, "jsonString is null"));
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readTree(Objects.requireNonNull(jsonString, "jsonString is null"));
 	}
 
 	/**
@@ -160,11 +136,7 @@ public class JsonUtil {
 	 * @return jsonString json字符串
 	 */
 	public static JsonNode readTree(InputStream in) {
-		try {
-			return getInstance().readTree(Objects.requireNonNull(in, "InputStream in is null"));
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readTree(Objects.requireNonNull(in, "InputStream in is null"));
 	}
 
 	/**
@@ -174,11 +146,7 @@ public class JsonUtil {
 	 * @return jsonString json字符串
 	 */
 	public static JsonNode readTree(Reader reader) {
-		try {
-			return getInstance().readTree(Objects.requireNonNull(reader, "Reader in is null"));
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readTree(Objects.requireNonNull(reader, "Reader in is null"));
 	}
 
 	/**
@@ -188,11 +156,7 @@ public class JsonUtil {
 	 * @return jsonString json字符串
 	 */
 	public static JsonNode readTree(byte[] content) {
-		try {
-			return getInstance().readTree(Objects.requireNonNull(content, "byte[] content is null"));
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readTree(Objects.requireNonNull(content, "byte[] content is null"));
 	}
 
 	/**
@@ -202,11 +166,7 @@ public class JsonUtil {
 	 * @return jsonString json字符串
 	 */
 	public static JsonNode readTree(JsonParser jsonParser) {
-		try {
-			return getInstance().readTree(Objects.requireNonNull(jsonParser, "jsonParser is null"));
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readTree(Objects.requireNonNull(jsonParser, "jsonParser is null"));
 	}
 
 	/**
@@ -222,11 +182,7 @@ public class JsonUtil {
 		if (content == null || content.length == 0) {
 			return null;
 		}
-		try {
-			return getInstance().readValue(content, valueType);
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(content, valueType);
 	}
 
 	/**
@@ -242,11 +198,7 @@ public class JsonUtil {
 		if (StringUtil.isBlank(jsonString)) {
 			return null;
 		}
-		try {
-			return getInstance().readValue(jsonString, valueType);
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(jsonString, valueType);
 	}
 
 	/**
@@ -262,11 +214,7 @@ public class JsonUtil {
 		if (in == null) {
 			return null;
 		}
-		try {
-			return getInstance().readValue(in, valueType);
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(in, valueType);
 	}
 
 	/**
@@ -282,11 +230,7 @@ public class JsonUtil {
 		if (reader == null) {
 			return null;
 		}
-		try {
-			return getInstance().readValue(reader, valueType);
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(reader, valueType);
 	}
 
 
@@ -303,11 +247,7 @@ public class JsonUtil {
 		if (content == null || content.length == 0) {
 			return null;
 		}
-		try {
-			return getInstance().readValue(content, typeReference);
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(content, typeReference);
 	}
 
 	/**
@@ -323,11 +263,7 @@ public class JsonUtil {
 		if (StringUtil.isBlank(jsonString)) {
 			return null;
 		}
-		try {
-			return getInstance().readValue(jsonString, typeReference);
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(jsonString, typeReference);
 	}
 
 	/**
@@ -343,11 +279,7 @@ public class JsonUtil {
 		if (in == null) {
 			return null;
 		}
-		try {
-			return getInstance().readValue(in, typeReference);
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(in, typeReference);
 	}
 
 	/**
@@ -363,11 +295,7 @@ public class JsonUtil {
 		if (reader == null) {
 			return null;
 		}
-		try {
-			return getInstance().readValue(reader, typeReference);
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(reader, typeReference);
 	}
 
 	/**
@@ -383,11 +311,7 @@ public class JsonUtil {
 		if (content == null || content.length == 0) {
 			return null;
 		}
-		try {
-			return getInstance().readValue(content, javaType);
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(content, javaType);
 	}
 
 	/**
@@ -403,11 +327,7 @@ public class JsonUtil {
 		if (StringUtil.isBlank(jsonString)) {
 			return null;
 		}
-		try {
-			return getInstance().readValue(jsonString, javaType);
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(jsonString, javaType);
 	}
 
 	/**
@@ -423,11 +343,7 @@ public class JsonUtil {
 		if (in == null) {
 			return null;
 		}
-		try {
-			return getInstance().readValue(in, javaType);
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(in, javaType);
 	}
 
 	/**
@@ -443,11 +359,7 @@ public class JsonUtil {
 		if (reader == null) {
 			return null;
 		}
-		try {
-			return getInstance().readValue(reader, javaType);
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(reader, javaType);
 	}
 
 	/**
@@ -533,11 +445,7 @@ public class JsonUtil {
 		if (content == null || content.length == 0) {
 			return Collections.emptyList();
 		}
-		try {
-			return getInstance().readValue(content, getListType(elementClass));
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(content, getListType(elementClass));
 	}
 
 	/**
@@ -552,11 +460,7 @@ public class JsonUtil {
 		if (content == null) {
 			return Collections.emptyList();
 		}
-		try {
-			return getInstance().readValue(content, getListType(elementClass));
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(content, getListType(elementClass));
 	}
 
 	/**
@@ -571,11 +475,7 @@ public class JsonUtil {
 		if (reader == null) {
 			return Collections.emptyList();
 		}
-		try {
-			return getInstance().readValue(reader, getListType(elementClass));
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(reader, getListType(elementClass));
 	}
 
 	/**
@@ -590,11 +490,7 @@ public class JsonUtil {
 		if (StringUtil.isBlank(content)) {
 			return Collections.emptyList();
 		}
-		try {
-			return getInstance().readValue(content, getListType(elementClass));
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(content, getListType(elementClass));
 	}
 
 	/**
@@ -699,11 +595,7 @@ public class JsonUtil {
 		if (content == null || content.length == 0) {
 			return Collections.emptyMap();
 		}
-		try {
-			return getInstance().readValue(content, getMapType(keyClass, valueClass));
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(content, getMapType(keyClass, valueClass));
 	}
 
 	/**
@@ -720,11 +612,7 @@ public class JsonUtil {
 		if (content == null) {
 			return Collections.emptyMap();
 		}
-		try {
-			return getInstance().readValue(content, getMapType(keyClass, valueClass));
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(content, getMapType(keyClass, valueClass));
 	}
 
 	/**
@@ -741,11 +629,7 @@ public class JsonUtil {
 		if (reader == null) {
 			return Collections.emptyMap();
 		}
-		try {
-			return getInstance().readValue(reader, getMapType(keyClass, valueClass));
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(reader, getMapType(keyClass, valueClass));
 	}
 
 	/**
@@ -762,11 +646,7 @@ public class JsonUtil {
 		if (StringUtil.isBlank(content)) {
 			return Collections.emptyMap();
 		}
-		try {
-			return getInstance().readValue(content, getMapType(keyClass, valueClass));
-		} catch (IOException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().readValue(content, getMapType(keyClass, valueClass));
 	}
 
 	/**
@@ -814,11 +694,7 @@ public class JsonUtil {
 	 * @return 转换结果
 	 */
 	public static <T> T treeToValue(TreeNode treeNode, Class<T> valueType) {
-		try {
-			return getInstance().treeToValue(treeNode, valueType);
-		} catch (JsonProcessingException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().treeToValue(treeNode, valueType);
 	}
 
 	/**
@@ -830,11 +706,7 @@ public class JsonUtil {
 	 * @return 转换结果
 	 */
 	public static <T> T treeToValue(TreeNode treeNode, JavaType valueType) {
-		try {
-			return getInstance().treeToValue(treeNode, valueType);
-		} catch (JsonProcessingException e) {
-			throw Exceptions.unchecked(e);
-		}
+		return getInstance().treeToValue(treeNode, valueType);
 	}
 
 	/**
@@ -846,29 +718,6 @@ public class JsonUtil {
 	 */
 	public static <T extends JsonNode> T valueToTree(@Nullable Object fromValue) {
 		return getInstance().valueToTree(fromValue);
-	}
-
-	/**
-	 * 判断是否可以序列化
-	 *
-	 * @param value 对象
-	 * @return 是否可以序列化
-	 */
-	public static boolean canSerialize(@Nullable Object value) {
-		if (value == null) {
-			return true;
-		}
-		return getInstance().canSerialize(value.getClass());
-	}
-
-	/**
-	 * 判断是否可以反序列化
-	 *
-	 * @param type JavaType
-	 * @return 是否可以反序列化
-	 */
-	public static boolean canDeserialize(JavaType type) {
-		return getInstance().canDeserialize(type);
 	}
 
 	/**
@@ -927,13 +776,15 @@ public class JsonUtil {
 	 * @param consumer ObjectMapper consumer
 	 * @return 是否成功
 	 */
-	public static boolean isValidJson(CheckedConsumer<ObjectMapper> consumer) {
-		ObjectMapper mapper = getInstance().copy();
-		mapper.enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
-		mapper.enable(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY);
+	public static boolean isValidJson(CheckedFunction<ObjectMapper, JsonNode> consumer) {
+		ObjectMapper mapper = getInstance().rebuild()
+			.enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS)
+			.enable(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY)
+			.build();
 		try {
-			consumer.accept(mapper);
-			return true;
+			JsonNode jsonNode = consumer.apply(mapper);
+			// 严格校验：只有是JSON对象或JSON数组时才返回true
+			return jsonNode != null && (jsonNode.isObject() || jsonNode.isArray());
 		} catch (Throwable e) {
 			return false;
 		}
@@ -967,24 +818,21 @@ public class JsonUtil {
 	}
 
 	private static class JacksonHolder {
-		private static final ObjectMapper INSTANCE = new ObjectMapper(JsonFactory.builder()
+		private static final JsonMapper INSTANCE = JsonMapper.builder()
 			// 可解析反斜杠引用的所有字符
 			.configure(JsonReadFeature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true)
 			// 允许JSON字符串包含非引号控制字符（值小于32的ASCII字符，包含制表符和换行符）
 			.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS, true)
-			.build());
-
-		static {
-			INSTANCE.setLocale(Locale.CHINA);
-			INSTANCE.setDateFormat(new SimpleDateFormat(DateUtil.PATTERN_DATETIME, Locale.CHINA));
 			// 单引号
-			INSTANCE.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+			.configure(JsonReadFeature.ALLOW_SINGLE_QUOTES, true)
 			// 忽略json字符串中不识别的属性
-			INSTANCE.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// 忽略无法转换的对象
-			INSTANCE.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-			INSTANCE.setTimeZone(TimeZone.getTimeZone(ZoneId.systemDefault()));
-			INSTANCE.findAndRegisterModules();
-		}
+			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+			// 忽略json字符串中不识别的属性
+			.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+			.defaultLocale(Locale.CHINA)
+			.defaultTimeZone(TimeZone.getTimeZone(ZoneId.systemDefault()))
+			.defaultDateFormat(new SimpleDateFormat(DateUtil.PATTERN_DATETIME, Locale.CHINA))
+			.findAndAddModules()
+			.build();
 	}
 }

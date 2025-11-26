@@ -1,12 +1,12 @@
 package net.dreamlu.mica.test.utils;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import net.dreamlu.mica.core.result.R;
 import net.dreamlu.mica.core.utils.DateUtil;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.JsonNode;
 
 import java.util.Date;
 

@@ -1,13 +1,12 @@
 package net.dreamlu.mica.test.utils;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import net.dreamlu.mica.core.result.R;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * json 测试
@@ -35,7 +34,7 @@ class JsonTest {
 	}
 
 	@Test
-	void test1() throws JsonProcessingException {
+	void test1() {
 		User user = new User();
 		user.setId(System.currentTimeMillis());
 		user.setName("张三");
