@@ -16,21 +16,21 @@
 
 package net.dreamlu.mica.lite.error;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.Servlet;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
-import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
-import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
-import org.springframework.boot.web.servlet.error.ErrorAttributes;
-import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.boot.autoconfigure.web.WebProperties;
+import org.springframework.boot.webflux.error.DefaultErrorAttributes;
+import org.springframework.boot.webmvc.autoconfigure.error.BasicErrorController;
+import org.springframework.boot.webmvc.autoconfigure.error.ErrorMvcAutoConfiguration;
+import org.springframework.boot.webmvc.error.ErrorAttributes;
+import org.springframework.boot.webmvc.error.ErrorController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.DispatcherServlet;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * 统一异常处理
@@ -50,10 +50,10 @@ public class MicaErrorAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean(value = ErrorController.class, search = SearchStrategy.CURRENT)
-	public BasicErrorController basicErrorController(ObjectMapper objectMapper,
+	public BasicErrorController basicErrorController(JsonMapper jsonMapper,
 													 ErrorAttributes errorAttributes,
-													 ServerProperties serverProperties) {
-		return new MicaErrorController(objectMapper, errorAttributes, serverProperties.getError());
+													 WebProperties webProperties) {
+		return new MicaErrorController(jsonMapper, errorAttributes, webProperties.getError());
 	}
 
 }

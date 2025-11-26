@@ -16,19 +16,17 @@
 
 package net.dreamlu.mica.lite.error;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
-import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
-import org.springframework.boot.web.servlet.error.ErrorAttributes;
+import org.springframework.boot.webmvc.autoconfigure.error.BasicErrorController;
+import org.springframework.boot.webmvc.error.ErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
-
-import java.util.Map;
+import org.springframework.web.servlet.view.json.JacksonJsonView;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * 更改 html 请求异常为 ajax，对前后端分离更加友好
@@ -36,23 +34,21 @@ import java.util.Map;
  * @author L.cm
  */
 public class MicaErrorController extends BasicErrorController {
-	private final ObjectMapper objectMapper;
+	private final JsonMapper jsonMapper;
 
-	public MicaErrorController(ObjectMapper objectMapper,
+	public MicaErrorController(JsonMapper jsonMapper,
 							   ErrorAttributes errorAttributes,
 							   ErrorProperties errorProperties) {
 		super(errorAttributes, errorProperties);
-		this.objectMapper = objectMapper;
+		this.jsonMapper = jsonMapper;
 	}
 
 	@Override
 	public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
-		Map<String, Object> body = getErrorAttributes(request, ErrorAttributeOptions.defaults());
 		HttpStatus status = getStatus(request);
 		response.setStatus(status.value());
-		MappingJackson2JsonView view = new MappingJackson2JsonView();
-		view.setObjectMapper(objectMapper);
+		JacksonJsonView view = new JacksonJsonView(jsonMapper);
 		view.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		return new ModelAndView(view, body);
+		return new ModelAndView(view, getErrorAttributes(request, ErrorAttributeOptions.defaults()));
 	}
 }
