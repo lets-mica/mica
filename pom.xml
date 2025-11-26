@@ -49,11 +49,9 @@
         <swagger3x.version>2.2.41</swagger3x.version>
         <jsoup.version>1.21.2</jsoup.version>
         <knife4j.version>4.5.0</knife4j.version>
-        <xxl.job.version>3.2.0</xxl.job.version>
         <druid.version>1.2.27</druid.version>
         <jfinal.version>5.2.5</jfinal.version>
         <zxing.version>3.5.4</zxing.version>
-        <jetcache.version>2.7.8</jetcache.version>
         <logstash.version>9.0</logstash.version>
         <loki.logback.appender.version>2.0.1</loki.logback.appender.version>
         <mcia.auto.version>3.1.5</mcia.auto.version>
@@ -66,11 +64,8 @@
         <module>mica-core</module>
         <module>mica-http</module>
         <module>mica-spider</module>
-        <module>mica-laytpl</module>
         <module>mica-openapi</module>
         <module>mica-captcha</module>
-        <module>mica-jobs</module>
-        <module>mica-mongo</module>
         <module>mica-redis</module>
         <module>mica-ip2region</module>
         <module>mica-xss</module>
@@ -78,7 +73,6 @@
         <module>mica-caffeine</module>
         <module>mica-logging</module>
         <module>mica-qrcode</module>
-        <module>mica-jetcache</module>
         <module>mica-lite</module>
         <module>mica-activerecord</module>
         <module>mica-prometheus</module>
@@ -162,11 +156,6 @@
                 <version>${jsoup.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.xuxueli</groupId>
-                <artifactId>xxl-job-core</artifactId>
-                <version>${xxl.job.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
                 <version>${druid.version}</version>
@@ -180,11 +169,6 @@
                 <groupId>com.google.zxing</groupId>
                 <artifactId>javase</artifactId>
                 <version>${zxing.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alicp.jetcache</groupId>
-                <artifactId>jetcache-autoconfigure</artifactId>
-                <version>${jetcache.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.logstash.logback</groupId>
@@ -226,27 +210,12 @@
             </dependency>
             <dependency>
                 <groupId>net.dreamlu</groupId>
-                <artifactId>mica-laytpl</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.dreamlu</groupId>
                 <artifactId>mica-openapi</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>net.dreamlu</groupId>
                 <artifactId>mica-captcha</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.dreamlu</groupId>
-                <artifactId>mica-jobs</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.dreamlu</groupId>
-                <artifactId>mica-mongo</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -282,11 +251,6 @@
             <dependency>
                 <groupId>net.dreamlu</groupId>
                 <artifactId>mica-qrcode</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.dreamlu</groupId>
-                <artifactId>mica-jetcache</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
