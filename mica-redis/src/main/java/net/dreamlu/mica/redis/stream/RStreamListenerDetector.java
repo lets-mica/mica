@@ -20,13 +20,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.constant.MicaConstant;
 import net.dreamlu.mica.core.utils.CharPool;
+import net.dreamlu.mica.core.utils.INetUtil;
 import net.dreamlu.mica.core.utils.ReflectUtil;
 import net.dreamlu.mica.core.utils.StringUtil;
 import net.dreamlu.mica.redis.config.MicaRedisProperties;
 import net.dreamlu.mica.redis.config.RedisTemplateConfiguration;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.boot.web.server.autoconfigure.ServerProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.Environment;
@@ -173,6 +176,10 @@ public class RStreamListenerDetector implements BeanPostProcessor, SmartInitiali
 		return applicationContext.getBean(MicaRedisProperties.class);
 	}
 
+	private ObjectProvider<ServerProperties> getServerPropertiesObjectProvider() {
+		return applicationContext.getBeanProvider(ServerProperties.class);
+	}
+
 	private RedisTemplate<String, Object> getRedisTemplate() {
 		return applicationContext.getBean(RedisTemplateConfiguration.REDIS_TEMPLATE_BEAN_NAME, RedisTemplate.class);
 	}
@@ -203,7 +210,17 @@ public class RStreamListenerDetector implements BeanPostProcessor, SmartInitiali
 	private String getConsumerName() {
 		MicaRedisProperties properties = getMicaRedisProperties();
 		MicaRedisProperties.Stream streamProperties = properties.getStream();
-		return streamProperties.getConsumerName();
+		// 消费者名称
+		ObjectProvider<ServerProperties> serverPropertiesObjectProvider = getServerPropertiesObjectProvider();
+		String consumerName = streamProperties.getConsumerName();
+		if (StringUtil.isBlank(consumerName)) {
+			final StringBuilder consumerNameBuilder = new StringBuilder(INetUtil.getHostIp());
+			serverPropertiesObjectProvider.ifAvailable(serverProperties -> {
+				consumerNameBuilder.append(CharPool.COLON).append(serverProperties.getPort());
+			});
+			return consumerNameBuilder.toString();
+		}
+		return consumerName;
 	}
 
 	@Override
