@@ -89,7 +89,7 @@ public class FormXssClean {
 				if (!charsToDelete.isEmpty()) {
 					value = StringUtils.deleteAny(value, charsToDelete);
 				}
-				boolean isTrimText = properties.isTrimText() || form.isTrimText();
+				boolean isTrimText = form.isTrimText();
 				if (isTrimText) {
 					value = value.trim();
 				}

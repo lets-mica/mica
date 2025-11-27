@@ -18,7 +18,6 @@ package net.dreamlu.mica.redis.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.redis.cache.MicaRedisCache;
 import net.dreamlu.mica.redis.resolver.DefaultRedisKeyResolver;
@@ -33,10 +32,12 @@ import org.springframework.core.KotlinDetector;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import tools.jackson.databind.DefaultTyping;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.jsontype.PolymorphicTypeValidator;
 
 /**
  * RedisTemplate  配置
@@ -73,17 +74,19 @@ public class RedisTemplateConfiguration {
 			return new JdkSerializationRedisSerializer(classLoader);
 		}
 		// jackson findAndRegisterModules，use copy
-		ObjectMapper objectMapper = JsonUtil.getInstance().copy();
-		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+		JsonMapper jsonMapper = JsonUtil.getInstance();
+		JsonMapper.Builder jsonMapperBuilder = jsonMapper.rebuild();
+		jsonMapperBuilder.changeDefaultPropertyInclusion(handler ->  handler.withValueInclusion(JsonInclude.Include.NON_NULL));
 		// findAndRegisterModules
-		objectMapper.findAndRegisterModules();
+		jsonMapperBuilder.findAndAddModules();
 		// class type info to json
+		PolymorphicTypeValidator polymorphicTypeValidator = jsonMapper.serializationConfig().getPolymorphicTypeValidator();
 		if (KotlinDetector.isKotlinPresent() && properties.isEnableKotlinJson()) {
-			objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL_AND_ENUMS, As.PROPERTY);
+			jsonMapperBuilder.activateDefaultTyping(polymorphicTypeValidator, DefaultTyping.NON_FINAL_AND_ENUMS, As.PROPERTY);
 		} else {
-			objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, As.PROPERTY);
+			jsonMapperBuilder.activateDefaultTyping(polymorphicTypeValidator, DefaultTyping.NON_FINAL, As.PROPERTY);
 		}
-		return new GenericJacksonJsonRedisSerializer(objectMapper);
+		return new GenericJacksonJsonRedisSerializer(jsonMapperBuilder.build());
 	}
 
 	@Bean

@@ -809,11 +809,11 @@ public class JsonUtil {
 	}
 
 	/**
-	 * 获取 ObjectMapper 实例
+	 * 获取 JsonMapper 实例
 	 *
-	 * @return ObjectMapper
+	 * @return JsonMapper
 	 */
-	public static ObjectMapper getInstance() {
+	public static JsonMapper getInstance() {
 		return JacksonHolder.INSTANCE;
 	}
 

@@ -1,14 +1,13 @@
 package net.dreamlu.mica.xss;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.xss.core.XssCleanDeserializer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.exc.MismatchedInputException;
+import tools.jackson.databind.json.JsonMapper;
 
 @Slf4j
 class JsonDeserializerTest {
@@ -31,10 +30,10 @@ class JsonDeserializerTest {
 	}
 
 	@Test
-	void test() throws JsonProcessingException {
+	void test() {
 		Assertions.assertThrows(MismatchedInputException.class, () -> {
-			ObjectMapper objectMapper = new ObjectMapper();
-			DemoBean demoBean = objectMapper.readValue("""
+			JsonMapper jsonMapper = new JsonMapper();
+			DemoBean demoBean = jsonMapper.readValue("""
 				{
 				    "pageNum": 1,
 				    "pageSize": 15,
@@ -48,9 +47,9 @@ class JsonDeserializerTest {
 	}
 
 	@Test
-	void testType() throws JsonProcessingException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		TypeBean typeBean = objectMapper.readValue("""
+	void testType() {
+		JsonMapper jsonMapper = new JsonMapper();
+		TypeBean typeBean = jsonMapper.readValue("""
 			{
 			    "pageNum": 1,
 			    "pageSize": 15
