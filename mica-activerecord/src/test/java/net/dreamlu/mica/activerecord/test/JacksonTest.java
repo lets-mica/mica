@@ -17,16 +17,20 @@
 package net.dreamlu.mica.activerecord.test;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jfinal.plugin.activerecord.Record;
 import net.dreamlu.mica.core.utils.JsonUtil;
+import tools.jackson.databind.DefaultTyping;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.jsontype.PolymorphicTypeValidator;
 
 public class JacksonTest {
 
-	public static void main(String[] args) throws JsonProcessingException {
-		ObjectMapper mapper = JsonUtil.getInstance().copy();
-		mapper.activateDefaultTyping(mapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+	public static void main(String[] args) {
+		JsonMapper jsonMapper = JsonUtil.getInstance();
+		PolymorphicTypeValidator polymorphicTypeValidator = jsonMapper.serializationConfig().getPolymorphicTypeValidator();
+		JsonMapper.Builder jsonMapperBuilder = jsonMapper.rebuild();
+		jsonMapperBuilder.activateDefaultTyping(polymorphicTypeValidator, DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+		JsonMapper mapper = jsonMapperBuilder.build();
 
 		Record record = new Record();
 		record.set("a", "123");

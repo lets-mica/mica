@@ -18,6 +18,7 @@ package net.dreamlu.mica.activerecord.jackson;
 
 import com.jfinal.plugin.activerecord.Record;
 import net.dreamlu.mica.auto.annotation.AutoService;
+import tools.jackson.databind.JacksonModule;
 import tools.jackson.databind.module.SimpleModule;
 
 /**
@@ -31,7 +32,7 @@ import tools.jackson.databind.module.SimpleModule;
  *
  * @author L.cm
  */
-@AutoService(Module.class)
+@AutoService(JacksonModule.class)
 public class ActiveRecordModule extends SimpleModule {
 
 	public ActiveRecordModule() {

@@ -18,6 +18,7 @@ package net.dreamlu.mica.lite.jackson;
 
 import net.dreamlu.mica.auto.annotation.AutoService;
 import net.dreamlu.mica.core.utils.DateUtil;
+import tools.jackson.databind.JacksonModule;
 import tools.jackson.databind.ext.javatime.deser.LocalDateDeserializer;
 import tools.jackson.databind.ext.javatime.deser.LocalDateTimeDeserializer;
 import tools.jackson.databind.ext.javatime.deser.LocalTimeDeserializer;
@@ -35,7 +36,7 @@ import java.time.LocalTime;
  *
  * @author L.cm
  */
-@AutoService(Module.class)
+@AutoService(JacksonModule.class)
 public class MicaJavaTimeModule extends SimpleModule {
 
 	public MicaJavaTimeModule() {
