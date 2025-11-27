@@ -53,7 +53,7 @@
         <zxing.version>3.5.4</zxing.version>
         <logstash.version>9.0</logstash.version>
         <loki.logback.appender.version>2.0.1</loki.logback.appender.version>
-        <mcia.auto.version>3.1.5</mcia.auto.version>
+        <mcia.auto.version>4.0.0-SNAPSHOT</mcia.auto.version>
         <okhttp.version>5.3.2</okhttp.version>
     </properties>
 
@@ -476,5 +476,19 @@
             </build>
         </profile>
     </profiles>
+
+    <repositories>
+        <repository>
+            <name>Central Portal Snapshots</name>
+            <id>central-portal-snapshots</id>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 </project>
