@@ -16,13 +16,13 @@
 
 package net.dreamlu.mica.activerecord.jackson;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.jfinal.plugin.activerecord.Record;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.jsontype.TypeSerializer;
+import tools.jackson.databind.ser.std.StdSerializer;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
@@ -39,26 +39,26 @@ public class RecordSerializer extends StdSerializer<Record> {
 	}
 
 	@Override
-	public void serialize(Record value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+	public void serialize(Record value, JsonGenerator gen, SerializationContext context) throws JacksonException {
 		serializeRecord(value, gen, null);
 	}
 
 	@Override
-	public void serializeWithType(Record value, JsonGenerator gen, SerializerProvider serializers, TypeSerializer typeSer) throws IOException {
+	public void serializeWithType(Record value, JsonGenerator gen, SerializationContext ctxt, TypeSerializer typeSer) throws JacksonException {
 		serializeRecord(value, gen, typeSer);
 	}
 
-	private static void serializeRecord(Record value, JsonGenerator gen, TypeSerializer typeSer) throws IOException {
+	private static void serializeRecord(Record value, JsonGenerator gen, TypeSerializer typeSer) throws JacksonException {
 		gen.writeStartObject();
 		if (typeSer != null) {
-			gen.writeStringField(typeSer.getPropertyName(), value.getClass().getName());
+			gen.writeStringProperty(typeSer.getPropertyName(), value.getClass().getName());
 		}
 		Map<String, Object> columns = value.getColumns();
 		for (Map.Entry<String, Object> entry : columns.entrySet()) {
 			// json 不包含 null 的数据
 			Object entryValue = entry.getValue();
 			if (Objects.nonNull(entryValue)) {
-				gen.writeObjectField(entry.getKey(), entry.getValue());
+				gen.writePOJOProperty(entry.getKey(), entry.getValue());
 			}
 		}
 		gen.writeEndObject();

@@ -16,10 +16,9 @@
 
 package net.dreamlu.mica.activerecord.jackson;
 
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.jfinal.plugin.activerecord.Record;
 import net.dreamlu.mica.auto.annotation.AutoService;
+import tools.jackson.databind.module.SimpleModule;
 
 /**
  * jFinal ActiveRecord jackson Module

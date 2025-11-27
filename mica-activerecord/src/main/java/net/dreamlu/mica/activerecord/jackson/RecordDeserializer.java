@@ -25,7 +25,6 @@ import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.deser.std.StdDeserializer;
 import tools.jackson.databind.jsontype.TypeDeserializer;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -41,7 +40,7 @@ public class RecordDeserializer extends StdDeserializer<Record> {
 	}
 
 	@Override
-	public Object deserializeWithType(JsonParser jp, DeserializationContext ctxt, TypeDeserializer typeDeserializer) throws IOException {
+	public Object deserializeWithType(JsonParser jp, DeserializationContext ctxt, TypeDeserializer typeDeserializer) throws JacksonException {
 		return deserializeRecord(jp, typeDeserializer);
 	}
 
@@ -51,7 +50,7 @@ public class RecordDeserializer extends StdDeserializer<Record> {
 	}
 
 	private static Record deserializeRecord(JsonParser jp, TypeDeserializer typeDeserializer) throws JacksonException {
-		JsonNode node = jp.getCodec().readTree(jp);
+		JsonNode node = jp.readValueAsTree();
 		Map<String, Object> columns = JsonUtil.convertValue(node, JsonUtil.getMapType(Object.class));
 		if (typeDeserializer != null) {
 			columns.remove(typeDeserializer.getPropertyName());
