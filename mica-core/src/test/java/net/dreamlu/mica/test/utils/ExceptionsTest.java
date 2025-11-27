@@ -4,6 +4,7 @@ import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.JacksonException;
 
 import java.io.IOException;
 
@@ -23,7 +24,7 @@ class ExceptionsTest {
 
 	@Test
 	void testJson() {
-		Assertions.assertThrows(IOException.class, () -> {
+		Assertions.assertThrows(JacksonException.class, () -> {
 			JsonUtil.readValue("`12123`", Object.class);
 		});
 	}
