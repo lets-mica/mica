@@ -23,7 +23,6 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
@@ -71,7 +70,7 @@ public class MicaXssConfiguration implements WebMvcConfigurer {
 	}
 
 	@Bean
-	public Jackson2ObjectMapperBuilderCustomizer xssJacksonCustomizer(MicaXssProperties properties,
+	public JacksonBuilderCustomizer xssJacksonCustomizer(MicaXssProperties properties,
 																	  XssCleaner xssCleaner) {
 		return builder -> builder.deserializerByType(String.class, new JacksonXssClean(properties, xssCleaner));
 	}

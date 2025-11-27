@@ -18,8 +18,8 @@ package net.dreamlu.mica.logging.config;
 
 import net.dreamlu.mica.auto.annotation.AutoEnvPostProcessor;
 import net.dreamlu.mica.logging.utils.LoggingUtil;
+import org.springframework.boot.EnvironmentPostProcessor;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;

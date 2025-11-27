@@ -19,7 +19,7 @@ package net.dreamlu.mica.logging.listener;
 import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.logging.config.MicaLoggingProperties;
 import net.dreamlu.mica.logging.utils.LoggingUtil;
-import org.springframework.boot.web.context.WebServerInitializedEvent;
+import org.springframework.boot.web.server.context.WebServerInitializedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
