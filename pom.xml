@@ -46,6 +46,7 @@
         <spring.cloud.version>2025.1.0</spring.cloud.version>
         <swagger.version>1.6.16</swagger.version>
         <swagger3x.version>2.2.41</swagger3x.version>
+        <springdoc.version>3.0.0</springdoc.version>
         <jsoup.version>1.21.2</jsoup.version>
         <knife4j.version>4.5.0</knife4j.version>
         <druid.version>1.2.27</druid.version>
@@ -142,6 +143,17 @@
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springdoc</groupId>
+                        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jsoup</groupId>
