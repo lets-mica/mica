@@ -25,8 +25,9 @@ import net.dreamlu.mica.core.utils.BeanUtil;
 import net.dreamlu.mica.core.utils.StringUtil;
 import org.jspecify.annotations.Nullable;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
-import org.springframework.boot.webflux.error.DefaultErrorAttributes;
-import org.springframework.web.reactive.function.server.ServerRequest;
+import org.springframework.boot.webmvc.error.DefaultErrorAttributes;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.Map;
 import java.util.Optional;
@@ -41,16 +42,16 @@ import java.util.Optional;
 public class MicaErrorAttributes extends DefaultErrorAttributes {
 
 	@Override
-	public Map<String, Object> getErrorAttributes(ServerRequest request, ErrorAttributeOptions options) {
+	public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options) {
 		// 请求地址
-		String requestUrl = this.getAttr(request, RequestDispatcher.ERROR_REQUEST_URI);
+		String requestUrl = this.getAttr(webRequest, RequestDispatcher.ERROR_REQUEST_URI);
 		if (StringUtil.isBlank(requestUrl)) {
-			requestUrl = this.getAttr(request, RequestDispatcher.FORWARD_REQUEST_URI);
+			requestUrl = this.getAttr(webRequest, RequestDispatcher.FORWARD_REQUEST_URI);
 		}
 		// status code
-		Integer status = this.getAttr(request, RequestDispatcher.ERROR_STATUS_CODE);
+		Integer status = this.getAttr(webRequest, RequestDispatcher.ERROR_STATUS_CODE);
 		// error
-		Throwable error = getError(request);
+		Throwable error = getError(webRequest);
 		log.error("URL:{} error status:{}", requestUrl, status, error);
 		R<Object> result;
 		if (error instanceof ServiceException serviceException) {
@@ -63,8 +64,8 @@ public class MicaErrorAttributes extends DefaultErrorAttributes {
 	}
 
 	@Nullable
-	private <T> T getAttr(ServerRequest webRequest, String name) {
-		return (T) webRequest.attribute(name);
+	private <T> T getAttr(WebRequest webRequest, String name) {
+		return (T) webRequest.getAttribute(name, RequestAttributes.SCOPE_REQUEST);
 	}
 
 }
