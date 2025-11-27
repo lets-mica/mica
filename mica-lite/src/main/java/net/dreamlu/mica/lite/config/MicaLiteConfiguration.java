@@ -19,8 +19,9 @@ package net.dreamlu.mica.lite.config;
 import net.dreamlu.mica.core.spring.SpringContextUtil;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.boot.jackson.autoconfigure.JsonMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
+import tools.jackson.databind.MapperFeature;
 
 /**
  * mica lite 配置
@@ -37,9 +38,9 @@ public class MicaLiteConfiguration {
 	}
 
 	@Bean
-	public Jackson2ObjectMapperBuilderCustomizer customizerEnableDefaultViewInclusion() {
+	public JsonMapperBuilderCustomizer customizerEnableDefaultViewInclusion() {
 		// 支持 R 返回 json 渲染，开启默认的 Jackson 会将所有属性包含在序列化或反序列化的结果中，无论是否定义了视图。
-		return builder -> builder.defaultViewInclusion(true);
+		return builder -> builder.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
 	}
 
 }

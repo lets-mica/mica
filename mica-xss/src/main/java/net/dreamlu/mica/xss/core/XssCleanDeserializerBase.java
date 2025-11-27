@@ -16,32 +16,33 @@
 
 package net.dreamlu.mica.xss.core;
 
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
 import tools.jackson.core.JsonToken;
 import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.ValueDeserializer;
 import tools.jackson.databind.exc.MismatchedInputException;
-
-import java.io.IOException;
 
 /**
  * jackson xss 处理
  *
  * @author L.cm
  */
-public abstract class XssCleanDeserializerBase extends JsonDeserializer<String> {
+public abstract class XssCleanDeserializerBase extends ValueDeserializer<String> {
 
 	@Override
-	public String deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
+	public String deserialize(JsonParser p, DeserializationContext ctx) throws JacksonException {
 		// json 字段名
 		String name = p.currentName();
 		// 字符串类型
 		if (p.hasToken(JsonToken.VALUE_STRING)) {
-			String text = p.getText();
+			String text = p.getString();
 			if (text == null) {
 				return null;
 			}
 			return clean(name, text);
 		}
-		JsonToken jsonToken = p.getCurrentToken();
+		JsonToken jsonToken = p.currentToken();
 		if (jsonToken.isScalarValue()) {
 			String text = p.getValueAsString();
 			if (text != null) {
@@ -58,6 +59,6 @@ public abstract class XssCleanDeserializerBase extends JsonDeserializer<String> 
 	 * @param value json value
 	 * @return String
 	 */
-	public abstract String clean(String name, String value) throws IOException;
+	public abstract String clean(String name, String value) throws JacksonException;
 
 }

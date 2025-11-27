@@ -42,13 +42,6 @@ public class MicaXssProperties {
 	 */
 	private boolean enabled = true;
 	/**
-	 * 全局：对文件进行首尾 trim
-	 * @deprecated 3.4.3，form 使用 {@link FormConfig#trimText} 代替.
-	 * jackson 使用 {@link JacksonConfig#trimText} 代替.
-	 */
-	@Deprecated(since = "3.4.3", forRemoval = true)
-	private boolean trimText = true;
-	/**
 	 * 全局：{@link XssType#FORM}配置
 	 */
 	private FormConfig form = new FormConfig();

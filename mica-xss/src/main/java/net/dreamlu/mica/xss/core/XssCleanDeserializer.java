@@ -20,8 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.spring.SpringContextUtil;
 import net.dreamlu.mica.xss.config.MicaXssProperties;
 import org.springframework.util.StringUtils;
-
-import java.io.IOException;
+import tools.jackson.core.JacksonException;
 
 /**
  * jackson xss 处理
@@ -32,7 +31,7 @@ import java.io.IOException;
 public class XssCleanDeserializer extends XssCleanDeserializerBase {
 
 	@Override
-	public String clean(String name, String text) throws IOException {
+	public String clean(String name, String text) throws JacksonException {
 		if (text == null) {
 			return null;
 		}
@@ -52,7 +51,7 @@ public class XssCleanDeserializer extends XssCleanDeserializerBase {
 		if (!charsToDelete.isEmpty()) {
 			value = StringUtils.deleteAny(value, charsToDelete);
 		}
-		boolean isTrimText = properties.isTrimText() || jackson.isTrimText();
+		boolean isTrimText = jackson.isTrimText();
 		if (isTrimText) {
 			value = value.trim();
 		}

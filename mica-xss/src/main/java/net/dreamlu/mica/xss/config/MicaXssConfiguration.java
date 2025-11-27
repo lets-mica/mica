@@ -24,10 +24,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.jackson.autoconfigure.JsonMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import tools.jackson.databind.module.SimpleModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,9 +72,13 @@ public class MicaXssConfiguration implements WebMvcConfigurer {
 	}
 
 	@Bean
-	public JacksonBuilderCustomizer xssJacksonCustomizer(MicaXssProperties properties,
-																	  XssCleaner xssCleaner) {
-		return builder -> builder.deserializerByType(String.class, new JacksonXssClean(properties, xssCleaner));
+	public JsonMapperBuilderCustomizer xssJacksonCustomizer(MicaXssProperties properties,
+															XssCleaner xssCleaner) {
+		return builder -> {
+			SimpleModule module = new SimpleModule();
+			module.addDeserializer(String.class, new JacksonXssClean(properties, xssCleaner));
+			builder.addModule(module);
+		};
 	}
 
 	@Override
