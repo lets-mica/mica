@@ -44,7 +44,6 @@
         <!-- spring boot 全家桶 -->
         <spring.boot.version>4.0.0</spring.boot.version>
         <spring.cloud.version>2025.1.0</spring.cloud.version>
-        <findbugs.version>3.0.2</findbugs.version>
         <swagger.version>1.6.16</swagger.version>
         <swagger3x.version>2.2.41</swagger3x.version>
         <jsoup.version>1.21.2</jsoup.version>
@@ -128,11 +127,6 @@
                 <version>${okhttp.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.google.code.findbugs</groupId>
-                <artifactId>jsr305</artifactId>
-                <version>${findbugs.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.swagger</groupId>
