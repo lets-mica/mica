@@ -18,6 +18,7 @@ package net.dreamlu.mica.holidays.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.core.utils.Exceptions;
 import net.dreamlu.mica.core.utils.JsonUtil;
 import net.dreamlu.mica.holidays.config.HolidaysApiProperties;
 import net.dreamlu.mica.holidays.core.DaysType;
@@ -26,6 +27,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -50,6 +52,10 @@ public class HolidaysApiImpl implements HolidaysApi, InitializingBean {
 	@Override
 	public DaysType getDaysType(LocalDate localDate) {
 		int year = localDate.getYear();
+		// 如果没有该年的数据，尝试重新从配置中加载，避免重启
+		if (!YEAR_DATA_MAP.containsKey(year) && checkProperties(year)) {
+			loadExtDataProperties();
+		}
 		Map<String, Byte> dataMap = YEAR_DATA_MAP.get(year);
 		// 对于没有数据的，我们按正常的周六日来判断，
 		if (dataMap == null) {
@@ -71,6 +77,7 @@ public class HolidaysApiImpl implements HolidaysApi, InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		// 内置的配置
 		int[] years = new int[]{2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026};
 		for (int year : years) {
 			Resource resource = resourceLoader.getResource("classpath:data/" + year + "_data.json");
@@ -79,6 +86,14 @@ public class HolidaysApiImpl implements HolidaysApi, InitializingBean {
 				YEAR_DATA_MAP.put(year, dataMap);
 			}
 		}
+		// 自行扩展的配置
+		loadExtDataProperties();
+	}
+
+	/**
+	 * 加载扩展的配置
+	 */
+	private void loadExtDataProperties() {
 		List<HolidaysApiProperties.ExtData> extDataList = properties.getExtData();
 		for (HolidaysApiProperties.ExtData extData : extDataList) {
 			String dataPath = extData.getDataPath();
@@ -86,8 +101,24 @@ public class HolidaysApiImpl implements HolidaysApi, InitializingBean {
 			try (InputStream inputStream = resource.getInputStream()) {
 				Map<String, Byte> dataMap = JsonUtil.readMap(inputStream, Byte.class);
 				YEAR_DATA_MAP.put(extData.getYear(), dataMap);
+			} catch (IOException e) {
+				throw Exceptions.unchecked(e);
 			}
 		}
+	}
+
+	/**
+	 * 检查配置，是否有配置该年的配置
+	 *
+	 * @param year 年
+	 * @return 是否有数据
+	 */
+	private boolean checkProperties(int year) {
+		List<HolidaysApiProperties.ExtData> dataList = properties.getExtData();
+		if (dataList.isEmpty()) {
+			return false;
+		}
+		return dataList.stream().anyMatch(data -> year == data.getYear());
 	}
 
 	/**
