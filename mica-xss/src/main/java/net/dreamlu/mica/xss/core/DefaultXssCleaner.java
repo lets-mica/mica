@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.xss.core;
 
+import lombok.RequiredArgsConstructor;
 import net.dreamlu.mica.xss.config.MicaXssProperties;
 import net.dreamlu.mica.xss.config.MicaXssProperties.Mode;
 import net.dreamlu.mica.xss.utils.XssUtil;
@@ -32,12 +33,9 @@ import java.nio.charset.StandardCharsets;
  *
  * @author L.cm
  */
+@RequiredArgsConstructor
 public class DefaultXssCleaner implements XssCleaner {
 	private final MicaXssProperties properties;
-
-	public DefaultXssCleaner(MicaXssProperties properties) {
-		this.properties = properties;
-	}
 
 	private static Document.OutputSettings getOutputSettings(MicaXssProperties properties) {
 		return new Document.OutputSettings()
@@ -62,7 +60,7 @@ public class DefaultXssCleaner implements XssCleaner {
 			if (Jsoup.isValid(bodyHtml, XssUtil.WHITE_LIST)) {
 				return bodyHtml;
 			}
-			throw type.getXssException(name, bodyHtml, "Xss validate fail, input value:" + bodyHtml);
+			throw type.getXssException(name, bodyHtml);
 		} else {
 			// 4. 清理后的 html
 			String escapedHtml = Jsoup.clean(bodyHtml, "", XssUtil.WHITE_LIST, getOutputSettings(properties));

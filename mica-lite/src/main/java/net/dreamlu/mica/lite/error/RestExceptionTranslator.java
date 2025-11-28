@@ -61,9 +61,9 @@ import java.util.Set;
  */
 @Slf4j
 @Hidden
-@Order(Ordered.HIGHEST_PRECEDENCE)
 @AutoConfiguration
 @RestControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE + 100)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class RestExceptionTranslator {
 

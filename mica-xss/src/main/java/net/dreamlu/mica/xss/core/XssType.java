@@ -20,6 +20,8 @@ import net.dreamlu.mica.core.utils.Exceptions;
 
 /**
  * xss 数据处理类型
+ *
+ * @author L.cm
  */
 public enum XssType {
 
@@ -28,8 +30,8 @@ public enum XssType {
 	 */
 	FORM() {
 		@Override
-		public RuntimeException getXssException(String name, String input, String message) {
-			return new FromXssException(input, message);
+		public RuntimeException getXssException(String name, String input) {
+			return new FromXssException(input, "Xss校验失败, 值:" + input);
 		}
 	},
 
@@ -38,8 +40,8 @@ public enum XssType {
 	 */
 	JACKSON() {
 		@Override
-		public RuntimeException getXssException(String name, String input, String message) {
-			return Exceptions.unchecked(new JacksonXssException(name, input, message));
+		public RuntimeException getXssException(String name, String input) {
+			return Exceptions.unchecked(new JacksonXssException(name, input, "Xss校验失败，属性：" + name + ", 值:" + input));
 		}
 	};
 
@@ -48,9 +50,8 @@ public enum XssType {
 	 *
 	 * @param name    属性名
 	 * @param input   input
-	 * @param message message
 	 * @return XssException
 	 */
-	public abstract RuntimeException getXssException(String name, String input, String message);
+	public abstract RuntimeException getXssException(String name, String input);
 
 }
