@@ -34,7 +34,7 @@ public enum ReadOffsetModel {
 	 */
 	START(ReadOffset.from("0-0")),
 	/**
-	 * 从最近的偏移量读取。
+	 * 从最近的偏移量读取，可用于广播，不能用于分组消费，分组消费使用 LAST_CONSUMED
 	 */
 	LATEST(ReadOffset.latest()),
 	/**
