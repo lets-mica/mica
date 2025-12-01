@@ -33,7 +33,6 @@ import org.springframework.core.KotlinDetector;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -81,8 +80,8 @@ public class RedisTemplateConfiguration {
 		jsonMapperBuilder.changeDefaultPropertyInclusion(handler ->  handler.withValueInclusion(JsonInclude.Include.NON_NULL));
 		// findAndRegisterModules
 		jsonMapperBuilder.findAndAddModules();
-		// class type info to json
-		PolymorphicTypeValidator polymorphicTypeValidator = jsonMapper.serializationConfig().getPolymorphicTypeValidator();
+		// 配置宽松的类型验证器
+		PolymorphicTypeValidator polymorphicTypeValidator = RedisJackosnPolymorphicTypeValidator.INSTANCE;
 		if (KotlinDetector.isKotlinPresent() && properties.isEnableKotlinJson()) {
 			jsonMapperBuilder.activateDefaultTyping(polymorphicTypeValidator, DefaultTyping.NON_FINAL_AND_ENUMS, As.PROPERTY);
 		} else {
