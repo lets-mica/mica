@@ -16,6 +16,7 @@
 
 package net.dreamlu.mica.activerecord.utils;
 
+import com.jfinal.kit.StrKit;
 import net.dreamlu.mica.core.utils.CharPool;
 
 /**
@@ -65,25 +66,9 @@ public enum FieldStrategy {
 		public String convert(String name) {
 			if (name == null) {
 				return null;
+			} else {
+				return StrKit.toCamelCase(name);
 			}
-			// 没有下划线直接返回
-			if (name.indexOf(CharPool.UNDERSCORE) == -1) {
-				return name;
-			}
-			char[] charArray = name.toCharArray();
-			StringBuilder builder = new StringBuilder();
-			boolean isUnderlineBefore = false;
-			for (char c : charArray) {
-				if (CharPool.UNDERSCORE == c) {
-					isUnderlineBefore = true;
-				} else if (isUnderlineBefore && c >= CharPool.LOWER_A && c <= CharPool.LOWER_Z) {
-					builder.append(c -= 32);
-					isUnderlineBefore = false;
-				} else {
-					builder.append(c);
-				}
-			}
-			return builder.toString();
 		}
 	};
 
