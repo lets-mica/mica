@@ -16,7 +16,6 @@
 
 package net.dreamlu.mica.core.utils;
 
-import net.dreamlu.mica.core.function.CheckedConsumer;
 import net.dreamlu.mica.core.function.CheckedFunction;
 import org.jspecify.annotations.Nullable;
 import tools.jackson.core.JsonParser;
@@ -30,7 +29,6 @@ import tools.jackson.databind.node.ObjectNode;
 import tools.jackson.databind.type.CollectionLikeType;
 import tools.jackson.databind.type.MapType;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.text.SimpleDateFormat;
@@ -776,8 +774,8 @@ public class JsonUtil {
 	 * @param consumer ObjectMapper consumer
 	 * @return 是否成功
 	 */
-	public static boolean isValidJson(CheckedFunction<ObjectMapper, JsonNode> consumer) {
-		ObjectMapper mapper = getInstance().rebuild()
+	public static boolean isValidJson(CheckedFunction<JsonMapper, JsonNode> consumer) {
+		JsonMapper mapper = getInstance().rebuild()
 			.enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS)
 			.enable(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY)
 			.build();

@@ -65,7 +65,7 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	 * @return 对象是否为false
 	 */
 	public static boolean isFalse(@Nullable Boolean object) {
-		return object == null || Boolean.FALSE.equals(object);
+		return Boolean.FALSE.equals(object);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	 * @return 是否eq
 	 */
 	public static boolean equals(@Nullable Object o1, @Nullable Object o2) {
-		return Objects.equals(o1, o2);
+		return ObjectUtils.nullSafeEquals(o1, o2);
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	 * @return 是否不eq
 	 */
 	public static boolean isNotEqual(Object o1, Object o2) {
-		return !Objects.equals(o1, o2);
+		return !equals(o1, o2);
 	}
 
 	/**
