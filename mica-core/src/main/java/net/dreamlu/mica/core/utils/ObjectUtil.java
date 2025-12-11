@@ -65,7 +65,7 @@ public class ObjectUtil extends org.springframework.util.ObjectUtils {
 	 * @return 对象是否为false
 	 */
 	public static boolean isFalse(@Nullable Boolean object) {
-		return Boolean.FALSE.equals(object);
+		return !isTrue(object);
 	}
 
 	/**
