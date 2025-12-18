@@ -44,7 +44,7 @@
         <!-- mica-auto -->
         <mcia.auto.version>4.0.1</mcia.auto.version>
         <!-- spring boot 全家桶 -->
-        <spring.boot.version>4.0.0</spring.boot.version>
+        <spring.boot.version>4.0.1</spring.boot.version>
         <spring.cloud.version>2025.1.0</spring.cloud.version>
         <swagger.version>1.6.16</swagger.version>
         <swagger3x.version>2.2.41</swagger3x.version>
