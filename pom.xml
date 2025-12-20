@@ -55,7 +55,7 @@
         <jfinal.version>5.2.5</jfinal.version>
         <zxing.version>3.5.4</zxing.version>
         <logstash.version>9.0</logstash.version>
-        <loki.logback.appender.version>2.0.1</loki.logback.appender.version>
+        <loki.logback.appender.version>2.0.2</loki.logback.appender.version>
         <okhttp.version>5.3.2</okhttp.version>
     </properties>
 
