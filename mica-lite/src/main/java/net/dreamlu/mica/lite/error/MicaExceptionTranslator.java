@@ -77,17 +77,19 @@ public class MicaExceptionTranslator {
 		// 异步获取不到的一些信息
 		event.setRequestId(micaContext.getRequestId());
 		HttpServletRequest request = WebUtil.getRequest();
-		// 请求方法名
-		event.setRequestMethod(request.getMethod());
-		// 拼接地址
-		String requestUrl = request.getRequestURI();
-		String queryString = request.getQueryString();
-		if (StringUtil.isNotBlank(queryString)) {
-			requestUrl = requestUrl + StringPool.QUESTION_MARK + queryString;
+		if (request != null) {
+			// 请求方法名
+			event.setRequestMethod(request.getMethod());
+			// 拼接地址
+			String requestUrl = request.getRequestURI();
+			String queryString = request.getQueryString();
+			if (StringUtil.isNotBlank(queryString)) {
+				requestUrl = requestUrl + StringPool.QUESTION_MARK + queryString;
+			}
+			// 请求ip
+			event.setRequestIp(WebUtil.getIP(request));
+			event.setRequestUrl(requestUrl);
 		}
-		// 请求ip
-		event.setRequestIp(WebUtil.getIP(request));
-		event.setRequestUrl(requestUrl);
 		// 堆栈信息
 		ErrorUtil.initErrorInfo(error, event);
 		// 发布事件，其他参数可监听时异步获取
