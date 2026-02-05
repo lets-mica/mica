@@ -56,6 +56,7 @@
         <zxing.version>3.5.4</zxing.version>
         <logstash.version>9.0</logstash.version>
         <loki.logback.appender.version>2.0.2</loki.logback.appender.version>
+        <onnxruntime.version>1.23.2</onnxruntime.version>
         <okhttp.version>5.3.2</okhttp.version>
     </properties>
 
@@ -77,6 +78,7 @@
         <module>mica-activerecord</module>
         <module>mica-prometheus</module>
         <module>mica-holidays</module>
+        <module>mica-ddddocr</module>
     </modules>
 
     <dependencies>
@@ -185,6 +187,12 @@
                 <groupId>com.github.loki4j</groupId>
                 <artifactId>loki-logback-appender</artifactId>
                 <version>${loki.logback.appender.version}</version>
+            </dependency>
+            <!-- ONNX Runtime -->
+            <dependency>
+                <groupId>com.microsoft.onnxruntime</groupId>
+                <artifactId>onnxruntime</artifactId>
+                <version>${onnxruntime.version}</version>
             </dependency>
             <!-- mica 相关 -->
             <dependency>
