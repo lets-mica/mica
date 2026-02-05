@@ -33,7 +33,7 @@
 
     <properties>
         <!-- mica version -->
-        <revision>4.0.1-SNAPSHOT</revision>
+        <revision>4.0.2</revision>
         <!-- java version -->
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
