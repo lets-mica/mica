@@ -289,13 +289,13 @@ public class HttpRequest {
 		if (isHttps) {
 			// 主机名验证
 			builder.hostnameVerifier(hostnameVerifier == null ? TrustAllHostNames.INSTANCE : hostnameVerifier);
+			// 证书管理
 			if (sslSocketFactory == null && trustManager == null) {
 				Pair<SSLSocketFactory, X509TrustManager> pair = getSslContext((String) null, null, null, null);
-				sslSocketFactory = pair.left();
-				trustManager = pair.right();
+				builder.sslSocketFactory(pair.left(), pair.right());
+			} else {
+				builder.sslSocketFactory(sslSocketFactory, trustManager);
 			}
-			// 证书管理
-			builder.sslSocketFactory(sslSocketFactory, trustManager);
 		}
 		if (authenticator != null) {
 			builder.authenticator(authenticator);
@@ -711,8 +711,9 @@ public class HttpRequest {
 		return getSslContext(keyStoreInputStream, keyPass, trustStoreInputStream, trustPass);
 	}
 
-	public static Pair<SSLSocketFactory, X509TrustManager> getSslContext(InputStream keyStoreInputStream, String keyPass,
-																   InputStream trustInputStream, String trustPass) {
+	public static Pair<SSLSocketFactory, X509TrustManager> getSslContext(
+		InputStream keyStoreInputStream, String keyPass, InputStream trustInputStream, String trustPass
+	) {
 		try {
 			KeyManager[] kms = null;
 			if (keyStoreInputStream != null) {
