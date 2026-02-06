@@ -35,28 +35,7 @@ public interface Ip2regionSearcher {
 	 * @return 位置
 	 */
 	@Nullable
-	IpInfo memorySearch(long ip);
-
-	/**
-	 * ip 位置 搜索
-	 *
-	 * @param ip ip
-	 * @return 位置
-	 */
-	@Nullable
 	IpInfo memorySearch(String ip);
-
-	/**
-	 * 读取 ipInfo 中的信息
-	 *
-	 * @param ip       ip
-	 * @param function Function
-	 * @return 地址
-	 */
-	@Nullable
-	default String getInfo(long ip, Function<IpInfo, String> function) {
-		return IpInfoUtil.readInfo(memorySearch(ip), function);
-	}
 
 	/**
 	 * 读取 ipInfo 中的信息
@@ -77,30 +56,8 @@ public interface Ip2regionSearcher {
 	 * @return 地址
 	 */
 	@Nullable
-	default String getAddress(long ip) {
-		return getInfo(ip, IpInfo::getAddress);
-	}
-
-	/**
-	 * 获取地址信息
-	 *
-	 * @param ip ip
-	 * @return 地址
-	 */
-	@Nullable
 	default String getAddress(String ip) {
 		return getInfo(ip, IpInfo::getAddress);
-	}
-
-	/**
-	 * 获取地址信息包含 isp
-	 *
-	 * @param ip ip
-	 * @return 地址
-	 */
-	@Nullable
-	default String getAddressAndIsp(long ip) {
-		return getInfo(ip, IpInfo::getAddressAndIsp);
 	}
 
 	/**

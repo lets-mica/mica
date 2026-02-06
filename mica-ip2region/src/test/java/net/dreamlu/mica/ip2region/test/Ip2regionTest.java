@@ -27,7 +27,7 @@ class Ip2regionTest {
 	}
 
 	@Test
-	void getRegion() throws Exception {
+	void getRegion() {
 		System.out.println(searcher.memorySearch("220.248.12.158"));
 		System.out.println(searcher.memorySearch("222.240.36.135"));
 		System.out.println(searcher.memorySearch("172.30.13.97"));
@@ -39,7 +39,7 @@ class Ip2regionTest {
 	}
 
 	@Test
-	void getRegionV6() throws Exception {
+	void getRegionV6() {
 		System.out.println(searcher.memorySearch("::ffff:1111:2222"));
 		System.out.println(searcher.memorySearch("2001:db8::ffff:1111:2222"));
 		System.out.println(searcher.memorySearch("::1"));

@@ -34,13 +34,13 @@ public class Ip2regionProperties {
 	public static final String PREFIX = "mica.ip2region";
 
 	/**
-	 * ip2region.db 文件路径
+	 * ip2region_v4.xdb 文件路径
 	 */
-	private String dbFileLocation = "classpath:ip2region/ip2region.xdb";
+	private String ipv4xdbFileLocation = "classpath:ip2region/ip2region_v4.xdb";
 
 	/**
-	 * ipv6wry.db 文件路径
+	 * ip2region_v6.xdb 文件路径
 	 */
-	private String ipv6dbFileLocation = "classpath:ip2region/ipv6wry.db";
+	private String ipv6xdbFileLocation = "classpath:ip2region/ip2region_v6.xdb";
 
 }

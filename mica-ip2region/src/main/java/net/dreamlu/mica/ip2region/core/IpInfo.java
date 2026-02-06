@@ -38,10 +38,6 @@ public class IpInfo implements Serializable {
 	 */
 	private String country;
 	/**
-	 * 区域
-	 */
-	private String region;
-	/**
 	 * 省
 	 */
 	private String province;
@@ -53,6 +49,10 @@ public class IpInfo implements Serializable {
 	 * 运营商
 	 */
 	private String isp;
+	/**
+	 * 国际标准化组织（ISO）制定的两字母国家/地区代码
+	 */
+	private String isoCode;
 
 	/**
 	 * 拼接完整的地址
@@ -62,7 +62,6 @@ public class IpInfo implements Serializable {
 	public String getAddress() {
 		Set<String> regionSet = new LinkedHashSet<>();
 		regionSet.add(country);
-		regionSet.add(region);
 		regionSet.add(province);
 		regionSet.add(city);
 		regionSet.removeIf(Objects::isNull);
@@ -77,7 +76,6 @@ public class IpInfo implements Serializable {
 	public String getAddressAndIsp() {
 		Set<String> regionSet = new LinkedHashSet<>();
 		regionSet.add(country);
-		regionSet.add(region);
 		regionSet.add(province);
 		regionSet.add(city);
 		regionSet.add(isp);
