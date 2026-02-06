@@ -281,6 +281,11 @@
                 <artifactId>mica-holidays</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>net.dreamlu</groupId>
+                <artifactId>mica-ddddocr</artifactId>
+                <version>${revision}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
