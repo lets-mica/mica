@@ -99,23 +99,27 @@ public class MicaRedisProperties {
 		/**
 		 * 是否开启 stream
 		 */
-		boolean enable = false;
+		private boolean enable = false;
 		/**
 		 * consumer group，默认：服务名 + 环境
 		 */
-		String consumerGroup;
+		private String consumerGroup;
 		/**
 		 * 消费者名称，默认：ip + 端口
 		 */
-		String consumerName;
+		private String consumerName;
 		/**
 		 * poll 批量大小
 		 */
-		Integer pollBatchSize;
+		private Integer pollBatchSize;
 		/**
 		 * poll 超时时间
 		 */
-		Duration pollTimeout;
+		private Duration pollTimeout;
+		/**
+		 * executor 线程池大小
+		 */
+		private int executorSize = 16;
 	}
 
 }

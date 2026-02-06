@@ -35,6 +35,7 @@ import org.springframework.data.redis.stream.StreamMessageListenerContainer.Stre
 import org.springframework.util.ErrorHandler;
 
 import java.time.Duration;
+import java.util.concurrent.Executors;
 
 /**
  * redis Stream 配置
@@ -51,8 +52,9 @@ public class RedisStreamConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public StreamMessageListenerContainerOptions<String, MapRecord<String, String, byte[]>> streamMessageListenerContainerOptions(MicaRedisProperties properties,
-																																  ObjectProvider<ErrorHandler> errorHandlerObjectProvider) {
+	public StreamMessageListenerContainerOptions<String, MapRecord<String, String, byte[]>> streamMessageListenerContainerOptions(
+		MicaRedisProperties properties, ObjectProvider<ErrorHandler> errorHandlerObjectProvider
+	) {
 		StreamMessageListenerContainer.StreamMessageListenerContainerOptionsBuilder<String, MapRecord<String, String, byte[]>> builder = StreamMessageListenerContainerOptions
 			.builder()
 			.keySerializer(RedisSerializer.string())
@@ -71,14 +73,18 @@ public class RedisStreamConfiguration {
 		}
 		// errorHandler
 		errorHandlerObjectProvider.ifAvailable((builder::errorHandler));
-		// TODO L.cm executor
+		// executor
+		int executorSize = streamProperties.getExecutorSize();
+		builder.executor(Executors.newFixedThreadPool(Math.max(executorSize, 16)));
 		return builder.build();
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
-	public StreamMessageListenerContainer<String, MapRecord<String, String, byte[]>> streamMessageListenerContainer(RedisConnectionFactory redisConnectionFactory,
-																													StreamMessageListenerContainerOptions<String, MapRecord<String, String, byte[]>> streamMessageListenerContainerOptions) {
+	public StreamMessageListenerContainer<String, MapRecord<String, String, byte[]>> streamMessageListenerContainer(
+		RedisConnectionFactory redisConnectionFactory,
+		StreamMessageListenerContainerOptions<String, MapRecord<String, String, byte[]>> streamMessageListenerContainerOptions
+	) {
 		// 根据配置对象创建监听容器
 		return StreamMessageListenerContainer.create(redisConnectionFactory, streamMessageListenerContainerOptions);
 	}
