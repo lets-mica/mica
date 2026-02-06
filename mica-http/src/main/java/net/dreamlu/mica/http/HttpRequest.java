@@ -259,6 +259,9 @@ public class HttpRequest {
 	}
 
 	private Call internalCall(final OkHttpClient client) {
+		// url
+		HttpUrl httpUrl = uriBuilder.build();
+		// client
 		OkHttpClient.Builder builder = client.newBuilder();
 		if (connectTimeout != null) {
 			builder.connectTimeout(connectTimeout.toMillis(), TimeUnit.MILLISECONDS);
@@ -281,14 +284,18 @@ public class HttpRequest {
 		if (proxyAuthenticator != null) {
 			builder.proxyAuthenticator(proxyAuthenticator);
 		}
-		if (sslSocketFactory != null && trustManager != null) {
-			builder.sslSocketFactory(sslSocketFactory, trustManager);
-			if (hostnameVerifier == null) {
-				hostnameVerifier = TrustAllHostNames.INSTANCE;
+		// 判断是否 ssl
+		boolean isHttps = httpUrl.isHttps();
+		if (isHttps) {
+			// 主机名验证
+			builder.hostnameVerifier(hostnameVerifier == null ? TrustAllHostNames.INSTANCE : hostnameVerifier);
+			if (sslSocketFactory == null && trustManager == null) {
+				Pair<SSLContext, X509TrustManager> pair = getSslContext((String) null, null, null, null);
+				sslSocketFactory = pair.left().getSocketFactory();
+				trustManager = pair.right();
 			}
-		}
-		if (hostnameVerifier != null) {
-			builder.hostnameVerifier(hostnameVerifier);
+			// 证书管理
+			builder.sslSocketFactory(sslSocketFactory, trustManager);
 		}
 		if (authenticator != null) {
 			builder.authenticator(authenticator);
@@ -318,8 +325,7 @@ public class HttpRequest {
 		}
 		// 设置 User-Agent
 		requestBuilder.header("User-Agent", userAgent);
-		// url
-		requestBuilder.url(uriBuilder.build());
+		requestBuilder.url(httpUrl);
 		String method = httpMethod;
 		Request request;
 		if (HttpMethod.requiresRequestBody(method) && requestBody == null) {
@@ -708,7 +714,6 @@ public class HttpRequest {
 																   InputStream trustInputStream, String trustPass) {
 		try {
 			KeyManager[] kms = null;
-			TrustManager[] tms = null;
 			if (keyStoreInputStream != null) {
 				KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 				KeyStore keyStore = KeyStore.getInstance("JKS");
@@ -717,10 +722,9 @@ public class HttpRequest {
 				keyManagerFactory.init(keyStore, keyPassChars);
 				kms = keyManagerFactory.getKeyManagers();
 			}
-			if (trustInputStream != null) {
-				char[] trustPassChars = trustPass == null ? null : trustPass.toCharArray();
-				tms = getTrustManagers(trustInputStream, trustPassChars);
-			}
+			// 证书管理
+			char[] trustPassChars = trustPass == null ? null : trustPass.toCharArray();
+			TrustManager[] tms = getTrustManagers(trustInputStream, trustPassChars);
 			SSLContext sslContext = SSLContext.getInstance("TLS");
 			sslContext.init(kms, tms, new SecureRandom());
 			X509TrustManager trustManager = tms == null ? null : (X509TrustManager) tms[0];
@@ -733,7 +737,7 @@ public class HttpRequest {
 	private static TrustManager[] getTrustManagers(InputStream trustInputStream, char[] trustPassword)
 		throws NoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {
 		if (trustInputStream == null) {
-			return new TrustManager[]{DisableValidationTrustManager.INSTANCE};
+			return DisableValidationTrustManager.INSTANCE.getTrustManagers();
 		} else {
 			TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 			KeyStore keyStore = KeyStore.getInstance("JKS");
