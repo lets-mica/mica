@@ -18,11 +18,12 @@ compile("net.dreamlu:mica-ip2region:${version}")
 
 ## 配置说明（已经内置，可忽略）
 
-| 配置项                           | 默认值                               | 说明                          |
-| ------------------------------- |-----------------------------------|-----------------------------|
-| mica.ip2region.db-file-location | classpath:ip2region/ip2region.xdb | ip2region.xdb 文件的地址，默认内置的文件 | 
+| 配置项                           | 默认值                                  | 说明                               |
+| ------------------------------- |--------------------------------------|----------------------------------|
+| mica.ip2region.ipv4xdb-file-location | classpath:ip2region/ip2region_v4.xdb | ip2region ipv4 xdb 文件的地址，默认内置的文件 | 
+| mica.ip2region.ipv6xdb-file-location | classpath:ip2region/ip2region_v6.xdb | ip2region ipv6 xdb 文件的地址，默认内置的文件      | 
 
-**maven 自定义 ip2region.db 注意事项:**
+**maven 自定义 ip2region xdb 注意事项:**
 
 **maven** `resources` 拷贝文件是默认会做 `filter`，会导致我们的文件发生变化，导致不能读，`pom` 中你需要添加下面的配置。
 
@@ -41,7 +42,7 @@ compile("net.dreamlu:mica-ip2region:${version}")
 
 Gitee：https://gitee.com/lionsoul/ip2region
 
-一般我们都会同步更新 `ip2region.xdb` 文件，不需要手动配置。
+一般我们都会同步更新 `ip2region` 的 `xdb` 文件，不需要手动配置。
 
 ## 使用文档
 
@@ -61,15 +62,6 @@ private Ip2regionSearcher regionSearcher;
  * @return 位置
  */
 @Nullable
-IpInfo memorySearch(long ip);
-
-/**
- * ip 位置 搜索
- *
- * @param ip ip
- * @return 位置
- */
-@Nullable
 IpInfo memorySearch(String ip);
 ```
 
@@ -79,10 +71,6 @@ IpInfo memorySearch(String ip);
  * 国家
  */
 private String country;
-/**
- * 区域
- */
-private String region;
 /**
  * 省
  */
@@ -95,6 +83,10 @@ private String city;
  * 运营商
  */
 private String isp;
+/**
+ * 国际标准化组织（ISO）制定的两字母国家/地区代码
+ */
+private String isoCode;
 /**
  * 拼接完整的地址
  *
