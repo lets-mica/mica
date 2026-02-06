@@ -54,4 +54,16 @@ class RsaUtilTest {
 		Assertions.assertEquals(text, decrypted);
 	}
 
+	@Test
+	void testRsaOaep() {
+		KeyPair keyPair = RsaUtil.genKeyPair();
+		byte[] plainBytes = text.getBytes(StandardCharsets.UTF_8);
+		
+		// Test encrypt/decrypt with OAEP
+		byte[] encrypted = RsaUtil.encryptRsaOaep(keyPair.getPublic(), plainBytes);
+		byte[] decrypted = RsaUtil.decryptRsaOaep(keyPair.getPrivate(), encrypted);
+		
+		Assertions.assertEquals(text, new String(decrypted, StandardCharsets.UTF_8));
+	}
+
 }

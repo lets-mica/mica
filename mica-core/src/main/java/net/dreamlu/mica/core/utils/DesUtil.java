@@ -28,7 +28,9 @@ import java.util.Objects;
  * DES加、解密处理工具
  *
  * @author L.cm
+ * @deprecated DES is insecure. Use AesUtil instead.
  */
+@Deprecated
 public class DesUtil {
 	/**
 	 * 数字签名，密钥算法
@@ -84,6 +86,9 @@ public class DesUtil {
 			return null;
 		}
 		byte[] hexBytes = HexUtil.decode(data);
+		if (hexBytes == null || hexBytes.length == 0) {
+			return null;
+		}
 		return new String(decrypt(hexBytes, password), StandardCharsets.UTF_8);
 	}
 

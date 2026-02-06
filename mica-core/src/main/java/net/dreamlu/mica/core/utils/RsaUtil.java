@@ -18,9 +18,9 @@ package net.dreamlu.mica.core.utils;
 
 import net.dreamlu.mica.core.tuple.KeyPair;
 import org.jspecify.annotations.Nullable;
-import org.springframework.util.FastByteArrayOutputStream;
 
 import javax.crypto.Cipher;
+import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
@@ -44,6 +44,7 @@ public class RsaUtil {
 	 */
 	public static final String RSA_ALGORITHM = "RSA";
 	public static final String RSA_PADDING = "RSA/ECB/PKCS1Padding";
+	public static final String RSA_OAEP_PADDING = "RSA/ECB/OAEPWithSHA-256AndMGF1Padding";
 
 	/**
 	 * 获取 KeyPair
@@ -331,7 +332,20 @@ public class RsaUtil {
 	 */
 	public static byte[] encryptRsa(Key key, byte[] data) {
 		int blockSize = ((RSAKey) key).getModulus().bitLength() / 8 - 11;
-		return rsa(key, data, blockSize, Cipher.ENCRYPT_MODE);
+		return rsa(key, data, blockSize, Cipher.ENCRYPT_MODE, RSA_PADDING);
+	}
+
+	/**
+	 * 公钥加密 (OAEP)
+	 *
+	 * @param key  Key
+	 * @param data 待加密的内容
+	 * @return 加密后的内容
+	 */
+	public static byte[] encryptRsaOaep(Key key, byte[] data) {
+		// SHA-256 (32 bytes) * 2 + 2 = 66
+		int blockSize = ((RSAKey) key).getModulus().bitLength() / 8 - 66;
+		return rsa(key, data, blockSize, Cipher.ENCRYPT_MODE, RSA_OAEP_PADDING);
 	}
 
 	/**
@@ -343,7 +357,19 @@ public class RsaUtil {
 	 */
 	public static byte[] decryptRsa(Key key, byte[] data) {
 		int blockSize = ((RSAKey) key).getModulus().bitLength() / 8;
-		return rsa(key, data, blockSize, Cipher.DECRYPT_MODE);
+		return rsa(key, data, blockSize, Cipher.DECRYPT_MODE, RSA_PADDING);
+	}
+
+	/**
+	 * 解密 (OAEP)
+	 *
+	 * @param key  Key
+	 * @param data 数据
+	 * @return 解密后的数据
+	 */
+	public static byte[] decryptRsaOaep(Key key, byte[] data) {
+		int blockSize = ((RSAKey) key).getModulus().bitLength() / 8;
+		return rsa(key, data, blockSize, Cipher.DECRYPT_MODE, RSA_OAEP_PADDING);
 	}
 
 	/**
@@ -353,19 +379,20 @@ public class RsaUtil {
 	 * @param data         数据
 	 * @param maxBlockSize maxBlockSize
 	 * @param mode         模式
+	 * @param padding      padding
 	 * @return 解密后的数据
 	 */
-	private static byte[] rsa(Key key, byte[] data, int maxBlockSize, int mode) {
+	private static byte[] rsa(Key key, byte[] data, int maxBlockSize, int mode, String padding) {
 		// 数据长度
 		final int dataLength = data.length;
 		try {
-			Cipher cipher = Cipher.getInstance(RSA_PADDING);
+			Cipher cipher = Cipher.getInstance(padding);
 			cipher.init(mode, key);
 			// 不需要分段
 			if (dataLength <= maxBlockSize) {
 				return cipher.doFinal(data, 0, dataLength);
 			}
-			final FastByteArrayOutputStream out = new FastByteArrayOutputStream();
+			final ByteArrayOutputStream out = new ByteArrayOutputStream();
 			int offSet = 0;
 			// 剩余长度
 			int remainLength = dataLength;
