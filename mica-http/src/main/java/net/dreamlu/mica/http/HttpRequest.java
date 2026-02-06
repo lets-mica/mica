@@ -290,8 +290,8 @@ public class HttpRequest {
 			// 主机名验证
 			builder.hostnameVerifier(hostnameVerifier == null ? TrustAllHostNames.INSTANCE : hostnameVerifier);
 			if (sslSocketFactory == null && trustManager == null) {
-				Pair<SSLContext, X509TrustManager> pair = getSslContext((String) null, null, null, null);
-				sslSocketFactory = pair.left().getSocketFactory();
+				Pair<SSLSocketFactory, X509TrustManager> pair = getSslContext((String) null, null, null, null);
+				sslSocketFactory = pair.left();
 				trustManager = pair.right();
 			}
 			// 证书管理
@@ -576,8 +576,8 @@ public class HttpRequest {
 	}
 
 	public HttpRequest useSSL(String keyStoreFile, String keyPass, String trustStoreFile, String trustPass) {
-		Pair<SSLContext, X509TrustManager> pair = getSslContext(keyStoreFile, keyPass, trustStoreFile, trustPass);
-		return sslSocketFactory(pair.left().getSocketFactory(), pair.right());
+		Pair<SSLSocketFactory, X509TrustManager> pair = getSslContext(keyStoreFile, keyPass, trustStoreFile, trustPass);
+		return sslSocketFactory(pair.left(), pair.right());
 	}
 
 	public HttpRequest useSSL(InputStream keyStoreInputStream, String keyPass) {
@@ -585,8 +585,8 @@ public class HttpRequest {
 	}
 
 	public HttpRequest useSSL(InputStream keyStoreInputStream, String keyPass, InputStream trustInputStream, String trustPass) {
-		Pair<SSLContext, X509TrustManager> pair = getSslContext(keyStoreInputStream, keyPass, trustInputStream, trustPass);
-		return sslSocketFactory(pair.left().getSocketFactory(), pair.right());
+		Pair<SSLSocketFactory, X509TrustManager> pair = getSslContext(keyStoreInputStream, keyPass, trustInputStream, trustPass);
+		return sslSocketFactory(pair.left(), pair.right());
 	}
 
 	@Override
@@ -656,8 +656,8 @@ public class HttpRequest {
 	}
 
 	public static OkHttpClient setGlobalSSL(String keyStoreFile, String keyPass, String trustStoreFile, String trustPass) {
-		Pair<SSLContext, X509TrustManager> pair = getSslContext(keyStoreFile, keyPass, trustStoreFile, trustPass);
-		return setGlobalSSL(pair.left().getSocketFactory(), pair.right());
+		Pair<SSLSocketFactory, X509TrustManager> pair = getSslContext(keyStoreFile, keyPass, trustStoreFile, trustPass);
+		return setGlobalSSL(pair.left(), pair.right());
 	}
 
 	public static OkHttpClient setGlobalSSL(InputStream keyStoreInputStream, String keyPass) {
@@ -665,8 +665,8 @@ public class HttpRequest {
 	}
 
 	public static OkHttpClient setGlobalSSL(InputStream keyStoreInputStream, String keyPass, InputStream trustInputStream, String trustPass) {
-		Pair<SSLContext, X509TrustManager> pair = getSslContext(keyStoreInputStream, keyPass, trustInputStream, trustPass);
-		return setGlobalSSL(pair.left().getSocketFactory(), pair.right());
+		Pair<SSLSocketFactory, X509TrustManager> pair = getSslContext(keyStoreInputStream, keyPass, trustInputStream, trustPass);
+		return setGlobalSSL(pair.left(), pair.right());
 	}
 
 	public static OkHttpClient setGlobalSSL(SSLSocketFactory sslSocketFactory, X509TrustManager trustManager) {
@@ -689,8 +689,9 @@ public class HttpRequest {
 		return String.valueOf(value);
 	}
 
-	public static Pair<SSLContext, X509TrustManager> getSslContext(String keyStoreFile, String keyPass,
-																   String trustStoreFile, String trustPass) {
+	public static Pair<SSLSocketFactory, X509TrustManager> getSslContext(
+		String keyStoreFile, String keyPass, String trustStoreFile, String trustPass
+	) {
 		InputStream keyStoreInputStream;
 		if (keyStoreFile == null) {
 			keyStoreInputStream = null;
@@ -710,7 +711,7 @@ public class HttpRequest {
 		return getSslContext(keyStoreInputStream, keyPass, trustStoreInputStream, trustPass);
 	}
 
-	public static Pair<SSLContext, X509TrustManager> getSslContext(InputStream keyStoreInputStream, String keyPass,
+	public static Pair<SSLSocketFactory, X509TrustManager> getSslContext(InputStream keyStoreInputStream, String keyPass,
 																   InputStream trustInputStream, String trustPass) {
 		try {
 			KeyManager[] kms = null;
@@ -728,7 +729,7 @@ public class HttpRequest {
 			SSLContext sslContext = SSLContext.getInstance("TLS");
 			sslContext.init(kms, tms, new SecureRandom());
 			X509TrustManager trustManager = tms == null ? null : (X509TrustManager) tms[0];
-			return Pair.create(sslContext, trustManager);
+			return Pair.create(sslContext.getSocketFactory(), trustManager);
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
 		}
