@@ -16,7 +16,7 @@ English | [简体中文](README.md)
 
 | Latest version | spring boot version | spring cloud version | Supported  |
 |----------------| ---------------- | ----------------- |--------------------|
-| 4.0.0          | 4.0.x          | 2025.1.x        | :white_check_mark: |
+| 4.0.2          | 4.0.x          | 2025.1.x        | :white_check_mark: |
 | 3.5.7          | 3.5.x          | 2025            | :white_check_mark: |
 | 3.4.7          | 3.4.x          | 2024            | :white_check_mark: |
 | 3.3.6          | 3.3.x          | 2023              | :x: |
