@@ -59,7 +59,7 @@ import java.util.function.Predicate;
  * @author L.cm
  */
 public class HttpRequest {
-	private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0";
+	private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 Edg/144.0.0.0";
 	private static final MediaType APPLICATION_JSON = MediaType.get("application/json");
 	private static volatile OkHttpClient httpClient = new OkHttpClient();
 	@Nullable
