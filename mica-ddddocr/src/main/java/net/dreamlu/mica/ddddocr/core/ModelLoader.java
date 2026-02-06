@@ -5,14 +5,17 @@ import ai.onnxruntime.OrtException;
 import ai.onnxruntime.OrtLoggingLevel;
 import ai.onnxruntime.OrtSession;
 import net.dreamlu.mica.ddddocr.exception.OCRException;
-import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 
-import java.io.*;
+import java.io.Closeable;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 /**
  * ONNX模型加载器
@@ -108,15 +111,12 @@ class ModelLoader implements Closeable {
 	private String extractResourceFromJar(URL url, String resourceName) throws IOException {
 		// 创建临时文件
 		String fileName = StringUtils.getFilename(resourceName);
-		String fileExtension = StringUtils.getFilenameExtension(fileName);
-		File tempFile = File.createTempFile("ddddocr_" + fileName.replace(".", "_"), "." + fileExtension);
+		String fileExtension = StringUtils.stripFilenameExtension(fileName);
+		File tempFile = File.createTempFile("ddddocr_", '.' + fileExtension);
 		tempFile.deleteOnExit();
 		// 复制资源到临时文件
-		try (
-			InputStream is = url.openStream();
-			FileOutputStream fos = new java.io.FileOutputStream(tempFile)
-		) {
-			StreamUtils.copy(is, fos);
+		try (InputStream is = url.openStream()) {
+			Files.copy(is, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		}
 		return tempFile.getAbsolutePath();
 	}
