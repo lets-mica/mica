@@ -2,7 +2,7 @@
 
 ## 发行版本
 
-### v4.0.2 - 2026-02-07
+### v4.0.2 - 2026-02-06
 
 - feat(ddddocr): 添加 mica-ddddocr 验证码识别模块
 - feat(ip2region): mica-ip2region 同步 ip2region 最新版本支持 ipv4 和 ipv6，IpInfo 删除区域，添加isoCode字段
