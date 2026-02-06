@@ -45,26 +45,34 @@ public class StartedEventListener {
 	@Order(Ordered.LOWEST_PRECEDENCE - 1)
 	@EventListener(WebServerInitializedEvent.class)
 	public void afterStart(WebServerInitializedEvent event) {
-		WebServerApplicationContext context = event.getApplicationContext();
-		Environment environment = context.getEnvironment();
-		String appName = environment.getRequiredProperty(MicaConstant.SPRING_APP_NAME_KEY);
+		// 服务端口
 		int localPort = event.getWebServer().getPort();
-		String profile = StringUtils.arrayToCommaDelimitedString(environment.getActiveProfiles());
-		System.err.printf("---[%s]---启动完成，当前使用的端口:[%d]，环境变量:[%s]---%n", appName, localPort, profile);
-		// 如果有 swagger，打印开发阶段的 swagger ui 地址
-		if (hasKnife4J()) {
-			System.out.printf("http://localhost:%s/doc.html%n", localPort);
-		} else if (hasOpenApi()) {
-			String swaggerPath = StringUtil.defaultIfBlank(environment.getProperty("springdoc.swagger-ui.path"), "/swagger-ui.html");
-			System.out.printf("http://localhost:%s%s%n", localPort, swaggerPath);
-		} else {
-			System.out.printf("http://localhost:%s%n", localPort);
-		}
-		// linux 上将全部的 System.err 和 System.out 替换为log
-		if (SystemUtil.isLinux()) {
-			System.setOut(LogPrintStream.log(false));
-			// 去除 error 的转换，因为 error 会打印成很 N 条
-			// System.setErr(LogPrintStream.log(true));
+		// management 端口
+		Integer managementServerPort = event.getApplicationContext()
+			.getEnvironment()
+			.getProperty("management.server.port", Integer.class);
+		// 兼容自定义 management 端口的情况
+		if (managementServerPort == null || !managementServerPort.equals(localPort)) {
+			WebServerApplicationContext context = event.getApplicationContext();
+			Environment environment = context.getEnvironment();
+			String appName = environment.getRequiredProperty(MicaConstant.SPRING_APP_NAME_KEY);
+			String profile = StringUtils.arrayToCommaDelimitedString(environment.getActiveProfiles());
+			System.err.printf("---[%s]---启动完成，当前使用的端口:[%d]，环境变量:[%s]---%n", appName, localPort, profile);
+			// 如果有 swagger，打印开发阶段的 swagger ui 地址
+			if (hasKnife4J()) {
+				System.out.printf("http://localhost:%s/doc.html%n", localPort);
+			} else if (hasOpenApi()) {
+				String swaggerPath = StringUtil.defaultIfBlank(environment.getProperty("springdoc.swagger-ui.path"), "/swagger-ui.html");
+				System.out.printf("http://localhost:%s%s%n", localPort, swaggerPath);
+			} else {
+				System.out.printf("http://localhost:%s%n", localPort);
+			}
+			// linux 上将全部的 System.err 和 System.out 替换为log
+			if (SystemUtil.isLinux()) {
+				System.setOut(LogPrintStream.log(false));
+				// 去除 error 的转换，因为 error 会打印成很 N 条
+				// System.setErr(LogPrintStream.log(true));
+			}
 		}
 	}
 
