@@ -2,6 +2,14 @@
 
 ## 发行版本
 
+### v4.0.2 - 2026-02-07
+
+- feat(ddddocr): 添加 mica-ddddocr 验证码识别模块
+- feat(ip2region): mica-ip2region 同步 ip2region 最新版本支持 ipv4 和 ipv6，IpInfo 删除区域，添加isoCode字段
+- refactor(redis): mica-redis 增加 Redis Stream 线程池大小配置
+- refactor(redis): mica-redis 移除RedisRateLimiterAspect中不必要的@NonNull注解
+- fix(launch): mica-lite 修复多管理端口启动日志 Swagger 地址端口打印问题
+
 ### v3.4.3 - 2025-02-23
 
 - :sparkles: mica-metrics UndertowMetrics 不再需要反射
