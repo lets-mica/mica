@@ -176,11 +176,28 @@ public class JsonUtil {
 	 * @return Bean
 	 */
 	@Nullable
-	public static <T> T readValue(@Nullable byte[] content, Class<T> valueType) {
+	public static <T> T readValue(byte @Nullable [] content, Class<T> valueType) {
 		if (content == null || content.length == 0) {
 			return null;
 		}
 		return getInstance().readValue(content, valueType);
+	}
+
+	/**
+	 * 将json byte 数组反序列化成对象
+	 *
+	 * @param content          json bytes
+	 * @param parametrized     class
+	 * @param parameterClasses parameterClasses
+	 * @param <T>              T 泛型标记
+	 * @return Bean
+	 */
+	@Nullable
+	public static <T> T readValue(byte @Nullable [] content, Class<?> parametrized, Class<?>... parameterClasses) {
+		if (content == null || content.length == 0) {
+			return null;
+		}
+		return getInstance().readValue(content, getParametricType(parametrized, parameterClasses));
 	}
 
 	/**
@@ -202,6 +219,23 @@ public class JsonUtil {
 	/**
 	 * 将json反序列化成对象
 	 *
+	 * @param jsonString       jsonString
+	 * @param parametrized     class
+	 * @param parameterClasses parameterClasses
+	 * @param <T>              T 泛型标记
+	 * @return Bean
+	 */
+	@Nullable
+	public static <T> T readValue(@Nullable String jsonString, Class<?> parametrized, Class<?>... parameterClasses) {
+		if (StringUtil.isBlank(jsonString)) {
+			return null;
+		}
+		return getInstance().readValue(jsonString, getParametricType(parametrized, parameterClasses));
+	}
+
+	/**
+	 * 将json反序列化成对象
+	 *
 	 * @param in        InputStream
 	 * @param valueType class
 	 * @param <T>       T 泛型标记
@@ -213,6 +247,23 @@ public class JsonUtil {
 			return null;
 		}
 		return getInstance().readValue(in, valueType);
+	}
+
+	/**
+	 * 将json反序列化成对象
+	 *
+	 * @param in               InputStream
+	 * @param parametrized     class
+	 * @param parameterClasses parameterClasses
+	 * @param <T>              T 泛型标记
+	 * @return Bean
+	 */
+	@Nullable
+	public static <T> T readValue(@Nullable InputStream in, Class<?> parametrized, Class<?>... parameterClasses) {
+		if (in == null) {
+			return null;
+		}
+		return getInstance().readValue(in, getParametricType(parametrized, parameterClasses));
 	}
 
 	/**
@@ -231,6 +282,22 @@ public class JsonUtil {
 		return getInstance().readValue(reader, valueType);
 	}
 
+	/**
+	 * 将java.io.Reader反序列化成对象
+	 *
+	 * @param reader           java.io.Reader
+	 * @param parametrized     class
+	 * @param parameterClasses parameterClasses
+	 * @param <T>              T 泛型标记
+	 * @return Bean
+	 */
+	@Nullable
+	public static <T> T readValue(@Nullable Reader reader, Class<?> parametrized, Class<?>... parameterClasses) {
+		if (reader == null) {
+			return null;
+		}
+		return getInstance().readValue(reader, getParametricType(parametrized, parameterClasses));
+	}
 
 	/**
 	 * 将json反序列化成对象
@@ -241,7 +308,7 @@ public class JsonUtil {
 	 * @return Bean
 	 */
 	@Nullable
-	public static <T> T readValue(@Nullable byte[] content, TypeReference<T> typeReference) {
+	public static <T> T readValue(byte @Nullable [] content, TypeReference<T> typeReference) {
 		if (content == null || content.length == 0) {
 			return null;
 		}
@@ -305,7 +372,7 @@ public class JsonUtil {
 	 * @return Bean
 	 */
 	@Nullable
-	public static <T> T readValue(@Nullable byte[] content, JavaType javaType) {
+	public static <T> T readValue(byte @Nullable [] content, JavaType javaType) {
 		if (content == null || content.length == 0) {
 			return null;
 		}
@@ -439,7 +506,7 @@ public class JsonUtil {
 	 * @param <T>          泛型
 	 * @return 集合
 	 */
-	public static <T> List<T> readList(@Nullable byte[] content, Class<T> elementClass) {
+	public static <T> List<T> readList(byte @Nullable [] content, Class<T> elementClass) {
 		if (content == null || content.length == 0) {
 			return Collections.emptyList();
 		}
@@ -497,7 +564,7 @@ public class JsonUtil {
 	 * @param content bytes
 	 * @return 集合
 	 */
-	public static Map<String, Object> readMap(@Nullable byte[] content) {
+	public static Map<String, Object> readMap(byte @Nullable [] content) {
 		return readMap(content, Object.class);
 	}
 
@@ -539,7 +606,7 @@ public class JsonUtil {
 	 * @param <V>        泛型
 	 * @return 集合
 	 */
-	public static <V> Map<String, V> readMap(@Nullable byte[] content, Class<?> valueClass) {
+	public static <V> Map<String, V> readMap(byte @Nullable [] content, Class<?> valueClass) {
 		return readMap(content, String.class, valueClass);
 	}
 
@@ -589,7 +656,7 @@ public class JsonUtil {
 	 * @param <V>        泛型
 	 * @return 集合
 	 */
-	public static <K, V> Map<K, V> readMap(@Nullable byte[] content, Class<?> keyClass, Class<?> valueClass) {
+	public static <K, V> Map<K, V> readMap(byte @Nullable [] content, Class<?> keyClass, Class<?> valueClass) {
 		if (content == null || content.length == 0) {
 			return Collections.emptyMap();
 		}
