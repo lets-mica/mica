@@ -444,7 +444,7 @@ public class HttpRequest {
 	}
 
 	public HttpRequest useDefaultLog(LogLevel logLevel) {
-		return useLog(HttpLoggingInterceptor.Logger.DEFAULT, logLevel);
+		return useLog(HttpLogger.DEFAULT, logLevel);
 	}
 
 	public HttpRequest useLog(HttpLoggingInterceptor.Logger logger) {
@@ -604,7 +604,7 @@ public class HttpRequest {
 	 * @param logLevel LogLevel
 	 */
 	public static void setGlobalDefaultLog(LogLevel logLevel) {
-		setGlobalLog(HttpLoggingInterceptor.Logger.DEFAULT, logLevel);
+		setGlobalLog(HttpLogger.DEFAULT, logLevel);
 	}
 
 	/**

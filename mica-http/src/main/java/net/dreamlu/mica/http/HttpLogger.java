@@ -17,6 +17,9 @@
 package net.dreamlu.mica.http;
 
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.internal.platform.Platform;
+
+import static okhttp3.internal.platform.Platform.INFO;
 
 /**
  * OkHttp logger, Slf4j and console log.
@@ -25,6 +28,16 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public enum HttpLogger implements HttpLoggingInterceptor.Logger {
+
+	/**
+	 * http 日志：默认，不打印日志
+	 */
+	DEFAULT()  {
+		@Override
+		public void log(String message) {
+			Platform.get().log(message, INFO, null);
+		}
+	},
 
 	/**
 	 * http 日志：Slf4j

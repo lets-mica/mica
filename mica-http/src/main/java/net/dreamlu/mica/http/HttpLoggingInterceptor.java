@@ -16,10 +16,8 @@
 
 package net.dreamlu.mica.http;
 
-import lombok.Getter;
 import okhttp3.*;
 import okhttp3.internal.http.HttpHeaders;
-import okhttp3.internal.platform.Platform;
 import okio.Buffer;
 import okio.BufferedSource;
 import okio.GzipSource;
@@ -30,8 +28,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
-
-import static okhttp3.internal.platform.Platform.INFO;
 
 /**
  * An OkHttp interceptor which logs request and response information. Can be applied as an
@@ -45,8 +41,7 @@ import static okhttp3.internal.platform.Platform.INFO;
 public final class HttpLoggingInterceptor implements Interceptor {
 	private static final Charset UTF8 = StandardCharsets.UTF_8;
 	private final Logger logger;
-	@Getter
-	private volatile LogLevel level = LogLevel.NONE;
+	private final LogLevel level;
 
 	public interface Logger {
 		/**
@@ -54,17 +49,10 @@ public final class HttpLoggingInterceptor implements Interceptor {
 		 * @param message message
 		 */
 		void log(String message);
-
-		/** A {@link Logger} defaults output appropriate for the current platform. */
-		Logger DEFAULT = new Logger() {
-			@Override public void log(String message) {
-				Platform.get().log(message, INFO, null);
-			}
-		};
 	}
 
 	public HttpLoggingInterceptor(@Nullable Logger logger, @Nullable LogLevel level) {
-		this.logger = logger == null ? Logger.DEFAULT : logger;
+		this.logger = logger == null ? HttpLogger.DEFAULT : logger;
 		this.level = level == null ? LogLevel.NONE : level;
 	}
 
