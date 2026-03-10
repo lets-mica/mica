@@ -59,8 +59,15 @@ public interface ResponseSpec {
 	 *
 	 * @return boolean
 	 */
-	default boolean isOk() {
-		return false;
+	boolean isOk();
+
+	/**
+	 * Returns the HTTP is not successful.
+	 *
+	 * @return boolean
+	 */
+	default boolean isFailed() {
+		return !isOk();
 	}
 
 	/**
