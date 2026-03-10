@@ -91,7 +91,7 @@ public interface ResponseSpec {
 	 *
 	 * @return Headers value
 	 */
-	default String header(String name) {
+	default @Nullable String header(String name) {
 		return this.headers().get(name);
 	}
 
@@ -127,7 +127,7 @@ public interface ResponseSpec {
 	 *
 	 * @return Cookie
 	 */
-	default Cookie cookie(String name) {
+	default @Nullable Cookie cookie(String name) {
 		for (Cookie cookie : cookies()) {
 			if (cookie.name().equals(name)) {
 				return cookie;
@@ -141,7 +141,7 @@ public interface ResponseSpec {
 	 *
 	 * @return Cookie
 	 */
-	default Cookie cookie(Predicate<Cookie> predicate) {
+	default @Nullable Cookie cookie(Predicate<Cookie> predicate) {
 		for (Cookie cookie : cookies()) {
 			if (predicate.test(cookie)) {
 				return cookie;
@@ -278,9 +278,10 @@ public interface ResponseSpec {
 
 	/**
 	 * 转换成 JsonPointer 语法的模型
+	 *
 	 * @param valueType valueType
+	 * @param <T>       泛型
 	 * @return bean
-	 * @param <T> 泛型
 	 */
 	default <T> T asJsonPointerBean(Class<T> valueType) {
 		return JsonPointerUtil.readValue(asJsonNode(), valueType);
@@ -415,8 +416,7 @@ public interface ResponseSpec {
 	 * @param consumer Consumer
 	 * @return ResponseBody
 	 */
-	@Nullable
-	default ResponseSpec rawBody(Consumer<ResponseBody> consumer) {
+	default ResponseSpec rawBody(Consumer<@Nullable ResponseBody> consumer) {
 		consumer.accept(this.rawBody());
 		return this;
 	}
