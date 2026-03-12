@@ -64,13 +64,11 @@ public final class SimpleRetry implements IRetry {
 
 	@Override
 	public <T, E extends Throwable> T execute(RetryCallback<T, E> retryCallback) throws E {
-		int retryCount;
 		Throwable lastThrowable = null;
-		for (int i = 0; i < maxAttempts; i++) {
+		for (int retryCount = 1; retryCount <= maxAttempts; retryCount++) {
 			try {
-				return retryCallback.call();
+				return retryCallback.call(retryCount);
 			} catch (Throwable e) {
-				retryCount = i + 1;
 				log.warn("retry on {} times error{}.", retryCount, e.getMessage());
 				lastThrowable = e;
 				if (sleepMillis > 0 && retryCount < maxAttempts) {

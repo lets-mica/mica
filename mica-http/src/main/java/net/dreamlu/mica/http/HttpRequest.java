@@ -50,8 +50,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 /**
  * ok http 封装，请求结构体
@@ -101,7 +101,7 @@ public class HttpRequest {
 	@Nullable
 	private IRetry retry;
 	@Nullable
-	private Predicate<ResponseSpec> respPredicate;
+	private BiPredicate<Integer, ResponseSpec> respPredicate;
 	@Nullable
 	private HostnameVerifier hostnameVerifier;
 	@Nullable
@@ -529,7 +529,7 @@ public class HttpRequest {
 		return retry(new SimpleRetry());
 	}
 
-	public HttpRequest retryOn(Predicate<ResponseSpec> respPredicate) {
+	public HttpRequest retryOn(BiPredicate<Integer, ResponseSpec> respPredicate) {
 		return retry(new SimpleRetry(), respPredicate);
 	}
 
@@ -537,7 +537,7 @@ public class HttpRequest {
 		return retry(new SimpleRetry(maxAttempts, sleepMillis));
 	}
 
-	public HttpRequest retry(int maxAttempts, long sleepMillis, Predicate<ResponseSpec> respPredicate) {
+	public HttpRequest retry(int maxAttempts, long sleepMillis, BiPredicate<Integer, ResponseSpec> respPredicate) {
 		return retry(new SimpleRetry(maxAttempts, sleepMillis), respPredicate);
 	}
 
@@ -546,7 +546,7 @@ public class HttpRequest {
 		return this;
 	}
 
-	public HttpRequest retry(IRetry retry, Predicate<ResponseSpec> respPredicate) {
+	public HttpRequest retry(IRetry retry, BiPredicate<Integer, ResponseSpec> respPredicate) {
 		this.retry = retry;
 		this.respPredicate = respPredicate;
 		return this;
@@ -690,7 +690,8 @@ public class HttpRequest {
 	}
 
 	public static Pair<SSLSocketFactory, X509TrustManager> getSslContext(
-		String keyStoreFile, String keyPass, String trustStoreFile, String trustPass
+		@Nullable String keyStoreFile, @Nullable String keyPass,
+		@Nullable String trustStoreFile, @Nullable String trustPass
 	) {
 		InputStream keyStoreInputStream;
 		if (keyStoreFile == null) {
@@ -712,7 +713,8 @@ public class HttpRequest {
 	}
 
 	public static Pair<SSLSocketFactory, X509TrustManager> getSslContext(
-		InputStream keyStoreInputStream, String keyPass, InputStream trustInputStream, String trustPass
+		@Nullable InputStream keyStoreInputStream, @Nullable String keyPass,
+		@Nullable InputStream trustInputStream, @Nullable String trustPass
 	) {
 		try {
 			KeyManager[] kms = null;
@@ -736,7 +738,7 @@ public class HttpRequest {
 		}
 	}
 
-	private static TrustManager[] getTrustManagers(InputStream trustInputStream, char[] trustPassword)
+	private static TrustManager[] getTrustManagers(@Nullable InputStream trustInputStream, char[] trustPassword)
 		throws NoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {
 		if (trustInputStream == null) {
 			return DisableValidationTrustManager.INSTANCE.getTrustManagers();
@@ -755,7 +757,7 @@ public class HttpRequest {
 	 * @param path 相对于ClassPath路径，可以以classpath:开头
 	 * @return {@link InputStream}资源
 	 */
-	private static InputStream getResourceAsStream(String path) {
+	private static @Nullable InputStream getResourceAsStream(String path) {
 		if (path.toLowerCase().startsWith("classpath:")) {
 			path = path.substring("classpath:".length());
 		}

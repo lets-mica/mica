@@ -25,7 +25,7 @@ import okhttp3.ResponseBody;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 
 /**
  * 重试拦截器，应对代理问题
@@ -36,12 +36,12 @@ import java.util.function.Predicate;
 public class RetryInterceptor implements Interceptor {
 	private final IRetry retry;
 	@Nullable
-	private final Predicate<ResponseSpec> respPredicate;
+	private final BiPredicate<Integer, ResponseSpec> respPredicate;
 
 	@Override
 	public Response intercept(Chain chain) throws IOException {
 		Request request = chain.request();
-		return retry.execute(() -> {
+		return retry.execute((retryCount) -> {
 			Response response = chain.proceed(request);
 			// 结果集校验
 			if (respPredicate == null) {
@@ -50,7 +50,7 @@ public class RetryInterceptor implements Interceptor {
 			// copy 一份 body
 			ResponseBody body = response.peekBody(Long.MAX_VALUE);
 			try (HttpResponse httpResponse = new HttpResponse(response)) {
-				if (respPredicate.test(httpResponse)) {
+				if (respPredicate.test(retryCount, httpResponse)) {
 					throw new IOException("Http Retry ResponsePredicate test Failure.");
 				}
 			}

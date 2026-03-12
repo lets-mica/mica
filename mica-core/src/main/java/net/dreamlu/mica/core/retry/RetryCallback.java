@@ -17,9 +17,10 @@ public interface RetryCallback<T, E extends Throwable> extends Serializable {
 	 * idempotent, but implementations may choose to implement compensation semantics when
 	 * an operation is retried.
 	 *
+	 * @param retryCount retry count
 	 * @return the result of the successful operation.
 	 * @throws E of type E if processing fails
 	 */
-	T call() throws E;
+	T call(int retryCount) throws E;
 
 }
