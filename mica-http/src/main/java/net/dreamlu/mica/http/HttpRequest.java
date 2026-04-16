@@ -232,15 +232,19 @@ public class HttpRequest {
 	}
 
 	public HttpRequest bodyString(String body) {
-		return body(RequestBody.create(body, APPLICATION_JSON));
+		return bodyString(body, APPLICATION_JSON);
 	}
 
-	public HttpRequest bodyString(MediaType contentType, String body) {
+	public HttpRequest bodyString(String body, MediaType contentType) {
 		return body(RequestBody.create(body, contentType));
 	}
 
+	public HttpRequest bodyJson(String json) {
+		return bodyString(json, APPLICATION_JSON);
+	}
+
 	public HttpRequest bodyJson(Object body) {
-		return bodyString(JsonUtil.toJson(body));
+		return bodyJson(body, APPLICATION_JSON);
 	}
 
 	public HttpRequest bodyJson(Object body, MediaType contentType) {

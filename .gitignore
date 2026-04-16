@@ -28,6 +28,11 @@ dist/
 nbdist/
 .nb-gradle/
 
+### AI Code ###
+.claude
+.opencode
+-p
+
 ### maven ###
 .flattened-pom.xml
 target/
