@@ -128,6 +128,12 @@ public class Searcher implements Closeable {
 			ePtr = LittleEndian.getUint32(buff, 4);
 		}
 
+		// @Note: ptr validate, zero ptr means source data missing
+		// so we could just stop here and return an empty string.
+		if (sPtr == 0 || ePtr == 0) {
+			return "";
+		}
+
 		// binary search the segment index block to get the region info
 		final int bytes = ip.length, dBytes = ip.length << 1;
 		final int segIndexSize = version.segmentIndexSize;
