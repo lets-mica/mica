@@ -69,4 +69,8 @@ public class SwaggerConfiguration {
 		return openAPI;
 	}
 
+	@Bean
+	public SwaggerOperationCustomizer swaggerOperationCustomizer() {
+		return new SwaggerOperationCustomizer();
+	}
 }
