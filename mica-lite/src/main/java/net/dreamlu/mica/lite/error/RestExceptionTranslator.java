@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.core.result.R;
 import net.dreamlu.mica.core.result.SystemCode;
 import net.dreamlu.mica.core.utils.StringUtil;
-import org.hibernate.validator.internal.engine.path.PathImpl;
+import org.hibernate.validator.path.Path;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.core.Ordered;
@@ -172,7 +172,7 @@ public class RestExceptionTranslator {
 		String message = "";
 		if (error != null) {
 			message = String.format("%s:%s", error.getField(), error.getDefaultMessage());
-        } else {
+		} else {
 			ObjectError globalError = result.getGlobalError();
 			if (globalError != null) {
 				message = globalError.getDefaultMessage();
@@ -189,7 +189,7 @@ public class RestExceptionTranslator {
 	 */
 	private static R<Object> handleError(Set<ConstraintViolation<?>> violations) {
 		ConstraintViolation<?> violation = violations.iterator().next();
-		String path = ((PathImpl) violation.getPropertyPath()).getLeafNode().getName();
+		String path = ((Path) violation.getPropertyPath()).getLeafNode().getName();
 		String message = String.format("%s:%s", path, violation.getMessage());
 		return R.fail(SystemCode.PARAM_VALID_ERROR, message);
 	}
