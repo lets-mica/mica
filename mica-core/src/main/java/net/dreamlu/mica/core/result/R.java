@@ -128,7 +128,7 @@ public class R<T> implements Serializable {
 	 * @param <T> 泛型标记
 	 * @return Result
 	 */
-	public static <T> R<T> success() {
+	public static <T> R<T> ok() {
 		return new R<>(SystemCode.SUCCESS);
 	}
 
@@ -139,8 +139,29 @@ public class R<T> implements Serializable {
 	 * @param <T>  泛型标记
 	 * @return Result
 	 */
-	public static <T> R<T> success(@Nullable T data) {
+	public static <T> R<T> ok(@Nullable T data) {
 		return new R<>(SystemCode.SUCCESS, data);
+	}
+
+	/**
+	 * 返回成功
+	 *
+	 * @param <T> 泛型标记
+	 * @return Result
+	 */
+	public static <T> R<T> success() {
+		return ok();
+	}
+
+	/**
+	 * 成功-携带数据
+	 *
+	 * @param data 数据
+	 * @param <T>  泛型标记
+	 * @return Result
+	 */
+	public static <T> R<T> success(@Nullable T data) {
+		return ok(data);
 	}
 
 	/**
