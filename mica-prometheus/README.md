@@ -31,6 +31,34 @@ compile("net.dreamlu:mica-prometheus:${version}")
   - url: 'http://{ip}:{port}/actuator/prometheus/sd'
 ```
 
+### http sd basic auth
+从 `4.1.1` 版本起，http sd 支持开启 Basic auth。`prometheus` 的 `http_sd_configs` 也支持 basic auth 配置，配合使用即可：
+
+#### Spring Boot 配置
+```yaml
+mica:
+  prometheus:
+    basic-auth:
+      enabled: true   # 默认 false，开启 basic auth
+      username: mica  # basic auth 用户名
+      password: mica  # basic auth 密码
+```
+
+#### prometheus http_sd_configs 配置
+```yaml
+- job_name: micax-cloud
+  honor_timestamps: true
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  metrics_path: /actuator/prometheus
+  scheme: http
+  http_sd_configs:
+  - url: 'http://{ip}:{port}/actuator/prometheus/sd'
+    basic_auth:
+      username: mica
+      password: mica
+```
+
 ### 效果图
 
 ![mica-prometheus 效果图](../docs/images/mica-prometheus-show.png)
