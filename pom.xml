@@ -496,6 +496,8 @@
                         <configuration>
                             <publishingServerId>central</publishingServerId>
                             <autoPublish>true</autoPublish>
+                            <!-- 只生成 md5 + sha1，砍掉 sha256/sha512，减少文件数 -->
+                            <checksums>required</checksums>
                         </configuration>
                     </plugin>
                 </plugins>
