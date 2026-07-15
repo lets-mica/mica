@@ -17,6 +17,7 @@
 package net.dreamlu.mica.core.utils;
 
 import net.dreamlu.mica.core.function.CheckedFunction;
+import net.dreamlu.mica.core.jackson.MicaJavaTimeModule;
 import org.jspecify.annotations.Nullable;
 import tools.jackson.core.JsonParser;
 import tools.jackson.core.TreeNode;
@@ -898,6 +899,9 @@ public class JsonUtil {
 			.defaultTimeZone(TimeZone.getTimeZone(ZoneId.systemDefault()))
 			.defaultDateFormat(new SimpleDateFormat(DateUtil.PATTERN_DATETIME, Locale.CHINA))
 			.findAndAddModules()
+			// 避免被其他自动注册的模块覆盖
+			.addModule(new MicaJavaTimeModule())
 			.build();
 	}
+
 }

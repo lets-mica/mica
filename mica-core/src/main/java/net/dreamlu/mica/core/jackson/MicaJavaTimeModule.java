@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.dreamlu.mica.lite.jackson;
+package net.dreamlu.mica.core.jackson;
 
 import net.dreamlu.mica.auto.annotation.AutoService;
 import net.dreamlu.mica.core.utils.DateUtil;
