@@ -2,5 +2,13 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "packageRules": [
+    {
+      "matchPackagePatterns": [
+        "^com.microsoft.onnxruntime:onnxruntime$"
+      ],
+      "enabled": false
+    }
   ]
 }
