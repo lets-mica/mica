@@ -55,7 +55,8 @@ public class Config {
 		// verify the ip version (ipVersion and the version of the xdb file should be the same)
 		if (header.ipVersion != ipVersion.id) {
 			throw new XdbException("ip verison not match: xdb file "
-				+ xdbFile.getAbsolutePath() + " (" + xVersion.name + "), as " + ipVersion.name + " expected");
+				+ (xdbFile == null ? "<input stream>" : xdbFile.getAbsolutePath())
+				+ " (" + xVersion.name + "), as " + ipVersion.name + " expected");
 		}
 
 		this.searchers = searchers;
