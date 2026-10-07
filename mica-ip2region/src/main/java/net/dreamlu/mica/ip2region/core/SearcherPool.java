@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -115,7 +116,14 @@ public class SearcherPool {
 		lock.lock();
 		try {
 			while (loanCount > 0) {
-				fullCondition.wait(timeoutMillis);
+				if (timeoutMillis < 0) {
+					throw new IllegalArgumentException("timeout value is negative");
+				}
+				if (timeoutMillis == 0) {
+					fullCondition.await();
+				} else {
+					fullCondition.await(timeoutMillis, TimeUnit.MILLISECONDS);
+				}
 			}
 			final Iterator<Searcher> it = pool.iterator();
 			while (it.hasNext()) {
