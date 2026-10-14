@@ -107,15 +107,15 @@ public class RestExceptionTranslator {
 	@ExceptionHandler(NoResourceFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public R<Object> handleError(NoResourceFoundException e) {
-		log.error("resource 静态资源没找到:{}", e.getMessage());
-		return R.fail(SystemCode.NOT_FOUND, e.getMessage());
+		log.error("404静态资源没找到 http method:{} :{}", e.getHttpMethod(), e.getMessage());
+		return R.fail(SystemCode.NOT_FOUND);
 	}
 
 	@ExceptionHandler(NoHandlerFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public R<Object> handleError(NoHandlerFoundException e) {
-		log.error("404没找到请求:{}", e.getMessage());
-		return R.fail(SystemCode.NOT_FOUND, e.getMessage());
+		log.error("404没找到请求 http method:{} :{}", e.getHttpMethod(), e.getMessage());
+		return R.fail(SystemCode.NOT_FOUND);
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)

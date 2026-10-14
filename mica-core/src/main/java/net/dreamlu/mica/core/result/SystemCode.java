@@ -56,9 +56,9 @@ public enum SystemCode implements IResultCode {
 	 */
 	PARAM_VALID_ERROR(SystemCode.PARAM_VALID_ERROR_CODE, "参数校验失败"),
 	/**
-	 * 404 没找到请求
+	 * 404 请求的资源不存在
 	 */
-	NOT_FOUND(SystemCode.NOT_FOUND_CODE, "404 没找到请求"),
+	NOT_FOUND(SystemCode.NOT_FOUND_CODE, "404 请求的资源不存在"),
 	/**
 	 * 消息不能读取
 	 */
