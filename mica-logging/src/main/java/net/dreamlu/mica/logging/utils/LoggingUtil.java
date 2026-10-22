@@ -59,11 +59,11 @@ public class LoggingUtil {
 
 	public static RollingPolicy rollingPolicy(LoggerContext context,
 											  FileAppender<?> appender,
-											  String logErrorFile) {
+											  String logFile) {
 		final SizeAndTimeBasedRollingPolicy<ILoggingEvent> rollingPolicy = new SizeAndTimeBasedRollingPolicy<>();
 		rollingPolicy.setContext(context);
 		rollingPolicy.setCleanHistoryOnStart(SystemUtil.getPropToBool(RollingPolicySystemProperty.CLEAN_HISTORY_ON_START.getEnvironmentVariableName(), false));
-		rollingPolicy.setFileNamePattern(logErrorFile + ".%d{yyyy-MM-dd}.%i.gz");
+		rollingPolicy.setFileNamePattern(logFile + ".%d{yyyyMMdd}.%i.gz");
 		rollingPolicy.setMaxFileSize(FileSize.valueOf(SystemUtil.getProp(RollingPolicySystemProperty.MAX_FILE_SIZE.getEnvironmentVariableName(), "10MB")));
 		rollingPolicy.setMaxHistory(SystemUtil.getPropToInt(RollingPolicySystemProperty.MAX_HISTORY.getEnvironmentVariableName(), 7));
 		rollingPolicy.setTotalSizeCap(FileSize.valueOf(SystemUtil.getProp(RollingPolicySystemProperty.TOTAL_SIZE_CAP.getEnvironmentVariableName(), "0")));
