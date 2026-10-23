@@ -4,6 +4,7 @@
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
     <!-- 日志级别 -->
     <springProperty scope="context" name="loggingLevelRoot" source="logging.level.root" defaultValue="INFO"/>
+    <springProperty scope="context" name="micaLoggingLevel" source="logging.level.net.dreamlu.mica"/>
     <!-- 控制台日志 -->
     <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
 
@@ -31,15 +32,15 @@
         <!-- mongo no sql -->
         <logger name="org.springframework.data.mongodb.core" level="DEBUG"/>
         <!-- mica日志 -->
-        <logger name="net.dreamlu.mica" level="INFO"/>
+        <logger name="net.dreamlu.mica" level="${micaLoggingLevel:-INFO}"/>
     </springProfile>
     <springProfile name="ontest">
         <!-- mica日志 -->
-        <Logger name="net.dreamlu.mica" level="INFO"/>
+        <logger name="net.dreamlu.mica" level="${micaLoggingLevel:-INFO}"/>
     </springProfile>
     <springProfile name="prod">
         <!-- mica日志 -->
-        <Logger name="net.dreamlu.mica" level="ERROR"/>
+        <logger name="net.dreamlu.mica" level="${micaLoggingLevel:-ERROR}"/>
     </springProfile>
 
     <!-- https://logback.qos.ch/manual/configuration.html#shutdownHook and https://jira.qos.ch/browse/LOGBACK-1090 -->
