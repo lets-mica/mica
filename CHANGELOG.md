@@ -2,6 +2,11 @@
 
 ## 发行版本
 
+### v4.1.3 - 2026-10-26
+
+- refactor(ddddocr): 移除 mica-ddddocr 模块，验证码识别能力已迁移至 mica-ai（net.dreamlu:mica-ai-captcha）
+- refactor(bom): mica-bom 不再包含 mica-ddddocr 与 onnxruntime 的版本管理
+
 ### v4.0.2 - 2026-02-06
 
 - feat(ddddocr): 添加 mica-ddddocr 验证码识别模块

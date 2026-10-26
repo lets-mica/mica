@@ -53,7 +53,6 @@ mica-qrcode       基于 zxing 的二维码生成与解析
 mica-activerecord JFinal ActiveRecord ORM 封装
 mica-prometheus   Prometheus 端点与告警封装
 mica-holidays     中国节假日工具
-mica-ddddocr      ddddocr（基于 onnxruntime）验证码识别
 ```
 
 `mica-bom` 是其它 mica 模块版本号的统一入口，外部项目通常只需引入 `mica-bom` 即可锁定所有 mica 组件版本。

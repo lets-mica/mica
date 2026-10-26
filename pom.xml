@@ -33,7 +33,7 @@
 
     <properties>
         <!-- mica version -->
-        <revision>4.1.2</revision>
+        <revision>4.1.3</revision>
         <!-- java version -->
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -56,7 +56,6 @@
         <zxing.version>3.5.4</zxing.version>
         <logstash.version>9.0</logstash.version>
         <loki.logback.appender.version>2.1.0</loki.logback.appender.version>
-        <onnxruntime.version>1.18.0</onnxruntime.version>
         <okhttp.version>5.5.1</okhttp.version>
     </properties>
 
@@ -78,7 +77,6 @@
         <module>mica-activerecord</module>
         <module>mica-prometheus</module>
         <module>mica-holidays</module>
-        <module>mica-ddddocr</module>
     </modules>
 
     <dependencies>
@@ -188,12 +186,6 @@
                 <artifactId>loki-logback-appender</artifactId>
                 <version>${loki.logback.appender.version}</version>
             </dependency>
-            <!-- ONNX Runtime -->
-            <dependency>
-                <groupId>com.microsoft.onnxruntime</groupId>
-                <artifactId>onnxruntime</artifactId>
-                <version>${onnxruntime.version}</version>
-            </dependency>
             <!-- mica 相关 -->
             <dependency>
                 <groupId>net.dreamlu</groupId>
@@ -279,11 +271,6 @@
             <dependency>
                 <groupId>net.dreamlu</groupId>
                 <artifactId>mica-holidays</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.dreamlu</groupId>
-                <artifactId>mica-ddddocr</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>
