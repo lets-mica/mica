@@ -19,6 +19,7 @@ import tools.jackson.databind.type.MapType;
 
 import java.io.ByteArrayInputStream;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -139,7 +140,7 @@ class JsonUtilTest {
 		byte[] publicBytes = JsonUtil.toJsonAsBytesWithView(user, Views.Public.class);
 		Assertions.assertNotNull(publicBytes);
 		Assertions.assertTrue(publicBytes.length > 0);
-		String publicJson = new String(publicBytes);
+		String publicJson = new String(publicBytes, StandardCharsets.UTF_8);
 		Assertions.assertFalse(publicJson.contains("email"));
 
 		// 测试 null 对象
@@ -157,7 +158,7 @@ class JsonUtilTest {
 		Assertions.assertEquals(25, jsonNode.get("age").asInt());
 
 		// 测试字节数组
-		byte[] jsonBytes = json.getBytes();
+		byte[] jsonBytes = json.getBytes(StandardCharsets.UTF_8);
 		JsonNode nodeFromBytes = JsonUtil.readTree(jsonBytes);
 		Assertions.assertEquals("张三", nodeFromBytes.get("name").asText());
 
@@ -183,7 +184,7 @@ class JsonUtilTest {
 		Assertions.assertEquals(25, bean.getAge().intValue());
 
 		// 测试字节数组转对象
-		byte[] jsonBytes = json.getBytes();
+		byte[] jsonBytes = json.getBytes(StandardCharsets.UTF_8);
 		TestBean beanFromBytes = JsonUtil.readValue(jsonBytes, TestBean.class);
 		Assertions.assertEquals("张三", beanFromBytes.getName());
 
@@ -217,7 +218,7 @@ class JsonUtilTest {
 		Assertions.assertEquals("李四", list.get(1).getName());
 
 		// 测试参数化类型 - 字节数组输入 (这是您提到的新方法)
-		byte[] jsonBytes = json.getBytes();
+		byte[] jsonBytes = json.getBytes(StandardCharsets.UTF_8);
 		List<TestBean> listFromBytes = JsonUtil.readValue(jsonBytes, List.class, TestBean.class);
 		Assertions.assertNotNull(listFromBytes);
 		Assertions.assertEquals(2, listFromBytes.size());
@@ -268,7 +269,7 @@ class JsonUtilTest {
 		Assertions.assertEquals("张三", list.get(0).getName());
 
 		// 测试 JavaType - 字节数组输入
-		byte[] jsonBytes = json.getBytes();
+		byte[] jsonBytes = json.getBytes(StandardCharsets.UTF_8);
 		List<TestBean> listFromBytes = JsonUtil.readValue(jsonBytes, javaType);
 		Assertions.assertNotNull(listFromBytes);
 		Assertions.assertEquals(1, listFromBytes.size());
@@ -287,7 +288,7 @@ class JsonUtilTest {
 	void testReadValueWithBytesAndParametrizedType() {
 		// 专门测试 readValue(byte[], Class<?>, Class<?>...) 方法
 		String jsonArray = "[{\"name\":\"张三\",\"age\":25},{\"name\":\"李四\",\"age\":30}]";
-		byte[] jsonBytes = jsonArray.getBytes();
+		byte[] jsonBytes = jsonArray.getBytes(StandardCharsets.UTF_8);
 
 		// 测试简单参数化类型 - List<TestBean>
 		List<TestBean> listResult = JsonUtil.readValue(jsonBytes, List.class, TestBean.class);
@@ -298,7 +299,7 @@ class JsonUtilTest {
 
 		// 测试复杂参数化类型 - Map<String, String>
 		String mapJson = "{\"name\":\"张三\",\"city\":\"北京\"}";
-		byte[] mapJsonBytes = mapJson.getBytes();
+		byte[] mapJsonBytes = mapJson.getBytes(StandardCharsets.UTF_8);
 		Map<String, String> mapResult = JsonUtil.readValue(mapJsonBytes, Map.class, String.class, String.class);
 		Assertions.assertNotNull(mapResult);
 		Assertions.assertEquals("张三", mapResult.get("name"));
@@ -323,7 +324,7 @@ class JsonUtilTest {
 		Assertions.assertEquals("张三", list.get(0).getName());
 
 		// 测试字节数组读取列表
-		byte[] jsonBytes = json.getBytes();
+		byte[] jsonBytes = json.getBytes(StandardCharsets.UTF_8);
 		List<TestBean> listFromBytes = JsonUtil.readList(jsonBytes, TestBean.class);
 		Assertions.assertEquals(2, listFromBytes.size());
 
@@ -357,7 +358,7 @@ class JsonUtilTest {
 		Assertions.assertEquals("张三", typedMap.get("user1").getName());
 
 		// 测试读取 Map<String, TestBean> 字节数组
-		byte[] jsonBytes = json.getBytes();
+		byte[] jsonBytes = json.getBytes(StandardCharsets.UTF_8);
 		Map<String, TestBean> mapFromBytes = JsonUtil.readMap(jsonBytes, TestBean.class);
 		Assertions.assertEquals("张三", mapFromBytes.get("user1").getName());
 
@@ -456,7 +457,7 @@ class JsonUtilTest {
 		Assertions.assertFalse(JsonUtil.isValidJson(trailingJson));
 
 		// 测试字节数组
-		byte[] validBytes = validObject.getBytes();
+		byte[] validBytes = validObject.getBytes(StandardCharsets.UTF_8);
 		Assertions.assertTrue(JsonUtil.isValidJson(validBytes));
 
 		// 测试 InputStream

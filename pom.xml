@@ -40,6 +40,7 @@
         <maven-flatten.version>1.8.0</maven-flatten.version>
         <maven-compiler.version>3.16.0</maven-compiler.version>
         <maven-jar-plugin.version>3.5.1</maven-jar-plugin.version>
+        <maven-surefire.version>3.6.0</maven-surefire.version>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <!-- mica-auto -->
         <mcia.auto.version>4.0.1</mcia.auto.version>
@@ -336,6 +337,18 @@
                         <!-- 生成的jar中，不要包含pom.xml和pom.properties这两个文件 -->
                         <addMavenDescriptor>false</addMavenDescriptor>
                     </archive>
+                </configuration>
+            </plugin>
+            <!-- 测试 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire.version}</version>
+                <configuration>
+                    <!-- 本地 Maven 仓库与工程不在同一盘时，JDK 的 manifest classpath 跨盘根检查
+                         会导致 surefire fork 启动失败（Boot Manifest-JAR contains absolute paths） -->
+                    <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true -Xshare:off</argLine>
+                    <forkCount>0</forkCount>
                 </configuration>
             </plugin>
             <plugin>
