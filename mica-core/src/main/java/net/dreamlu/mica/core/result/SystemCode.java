@@ -79,6 +79,14 @@ public enum SystemCode implements IResultCode {
 	 * 请求被拒绝
 	 */
 	REQ_REJECT(SystemCode.REQ_REJECT_CODE, "请求被拒绝"),
+	/**
+	 * 文件上传请求错误
+	 */
+	MULTIPART_ERROR(SystemCode.MULTIPART_ERROR_CODE, "文件上传请求错误"),
+	/**
+	 * 上传文件超过大小限制
+	 */
+	FILE_TOO_LARGE(SystemCode.FILE_TOO_LARGE_CODE, "上传文件超过大小限制"),
 
 	//-------------------------------------------------------------//
 	/**
@@ -126,6 +134,8 @@ public enum SystemCode implements IResultCode {
 	public static final int MEDIA_TYPE_NOT_SUPPORTED_CODE = 100007;
 	public static final int MEDIA_TYPE_NOT_ACCEPT_CODE = 100008;
 	public static final int REQ_REJECT_CODE = 100009;
+	public static final int MULTIPART_ERROR_CODE = 100014;
+	public static final int FILE_TOO_LARGE_CODE = 100015;
 	/**
 	 * 网关通用 code
 	 */

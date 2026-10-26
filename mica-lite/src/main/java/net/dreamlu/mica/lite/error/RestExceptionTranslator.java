@@ -45,6 +45,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentConversionNotSupportedException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
@@ -159,6 +162,47 @@ public class RestExceptionTranslator {
 		String message = e.getMessage() + ' ' + StringUtil.join(e.getSupportedMediaTypes());
 		log.error("不接受的媒体类型:{}", message);
 		return R.fail(SystemCode.MEDIA_TYPE_NOT_SUPPORTED, message);
+	}
+
+	/**
+	 * 上传文件超过大小限制，属于客户端错误
+	 *
+	 * @param e MaxUploadSizeExceededException
+	 * @return R
+	 */
+	@ExceptionHandler(MaxUploadSizeExceededException.class)
+	@ResponseStatus(HttpStatus.PAYLOAD_TOO_LARGE)
+	public R<Object> handleError(MaxUploadSizeExceededException e) {
+		log.warn("上传文件超过大小限制:{}", e.getMessage());
+		return R.fail(SystemCode.FILE_TOO_LARGE, "上传文件超过大小限制");
+	}
+
+	/**
+	 * 文件上传请求错误，如：当前请求不是 multipart 请求
+	 *
+	 * @param e MultipartException
+	 * @return R
+	 */
+	@ExceptionHandler(MultipartException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public R<Object> handleError(MultipartException e) {
+		log.warn("文件上传请求错误:{}", e.getMessage());
+		String message = StringUtil.isBlank(e.getMessage()) ? "文件上传请求错误" : e.getMessage();
+		return R.fail(SystemCode.MULTIPART_ERROR, message);
+	}
+
+	/**
+	 * 缺少必要的上传文件，如：@RequestPart 指定的文件未上传
+	 *
+	 * @param e MissingServletRequestPartException
+	 * @return R
+	 */
+	@ExceptionHandler(MissingServletRequestPartException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public R<Object> handleError(MissingServletRequestPartException e) {
+		log.warn("缺少上传文件:{}", e.getMessage());
+		String message = String.format("缺少必要的上传文件: %s", e.getRequestPartName());
+		return R.fail(SystemCode.PARAM_MISS, message);
 	}
 
 	/**

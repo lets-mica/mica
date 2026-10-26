@@ -4,6 +4,8 @@
 
 ### v4.1.3 - 2026-10-26
 
+- feat(error): mica-lite 添加 MultipartException 处理，文件上传请求错误返回 400 和业务码，不再作为未知异常处理
+- feat(error): mica-core SystemCode 添加 MULTIPART_ERROR（文件上传请求错误）和 FILE_TOO_LARGE（上传文件超过大小限制）
 - refactor(ddddocr): 移除 mica-ddddocr 模块，验证码识别能力已迁移至 mica-ai（net.dreamlu:mica-ai-captcha）
 - refactor(bom): mica-bom 不再包含 mica-ddddocr 与 onnxruntime 的版本管理
 
