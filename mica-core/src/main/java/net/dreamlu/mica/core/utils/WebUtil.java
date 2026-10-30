@@ -99,10 +99,23 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 	 * @param maxAgeInSeconds maxage
 	 */
 	public static void setCookie(HttpServletResponse response, String name, @Nullable String value, int maxAgeInSeconds) {
+		setCookie(response, name, value, maxAgeInSeconds, true);
+	}
+
+	/**
+	 * 设置cookie
+	 *
+	 * @param response        HttpServletResponse
+	 * @param name            cookie name
+	 * @param value           cookie value
+	 * @param maxAgeInSeconds maxage
+	 */
+	public static void setCookie(HttpServletResponse response, String name, @Nullable String value, int maxAgeInSeconds, boolean secure) {
 		Cookie cookie = new Cookie(name, value);
 		cookie.setPath(StringPool.SLASH);
 		cookie.setMaxAge(maxAgeInSeconds);
 		cookie.setHttpOnly(true);
+		cookie.setSecure(secure);
 		response.addCookie(cookie);
 	}
 
