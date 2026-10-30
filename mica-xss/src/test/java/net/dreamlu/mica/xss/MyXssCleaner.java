@@ -18,8 +18,8 @@ public class MyXssCleaner implements XssCleaner {
 			.prettyPrint(false);
 		// 注意会被转义
 		String escapedText = Jsoup.clean(html, "", XssUtil.WHITE_LIST, settings);
-		// 3. 反转义
-		return Entities.unescape(escapedText);
+		// 3. 反转义，但不会还原出能生成标签或属性的字符
+		return XssUtil.unescapeEntities(escapedText);
 	}
 
 }

@@ -8,6 +8,9 @@
 - feat(error): mica-core SystemCode 添加 MULTIPART_ERROR（文件上传请求错误）和 FILE_TOO_LARGE（上传文件超过大小限制）
 - refactor(ddddocr): 移除 mica-ddddocr 模块，验证码识别能力已迁移至 mica-ai（net.dreamlu:mica-ai-captcha）
 - refactor(bom): mica-bom 不再包含 mica-ddddocr 与 onnxruntime 的版本管理
+- fix(xss): mica-xss 修复 clear 模式反转义导致的 XSS 绕过，实体编码的标签与事件属性不再被还原成可执行代码
+- fix(xss): mica-xss 修复 url 属性协议校验不全，javascript、vbscript、data 等危险协议被过滤，仅保留 http、https、ftp、mailto、tel 协议与相对地址
+- fix(xss): mica-xss 过滤 style 中的危险写法，javascript、vbscript、expression 等内容不再保留
 
 ### v4.0.2 - 2026-02-06
 

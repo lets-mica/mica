@@ -62,13 +62,14 @@ public class DefaultXssCleaner implements XssCleaner {
 			}
 			throw type.getXssException(name, bodyHtml);
 		} else {
-			// 4. 清理后的 html
-			String escapedHtml = Jsoup.clean(bodyHtml, "", XssUtil.WHITE_LIST, getOutputSettings(properties));
+			// 4. 清理后的 html，jsoup 已完成白名单过滤与转义
+			String cleanedHtml = Jsoup.clean(bodyHtml, "", XssUtil.WHITE_LIST, getOutputSettings(properties));
 			if (properties.isEnableEscape()) {
-				return escapedHtml;
+				return cleanedHtml;
 			}
-			// 5. 反转义
-			return Entities.unescape(escapedHtml);
+			// 5. 反转义，但不会还原出能生成标签或属性的字符
+			// 全量反转义会把实体编码的标签还原成真实标签，也会把属性值中的双引号还原出来导致属性逃逸
+			return XssUtil.unescapeEntities(cleanedHtml);
 		}
 	}
 

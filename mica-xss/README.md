@@ -73,20 +73,42 @@ public XssCleaner xssCleaner() {
 public class MyXssCleaner implements XssCleaner {
 
 	@Override
-	public String clean(String html) {
+	public String clean(String name, String html, XssType type) {
 		Document.OutputSettings settings = new Document.OutputSettings()
 			// 1. 转义用最少的规则，没找到关闭的方法
 			.escapeMode(Entities.EscapeMode.xhtml)
 			// 2. 保留换行
 			.prettyPrint(false);
 		// 注意会被转义
-		String escapedText = Jsoup.clean(html, "", XssUtil.HtmlWhitelist.INSTANCE, settings);
-		// 3. 反转义
-		return Entities.unescape(escapedText);
+		String escapedText = Jsoup.clean(html, "", XssUtil.WHITE_LIST, settings);
+		// 3. 反转义，但不会还原出能生成标签或属性的字符
+		return XssUtil.unescapeEntities(escapedText);
 	}
 
 }
 ```
+
+> ⚠️ 反转义时不要使用 `Entities.unescape`，它会把实体编码的标签还原成真实标签，
+> 也会把属性值中的双引号实体还原成双引号导致属性逃逸，请使用 `XssUtil.unescapeEntities`。
+
+## 清理模式输出的使用
+`clear` 模式输出的是 html 片段，只能用于富文本渲染（如 `v-html`、`innerHTML`），
+普通文本场景请使用 `escape` 模式，或在输出时自行转义。
+
+## 白名单说明
+`clear` 模式使用内置白名单（`XssUtil.WHITE_LIST`）过滤 html：
+
+- **标签**：只保留富文本常用标签（`a`、`p`、`div`、`span`、`img`、`table` 等），
+  其它标签会被删除，但标签里的文字会保留（`script`、`style`、`iframe` 的内容会一起删除）。
+- **属性**：只保留白名单里的属性，所有 `on*` 事件属性都会被删除。
+- **url 协议**：`href`、`src` 等只允许 `http`、`https`、`ftp`、`mailto`、`tel` 与相对地址。
+- **style**：会过滤掉 `javascript:`、`vbscript:`、`expression()` 等危险写法。
+
+> ⚠️ `style` 允许任意 css，理论上可以用来做全屏覆盖、伪造界面等 css 注入。
+> 如果不需要行内样式，在应用启动前移除 style 属性即可：
+> ```java
+> XssUtil.WHITE_LIST.removeAttributes(":all", "style");
+> ```
 
 ## 校验模式
 
