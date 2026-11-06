@@ -11,6 +11,7 @@
 - fix(xss): mica-xss 修复 clear 模式反转义导致的 XSS 绕过，实体编码的标签与事件属性不再被还原成可执行代码
 - fix(xss): mica-xss 修复 url 属性协议校验不全，javascript、vbscript、data 等危险协议被过滤，仅保留 http、https、ftp、mailto、tel 协议与相对地址
 - fix(xss): mica-xss 过滤 style 中的危险写法，javascript、vbscript、expression 等内容不再保留
+- feat(holidays): mica-holidays 内置节假日数据改为自动扫描 classpath 加载，年份从数据文件名解析（当前覆盖 2019 至 2027 年），新增年份只需放入 data/{year}_data.json，无需修改代码
 
 ### v4.0.2 - 2026-02-06
 
